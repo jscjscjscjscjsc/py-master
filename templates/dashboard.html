@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 学习仪表盘</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <a href="{{ url_for('playground') }}" class="btn-playground-nav">
+        🐍 练习场
+      </a>
+      <div class="user-avatar">{{ username[0].upper() }}</div>
+      <span class="user-name">{{ username }}</span>
+      <button class="btn-logout" onclick="logout()">退出登录</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="dashboard-content">
+  <div class="dashboard-header">
+    <h2>欢迎回来，<span class="gradient-text">{{ username }}</span></h2>
+    <p>选择章节，开始你的 Python 学习之旅</p>
+    <div class="stats-row">
+      <div class="stat-chip">
+        📚 <span>共 <span class="stat-value">{{ chapters|length }}</span> 个章节</span>
+      </div>
+      <div class="stat-chip">
+        🎯 <span>知识点 <span class="stat-value">{{ chapters|sum(attribute='knowledge_count') }}</span> 个</span>
+      </div>
+      <div class="stat-chip">
+        ✏️ <span>练习题 <span class="stat-value">{{ chapters|sum(attribute='exercise_count') }}</span> 道</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapters Grid -->
+  <div class="chapters-grid">
+    {% for ch in chapters %}
+    <div class="chapter-card animate-in" style="animation-delay: {{ loop.index0 * 0.08 }}s">
+      <span class="card-icon" onclick="goToChapter({{ ch.id }})">{{ ch.icon }}</span>
+      <div class="card-num" onclick="goToChapter({{ ch.id }})">第 {{ ch.id }} 章</div>
+      <h3 onclick="goToChapter({{ ch.id }})">{{ ch.title }}</h3>
+      <p onclick="goToChapter({{ ch.id }})">{{ ch.description }}</p>
+      <div class="card-meta" onclick="goToChapter({{ ch.id }})">
+        <span>📖 {{ ch.knowledge_count }} 个知识点</span>
+        <span>✏️ {{ ch.exercise_count }} 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter({{ ch.id }})">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ ch.progress }}%"></div>
+        </div>
+        <div class="progress-label">{{ ch.progress }}% 完成</div>
+      </div>
+      {% if ch.ppt_url %}
+      <a href="{{ ch.ppt_url }}" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+function goToChapter(id) {
+  window.location.href = '/chapter/' + id;
+}
+function logout() {
+  window.location.href = '/logout';
+}
+</script>
+</body>
+</html>

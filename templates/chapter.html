@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — {{ chapter.title }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="chapter-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <a href="{{ url_for('playground') }}" class="btn-playground-nav" style="margin-right:8px;">
+        🐍 练习场
+      </a>
+      <a href="{{ url_for('dashboard') }}" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <span class="hero-icon">{{ chapter.icon }}</span>
+    <h2>第 {{ chapter.id }} 章 · {{ chapter.title }}</h2>
+    <p class="hero-desc">{{ chapter.description }}</p>
+    <div class="hero-buttons">
+      {% if chapter.ppt_url %}
+      <a href="{{ chapter.ppt_url }}" target="_blank" class="btn-ppt-hero">
+        📊 查看本章 PPT 课件
+      </a>
+      {% endif %}
+      {% if chapter.mindmap %}
+      <button class="btn-mindmap-hero" onclick="openMindmap()">
+        🧠 思维大纲
+      </button>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Section Tabs -->
+  <div class="section-tabs">
+    <button class="section-tab active" data-panel="knowledge">
+      📖 知识点 <span class="tab-badge">{{ chapter.knowledge_points|length }}</span>
+    </button>
+    <button class="section-tab" data-panel="exercise">
+      ✏️ 练习题 <span class="tab-badge">{{ chapter.exercises|length }}</span>
+    </button>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    {% for kp in chapter.knowledge_points %}
+    <div class="kp-item {% if progress and 'knowledge_' ~ loop.index0 in progress.get('completed_items', []) %}completed open{% endif %}" data-kp-index="{{ loop.index0 }}">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          <span style="color:var(--cyan);font-weight:700;">0{{ loop.index }}.</span>
+          {{ kp.title }}
+        </span>
+        <span class="kp-indicator">▼</span>
+      </div>
+      <div class="kp-body">
+        <div class="kp-body-content">
+          {{ kp.content | safe }}
+        </div>
+        <div class="kp-actions">
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic({{ chapter.id }}, {{ loop.index0 }}, '{{ kp.title|e }}')">
+            🎨 漫画讲解
+          </button>
+          <button class="btn-mark {% if progress and 'knowledge_' ~ loop.index0 in progress.get('completed_items', []) %}done{% endif %}"
+                  onclick="event.stopPropagation(); markDone(this, 'knowledge', {{ loop.index0 }})">
+            {% if progress and 'knowledge_' ~ loop.index0 in progress.get('completed_items', []) %}
+            ✓ 已掌握
+            {% else %}
+            ✓ 标记为已掌握
+            {% endif %}
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Exercise Panel -->
+  <div id="exercise-panel" class="exercise-panel">
+    {% for ex in chapter.exercises %}
+    <div class="exercise-card" data-ex-index="{{ loop.index0 }}">
+      <div class="ex-num">题目 {{ loop.index }}</div>
+      <div class="ex-question">{{ ex.question }}</div>
+      <div class="ex-options">
+        {% for opt in ex.options %}
+        <label class="ex-option" data-opt="{{ loop.index0 }}">
+          <span class="opt-letter">{{ ['A','B','C','D'][loop.index0] }}</span>
+          <span>{{ opt[2:] | safe }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <div class="ex-actions">
+        <button class="btn-submit" onclick="submitAnswer(this, {{ ex.answer }})">提交答案</button>
+        <button class="btn-show-answer" onclick="showExplanation(this, {{ ex.answer }})">查看解析</button>
+        <button class="btn-jj small" onclick="event.stopPropagation(); askJJAboutExercise('{{ ex.question|e }}')">🤖 请教 JJ老师</button>
+      </div>
+      <div class="ex-answer">
+        <div class="answer-label">📝 答案解析</div>
+        <div class="answer-text">{{ ex.explanation | safe }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+
+    <!-- Header -->
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+
+    <!-- Comic Title -->
+    <h2 class="comic-title" id="comic-title"></h2>
+
+    <!-- Comic Panels -->
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <!-- Autoplay voice toggle -->
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+
+    <!-- Bottom controls -->
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+
+    <!-- Settings hint when no API -->
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<!-- API Settings Modal -->
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">
+      配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容
+    </p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 {{ chapter.title }} — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+{% if chapter.mindmap %}
+<script id="mindmap-data" type="text/markdown">{{ chapter.mindmap }}</script>
+{% endif %}
+
+<script>
+  const CHAPTER_ID = {{ chapter.id }};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<!-- JJ老师 Chat -->
+<div class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="请教 JJ老师">🤖</div>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">🤖 JJ老师 · AI 助教</span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

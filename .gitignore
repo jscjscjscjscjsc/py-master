@@ -1,0 +1,21 @@
+# User data
+data/users.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Audio cache
+data/audio_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flask
+*.pyc

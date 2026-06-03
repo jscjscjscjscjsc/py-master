@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — Python 练习场</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+.playground-page { min-height: 100vh; position: relative; background: var(--bg-deep); }
+.playground-wrap {
+  position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 20px 24px 40px;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; gap: 16px; height: calc(100vh - 80px);
+}
+.playground-header {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.playground-header h2 { font-size: 20px; font-weight: 700; }
+.playground-header .pg-actions { display: flex; gap: 10px; align-items: center; }
+.btn-run {
+  padding: 10px 28px; font-size: 15px; font-weight: 700; font-family: var(--font-sans);
+  border: none; border-radius: var(--radius-md); cursor: pointer;
+  background: linear-gradient(135deg, var(--green), #2ea043); color: #fff;
+  box-shadow: 0 4px 16px var(--green-dim); transition: all var(--transition-normal); letter-spacing: 1px;
+}
+.btn-run:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(63,185,80,0.45); }
+.btn-run:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-clear {
+  padding: 10px 20px; font-size: 13px; font-weight: 600; font-family: var(--font-sans);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md); cursor: pointer;
+  background: transparent; color: var(--text-secondary); transition: all var(--transition-fast);
+}
+.btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+/* Editor panel */
+.editor-panel {
+  display: flex; flex-direction: column;
+  background: #1e1e2e; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden;
+}
+.editor-panel .panel-label {
+  padding: 10px 16px; font-size: 12px; font-weight: 700;
+  background: var(--bg-secondary); color: var(--cyan); text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
+}
+.editor-wrap { flex: 1; overflow: auto; }
+.editor-wrap .CodeMirror {
+  height: 100% !important; font-family: var(--font-mono); font-size: 14px; line-height: 1.6;
+}
+
+/* Output panel */
+.output-panel {
+  display: flex; flex-direction: column;
+  background: #0d1117; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden;
+}
+.output-panel .panel-label {
+  padding: 10px 16px; font-size: 12px; font-weight: 700;
+  background: var(--bg-secondary); color: var(--green); text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.output-content {
+  flex: 1; overflow: auto; padding: 16px; font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+  color: var(--text-primary); white-space: pre-wrap; word-break: break-all;
+}
+.output-content.error { color: var(--red); }
+.output-content .error-header { color: var(--red); font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+.output-content .success-header { color: var(--green); font-weight: 700; margin-bottom: 4px; font-size: 14px; }
+.output-placeholder { color: var(--text-muted); font-style: italic; padding: 40px; text-align: center; }
+
+/* Status bar */
+.status-bar {
+  padding: 6px 16px; font-size: 11px; color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.status-bar .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.status-bar .status-dot.ready { background: var(--green); }
+.status-bar .status-dot.running { background: var(--orange); animation: pulse 1s infinite; }
+.status-bar .status-dot.error { background: var(--red); }
+
+/* Sample code buttons */
+.sample-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.btn-sample {
+  padding: 5px 12px; font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+  border: 1px solid var(--border-subtle); border-radius: 14px; cursor: pointer;
+  background: var(--bg-secondary); color: var(--text-secondary); transition: all var(--transition-fast); white-space: nowrap;
+}
+.btn-sample:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+@media (max-width: 900px) {
+  .playground-wrap { grid-template-columns: 1fr; grid-template-rows: auto 1fr 1fr; }
+}
+</style>
+</head>
+<body class="playground-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <a href="{{ url_for('dashboard') }}" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="playground-wrap">
+  <!-- Header -->
+  <div class="playground-header">
+    <div>
+      <h2>🐍 Python 练习场</h2>
+      <div class="sample-btns">
+        <button class="btn-sample" onclick="loadSample('hello')">Hello World</button>
+        <button class="btn-sample" onclick="loadSample('loop')">循环示例</button>
+        <button class="btn-sample" onclick="loadSample('function')">函数示例</button>
+        <button class="btn-sample" onclick="loadSample('list')">列表推导式</button>
+        <button class="btn-sample" onclick="loadSample('dict')">字典操作</button>
+        <button class="btn-sample" onclick="loadSample('error')">异常捕获</button>
+      </div>
+    </div>
+    <div class="pg-actions">
+      <button class="btn-jj" onclick="openJJChat()">🤖 请教 JJ老师</button>
+      <button class="btn-clear" onclick="clearOutput()">清空输出</button>
+      <button class="btn-run" id="btn-run" onclick="runCode()">▶ 运行</button>
+    </div>
+  </div>
+
+  <!-- Editor -->
+  <div class="editor-panel">
+    <div class="panel-label">📝 代码编辑器</div>
+    <div class="editor-wrap" id="editor-wrap">
+      <textarea id="code-editor"></textarea>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div class="output-panel">
+    <div class="panel-label">
+      <span>💻 运行输出</span>
+      <span id="elapsed" style="font-size:11px;color:var(--text-muted);font-weight:400;"></span>
+    </div>
+    <div class="output-content" id="output-content">
+      <div class="output-placeholder">👆 点击右上角「▶ 运行」按钮执行代码<br><br>或者点击上方示例按钮加载预设代码</div>
+    </div>
+    <div class="status-bar">
+      <span class="status-dot ready" id="status-dot"></span>
+      <span id="status-text">就绪</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+// Init CodeMirror
+const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+  mode: 'python',
+  theme: 'material-darker',
+  lineNumbers: true,
+  indentUnit: 4,
+  tabSize: 4,
+  indentWithTabs: false,
+  lineWrapping: true,
+  matchBrackets: true,
+  autoCloseBrackets: true,
+  viewportMargin: Infinity,
+  extraKeys: {
+    'Ctrl-Enter': runCode,
+    'Cmd-Enter': runCode,
+  }
+});
+editor.setSize('100%', '100%');
+
+// Default code
+const defaultCode = `# 🐍 Python 练习场
+# 在这里自由编写 Python 代码
+# 按 Ctrl+Enter 或点击「▶ 运行」执行
+
+print("Hello, PyMaster! 👋")
+
+name = "小明"
+age = 15
+print(f"我叫{name}，今年{age}岁，正在学Python！")
+
+# 试试打印 1 到 10 的平方
+for i in range(1, 11):
+    print(f"{i}² = {i**2}")
+`;
+editor.setValue(defaultCode);
+
+const samples = {
+  hello: `# Hello World - Python 入门
+print("Hello, World!")
+print("欢迎来到 Python 世界！")
+
+# 变量和输入
+name = input("请输入你的名字: ")
+print(f"你好，{name}！今天天气真好！")
+`,
+  loop: `# 循环示例
+print("=== for 循环 ===")
+for i in range(1, 6):
+    print(f"第 {i} 次循环")
+
+print("\\n=== while 循环 ===")
+count = 0
+while count < 5:
+    print(f"count = {count}")
+    count += 1
+
+print("\\n=== 九九乘法表 ===")
+for i in range(1, 10):
+    for j in range(1, i + 1):
+        print(f"{j}×{i}={i*j}", end="\\t")
+    print()
+`,
+  function: `# 函数示例
+def calculate_bmi(weight, height):
+    \"\"\"计算BMI指数\"\"\"
+    bmi = weight / (height ** 2)
+    return bmi
+
+def bmi_category(bmi):
+    \"\"\"判断BMI类别\"\"\"
+    if bmi < 18.5:
+        return "偏瘦"
+    elif bmi < 24:
+        return "正常"
+    elif bmi < 28:
+        return "偏胖"
+    else:
+        return "肥胖"
+
+# 使用默认参数
+def greet(name, greeting="你好"):
+    return f"{greeting}，{name}！"
+
+print(greet("小明"))
+print(greet("Tom", "Hello"))
+
+# Lambda 示例
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+evens = list(filter(lambda x: x % 2 == 0, nums))
+squares = list(map(lambda x: x ** 2, nums))
+print(f"偶数: {evens}")
+print(f"平方: {squares}")
+`,
+  list: `# 列表推导式示例
+print("=== 列表基础 ===")
+fruits = ["苹果", "香蕉", "橙子", "葡萄", "西瓜"]
+print(f"水果列表: {fruits}")
+print(f"共 {len(fruits)} 种水果")
+
+print("\\n=== 列表推导式 ===")
+# 生成平方数
+squares = [x**2 for x in range(1, 11)]
+print(f"1-10的平方: {squares}")
+
+# 带条件的推导式
+even_squares = [x**2 for x in range(1, 21) if x % 2 == 0]
+print(f"偶数的平方: {even_squares}")
+
+# 嵌套推导式
+matrix = [[i*j for j in range(1, 4)] for i in range(1, 4)]
+print(f"矩阵: {matrix}")
+
+# 字符串操作
+names = ["alice", "bob", "charlie"]
+upper_names = [name.upper() for name in names]
+print(f"大写名字: {upper_names}")
+`,
+  dict: `# 字典与集合操作
+print("=== 字典操作 ===")
+student = {"name": "张三", "age": 20, "score": 95}
+print(f"学生信息: {student}")
+
+# 遍历字典
+for key, value in student.items():
+    print(f"  {key}: {value}")
+
+# 字典推导式
+squares_dict = {x: x**2 for x in range(1, 6)}
+print(f"\\n数字平方字典: {squares_dict}")
+
+# 集合操作
+print("\\n=== 集合操作 ===")
+a = {1, 2, 3, 4, 5}
+b = {3, 4, 5, 6, 7}
+print(f"A = {a}")
+print(f"B = {b}")
+print(f"并集 A|B = {a | b}")
+print(f"交集 A&B = {a & b}")
+print(f"差集 A-B = {a - b}")
+print(f"对称差 A^B = {a ^ b}")
+
+# 列表去重
+nums = [1, 2, 2, 3, 3, 3, 4, 5, 5]
+unique = list(set(nums))
+print(f"\\n列表去重: {nums} -> {unique}")
+`,
+  error: `# 异常处理示例
+print("=== try-except 异常处理 ===\\n")
+
+def safe_divide(a, b):
+    try:
+        result = a / b
+        return f"{a} / {b} = {result}"
+    except ZeroDivisionError:
+        return f"错误: 不能除以零！({a} / {b})"
+    except TypeError as e:
+        return f"类型错误: {e}"
+
+print(safe_divide(10, 2))
+print(safe_divide(10, 0))
+print(safe_divide("abc", 2))
+
+# finally 示例
+print("\\n=== try-finally 示例 ===")
+try:
+    print("打开文件...")
+    # 模拟错误
+    num = int("abc")
+except ValueError as e:
+    print(f"捕获异常: {e}")
+finally:
+    print("关闭文件 (finally总是执行)")
+
+print("\\n程序继续运行！")
+`
+};
+
+function loadSample(name) {
+  if (samples[name]) {
+    editor.setValue(samples[name].trimStart());
+    clearOutput();
+    showToast('示例代码已加载', 'success');
+  }
+}
+
+function clearOutput() {
+  document.getElementById('output-content').innerHTML =
+    '<div class="output-placeholder">输出已清空</div>';
+  document.getElementById('elapsed').textContent = '';
+}
+
+async function runCode() {
+  const code = editor.getValue().trim();
+  if (!code) { showToast('请先输入代码', 'error'); return; }
+
+  const btn = document.getElementById('btn-run');
+  const outputDiv = document.getElementById('output-content');
+  const statusDot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+  const elapsedSpan = document.getElementById('elapsed');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 执行中...';
+  statusDot.className = 'status-dot running';
+  statusText.textContent = '运行中...';
+  outputDiv.className = 'output-content';
+  outputDiv.innerHTML = '<div style="color:var(--text-muted)">⏳ 正在执行...</div>';
+
+  try {
+    const res = await fetch('/api/run-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+    const data = await res.json();
+
+    elapsedSpan.textContent = data.elapsed || '';
+
+    if (data.success) {
+      outputDiv.className = 'output-content';
+      outputDiv.innerHTML =
+        '<div class="success-header">✓ 执行成功 (exit code: ' + (data.exit_code||0) + ')</div>' +
+        '<pre style="margin:0;white-space:pre-wrap;">' + escapeHtml(data.output) + '</pre>';
+      statusDot.className = 'status-dot ready';
+      statusText.textContent = '执行完成';
+    } else {
+      outputDiv.className = 'output-content error';
+      outputDiv.innerHTML =
+        '<div class="error-header">✗ 执行出错</div>' +
+        '<pre style="margin:0;white-space:pre-wrap;">' + escapeHtml(data.error) + '</pre>' +
+        (data.output ? '<div style="margin-top:10px;color:var(--text-secondary)">' + escapeHtml(data.output) + '</div>' : '');
+      statusDot.className = 'status-dot error';
+      statusText.textContent = '出错';
+    }
+  } catch(e) {
+    outputDiv.className = 'output-content error';
+    outputDiv.innerHTML = '<div class="error-header">✗ 网络错误</div>' + escapeHtml(e.message);
+    statusDot.className = 'status-dot error';
+    statusText.textContent = '网络错误';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '▶ 运行';
+  }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// JJ老师: send code context with question
+function openJJChat() {
+  const code = editor.getValue().trim();
+  jjCodeContext = code || '';
+  toggleJJChat();
+}
+</script>
+
+<!-- JJ老师 Chat -->
+<div class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="请教 JJ老师">🤖</div>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">🤖 JJ老师 · AI 助教</span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何代码问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+</body>
+</html>

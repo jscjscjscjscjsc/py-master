@@ -1,0 +1,170 @@
+{
+  "student1": {
+    "views": [
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-01 11:30:14"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-01 14:12:56"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-01 14:13:12"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 5,
+        "kp_title": "装饰器 —— 函数的「外套」",
+        "viewed_at": "2026-06-01 14:34:33"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 5,
+        "kp_title": "装饰器 —— 函数的「外套」",
+        "viewed_at": "2026-06-01 14:51:29"
+      }
+    ],
+    "favorites": [],
+    "total_views": 5
+  },
+  "jsc": {
+    "views": [
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-01 11:31:51"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 1,
+        "kp_title": "Python 的安装",
+        "viewed_at": "2026-06-01 11:32:26"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-01 14:03:11"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 2,
+        "kp_title": "第一个 Python 程序",
+        "viewed_at": "2026-06-01 14:03:26"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-01 14:13:56"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 1,
+        "kp_title": "Python 的安装",
+        "viewed_at": "2026-06-01 14:14:35"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 0,
+        "kp_title": "函数的定义与调用",
+        "viewed_at": "2026-06-01 14:16:15"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 0,
+        "kp_title": "函数的定义与文档",
+        "viewed_at": "2026-06-01 14:35:29"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 0,
+        "kp_title": "函数的定义与文档",
+        "viewed_at": "2026-06-01 14:39:00"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 0,
+        "kp_title": "函数的定义与文档",
+        "viewed_at": "2026-06-01 14:52:08"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 0,
+        "kp_title": "函数的定义与文档",
+        "viewed_at": "2026-06-01 15:05:35"
+      },
+      {
+        "chapter_id": 8,
+        "kp_index": 1,
+        "kp_title": "参数类型精讲（上）",
+        "viewed_at": "2026-06-01 15:07:07"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 1,
+        "kp_title": "Python 的安装",
+        "viewed_at": "2026-06-02 13:47:00"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-02 14:51:46"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-02 14:53:11"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-02 14:55:22"
+      },
+      {
+        "chapter_id": 1,
+        "kp_index": 0,
+        "kp_title": "Python 是什么？",
+        "viewed_at": "2026-06-02 19:58:50"
+      },
+      {
+        "chapter_id": 2,
+        "kp_index": 0,
+        "kp_title": "什么是变量？",
+        "viewed_at": "2026-06-03 10:18:55"
+      },
+      {
+        "chapter_id": 2,
+        "kp_index": 3,
+        "kp_title": "布尔类型与 None",
+        "viewed_at": "2026-06-03 11:12:50"
+      }
+    ],
+    "favorites": [],
+    "total_views": 19
+  },
+  "testuser": {
+    "views": [
+      {
+        "chapter_id": 8,
+        "kp_index": 0,
+        "kp_title": "函数的定义与文档",
+        "viewed_at": "2026-06-01 15:03:17"
+      }
+    ],
+    "favorites": [],
+    "total_views": 1
+  }
+}
