@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import hashlib
 import secrets
 import subprocess
@@ -7,25 +8,40 @@ import tempfile
 import time
 import urllib.request
 import urllib.error
+import webbrowser
+import threading
 from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask import Response
+
+# PyInstaller compatibility
+if getattr(sys, 'frozen', False):
+    BUNDLE_DIR = sys._MEIPASS
+    WRITE_ROOT = os.path.dirname(sys.executable)
+else:
+    BUNDLE_DIR = os.path.dirname(os.path.abspath(__file__))
+    WRITE_ROOT = BUNDLE_DIR
+
 from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
+app.template_folder = os.path.join(BUNDLE_DIR, 'templates')
+app.static_folder = os.path.join(BUNDLE_DIR, 'static')
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+# Writable data: next to exe (or project root for dev)
+DATA_DIR = os.path.join(WRITE_ROOT, 'data')
 USERS_FILE = os.path.join(DATA_DIR, 'users.json')
-COURSES_FILE = os.path.join(DATA_DIR, 'courses.json')
+# Read-only course data: bundled with exe
+COURSES_FILE = os.path.join(BUNDLE_DIR, 'data', 'courses.json')
 
 # Initialize Comic Engine and Memory
 comic_engine = ComicEngine()
 comic_memory = ComicMemory(DATA_DIR)
 
-# Initialize TTS Engines — EdgeTTS is primary (free, best Chinese quality)
+# Initialize TTS Engines
 tts_engine = EdgeTTS()
 
 doubao_tts = DoubaoTTS(
@@ -367,7 +383,7 @@ def get_user():
 # ── Comic Engine Endpoints ─────────────────────────────────
 
 # Load pre-generated comics (Claude-generated, high quality)
-COMICS_FILE = os.path.join(DATA_DIR, 'comics.json')
+COMICS_FILE = os.path.join(BUNDLE_DIR, 'data', 'comics.json')
 
 def load_comics():
     if not os.path.exists(COMICS_FILE):
@@ -581,4 +597,6 @@ if __name__ == '__main__':
     os.makedirs(DATA_DIR, exist_ok=True)
     if not os.path.exists(USERS_FILE):
         save_json(USERS_FILE, {})
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    threading.Timer(1.0, lambda: webbrowser.open('http://127.0.0.1:5000')).start()
+    print("🐍 PyMaster 已启动 → http://127.0.0.1:5000")
+    app.run(debug=False, host='127.0.0.1', port=5000)
