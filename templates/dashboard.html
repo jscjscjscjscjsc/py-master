@@ -19,11 +19,22 @@
       <span>PyMaster</span>
     </div>
     <div class="nav-user">
-      <a href="{{ url_for('playground') }}" class="btn-playground-nav">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏">⭐ <span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本">📕 <span class="nav-tool-label">错题</span></button>
+      <a href="{{ url_for('playground') }}" class="btn-playground-nav" style="margin-right:4px;">
         🐍 练习场
       </a>
+      <div class="mode-toggle-wrap">
+        <label class="mode-toggle" title="切换学习模式">
+          <input type="checkbox" id="mode-toggle" onchange="toggleMode()" {% if mode == 'all_unlocked' %}checked{% endif %}>
+          <span class="mode-toggle-slider"></span>
+        </label>
+        <span class="mode-label" id="mode-label">{{ '🔓 全部解锁' if mode == 'all_unlocked' else '🔒 探索模式' }}</span>
+      </div>
       <div class="user-avatar">{{ username[0].upper() }}</div>
       <span class="user-name">{{ username }}</span>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="开启背景音乐" style="background:none;border:none;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;color:var(--text-muted);">🎶</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换主题" style="background:none;border:none;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;color:var(--text-secondary);">🌙</button>
       <button class="btn-logout" onclick="logout()">退出登录</button>
     </div>
   </div>
@@ -44,13 +55,24 @@
       <div class="stat-chip">
         ✏️ <span>练习题 <span class="stat-value">{{ chapters|sum(attribute='exercise_count') }}</span> 道</span>
       </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="window.location.href='/canvas'">
+        🎨 <span>画布工具</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="showGlossary()">
+        📖 <span>专业术语</span>
+      </div>
+      <div class="stat-chip" id="quota-chip" style="opacity:0.8;">
+        🤖 <span>AI 余额：<span id="quota-display">加载中...</span></span>
+      </div>
     </div>
   </div>
 
   <!-- Chapters Grid -->
   <div class="chapters-grid">
     {% for ch in chapters %}
-    <div class="chapter-card animate-in" style="animation-delay: {{ loop.index0 * 0.08 }}s">
+    {% set unlocked = chapter_unlocked.get(ch.id, false) or mode == 'all_unlocked' %}
+    <div class="chapter-card animate-in {% if not unlocked %}chapter-locked{% endif %}" style="animation-delay: {{ loop.index0 * 0.08 }}s">
+      {% if unlocked %}
       <span class="card-icon" onclick="goToChapter({{ ch.id }})">{{ ch.icon }}</span>
       <div class="card-num" onclick="goToChapter({{ ch.id }})">第 {{ ch.id }} 章</div>
       <h3 onclick="goToChapter({{ ch.id }})">{{ ch.title }}</h3>
@@ -70,12 +92,64 @@
         📊 查看 PPT
       </a>
       {% endif %}
+      {% else %}
+      <div class="card-locked-overlay">
+        <div class="card-locked-icon">🔒</div>
+        <h3 style="margin-bottom:8px;">{{ ch.title }}</h3>
+        <p style="font-size:13px;color:var(--text-muted);">完成前一章节所有知识点即可解锁</p>
+        {% if ch.ppt_url %}
+        <a href="{{ ch.ppt_url }}" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+          📊 PPT 课件（可提前查看）
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
 </div>
 
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Glossary Modal -->
+<div id="glossary-modal" class="modal-overlay">
+  <div class="modal-container" style="max-width:800px;">
+    <div class="modal-header">
+      <span>📖 Python 专业术语大全</span>
+      <button class="modal-close" onclick="closeModal('glossary-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="glossary-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
 <script>
 function goToChapter(id) {
   window.location.href = '/chapter/' + id;
@@ -83,6 +157,14 @@ function goToChapter(id) {
 function logout() {
   window.location.href = '/logout';
 }
+
+// Load AI quota on dashboard
+fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
+  const el=document.getElementById('quota-display');
+  if(!el)return;
+  if(d.is_unlimited) el.textContent = '∞ 无限';
+  else el.textContent = d.remaining + '/' + d.limit;
+}).catch(()=>{});
 </script>
 </body>
 </html>

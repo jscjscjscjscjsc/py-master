@@ -56,10 +56,23 @@
   </div>
 
   <div class="auth-footer">
-    开发人：JJ老师
+    开发人：JJ老师 &nbsp;|&nbsp; <a href="/admin/login" style="color:var(--purple);text-decoration:none;font-size:12px;">🔐 管理后台</a>
   </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
+<script>
+document.addEventListener('click', function _mu() {
+  AmbientMusic.play();
+  document.removeEventListener('click', _mu);
+  document.removeEventListener('touchstart', _mu);
+});
+document.addEventListener('touchstart', function _mu2() {
+  AmbientMusic.play();
+  document.removeEventListener('click', _mu2);
+  document.removeEventListener('touchstart', _mu2);
+});
+</script>
 </body>
 </html>

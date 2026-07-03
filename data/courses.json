@@ -375,16 +375,16 @@
         "content": "<h3>位置参数（最基础）</h3><pre><code>def add(a, b):\n    return a + b\nprint(add(3, 5))   # 8（3→a, 5→b，按位置匹配）</code></pre>\n<h3>默认参数（可选参数）</h3><pre><code>def greet(name, greeting=\"你好\"):\n    return f\"{greeting}，{name}！\"\n\nprint(greet(\"小明\"))              # 你好，小明！（用默认值）\nprint(greet(\"Tom\", \"Hello\"))      # Hello，Tom！（覆盖默认值）\n\n# ⚠️ 危险：可变默认参数陷阱！\ndef bad_append(item, lst=[]):\n    lst.append(item)\n    return lst\nprint(bad_append(1))  # [1]\nprint(bad_append(2))  # [1, 2] ← 预期是 [2]！默认列表被共享了！\n\n# ✅ 正确写法\ndef good_append(item, lst=None):\n    if lst is None:\n        lst = []\n    lst.append(item)\n    return lst</code></pre>\n<h3>关键字参数</h3><pre><code>def describe(name, age, city):\n    return f\"{name}，{age}岁，来自{city}\"\n\n# 按关键字传递（顺序任意，更清晰）\nprint(describe(age=25, city=\"北京\", name=\"张三\"))\n# 混合使用（位置参数在前，关键字在后）\nprint(describe(\"张三\", age=25, city=\"北京\"))</code></pre>\n<h3>可变参数 *args 和 **kwargs</h3><pre><code># *args: 接收任意数量的位置参数（打包成元组）\ndef sum_all(*args):\n    print(f\"收到了 {len(args)} 个参数: {args}\")\n    return sum(args)\n\nprint(sum_all(1, 2, 3, 4, 5))  # 15\n\n# **kwargs: 接收任意数量的关键字参数（打包成字典）\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f\"{key}: {value}\")\n\nprint_info(name=\"张三\", age=20, city=\"北京\")\n\n# 两者组合使用\ndef func(a, b, *args, **kwargs):\n    print(f\"a={a}, b={b}\")\n    print(f\"args={args}\")\n    print(f\"kwargs={kwargs}\")\n\nfunc(1, 2, 3, 4, 5, name=\"test\", enabled=True)</code></pre>\n<h3>参数顺序规则</h3><pre><code>def func(位置参数, 默认参数, *args, 关键字参数, **kwargs):\n    pass\n# 顺序：位置 → 默认 → *args → 关键字 → **kwargs</code></pre>"
       },
       {
-        "title": "参数类型精讲（下）",
+        "title": "返回值与 LEGB 作用域",
         "content": "<h3>返回值</h3><pre><code># 单值返回\ndef square(x):\n    return x ** 2\n\n# 多值返回（本质是返回一个元组）\ndef divide(a, b):\n    quotient = a // b\n    remainder = a % b\n    return quotient, remainder  # 返回 (商, 余数)\n\nq, r = divide(17, 5)  # 解包：q=3, r=2\nresult = divide(17, 5)  # result = (3, 2) 元组</code></pre>\n<h3>作用域 LEGB 规则</h3><table><tr><th>层级</th><th>说明</th></tr><tr><td>L (Local)</td><td>函数内部定义的变量</td></tr><tr><td>E (Enclosing)</td><td>外层函数（闭包）中的变量</td></tr><tr><td>G (Global)</td><td>模块级别的全局变量</td></tr><tr><td>B (Built-in)</td><td>Python 内置的名字（print, len, range...）</td></tr></table>\n<pre><code>x = \"全局变量\"\n\ndef outer():\n    x = \"外层变量\"\n    def inner():\n        x = \"内层变量\"\n        print(x)  # \"内层变量\" ← 优先局部\n    inner()\n    print(x)      # \"外层变量\"\n\nouter()\nprint(x)          # \"全局变量\"</code></pre>\n<h3>global 和 nonlocal</h3><pre><code># global: 在函数内修改全局变量\ncount = 0\ndef increment():\n    global count   # 声明使用全局的 count\n    count += 1\n\n# nonlocal: 修改外层（非全局）变量\ndef outer():\n    x = 10\n    def inner():\n        nonlocal x  # 声明使用外层的 x\n        x = 20      # 修改外层变量\n    inner()\n    print(x)        # 20</code></pre>"
       },
       {
-        "title": "返回值与 LEGB 作用域",
+        "title": "Lambda 与高阶函数",
         "content": "<h3>Lambda（匿名函数）</h3><pre><code># 语法：lambda 参数: 表达式\n# lambda 是一个表达式，不是语句，可以写在任何需要函数的地方\n\nsquare = lambda x: x ** 2\nprint(square(5))  # 25\n\nadd = lambda a, b: a + b\nprint(add(3, 7))  # 10\n\n# lambda 可以有多个参数\nmax_val = lambda a, b: a if a > b else b\nprint(max_val(10, 20))  # 20</code></pre>\n<h3>高阶函数：map / filter / sorted</h3><pre><code>nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\n# map: 对每个元素应用函数，返回迭代器\nsquared = list(map(lambda x: x**2, nums))\n# [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\n\n# filter: 筛选符合条件的元素\nevens = list(filter(lambda x: x % 2 == 0, nums))\n# [2, 4, 6, 8, 10]\n\n# sorted: 按自定义规则排序\nstudents = [\n    {\"name\": \"张三\", \"score\": 85},\n    {\"name\": \"李四\", \"score\": 92},\n    {\"name\": \"王五\", \"score\": 78}\n]\nranked = sorted(students, key=lambda s: s[\"score\"], reverse=True)\n# 李四(92) > 张三(85) > 王五(78)</code></pre>\n<h3>列表推导式 vs map/filter</h3><pre><code>nums = [1, 2, 3, 4, 5]\n\n# 用 map + filter\nresult = list(map(lambda x: x**2, filter(lambda x: x%2==0, nums)))\n# [4, 16]\n\n# 用列表推导式（更清晰、更 Pythonic）\nresult = [x**2 for x in nums if x % 2 == 0]\n# [4, 16]\n# 列表推导式可读性更好，推荐在日常使用中优先选择</code></pre>\n<h3>函数式编程工具</h3><pre><code>from functools import reduce\n\n# reduce: 累积计算\nnums = [1, 2, 3, 4, 5]\ntotal = reduce(lambda a, b: a + b, nums)  # 15\n# 等价于 sum(nums)\n\nproduct = reduce(lambda a, b: a * b, nums)  # 120（5的阶乘）</code></pre>"
       },
       {
-        "title": "Lambda 与高阶函数",
-        "content": "<h3>Lambda（匿名函数）</h3><pre><code># 语法: lambda 参数: 表达式\n# lambda 是一个表达式，可以直接放在任何需要函数的地方\n\nsquare = lambda x: x ** 2\nprint(square(5))  # 25\n\nadd = lambda a, b: a + b\nprint(add(3, 7))  # 10\n\n# lambda 可以有多个参数\nmax_val = lambda a, b: a if a > b else b\nprint(max_val(10, 20))  # 20</code></pre>\n<h3>高阶函数: map / filter / sorted</h3><pre><code>nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\n# map: 对每个元素应用函数\nsquared = list(map(lambda x: x**2, nums))\n# [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\n\n# filter: 筛选符合条件的元素\nevens = list(filter(lambda x: x % 2 == 0, nums))\n# [2, 4, 6, 8, 10]\n\n# sorted: 按自定义规则排序\nstudents = [{\"name\":\"张三\",\"score\":85},{\"name\":\"李四\",\"score\":92},{\"name\":\"王五\",\"score\":78}]\nranked = sorted(students, key=lambda s: s[\"score\"], reverse=True)\n\n# reduce: 累积计算\nfrom functools import reduce\ntotal = reduce(lambda a, b: a + b, nums)  # 55\nproduct = reduce(lambda a, b: a * b, range(1,6))  # 120 (5!)</code></pre>\n<h3>列表推导式 vs map/filter</h3><pre><code>nums = [1, 2, 3, 4, 5]\n# map+filter 写法\nresult = list(map(lambda x: x**2, filter(lambda x: x%2==0, nums)))\n# 列表推导式写法（更 Pythonic）\nresult = [x**2 for x in nums if x % 2 == 0]\n# 推荐日常使用列表推导式，可读性更好</code></pre>"
+        "title": "递归 (Recursion)",
+        "content": "<h3>什么是递归？</h3><p><strong>递归</strong>（Recursion）是指函数<strong>调用自身</strong>的编程技巧。递归的核心思想是：把一个复杂问题分解成与原问题相似但规模更小的子问题。</p><pre><code># 递归的两个关键要素：\n# 1. 基线条件（Base Case）：停止递归的条件\n# 2. 递归条件（Recursive Case）：函数调用自身\n\ndef countdown(n):\n    \"\"\"递归倒计时\"\"\"\n    if n <= 0:          # 基线条件\n        print(\"发射！\")\n        return\n    print(n)\n    countdown(n - 1)    # 递归条件：调用自身\n\ncountdown(5)\n# 输出: 5 4 3 2 1 发射！</code></pre>\n<h3>经典递归示例：阶乘</h3><pre><code># n! = n × (n-1) × (n-2) × ... × 1\n# 数学定义：\n#   0! = 1（基线条件）\n#   n! = n × (n-1)!（递归条件）\n\ndef factorial(n):\n    \"\"\"计算 n 的阶乘\"\"\"\n    if n <= 1:           # 基线条件\n        return 1\n    return n * factorial(n - 1)  # 递归条件\n\nprint(factorial(5))  # 120 = 5×4×3×2×1\n\n# 执行过程追踪：\n# factorial(5)\n# → 5 * factorial(4)\n# → 5 * 4 * factorial(3)\n# → 5 * 4 * 3 * factorial(2)\n# → 5 * 4 * 3 * 2 * factorial(1)\n# → 5 * 4 * 3 * 2 * 1 = 120</code></pre>\n<h3>斐波那契数列</h3><pre><code># 斐波那契数列：0, 1, 1, 2, 3, 5, 8, 13, 21, ...\n# 定义：F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2)\n\ndef fib(n):\n    \"\"\"返回第 n 个斐波那契数\"\"\"\n    if n <= 1:           # 基线条件\n        return n\n    return fib(n-1) + fib(n-2)  # 递归条件：两次调用自身\n\nprint(fib(10))  # 55\n\n# ⚠️ 这种递归效率很低！很多重复计算\n# 可以用记忆化（缓存）优化：\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib_fast(n):\n    if n <= 1:\n        return n\n    return fib_fast(n-1) + fib_fast(n-2)\n\nprint(fib_fast(100))  # 354224848179261915075（瞬间算出！）</code></pre>\n<h3>递归 vs 迭代</h3><table><tr><th>对比项</th><th>递归</th><th>迭代（循环）</th></tr><tr><td>代码可读性</td><td>更接近数学定义，清晰</td><td>需要维护循环变量</td></tr><tr><td>性能</td><td>有函数调用开销</td><td>通常更快</td></tr><tr><td>内存</td><td>每层递归消耗栈空间</td><td>只需少量变量</td></tr><tr><td>适用场景</td><td>树形结构、分治算法</td><td>线性处理、简单重复</td></tr></table>\n<pre><code># 阶乘：迭代 vs 递归对比\n\ndef factorial_iter(n):\n    \"\"\"迭代版本\"\"\"\n    result = 1\n    for i in range(2, n + 1):\n        result *= i\n    return result\n\ndef factorial_recur(n):\n    \"\"\"递归版本\"\"\"\n    return 1 if n <= 1 else n * factorial_recur(n - 1)\n\nprint(factorial_iter(5))   # 120\nprint(factorial_recur(5))  # 120</code></pre>\n<h3>递归深度限制</h3><pre><code># Python 默认递归深度限制为 1000 层\n# 超过会引发 RecursionError\n\ndef recurse(n):\n    print(n)\n    recurse(n + 1)\n\n# recurse(1)  # ❌ RecursionError: maximum recursion depth exceeded\n\n# 查看/修改递归深度限制\nimport sys\nprint(sys.getrecursionlimit())   # 默认 1000\n# sys.setrecursionlimit(2000)    # 修改限制（谨慎！）\n\n# 小贴士：能用迭代解决的问题尽量用迭代\n# 递归更适合：树遍历、分治算法、数学定义式的问题</code></pre>\n<h3>递归的应用场景</h3><pre><code># 1. 遍历目录树\nimport os\ndef list_files(path):\n    \"\"\"递归列出目录下所有文件\"\"\"\n    for item in os.listdir(path):\n        full_path = os.path.join(path, item)\n        if os.path.isdir(full_path):\n            list_files(full_path)  # 递归子目录\n        else:\n            print(full_path)\n\n# 2. 汉诺塔（经典递归问题）\ndef hanoi(n, source, target, auxiliary):\n    \"\"\"将 n 个盘子从 source 移动到 target\"\"\"\n    if n == 1:\n        print(f\"移动盘子 1: {source} → {target}\")\n        return\n    hanoi(n-1, source, auxiliary, target)\n    print(f\"移动盘子 {n}: {source} → {target}\")\n    hanoi(n-1, auxiliary, target, source)\n\nhanoi(3, 'A', 'C', 'B')\n# 递归是解决这种问题的天然思路——\n# 关注如何分解问题，而非每一步的具体操作</code></pre>"
       },
       {
         "title": "装饰器 —— 函数的「外套」",
@@ -401,15 +401,54 @@
     ],
     "exercises": [
       {
-        "question": "以下代码的输出是什么？\ndef f(a, b=[]):\n    b.append(a)\n    return b\nprint(f(1)); print(f(2))",
+        "type": "code",
+        "question": "请创建并调用任意一个简单的函数，展示你对函数定义和调用的理解。\n\n要求：\n1. 使用 def 关键字定义一个函数\n2. 函数至少有一个参数\n3. 函数有 return 返回值\n4. 调用函数并打印结果\n\n例如：实现一个计算两个数相加的函数，或者打招呼的函数，或者判断奇偶的函数。",
+        "code_prompt": "实现任意一个简单函数的创建和调用。你可以：\n• 写一个 add(a, b) 函数计算两数之和\n• 写一个 greet(name) 函数打印问候语\n• 写一个 is_even(n) 函数判断奇偶\n• 发挥创意写任何你喜欢的函数！",
+        "explanation": "函数是 Python 中最基础也是最重要的概念。使用 def 关键字定义，可以接收参数并返回值。你已经成功完成了第一个函数的创建和调用！"
+      },
+      {
+        "question": "定义 def greet(name, greeting=\"你好\"):，调用 greet(\"小明\") 时 greeting 参数的值是什么？",
         "options": [
-          "A. [1] 和 [2]",
-          "B. [1] 和 [1, 2]",
-          "C. 报错",
-          "D. [1] 和 [1]"
+          "A. 报错，缺少参数",
+          "B. \"你好\"（默认值）",
+          "C. \"小明\"",
+          "D. None"
         ],
         "answer": 1,
-        "explanation": "经典陷阱：<strong>默认参数只在函数定义时计算一次</strong>。b=[] 在多次调用间共享同一个列表。修复：用 <code>b=None</code> 然后在函数内判断 <code>if b is None: b = []</code>。"
+        "explanation": "greeting 有默认值 \"你好\"，调用时没有传入第二个参数，所以使用默认值。这是<strong>默认参数</strong>的典型用法——让函数在大多数情况下更简洁，同时在需要时提供灵活性。"
+      },
+      {
+        "question": "def show(*args, **kwargs):\n    print(args, kwargs)\n\nshow(1, 2, x=3, y=4) 的输出是什么？",
+        "options": [
+          "A. (1, 2) {'x': 3, 'y': 4}",
+          "B. [1, 2] {'x': 3, 'y': 4}",
+          "C. 1 2 x=3 y=4",
+          "D. (1, 2, x=3, y=4)"
+        ],
+        "answer": 0,
+        "explanation": "*args 将多余的位置参数打包成<strong>元组</strong> (1, 2)，**kwargs 将多余的关键字参数打包成<strong>字典</strong> {'x':3, 'y':4}。这是 Python 可变参数的经典用法。"
+      },
+      {
+        "question": "x = \"全局\"\ndef outer():\n    x = \"外层\"\n    def inner():\n        x = \"内层\"\n        print(x)\n    inner()\nouter()\n\n以上代码输出什么？",
+        "options": [
+          "A. 全局",
+          "B. 外层",
+          "C. 内层",
+          "D. 报错"
+        ],
+        "answer": 2,
+        "explanation": "Python 按 LEGB 规则查找变量——先在 Local（inner 函数内）找 x，找到即用，不会继续向外查找。所以输出的是 inner 中定义的 x = \"内层\"。"
+      },
+      {
+        "question": "以下哪个是正确的高阶函数用法？",
+        "options": [
+          "A. map(lambda x: x*2, [1,2,3])",
+          "B. foreach(x => x*2, [1,2,3])",
+          "C. [1,2,3].map(lambda x: x*2)",
+          "D. map([1,2,3], lambda x: x*2)"
+        ],
+        "answer": 0,
+        "explanation": "Python 的 <code>map</code> 函数第一个参数是函数，第二个是可迭代对象。选项 A 正确。选项 C 是 JavaScript 的写法，Python 列表没有 .map() 方法。"
       },
       {
         "question": "@timer 装饰器的本质是什么？\ndef timer(func):\n    def wrapper(*args, **kwargs):\n        result = func(*args, **kwargs)\n        return result\n    return wrapper\n@timer\ndef foo(): pass",

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#05050a;font-family:'Georgia','Songti SC','Noto Serif SC',serif;user-select:none}
+canvas#bg-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1}
+canvas#portrait-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+
+/* Stages */
+.stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;opacity:0;transition:opacity 1.2s ease,transform 1.2s ease;pointer-events:none}
+.stage.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.stage.exit{opacity:0;transform:translateY(-20px)}
+
+/* Stage 1 — Zen of Python */
+#stage-zen{flex-direction:column;padding:5vw}
+#stage-zen .zen-title{font-size:clamp(14px,2vw,24px);color:rgba(0,212,255,0.6);font-family:var(--font-mono,'Courier New',monospace);letter-spacing:6px;margin-bottom:clamp(16px,3vh,36px);text-transform:uppercase}
+#stage-zen .zen-lines{max-width:800px;width:100%}
+.zen-line{font-size:clamp(13px,1.6vw,20px);color:rgba(255,255,255,0.12);font-family:var(--font-mono,'Courier New',monospace);line-height:1.6;padding:2px 0;transition:none;min-height:1.6em;white-space:nowrap;overflow:hidden}
+.zen-line.streaming{color:rgba(0,212,255,0.95);text-shadow:0 0 20px rgba(0,212,255,0.3),0 0 60px rgba(0,212,255,0.1)}
+.zen-line.done{color:rgba(255,255,255,0.7);text-shadow:0 0 8px rgba(255,255,255,0.05);transition:color 0.5s ease,text-shadow 0.5s ease}
+.zen-line.done::before{content:'▸ ';color:rgba(0,212,255,0.4)}
+.zen-line .cursor{display:inline-block;width:2px;height:1.1em;background:var(--cyan,#00d4ff);margin-left:2px;vertical-align:text-bottom;animation:cursorBlink 0.8s infinite}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+
+.zen-line .char{opacity:0}
+.zen-line .char.visible{opacity:1}
+
+/* Stage 2 — Guido */
+#stage-guido{flex-direction:column;gap:clamp(12px,2vh,24px)}
+#stage-guido .guido-frame{position:relative;width:clamp(160px,22vw,280px);height:clamp(200px,28vw,350px)}
+#stage-guido .guido-label{font-size:clamp(13px,1.4vw,18px);color:rgba(255,255,255,0.5);letter-spacing:4px;font-family:var(--font-mono,'Courier New',monospace);opacity:0;transition:opacity 0.8s ease}
+#stage-guido.active .guido-label{opacity:1;transition-delay:0.6s}
+#stage-guido .guido-title{font-size:clamp(20px,2.8vw,36px);color:rgba(163,113,247,0.8);font-weight:700;letter-spacing:2px;opacity:0;transition:opacity 0.8s ease}
+#stage-guido.active .guido-title{opacity:1;transition-delay:0.8s}
+#stage-guido .guido-sub{font-size:clamp(11px,1vw,14px);color:rgba(255,255,255,0.25);font-family:var(--font-mono,'Courier New',monospace);letter-spacing:2px;opacity:0;transition:opacity 0.8s ease}
+#stage-guido.active .guido-sub{opacity:1;transition-delay:1.0s}
+
+/* Stage 3 — Quote */
+#stage-quote{flex-direction:column;gap:clamp(8px,1vh,16px);padding:5vw}
+#stage-quote .quote-text{font-size:clamp(20px,3.2vw,44px);color:rgba(255,255,255,0.85);font-weight:700;letter-spacing:4px;text-align:center;font-family:'Georgia','Songti SC','Noto Serif SC',serif;line-height:1.5;text-shadow:0 0 40px rgba(163,113,247,0.15)}
+#stage-quote .quote-text .char{opacity:0;transition:opacity 0.08s;display:inline-block}
+#stage-quote .quote-text .char.visible{opacity:1}
+#stage-quote .quote-text .char.highlight{color:#ffd700;text-shadow:0 0 30px rgba(255,215,0,0.3)}
+#stage-quote .quote-sub{font-size:clamp(12px,1.2vw,16px);color:rgba(255,255,255,0.3);font-family:var(--font-mono,'Courier New',monospace);letter-spacing:6px;opacity:0;transition:opacity 1s ease;margin-top:8px}
+#stage-quote.active .quote-sub{opacity:1;transition-delay:2.5s}
+#stage-quote .quote-en{font-size:clamp(12px,1.1vw,15px);color:rgba(255,255,255,0.15);font-style:italic;font-family:Georgia,serif;letter-spacing:1px;opacity:0;transition:opacity 1s ease;margin-top:4px}
+#stage-quote.active .quote-en{opacity:1;transition-delay:3.0s}
+
+/* Stage 4 — Final flash */
+#stage-final{z-index:3;background:rgba(5,5,10,0.6);backdrop-filter:blur(10px)}
+#stage-final .final-text{font-size:clamp(16px,1.8vw,24px);color:rgba(255,255,255,0.4);font-family:var(--font-mono,'Courier New',monospace);letter-spacing:8px;text-transform:uppercase}
+
+/* Decorative elements */
+#stage-zen .glow-orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+#stage-zen .glow-orb.g1{width:clamp(200px,30vw,400px);height:clamp(200px,30vw,400px);background:rgba(0,212,255,0.04);top:-10%;left:-5%}
+#stage-zen .glow-orb.g2{width:clamp(250px,35vw,450px);height:clamp(250px,35vw,450px);background:rgba(163,113,247,0.04);bottom:-10%;right:-5%}
+
+/* Particle overlay gradient */
+#stage-zen::after,
+#stage-guido::after,
+#stage-quote::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(5,5,10,0.4) 100%);pointer-events:none;z-index:-1}
+
+/* Loading indicator */
+.loading-bar{position:fixed;bottom:0;left:0;height:2px;z-index:10;background:linear-gradient(90deg,var(--cyan,#00d4ff),var(--purple,#a371f7));transition:width 0.3s linear;width:0%}
+
+@media (max-width:600px){
+  .zen-line{font-size:11px !important;white-space:normal !important}
+  #stage-quote .quote-text{font-size:18px !important;letter-spacing:2px !important}
+  .guido-frame{width:140px !important;height:175px !important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="loading-bar" id="loading-bar"></div>
+
+<!-- Stage 1: Zen of Python -->
+<div class="stage" id="stage-zen">
+  <div class="glow-orb g1"></div>
+  <div class="glow-orb g2"></div>
+  <div class="zen-title">✦ The Zen of Python ✦</div>
+  <div class="zen-lines" id="zen-lines"></div>
+</div>
+
+<!-- Stage 2: Guido van Rossum -->
+<div class="stage" id="stage-guido">
+  <div class="guido-frame">
+    <canvas id="portrait-canvas"></canvas>
+  </div>
+  <div class="guido-title">Guido van Rossum</div>
+  <div class="guido-label">Python 之父 · BDFL</div>
+  <div class="guido-sub">「 编程语言的仁慈独裁者 」</div>
+</div>
+
+<!-- Stage 3: Master quote -->
+<div class="stage" id="stage-quote">
+  <div class="quote-text" id="quote-text"></div>
+  <div class="quote-sub">— 致每一位学习者</div>
+  <div class="quote-en">"A true master is eternally a student."</div>
+</div>
+
+<!-- Stage 4: Final transition -->
+<div class="stage" id="stage-final">
+  <div class="final-text">✦ Enter PyMaster ✦</div>
+</div>
+
+<script>
+// ============================================================
+// Particle Network Background
+// ============================================================
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 180;
+const CONNECT_DIST = 130;
+const MOUSE_RADIUS = 80;
+let mouseX = -9999, mouseY = -9999;
+
+function resizeBg() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeBg);
+resizeBg();
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * bgCanvas.width;
+    this.y = Math.random() * bgCanvas.height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.size = Math.random() * 2.5 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.baseAlpha = this.alpha;
+    this.hue = Math.random() > 0.5 ? 190 : 260; // cyan or purple
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < -10 || this.x > bgCanvas.width + 10) this.reset();
+    if (this.y < -10 || this.y > bgCanvas.height + 10) this.reset();
+    // Mouse interaction
+    const dx = this.x - mouseX;
+    const dy = this.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < MOUSE_RADIUS) {
+      const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+      this.vx += (dx / dist) * force * 0.1;
+      this.vy += (dy / dist) * force * 0.1;
+      this.alpha = Math.min(1, this.baseAlpha + force * 0.5);
+    } else {
+      this.alpha = this.baseAlpha;
+    }
+    // Damping
+    this.vx *= 0.99;
+    this.vy *= 0.99;
+  }
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue},80%,60%,${this.alpha})`;
+    ctx.fill();
+    // Glow
+    if (this.size > 1.5) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${this.hue},80%,60%,${this.alpha * 0.1})`;
+      ctx.fill();
+    }
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+// Star-like background dots (tiny, no motion)
+const stars = [];
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * bgCanvas.width,
+    y: Math.random() * bgCanvas.height,
+    size: Math.random() * 1.2 + 0.3,
+    alpha: Math.random() * 0.3 + 0.05
+  });
+}
+
+function drawConnections(ctx) {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < CONNECT_DIST) {
+        const alpha = (1 - dist / CONNECT_DIST) * 0.25;
+        const hue = (particles[i].hue + particles[j].hue) / 2;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `hsla(${hue},60%,60%,${alpha})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateBg() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  // Stars
+  stars.forEach(s => {
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+    bgCtx.fill();
+  });
+  particles.forEach(p => { p.update(); p.draw(bgCtx); });
+  drawConnections(bgCtx);
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+// Mouse tracking for particle interaction
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+document.addEventListener('touchmove', e => {
+  if (e.touches[0]) { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }
+}, { passive: true });
+
+// ============================================================
+// Loading bar
+// ============================================================
+function updateLoading(pct) {
+  document.getElementById('loading-bar').style.width = Math.min(100, pct) + '%';
+}
+
+// ============================================================
+// Zen of Python lines
+// ============================================================
+const zenLines = [
+  'Beautiful is better than ugly.',
+  'Explicit is better than implicit.',
+  'Simple is better than complex.',
+  'Flat is better than nested.',
+  'Readability counts.',
+  'Errors should never pass silently.',
+  'In the face of ambiguity, refuse the temptation to guess.',
+  'Now is better than never.',
+];
+
+// ============================================================
+// Guido Portrait Renderer
+// ============================================================
+function drawGuidoPortrait(canvas) {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const w = rect.width, h = rect.height;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cx = w / 2;
+  const s = Math.min(w, h) / 220; // scale factor
+
+  // Utility
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  // Clear
+  ctx.clearRect(0, 0, w, h);
+
+  // Background aura
+  const grad = ctx.createRadialGradient(cx, h * 0.45, 0, cx, h * 0.45, w * 0.5);
+  grad.addColorStop(0, 'rgba(163, 113, 247, 0.06)');
+  grad.addColorStop(0.5, 'rgba(0, 212, 255, 0.03)');
+  grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.save();
+  ctx.translate(cx, h * 0.48);
+  ctx.scale(s, s);
+
+  // --- Body / shoulders ---
+  ctx.fillStyle = 'rgba(60, 60, 80, 0.3)';
+  roundRect(-65, 45, 130, 80, 20);
+  ctx.fill();
+  // Collar
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(-20, 40);
+  ctx.lineTo(0, 55);
+  ctx.lineTo(20, 40);
+  ctx.stroke();
+
+  // Shirt line
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.beginPath();
+  ctx.moveTo(0, 55);
+  ctx.lineTo(0, 110);
+  ctx.stroke();
+
+  // --- Head (slightly oval) ---
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(0, -15, 46, 54, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(220, 200, 180, 0.12)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // --- Balding top (lighter skin tone on top) ---
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(0, -50, 38, 22, 0, Math.PI, 0);
+  ctx.fillStyle = 'rgba(230, 210, 190, 0.06)';
+  ctx.fill();
+  ctx.restore();
+
+  // Hair on sides
+  ctx.save();
+  ctx.fillStyle = 'rgba(180, 170, 160, 0.15)';
+  // Left side hair
+  ctx.beginPath();
+  ctx.ellipse(-38, -15, 10, 32, -0.2, 0, Math.PI * 2);
+  ctx.fill();
+  // Right side hair
+  ctx.beginPath();
+  ctx.ellipse(38, -15, 10, 32, 0.2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // --- Eyebrows ---
+  ctx.strokeStyle = 'rgba(180, 170, 160, 0.2)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(-22, -32);
+  ctx.quadraticCurveTo(-14, -36, -6, -32);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(22, -32);
+  ctx.quadraticCurveTo(14, -36, 6, -32);
+  ctx.stroke();
+
+  // --- Eyes ---
+  // Left eye
+  ctx.fillStyle = 'rgba(100, 100, 130, 0.25)';
+  ctx.beginPath();
+  ctx.ellipse(-14, -22, 5, 5.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // Right eye
+  ctx.beginPath();
+  ctx.ellipse(14, -22, 5, 5.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // Pupils
+  ctx.fillStyle = 'rgba(163, 113, 247, 0.2)';
+  ctx.beginPath();
+  ctx.arc(-14, -22, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(14, -22, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // --- Glasses (signature round wireframes) ---
+  ctx.strokeStyle = 'rgba(163, 113, 247, 0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.ellipse(-14, -22, 16, 14, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.ellipse(14, -22, 16, 14, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  // Bridge
+  ctx.beginPath();
+  ctx.moveTo(2, -22);
+  ctx.lineTo(-2, -22);
+  ctx.stroke();
+  // Glasses glow
+  ctx.strokeStyle = 'rgba(163, 113, 247, 0.08)';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.ellipse(-14, -22, 16, 14, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.ellipse(14, -22, 16, 14, 0, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // --- Nose ---
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, -12);
+  ctx.quadraticCurveTo(6, -4, 2, 4);
+  ctx.stroke();
+
+  // --- Smile ---
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.arc(0, 10, 16, 0.15, Math.PI - 0.15);
+  ctx.stroke();
+
+  // --- Beard / Goatee ---
+  ctx.fillStyle = 'rgba(180, 170, 160, 0.1)';
+  ctx.beginPath();
+  ctx.moveTo(-20, 20);
+  ctx.quadraticCurveTo(-22, 32, -8, 40);
+  ctx.quadraticCurveTo(0, 42, 8, 40);
+  ctx.quadraticCurveTo(22, 32, 20, 20);
+  ctx.quadraticCurveTo(0, 26, -20, 20);
+  ctx.fill();
+
+  // --- Python logo accent (small double snakes) ---
+  const pySize = 16;
+  const pyY = 70;
+  // Blue snake
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0, 212, 255, 0.2)';
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  // Simplified snake body
+  ctx.beginPath();
+  ctx.moveTo(-pySize - 2, pyY);
+  ctx.quadraticCurveTo(-pySize * 0.3, pyY - pySize * 0.6, pySize * 0.3, pyY - pySize * 0.3);
+  ctx.quadraticCurveTo(pySize * 0.7, pyY - pySize * 0.1, pySize, pyY + 2);
+  ctx.stroke();
+  ctx.restore();
+  // Yellow snake
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255, 215, 0, 0.2)';
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(pySize + 2, pyY + 2);
+  ctx.quadraticCurveTo(pySize * 0.3, pyY + pySize * 0.6, -pySize * 0.3, pyY + pySize * 0.3);
+  ctx.quadraticCurveTo(-pySize * 0.7, pyY + pySize * 0.1, -pySize, pyY - 2);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.restore();
+}
+
+// ============================================================
+// Stage Manager
+// ============================================================
+const stages = {
+  zen: document.getElementById('stage-zen'),
+  guido: document.getElementById('stage-guido'),
+  quote: document.getElementById('stage-quote'),
+  final: document.getElementById('stage-final'),
+};
+
+let currentStage = null;
+
+function showStage(name, done) {
+  // Hide all
+  Object.values(stages).forEach(s => {
+    s.classList.remove('active');
+    s.classList.add('exit');
+  });
+  const st = stages[name];
+  if (st) {
+    st.classList.remove('exit');
+    // Force reflow
+    void st.offsetWidth;
+    st.classList.add('active');
+  }
+  if (done) setTimeout(done, 400);
+}
+
+function hideStage(name) {
+  const st = stages[name];
+  if (st) {
+    st.classList.remove('active');
+    st.classList.add('exit');
+  }
+}
+
+// ============================================================
+// Main sequence
+// ============================================================
+let totalProgress = 0;
+
+function startSplash() {
+  // Phase 1: Zen of Python
+  showStage('zen', () => {
+    const container = document.getElementById('zen-lines');
+    container.innerHTML = '';
+    const titleEl = document.querySelector('.zen-title');
+    if (titleEl) titleEl.style.opacity = '1';
+
+    let lineIdx = 0;
+    const totalChars = zenLines.reduce((s, l) => s + l.length, 0);
+    let processedChars = 0;
+
+    function streamNextLine() {
+      if (lineIdx >= zenLines.length) {
+        // All lines done → move to Guido
+        setTimeout(() => startGuidoStage(), 800);
+        return;
+      }
+
+      const lineDiv = document.createElement('div');
+      lineDiv.className = 'zen-line';
+      container.appendChild(lineDiv);
+
+      const text = zenLines[lineIdx];
+      let ci = 0;
+
+      // Emit first char immediately, then stream the rest
+      function emitChar() {
+        if (ci >= text.length) {
+          lineDiv.classList.remove('streaming');
+          lineDiv.classList.add('done');
+          lineIdx++;
+          setTimeout(streamNextLine, 300);
+          return;
+        }
+        if (ci === 0) {
+          lineDiv.classList.add('streaming');
+          lineDiv.scrollIntoView({ block: 'end', behavior: 'smooth' });
+        }
+        const ch = document.createElement('span');
+        ch.className = 'char visible';
+        ch.textContent = text[ci];
+        lineDiv.appendChild(ch);
+        ci++;
+        processedChars++;
+        totalProgress = 15 + (processedChars / totalChars) * 35;
+        updateLoading(totalProgress);
+        const speed = ci === 1 ? 25 + Math.random() * 20 : 20 + Math.random() * 18;
+        setTimeout(emitChar, speed);
+      }
+
+      emitChar(); // first char synchronously
+    }
+
+    streamNextLine();
+  });
+}
+
+function startGuidoStage() {
+  hideStage('zen');
+
+  // Trigger portrait render now
+  const pc = document.getElementById('portrait-canvas');
+
+  // Need to ensure the parent is visible for dimensions
+  // Actually the stage is not visible yet but the portrait-canvas parent has position:absolute with full size from CSS
+  // Let's just use a fixed size
+  drawGuidoPortrait(pc);
+
+  showStage('guido', () => {
+    // Phase 3: After portrait shows, display quote
+    setTimeout(() => {
+      hideStage('guido');
+      setTimeout(() => startQuoteStage(), 400);
+    }, 2500);
+  });
+}
+
+function startQuoteStage() {
+  showStage('quote', () => {
+    const container = document.getElementById('quote-text');
+    container.innerHTML = '';
+
+    const quote = '真正的大师永远怀着一颗学徒的心';
+    const chars = quote.split('');
+    let ci = 0;
+    const total = chars.length;
+
+    // Create spans
+    chars.forEach((ch) => {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch;
+      container.appendChild(span);
+    });
+
+    const spans = container.querySelectorAll('.char');
+
+    function typeNext() {
+      if (ci < total) {
+        spans[ci].classList.add('visible');
+        ci++;
+        totalProgress = 55 + (ci / total) * 30;
+        updateLoading(totalProgress);
+        const delay = ci === 0 ? 50 : (40 + Math.random() * 30);
+        setTimeout(typeNext, delay);
+      } else {
+        // Done typing → hold 2s → final
+        updateLoading(90);
+        setTimeout(() => {
+          updateLoading(100);
+          setTimeout(() => {
+            hideStage('quote');
+            setTimeout(() => startFinalStage(), 500);
+          }, 2000);
+        }, 500);
+      }
+    }
+
+    // Small pause before typing starts
+    setTimeout(typeNext, 600);
+  });
+}
+
+function startFinalStage() {
+  showStage('final', () => {
+    // Wait 1s, then redirect
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 1200);
+  });
+}
+
+// ============================================================
+// Handle window resize for portrait
+// ============================================================
+let portraitTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(portraitTimer);
+  portraitTimer = setTimeout(() => {
+    const pc = document.getElementById('portrait-canvas');
+    if (pc && pc.parentElement && stages.guido.classList.contains('active')) {
+      drawGuidoPortrait(pc);
+    }
+  }, 200);
+});
+
+// ============================================================
+// Start!
+// ============================================================
+window.addEventListener('load', () => {
+  setTimeout(startSplash, 500);
+});
+</script>
+<!-- Ambient Music -->
+<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
+<script>
+document.addEventListener('click', function _mu() {
+  AmbientMusic.play();
+  document.removeEventListener('click', _mu);
+  document.removeEventListener('touchstart', _mu);
+});
+document.addEventListener('touchstart', function _mu2() {
+  AmbientMusic.play();
+  document.removeEventListener('click', _mu2);
+  document.removeEventListener('touchstart', _mu2);
+});
+</script>
+
+</body>
+</html>

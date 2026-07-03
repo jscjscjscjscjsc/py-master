@@ -1,21 +1,27 @@
-# User data
-data/users.json
-
-# Python
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+user_notes/
+fix_encoding.py
+*.exe
+build/
+dist/
+*.spec
+.DS_Store
+*.egg-info/
 
-# Audio cache
+# Runtime data (don't commit user data)
+data/users.json
+data/daily_usage.json
+data/whitelist.json
+data/comic_memory.json
 data/audio_cache/
 
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Flask
-*.pyc
+# Audio files
+static/audio/*.mp3
+static/audio/*.mp4
+static/audio/*.xml
