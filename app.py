@@ -27,7 +27,19 @@ from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', secrets.token_hex(32))
+# 持久化 secret key：存到 data 目录，重启后 session 不失效（否则每次重启所有用户被登出，
+# 所有需登录的 API 都会 302 重定向，前端表现为"接口报错/转圈"）
+SECRET_KEY_FILE = os.path.join(WRITE_ROOT, 'data', '.secret_key')
+if os.path.exists(SECRET_KEY_FILE):
+    with open(SECRET_KEY_FILE, 'r', encoding='utf-8') as _f:
+        _persistent_secret = _f.read().strip()
+else:
+    _persistent_secret = None
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') or _persistent_secret or secrets.token_hex(32)
+if not _persistent_secret and not os.environ.get('FLASK_SECRET_KEY'):
+    os.makedirs(os.path.dirname(SECRET_KEY_FILE), exist_ok=True)
+    with open(SECRET_KEY_FILE, 'w', encoding='utf-8') as _f:
+        _f.write(app.secret_key)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.template_folder = os.path.join(BUNDLE_DIR, 'templates')
 app.static_folder = os.path.join(BUNDLE_DIR, 'static')
@@ -192,9 +204,8 @@ def increment_daily_usage(username):
 
 @app.route('/')
 def index():
-    if 'username' in session:
-        return redirect(url_for('dashboard'))
-    return render_template('splash.html')
+    # 未登录也直接进入仪表盘（游客模式），保证GitHub页面可完整访问
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/login')
@@ -267,15 +278,23 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('login_page'))
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/dashboard')
-@login_required
 def dashboard():
-    users = load_json(USERS_FILE)
-    username = session['username']
-    progress = users.get(username, {}).get('progress', {})
+    # 游客模式：未登录也可完整访问所有章节页面
+    is_guest = 'username' not in session
+    if is_guest:
+        username = 'guest'
+        progress = {}
+        mode = 'all_unlocked'  # 游客默认全部解锁
+    else:
+        users = load_json(USERS_FILE)
+        username = session.get('username', 'guest')
+        progress = users.get(username, {}).get('progress', {})
+        mode = users.get(username, {}).get('mode', 'explore')
+
     courses = load_json(COURSES_FILE)
 
     chapters = []
@@ -296,13 +315,15 @@ def dashboard():
             'exercise_count': len(course.get('exercises', []))
         })
 
-    user = users.get(username, {})
-    completed_kps = user.get('completed_kps', [])
-    mode = user.get('mode', 'explore')
+    if is_guest:
+        completed_kps = []
+    else:
+        users = load_json(USERS_FILE)
+        user = users.get(username, {})
+        completed_kps = user.get('completed_kps', [])
 
     # Compute chapter unlock status
     if mode == 'all_unlocked':
-        # In all_unlocked mode, every chapter is unlocked
         chapter_unlocked = {ch['id']: True for ch in chapters}
     else:
         unlock = get_unlock_status(courses, completed_kps, mode)
@@ -318,19 +339,26 @@ def dashboard():
 
 
 @app.route('/chapter/<int:chapter_id>')
-@login_required
 def chapter(chapter_id):
+    # 游客模式：未登录也可完整访问章节内容
+    is_guest = 'username' not in session
     courses = load_json(COURSES_FILE)
     course = next((c for c in courses if c['id'] == chapter_id), None)
     if not course:
         return redirect(url_for('dashboard'))
 
-    users = load_json(USERS_FILE)
-    username = session['username']
-    user = users.get(username, {})
-    progress = user.get('progress', {}).get(str(chapter_id), {})
-    completed_kps = user.get('completed_kps', [])
-    mode = user.get('mode', 'explore')
+    if is_guest:
+        username = 'guest'
+        progress = {}
+        completed_kps = []
+        mode = 'all_unlocked'  # 游客全部解锁
+    else:
+        users = load_json(USERS_FILE)
+        username = session.get('username', 'guest')
+        user = users.get(username, {})
+        progress = user.get('progress', {}).get(str(chapter_id), {})
+        completed_kps = user.get('completed_kps', [])
+        mode = user.get('mode', 'explore')
 
     # Distribute chapter-level exercises across KPs
     chapter_exercises = course.get('exercises', [])
@@ -420,9 +448,14 @@ def chapter(chapter_id):
     chapter_completed = all(k in completed_kps for k in all_kp_keys) if completed_kps else False
     # KP titles for JJ guide
     chapter_kp_titles = [kp['title'] for kp in kps]
-    # User's wrong answers for this chapter
-    user_wrong = user.get('wrong_answers', [])
-    chapter_wrong = [w for w in user_wrong if str(w.get('chapter_id', '')) == str(chapter_id)]
+    # User's wrong answers for this chapter (游客无错题记录)
+    if is_guest:
+        chapter_wrong = []
+    else:
+        users = load_json(USERS_FILE)
+        user = users.get(username, {})
+        user_wrong = user.get('wrong_answers', [])
+        chapter_wrong = [w for w in user_wrong if str(w.get('chapter_id', '')) == str(chapter_id)]
 
     return render_template('chapter.html', chapter=course, progress=progress,
                           completed_kps=completed_kps, kp_exercises=kp_exercises,
@@ -433,7 +466,6 @@ def chapter(chapter_id):
 
 
 @app.route('/canvas')
-@login_required
 def canvas():
     return render_template('canvas.html')
 
@@ -441,7 +473,6 @@ def canvas():
 # ── Python Code Playground ─────────────────────────────────
 
 @app.route('/api/lint-code', methods=['POST'])
-@login_required
 def lint_code():
     """Check Python code for syntax errors using ast.parse"""
     data = request.get_json()
@@ -467,13 +498,11 @@ def lint_code():
 
 
 @app.route('/playground')
-@login_required
 def playground():
     return render_template('playground.html')
 
 
 @app.route('/api/run-code', methods=['POST'])
-@login_required
 def run_code():
     data = request.get_json()
     code = data.get('code', '').strip()
@@ -569,7 +598,6 @@ CODE_SCORE_PROMPT = """你是一位非常耐心、鼓励性的 Python 入门老�
 
 
 @app.route('/api/score-code', methods=['POST'])
-@login_required
 def score_code():
     data = request.get_json()
     kp_title = data.get('kp_title', '')
@@ -577,15 +605,16 @@ def score_code():
     output = data.get('output', '')
     prompt = data.get('prompt', '')
 
-    # Daily limit check
-    username = session['username']
-    allowed, used, limit = check_daily_limit(username)
-    if not allowed:
-        return jsonify({
-            'success': True, 'score': 60,
-            'feedback': '今日 AI 评分次数已用完，代码已标记通过',
-            'strengths': '', 'weaknesses': ''
-        })
+    # Daily limit check (游客跳过限制)
+    username = session.get('username', 'guest')
+    if username != 'guest':
+        allowed, used, limit = check_daily_limit(username)
+        if not allowed:
+            return jsonify({
+                'success': True, 'score': 60,
+                'feedback': '今日 AI 评分次数已用完，代码已标记通过',
+                'strengths': '', 'weaknesses': ''
+            })
 
     user_message = f"""【知识点】{kp_title}
 【练习要求】{prompt}
@@ -601,8 +630,9 @@ def score_code():
     if error:
         return jsonify({'success': True, 'score': 70, 'feedback': '代码运行成功（AI评分暂不可用）', 'strengths': '', 'weaknesses': ''})
 
-    # Track usage on successful API call
-    increment_daily_usage(username)
+    # Track usage on successful API call (游客不记录)
+    if username != 'guest':
+        increment_daily_usage(username)
 
     try:
         import re
@@ -643,7 +673,6 @@ JJ_SYSTEM_PROMPT = """你是 JJ老师，一位幽默风趣、耐心细致的 Pyt
 
 
 @app.route('/api/ask-jj', methods=['POST'])
-@login_required
 def ask_jj():
     data = request.get_json()
     question = data.get('question', '').strip()
@@ -652,13 +681,14 @@ def ask_jj():
     if not question:
         return jsonify({'success': False, 'answer': '', 'error': '问题不能为空'})
 
-    # Daily limit check
-    username = session['username']
-    allowed, used, limit = check_daily_limit(username)
-    if not allowed:
-        return jsonify({
-            'success': False, 'answer': '', 'error': f'今日 AI 问答次数已用完（{used}/{limit}），请联系管理员或明天再试'
-        })
+    # Daily limit check (游客跳过限制)
+    username = session.get('username', 'guest')
+    if username != 'guest':
+        allowed, used, limit = check_daily_limit(username)
+        if not allowed:
+            return jsonify({
+                'success': False, 'answer': '', 'error': f'今日 AI 问答次数已用完（{used}/{limit}），请联系管理员或明天再试'
+            })
 
     # Build messages
     messages = [{"role": "system", "content": JJ_SYSTEM_PROMPT}]
@@ -691,11 +721,12 @@ def ask_jj():
             result = json.loads(resp.read().decode("utf-8"))
 
         answer = result["choices"][0]["message"]["content"]
-        increment_daily_usage(username)
+        if username != 'guest':
+            increment_daily_usage(username)
 
-        # Store JJ chat history per chapter
+        # Store JJ chat history per chapter (游客不保存)
         chapter_id = str(data.get('chapter_id', ''))
-        if chapter_id:
+        if chapter_id and username != 'guest':
             users = load_json(USERS_FILE)
             if username in users:
                 if 'jj_history' not in users[username]:
@@ -728,8 +759,12 @@ def ask_jj():
         })
 
 
-def _call_deepseek(system_prompt, user_message, max_tokens=800):
-    """Helper to call DeepSeek API with a given prompt."""
+def _call_deepseek(system_prompt, user_message, max_tokens=800, retries=2):
+    """Helper to call DeepSeek API with a given prompt.
+
+    Retries transient failures (5xx / 429 / network) with exponential backoff.
+    Returns (answer, error); answer is None when error is set.
+    """
     payload = json.dumps({
         "model": "deepseek-chat",
         "messages": [
@@ -746,18 +781,31 @@ def _call_deepseek(system_prompt, user_message, max_tokens=800):
         "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
     }
 
-    try:
-        req = urllib.request.Request(DEEPSEEK_BASE_URL, data=payload, headers=headers, method="POST")
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
-        return result["choices"][0]["message"]["content"], None
-    except urllib.error.HTTPError as e:
-        err_body = e.read().decode("utf-8", errors="replace")
-        print(f"[DeepSeek] API error: {e.code} - {err_body[:300]}")
-        return None, f"API 调用失败 (HTTP {e.code})"
-    except Exception as e:
-        print(f"[DeepSeek] Error: {e}")
-        return None, f"网络错误: {str(e)[:100]}"
+    for attempt in range(retries + 1):
+        try:
+            req = urllib.request.Request(DEEPSEEK_BASE_URL, data=payload, headers=headers, method="POST")
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+            return result["choices"][0]["message"]["content"], None
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="replace")
+            print(f"[DeepSeek] API error: {e.code} - {err_body[:300]}")
+            if e.code == 401:
+                return None, "AI 服务密钥无效或已过期，请联系管理员"
+            if e.code == 402:
+                return None, "AI 服务账户余额不足，请充值后重试"
+            if e.code in (429, 500, 502, 503, 504) and attempt < retries:
+                print(f"[DeepSeek] 临时失败 (HTTP {e.code})，{1.5 ** attempt}s 后重试")
+                time.sleep(1.5 ** attempt)
+                continue
+            return None, f"AI 服务暂时不可用 (HTTP {e.code})，请稍后重试"
+        except Exception as e:
+            print(f"[DeepSeek] Error: {e}")
+            if attempt < retries:
+                print(f"[DeepSeek] 网络错误，{1.5 ** attempt}s 后重试")
+                time.sleep(1.5 ** attempt)
+                continue
+            return None, f"网络连接失败，请检查网络后重试 ({str(e)[:60]})"
 
 
 # ── JJ老师 章节指引 ────────────────────────────────────
@@ -776,7 +824,6 @@ CHAPTER_GUIDE_PROMPT = """你是 JJ老师，一位幽默风趣、耐心细致的
 
 
 @app.route('/api/jj-chapter-guide', methods=['POST'])
-@login_required
 def jj_chapter_guide():
     data = request.get_json()
     chapter_id = data.get('chapter_id', '')
@@ -812,7 +859,6 @@ CHAPTER_COMPLETE_PROMPT = """你是 JJ老师，一位幽默风趣、耐心细致
 
 
 @app.route('/api/jj-chapter-complete', methods=['POST'])
-@login_required
 def jj_chapter_complete():
     data = request.get_json()
     chapter_id = data.get('chapter_id', '')
@@ -835,6 +881,223 @@ def jj_chapter_complete():
     if error:
         return jsonify({'success': False, 'answer': '', 'error': error})
     return jsonify({'success': True, 'answer': answer})
+
+
+# ── 章节摘要 ────────────────────────────────────────────
+
+@app.route('/api/chapter-summary/<int:chapter_id>')
+def chapter_summary(chapter_id):
+    """返回章节标题和知识点列表（供 CG 页面 / 面试页使用）"""
+    courses = load_json(COURSES_FILE)
+    course = next((c for c in courses if c['id'] == chapter_id), None)
+    if not course:
+        return jsonify({'success': False, 'message': '章节不存在'})
+    return jsonify({
+        'success': True,
+        'chapter_id': chapter_id,
+        'title': course['title'],
+        'kp_titles': [kp['title'] for kp in course.get('knowledge_points', [])]
+    })
+
+
+# ── 星辰启示 CG ─────────────────────────────────────────
+
+CHAPTER_REVELATION_PROMPT = """你是一位深谙 Python 编程之道的智慧导师，话语充满诗意与哲理。
+
+任务：学生刚刚完成了 PyMaster 某一章节的学习，请你对这一章的核心知识给出一个哲学层面的启示与总结。
+
+格式要求（严格150字以内）：
+1. 开头：以编程/成长隐喻引入（如"在代码的森林里，每一个变量都遵循着自己的轨迹..."）
+2. 中间：将本章核心技术点转化为哲理洞察（2-3句）
+3. 结尾：一句激励学生继续探索的话
+
+风格要求：
+- 语言诗意但不晦涩，能让人感受到知识的美感
+- 必须与该章节的核心主题高度相关
+- 使用"🐍 ✨ 🌟 💻"中2-3个emoji点缀
+- 绝对不要出现"这一章"、"知识点"、"学习"等教学用语
+- 用隐喻而非直说
+
+请返回纯JSON格式（不要包含其他内容）：
+{"title": "3-6字的标题", "text": "150字内的哲理性启示文字"}"""
+
+
+@app.route('/api/chapter-revelation/<int:chapter_id>')
+def chapter_revelation(chapter_id):
+    """生成章节完成后的哲学启示（星辰启示 CG 用）"""
+    courses = load_json(COURSES_FILE)
+    course = next((c for c in courses if c['id'] == chapter_id), None)
+    if not course:
+        return jsonify({'success': False, 'message': '章节不存在'})
+
+    kp_titles = [kp['title'] for kp in course.get('knowledge_points', [])]
+    user_msg = f"""学生刚刚完成了第{chapter_id}章：「{course['title']}」。
+本章的核心知识点包括：{', '.join(kp_titles[:4])}等。
+请生成哲理性启示。"""
+
+    answer, error = _call_deepseek(CHAPTER_REVELATION_PROMPT, user_msg, max_tokens=400)
+    if error:
+        return jsonify({
+            'success': True, 'title': '代码之路',
+            'text': '🐍 你已穿越了代码的密林，每一行代码都是通往精通的路标。继续前行，编程者。',
+            'chapter_title': course['title']
+        })
+
+    try:
+        import re as _re
+        json_match = _re.search(r'\{.*\}', answer, _re.DOTALL)
+        result = json.loads(json_match.group()) if json_match else json.loads(answer)
+        result['success'] = True
+        result['chapter_title'] = course['title']
+        return jsonify(result)
+    except Exception as e:
+        print(f"[启示CG] JSON解析失败: {e}")
+        return jsonify({
+            'success': True, 'title': '代码之路',
+            'text': '✨ 每一个函数都是你与代码的对话。编程没有捷径，唯有动手才能找到真相。继续前进，编程者。',
+            'chapter_title': course['title']
+        })
+
+
+# ── JJ老师 苏格拉底哲思面试 ─────────────────────────────
+
+JJ_INTERVIEW_PROMPT = """你是蛇蛇老师——Python 编程世界里的哲思导师，一位引领初学者穿越知识海洋的智慧长者。
+
+你的身份：
+你不是冰冷的考官，而是一位亲切的 Python 编程导师。你说话温柔而富有哲理，但始终紧扣 Python 知识的本质。你记得每一位学员的旅程——他们的困惑、错误和成长。
+
+核心规则：
+1. 每次只问一个问题，等学员回答后再根据回答质量决定下一题
+2. 如果回答优秀(8-10分)：给予鼓励，出一道更难的进阶题
+3. 如果回答一般(5-7分)：温和指出不足，出一道同方向的深入追问
+4. 如果回答差(1-4分)：不直接给答案，用苏格拉底式提问引导思考，再出一题
+5. 至少进行3-5轮深度对话，直到你确认学员真正理解了知识
+6. 每轮给出1-10分评分和简短评语(15字内)
+7. 当学员展现出真正的深度理解后(done=true)，给出30字内的总结和评级(S/A/B/C)
+8. 全程使用中文，语气温暖而鼓励，像一位耐心的编程导师
+9. 用"小码"称呼学员
+10. 问"Why"和"What if"类问题，考察推理而非记忆
+11. 使用"🐍 ✨ 💻 🐣"等 Python 学习相关 emoji 点缀对话
+12. 如果学员有错题记录，优先针对薄弱知识点提问
+13. 如果学员有历史面试记录，展现"我记得你"的连续性
+
+出题方向：
+- 紧扣本章节的具体 Python 知识点，不能泛泛而谈
+- 优先针对学员的错题涉及的知识点进行深度提问
+- 考察概念间的联系，而非孤立的记忆
+- 让学员展示真正的理解深度
+
+返回纯JSON(不要markdown包裹)：
+{"score":1-10,"comment":"简短评语","question":"下一题","done":false}
+最后一轮done=true，question放总结祝福语"""
+
+
+@app.route('/api/jj-interview', methods=['POST'])
+def jj_interview():
+    """JJ老师苏格拉底式追问面试——检验学员是否真正理解了本章知识"""
+    data = request.get_json()
+    action = data.get('action', 'start')
+    history = data.get('history', [])
+    user_answer = data.get('answer', '')
+    chapter_id = str(data.get('chapter_id', '1'))
+    chapter_title = data.get('chapter_title', '')
+    kp_titles = data.get('kp_titles', [])
+    wrong_answers = data.get('wrong_answers', [])
+
+    username = session.get('username', 'guest')
+    users = load_json(USERS_FILE)
+    user = users.get(username, {})
+
+    # Build past session summary from jj_interviews (avoid clashing with ask-jj's jj_history dict)
+    past_summary = ''
+    jj_interviews = user.get('jj_interviews', [])
+    if jj_interviews:
+        past_summary = '\n该学员的历史面试记录：\n'
+        for rec in jj_interviews[-5:]:
+            past_ch = rec.get('chapter_id', '?')
+            qa_count = len(rec.get('qa_pairs', []))
+            past_summary += f"- 第{past_ch}章：{qa_count}轮对话\n"
+
+    if action == 'start':
+        kp_list = '\n'.join(f"- {t}" for t in kp_titles)
+        context_parts = [
+            f"学员「小码」完成了第{chapter_id}章「{chapter_title}」的学习。",
+            f"\n本章知识点：\n{kp_list}",
+        ]
+        if past_summary:
+            context_parts.append(f"\n{past_summary}\n请展现你对这位学员的记忆——提到ta之前的学习历程。")
+        if wrong_answers:
+            wrong_list = '\n'.join(
+                f"- 问题：{w.get('question','')} | 学员答案：{w.get('user_answer','')} | 正确：{w.get('correct_answer','')}"
+                for w in wrong_answers
+            )
+            context_parts.append(f"\n学员本章错题（优先出题考察这些薄弱点）：\n{wrong_list}")
+        else:
+            context_parts.append("\n学员本章没有错题，请出一道有深度的综合理解题来检验真懂还是假懂。")
+
+        user_msg = ''.join(context_parts)
+    elif action == 'answer':
+        recent = history[-12:]  # last 6 rounds
+        htext = "\n".join([f"{'蛇蛇老师' if h['role']=='assistant' else '学员'}: {h['content'][:150]}" for h in recent])
+        user_msg = f"对话历史：\n{htext}\n\n学员刚回答：{user_answer[:300]}\n\n请评分并决定：追问/进阶/总结。"
+    elif action == 'skip':
+        user_msg = "学员请求跳过。请出一道新题，方向不同。"
+    else:
+        return jsonify({'success': False, 'error': '未知操作'})
+
+    answer, error = _call_deepseek(JJ_INTERVIEW_PROMPT, user_msg, max_tokens=800)
+    if error:
+        return jsonify({'success': False, 'error': error})
+
+    try:
+        import re as _re
+        m = _re.search(r'\{[^{}]*\}', answer, _re.DOTALL)
+        if m:
+            r = json.loads(m.group())
+            # If interview is done, save results to persistent memory
+            if r.get('done'):
+                _save_jj_results(username, chapter_id, history, r)
+            return jsonify({'success': True, 'result': r, 'raw': answer})
+    except json.JSONDecodeError:
+        pass
+    return jsonify({'success': True, 'result': None, 'raw': answer})
+
+
+def _save_jj_results(username, chapter_id, history, final_result):
+    """持久化 JJ 面试记录到用户数据，实现跨会话记忆"""
+    users = load_json(USERS_FILE)
+    if username not in users:
+        return
+    user = users[username]
+    jj_interviews = user.setdefault('jj_interviews', [])
+
+    qa_pairs = []
+    current_q = ''
+    for h in history:
+        if h['role'] == 'assistant':
+            current_q = h['content'][:200]
+        elif h['role'] == 'user' and current_q:
+            qa_pairs.append({
+                'question': current_q,
+                'answer': h['content'][:500],
+                'score': 0,
+                'comment': ''
+            })
+            current_q = ''
+
+    jj_interviews.append({
+        'chapter_id': int(chapter_id),
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'qa_pairs': qa_pairs,
+        'final_comment': final_result.get('question', '')[:100]
+    })
+
+    # Keep max 10 sessions per user to avoid bloating users.json
+    if len(jj_interviews) > 10:
+        user['jj_interviews'] = jj_interviews[-10:]
+        jj_interviews = user['jj_interviews']
+
+    save_json(USERS_FILE, users)
 
 
 # ── JJ老师 章节末智能体复盘 ────────────────────────────
@@ -885,10 +1148,9 @@ type=done: 所有知识点通过，给出冒险哲理性的鼓励
 
 
 @app.route('/api/agent-blackboard', methods=['GET'])
-@login_required
 def agent_blackboard():
     """返回用户的完整学习黑板书——所有跨章节的学习数据聚合"""
-    username = session['username']
+    username = session.get('username', 'guest')
     users = load_json(USERS_FILE)
     user = users.get(username, {})
 
@@ -937,11 +1199,10 @@ def agent_blackboard():
 
 
 @app.route('/api/chapter-agent', methods=['POST'])
-@login_required
 def chapter_agent():
     data = request.get_json()
     action = data.get('action', '')
-    username = session['username']
+    username = session.get('username', 'guest')
     users = load_json(USERS_FILE)
     user = users.get(username, {})
 
@@ -1082,7 +1343,7 @@ def update_progress():
     index = data.get('index', 0)
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1147,12 +1408,23 @@ def _platform_get_doc_path():
 
 
 @app.route('/api/user')
-@login_required
 def get_user():
+    username = session.get('username', 'guest')
+    if username == 'guest':
+        # 游客模式：返回默认数据，全部解锁
+        return jsonify({
+            'username': 'guest',
+            'mode': 'all_unlocked',
+            'completed_kps': [],
+            'completed_exercises': [],
+            'favorites': [],
+            'wrong_answers': [],
+            'notes': {}
+        })
     users = load_json(USERS_FILE)
-    user = users.get(session['username'], {})
+    user = users.get(username, {})
     return jsonify({
-        'username': session['username'],
+        'username': username,
         'mode': user.get('mode', 'explore'),
         'completed_kps': user.get('completed_kps', []),
         'completed_exercises': user.get('completed_exercises', []),
@@ -1163,9 +1435,17 @@ def get_user():
 
 
 @app.route('/api/ai-quota')
-@login_required
 def get_ai_quota():
-    username = session['username']
+    username = session.get('username', 'guest')
+    if username == 'guest':
+        # 游客模式：无限使用
+        return jsonify({
+            'success': True,
+            'used': 0,
+            'limit': -1,
+            'remaining': -1,
+            'is_unlimited': True
+        })
     allowed, used, limit = check_daily_limit(username)
     return jsonify({
         'success': True,
@@ -1177,14 +1457,13 @@ def get_ai_quota():
 
 
 @app.route('/api/set-mode', methods=['POST'])
-@login_required
 def set_mode():
     data = request.get_json()
     new_mode = data.get('mode', 'explore')
     if new_mode not in ('explore', 'all_unlocked'):
         return jsonify({'success': False, 'message': '无效模式'})
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username in users:
         users[username]['mode'] = new_mode
         save_json(USERS_FILE, users)
@@ -1192,11 +1471,21 @@ def set_mode():
 
 
 @app.route('/api/learning-status')
-@login_required
 def learning_status():
     courses = load_json(COURSES_FILE)
+    username = session.get('username', 'guest')
+    if username == 'guest':
+        # 游客模式：全部解锁
+        result = {}
+        for c in courses:
+            ch = c['id']
+            kps = c.get('knowledge_points', [])
+            for i in range(len(kps)):
+                result[f"{ch}_{i}"] = True
+        return jsonify({'success': True, 'unlocked': result, 'mode': 'all_unlocked',
+                        'completed_kps': []})
     users = load_json(USERS_FILE)
-    user = users.get(session['username'], {})
+    user = users.get(username, {})
     completed_kps = user.get('completed_kps', [])
     mode = user.get('mode', 'explore')
     result = {}
@@ -1218,7 +1507,6 @@ def learning_status():
 
 
 @app.route('/api/glossary')
-@login_required
 def get_glossary():
     glossary_file = os.path.join(BUNDLE_DIR, 'data', 'glossary_py.json')
     if not os.path.exists(glossary_file):
@@ -1230,14 +1518,13 @@ def get_glossary():
 # ── 用户思维导图 ────────────────────────────────────────
 
 @app.route('/api/mindmap/save', methods=['POST'])
-@login_required
 def save_mindmap():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
     content = data.get('content', '')
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False, 'message': '用户不存在'})
 
@@ -1251,12 +1538,11 @@ def save_mindmap():
 
 
 @app.route('/api/mindmap/get', methods=['GET'])
-@login_required
 def get_mindmap():
     chapter_id = request.args.get('chapter_id', '')
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False, 'content': '', 'updated_at': ''})
 
@@ -1270,13 +1556,12 @@ def get_mindmap():
 
 
 @app.route('/api/mindmap/delete', methods=['POST'])
-@login_required
 def delete_mindmap():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1288,7 +1573,6 @@ def delete_mindmap():
 
 
 @app.route('/api/complete-kp', methods=['POST'])
-@login_required
 def complete_kp():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
@@ -1296,7 +1580,7 @@ def complete_kp():
     key = f"{chapter_id}_{kp_index}"
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1317,7 +1601,6 @@ def complete_kp():
 
 
 @app.route('/api/submit-answer', methods=['POST'])
-@login_required
 def submit_answer():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
@@ -1329,7 +1612,7 @@ def submit_answer():
     correct_answer = data.get('correct_answer', '')
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1357,7 +1640,6 @@ def submit_answer():
 
 
 @app.route('/api/toggle-favorite', methods=['POST'])
-@login_required
 def toggle_favorite():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
@@ -1366,7 +1648,7 @@ def toggle_favorite():
     key = f"{chapter_id}_{ex_index}"
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1385,7 +1667,6 @@ def toggle_favorite():
 
 
 @app.route('/api/save-note', methods=['POST'])
-@login_required
 def save_note():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
@@ -1394,7 +1675,7 @@ def save_note():
 
     key = f"{chapter_id}_{kp_index}"
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1439,7 +1720,6 @@ def _get_note_obj(users, username, key):
 # ---- Note Files API ----
 
 @app.route('/api/note-files/list', methods=['POST'])
-@login_required
 def note_files_list():
     data = request.get_json()
     chapter_id = str(data.get('chapter_id', ''))
@@ -1447,7 +1727,7 @@ def note_files_list():
     key = f"{chapter_id}_{kp_index}"
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': True, 'note': {'content': '', 'files': []}})
 
@@ -1457,7 +1737,6 @@ def note_files_list():
 
 
 @app.route('/api/note-files/create-txt', methods=['POST'])
-@login_required
 def note_files_create_txt():
     """Create a .txt file and add to note file list. Opens in editor if desktop available."""
     try:
@@ -1479,7 +1758,7 @@ def note_files_create_txt():
             f.write("")
 
         users = load_json(USERS_FILE)
-        username = session['username']
+        username = session.get('username', 'guest')
         if username not in users:
             return jsonify({'success': False, 'error': 'User not found'})
 
@@ -1506,7 +1785,6 @@ def note_files_create_txt():
 
 
 @app.route('/api/note-files/add', methods=['POST'])
-@login_required
 def note_files_add():
     """Add a local file to the note list. Desktop file dialog on Windows only."""
     try:
@@ -1549,7 +1827,7 @@ def note_files_add():
         ext = os.path.splitext(filename)[1].lstrip('.').lower() or 'unknown'
 
         users = load_json(USERS_FILE)
-        username = session['username']
+        username = session.get('username', 'guest')
         if username not in users:
             return jsonify({'success': False, 'error': 'User not found'})
 
@@ -1576,7 +1854,6 @@ def note_files_add():
 
 
 @app.route('/api/note-files/open', methods=['POST'])
-@login_required
 def note_files_open():
     """Open a file with the system default application."""
     try:
@@ -1598,7 +1875,6 @@ def note_files_open():
 
 
 @app.route('/api/note-files/remove', methods=['POST'])
-@login_required
 def note_files_remove():
     """Remove a file from the note's file list (does NOT delete the actual file)."""
     try:
@@ -1609,7 +1885,7 @@ def note_files_remove():
         key = f"{chapter_id}_{kp_index}"
 
         users = load_json(USERS_FILE)
-        username = session['username']
+        username = session.get('username', 'guest')
         if username not in users:
             return jsonify({'success': False})
 
@@ -1622,13 +1898,12 @@ def note_files_remove():
 
 
 @app.route('/api/clear-wrong', methods=['POST'])
-@login_required
 def clear_wrong():
     data = request.get_json()
     indices = data.get('indices', [])  # list of wrong answer indices to clear
 
     users = load_json(USERS_FILE)
-    username = session['username']
+    username = session.get('username', 'guest')
     if username not in users:
         return jsonify({'success': False})
 
@@ -1655,7 +1930,6 @@ def load_comics():
 
 
 @app.route('/api/comic/<int:chapter_id>/<int:kp_index>')
-@login_required
 def get_comic(chapter_id, kp_index):
     """Return a pre-generated comic script (Claude quality), or generate one."""
     courses = load_json(COURSES_FILE)
@@ -1755,7 +2029,6 @@ def get_comic(chapter_id, kp_index):
 
 
 @app.route('/api/comic/stats')
-@login_required
 def get_comic_stats():
     """Get comic viewing statistics for the current user."""
     username = session.get('username', 'anonymous')
@@ -1764,7 +2037,6 @@ def get_comic_stats():
 
 
 @app.route('/api/comic/config', methods=['POST'])
-@login_required
 def configure_comic_engine():
     """Configure the comic engine API settings."""
     data = request.get_json()
@@ -1789,7 +2061,6 @@ def configure_comic_engine():
 # ── TTS Voice Endpoints ────────────────────────────────────
 
 @app.route('/api/tts/panel/<int:chapter_id>/<int:kp_index>/<int:panel_id>')
-@login_required
 def get_panel_audio(chapter_id, kp_index, panel_id):
     """Get Doubao TTS audio for a comic panel. Returns MP3 stream."""
     comic_key = f"{chapter_id}_{kp_index}"
@@ -1817,7 +2088,6 @@ def get_panel_audio(chapter_id, kp_index, panel_id):
 
 
 @app.route('/api/tts/status')
-@login_required
 def tts_status():
     """Check TTS availability."""
     return jsonify({
@@ -1830,7 +2100,6 @@ def tts_status():
 
 
 @app.route('/api/tts/voices')
-@login_required
 def get_tts_voices():
     """Get available TTS voice configurations."""
     return jsonify({
@@ -1860,7 +2129,7 @@ def get_tts_voices():
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'username' not in session or session['username'] != ADMIN_USERNAME:
+        if 'username' not in session or session.get('username', 'guest') != ADMIN_USERNAME:
             return redirect(url_for('login_page'))
         return f(*args, **kwargs)
     return decorated

@@ -434,11 +434,7 @@ async function runCodeEx() {
 
         const totalKPs = document.querySelectorAll('.kp-item').length;
         if (codeExState.kpIndex >= totalKPs - 1) {
-          if (typeof ChapterAgent !== 'undefined' && codeExState.chapterId == 8) {
-            setTimeout(() => ChapterAgent.open(codeExState.chapterId), 1500);
-          } else {
-            setTimeout(autoJJChapterComplete, 1500);
-          }
+          checkChapterComplete(codeExState.chapterId);
         }
 
         setTimeout(closeCodeEx, 2000);
@@ -521,16 +517,29 @@ function checkKPCompletion(chapterId, kpIndex, exerciseCard) {
 
     showToast('🎉 恭喜完成本知识点！', 'success');
 
-    // Check if ALL exercises across the chapter are submitted → trigger ChapterAgent
+    // Check if ALL exercises across the chapter are submitted → trigger chapter-end CG
     const allExList = document.querySelectorAll('.kp-exercise');
     const allExercisesDone = allExList.length > 0 && Array.from(allExList).every(ex => ex.dataset.exSubmitted === 'true');
     if (allExercisesDone) {
-      if (typeof ChapterAgent !== 'undefined' && CHAPTER_ID == 8) {
-        setTimeout(() => ChapterAgent.open(CHAPTER_ID), 1000);
-      } else {
-        setTimeout(autoJJChapterComplete, 1000);
-      }
+      checkChapterComplete(chapterId);
     }
+  }
+}
+
+// --- Chapter Completion → 星辰启示 CG ---
+function checkChapterComplete(chapterId) {
+  // 判断是否最后一个 KP 被完成（做完最后一题就触发星辰启示 CG 跳转）
+  const allKpItems = document.querySelectorAll('.kp-item');
+  if (allKpItems.length === 0) return;
+
+  const lastKpItem = allKpItems[allKpItems.length - 1];
+  const isLastKpCompleted = lastKpItem.classList.contains('completed');
+
+  if (isLastKpCompleted) {
+    showToast('🌌 最后一题完成！即将进入星辰启示...', 'success');
+    setTimeout(() => {
+      window.location.href = '/static/revelation_cg.html?ch=' + chapterId;
+    }, 1500);
   }
 }
 

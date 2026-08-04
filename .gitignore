@@ -25,3 +25,7 @@ data/audio_cache/
 static/audio/*.mp3
 static/audio/*.mp4
 static/audio/*.xml
+
+# Secret key
+data/.secret_key
+
