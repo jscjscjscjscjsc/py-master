@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>蛇蛇老师 · 哲思检验</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;color:#e6edf3;font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif}
+canvas{position:fixed;inset:0;z-index:1}
+
+#main{position:relative;z-index:10;width:100%;height:100%;display:flex;flex-direction:column}
+
+#context-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 20px;font-size:11px;color:rgba(0,212,255,.35);border-bottom:1px solid rgba(0,212,255,.08);letter-spacing:2px;font-family:'Consolas',monospace}
+#context-bar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:50%}
+
+#header{padding:18px 24px 8px;text-align:center;pointer-events:none}
+#header h1{font-size:clamp(15px,2vw,22px);font-weight:700;letter-spacing:6px;background:linear-gradient(120deg,#00d4ff,#a371f7,#7ee0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#header .s{font-size:10px;color:rgba(0,212,255,.25);letter-spacing:4px;font-family:'Consolas',monospace;margin-top:2px}
+
+#chat{flex:1;overflow-y:auto;padding:10px 20px;display:flex;flex-direction:column;gap:10px}
+#chat::-webkit-scrollbar{width:3px}
+#chat::-webkit-scrollbar-thumb{background:rgba(0,212,255,.2);border-radius:2px}
+
+.msg{max-width:85%;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.7;animation:msgIn .3s ease;white-space:pre-wrap}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.jj{align-self:flex-start;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);border-bottom-left-radius:4px;color:#e6edf3}
+.msg.user{align-self:flex-end;background:rgba(163,113,247,.06);border:1px solid rgba(163,113,247,.12);border-bottom-right-radius:4px;color:#c4a5f7}
+.msg.system{align-self:center;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03);font-size:12px;color:rgba(0,212,255,.3);padding:8px 16px;border-radius:20px}
+.msg .score{display:inline-block;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:6px}
+.msg .score.high{background:rgba(0,212,255,.15);color:#00d4ff}
+.msg .score.mid{background:rgba(163,113,247,.15);color:#a371f7}
+.msg .score.low{background:rgba(248,81,73,.2);color:#f85149}
+
+.tw-char{display:inline;animation:charIn .04s ease both}
+@keyframes charIn{0%{opacity:0;transform:translateY(3px)}100%{opacity:1;transform:translateY(0)}}
+
+#input-area{padding:12px 20px 18px;display:flex;gap:8px;max-width:700px;margin:0 auto;width:100%}
+#input-area input{flex:1;padding:10px 14px;border-radius:8px;border:1px solid rgba(0,212,255,.1);background:rgba(13,17,23,.7);color:#e6edf3;font-size:13px;outline:none}
+#input-area input:focus{border-color:rgba(0,212,255,.25)}
+#input-area input:disabled{opacity:.4}
+#input-area button{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.3s}
+#input-area #send-btn{background:linear-gradient(135deg,#00d4ff,#a371f7);color:#fff}
+#input-area #send-btn:hover{box-shadow:0 0 20px rgba(0,212,255,.25)}
+#input-area #send-btn:disabled{opacity:.4;cursor:default}
+#input-area .skip-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);color:rgba(0,212,255,.35);font-weight:400}
+#input-area .skip-btn:hover{color:rgba(0,212,255,.6)}
+
+#loading{text-align:center;padding:10px;font-size:12px;color:rgba(0,212,255,.25);display:none;letter-spacing:4px;font-family:'Consolas',monospace}
+
+#result-overlay{position:fixed;inset:0;z-index:50;background:rgba(10,10,15,.9);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
+#result-overlay.show{display:flex;animation:fi .5s ease}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+#result{max-width:500px;width:100%;text-align:center}
+#result h2{font-size:clamp(22px,3vw,32px);font-weight:700;margin-bottom:6px;color:#00d4ff}
+#result .grade{font-size:clamp(48px,6vw,72px);font-weight:900;margin:10px 0;letter-spacing:4px}
+#result .grade.S{background:linear-gradient(120deg,#00d4ff,#a371f7,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#result .grade.A{color:#00d4ff}
+#result .grade.B{color:#a371f7}
+#result .grade.C{color:#f85149}
+#result .detail{font-size:13px;color:rgba(230,237,243,.45);line-height:1.8;margin:14px 0;text-align:left;padding:14px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid rgba(0,212,255,.06)}
+#result .detail strong{color:rgba(230,237,243,.6)}
+#result .btn-group{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+#result .btn-retry{background:linear-gradient(135deg,#00d4ff,#a371f7);color:#fff;padding:10px 24px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.3s}
+#result .btn-retry:hover{box-shadow:0 0 20px rgba(0,212,255,.25)}
+#result .btn-back{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:rgba(230,237,243,.35);padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;transition:.3s;text-decoration:none}
+#result .btn-back:hover{color:rgba(230,237,243,.6)}
+
+#results-list{max-height:200px;overflow-y:auto;margin:10px 0;text-align:left}
+#results-list::-webkit-scrollbar{width:2px}
+#results-list::-webkit-scrollbar-thumb{background:rgba(0,212,255,.15);border-radius:2px}
+.r-item{padding:6px 0;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,212,255,.04)}
+.r-item .rs{width:24px;text-align:center;font-weight:700}
+.r-item .rq{flex:1;color:rgba(230,237,243,.4)}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="main">
+<div id="context-bar">
+  <span id="ctx-chapter">CHAPTER —</span>
+  <span id="ctx-kps">—</span>
+</div>
+<div id="header"><h1>🐍 蛇蛇老师 · 哲思检验</h1><div class="s">PyMaster · PYTHON SAGE INTERVIEW</div></div>
+<div id="chat"></div>
+<div id="loading">✦ 蛇蛇老师正在思考...</div>
+<div id="input-area">
+  <input id="inp" placeholder="回应蛇蛇老师的提问..." onkeydown="if(event.key==='Enter')send()" disabled>
+  <button class="skip-btn" id="skip-btn" onclick="skipQ()" disabled>跳过</button>
+  <button id="send-btn" onclick="send()" disabled>回应</button>
+</div>
+</div>
+<div id="result-overlay"><div id="result"></div></div>
+
+<script>
+/* ===== Starfield (cyan/purple tones) ===== */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W,H,stars=[];
+function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+resize();addEventListener('resize',resize);
+for(let i=0;i<300;i++)stars.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.1,t:Math.random()*7,v:0.05+Math.random()*0.2});
+function bgLoop(){
+  requestAnimationFrame(bgLoop);
+  ctx.clearRect(0,0,W,H);
+  const g=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.7);
+  g.addColorStop(0,'#0d1117');g.addColorStop(1,'#0a0a0f');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  stars.forEach(s=>{
+    s.t+=0.008;const tw=Math.sin(s.t)*0.5+0.5;
+    ctx.beginPath();ctx.arc(s.x,s.y,s.s*tw,0,7);
+    const hue=Math.random()>.5?'0,212,255':'163,113,247';
+    ctx.fillStyle=`rgba(${hue},${tw*0.25})`;ctx.fill();
+  });
+}
+bgLoop();
+
+/* ===== State ===== */
+const CHAPTER_ID=parseInt(new URL(location.href).searchParams.get('ch')||'1');
+let CHAPTER_TITLE='',CHAPTER_KP_TITLES=[],chapterWrong=[];
+let chat=[],history=[],qCount=0,totalScore=0,results=[],active=true;
+const chatEl=document.getElementById('chat'),inp=document.getElementById('inp');
+const sendBtn=document.getElementById('send-btn'),skipBtn=document.getElementById('skip-btn');
+const loadingEl=document.getElementById('loading');
+
+/* ===== Typewriter ===== */
+function typewriterText(el,text,onDone){
+  let i=0;el.textContent='';
+  function next(){
+    if(i>=text.length){if(onDone)onDone();return;}
+    el.textContent+=text[i];i++;
+    const delay=text[i-1]==='。'||text[i-1]==='，'||text[i-1]==='\n'?120:30+Math.random()*20;
+    setTimeout(next,delay);
+  }
+  next();
+}
+
+/* ===== Messages ===== */
+function addMsg(role,text,useTypewriter){
+  const d=document.createElement('div');d.className='msg '+role;
+  if(role==='jj'&&text.includes('评分')){
+    const m=text.match(/[（(]\s*(\d+)\s*\/?\s*10\s*[)）]/);
+    if(m){const s=parseInt(m[1]);const sp=document.createElement('span');sp.className='score '+(s>=7?'high':s>=4?'mid':'low');sp.textContent=s+'/10';d.appendChild(sp);}
+  }
+  chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
+  if(useTypewriter&&role==='jj'){
+    typewriterText(d,text,()=>{chatEl.scrollTop=chatEl.scrollHeight;});
+  }else{
+    d.textContent=text;
+  }
+}
+
+function setInput(enabled){
+  inp.disabled=!enabled;sendBtn.disabled=!enabled;skipBtn.disabled=!enabled;
+  if(enabled)inp.focus();
+}
+
+/* ===== Load Context ===== */
+async function loadContext(){
+  try{
+    const res=await fetch('/api/chapter-summary/'+CHAPTER_ID);
+    const d=await res.json();
+    if(d.success){
+      CHAPTER_TITLE=d.title;
+      CHAPTER_KP_TITLES=d.kp_titles||[];
+      document.getElementById('ctx-chapter').textContent='第'+CHAPTER_ID+'章 · '+CHAPTER_TITLE;
+      document.getElementById('ctx-kps').textContent='✦ '+(CHAPTER_KP_TITLES.slice(0,3).join(' / '))+(CHAPTER_KP_TITLES.length>3?' ...':'');
+    }
+  }catch(e){}
+  try{
+    const ur=await fetch('/api/user');
+    const ud=await ur.json();
+    const allWrong=ud.wrong_answers||[];
+    chapterWrong=allWrong.filter(w=>String(w.chapter_id)===String(CHAPTER_ID));
+  }catch(e){}
+}
+
+/* ===== Start ===== */
+async function start(){
+  await loadContext();
+  addMsg('system','🐍 小码，你已走完了第'+CHAPTER_ID+'章的知识之路...\n蛇蛇老师在此等候。让我来检验你的领悟是否如代码般清晰。',false);
+  loadingEl.style.display='block';
+  try{
+    const r=await fetch('/api/jj-interview',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'start',chapter_id:CHAPTER_ID,chapter_title:CHAPTER_TITLE,kp_titles:CHAPTER_KP_TITLES,wrong_answers:chapterWrong})
+    });
+    const d=await r.json();
+    loadingEl.style.display='none';
+    if(d.success&&d.result){
+      const q=d.result.question||d.raw;
+      addMsg('jj','🐍 '+q,true);
+      history.push({role:'assistant',content:q});
+      autoSaveFav(q);
+    }else if(d.success&&d.raw){
+      addMsg('jj','🐍 '+d.raw,true);
+      history.push({role:'assistant',content:d.raw});
+      autoSaveFav(d.raw);
+    }else{
+      addMsg('jj','🐍 蛇蛇老师信号有些波动...让我们继续吧。小码，你对本章的哪些概念印象最深？',true);
+    }
+  }catch(e){loadingEl.style.display='none';addMsg('jj','🐍 网络暂时波动...请稍后再试。',false);}
+  setInput(true);
+}
+
+/* ===== Send ===== */
+async function send(){
+  if(!inp.value.trim()||!active)return;
+  const a=inp.value.trim();inp.value='';
+  addMsg('user',a,false);
+  history.push({role:'user',content:a});
+  qCount++;
+  setInput(false);loadingEl.style.display='block';
+  try{
+    const r=await fetch('/api/jj-interview',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'answer',history,answer:a,chapter_id:CHAPTER_ID})
+    });
+    const d=await r.json();
+    loadingEl.style.display='none';
+    if(d.success&&d.result){
+      const res=d.result;
+      const txt=res.question||d.raw;
+      if(res.score!==undefined){
+        totalScore+=res.score;
+        results.push({q:history[history.length-2]?.content||'',score:res.score,comment:res.comment});
+      }
+      if(res.done){
+        finish(res,txt);
+      }else{
+        const msgText=(res.comment?'📝 '+res.comment+'\n\n':'')+'🐍 '+txt;
+        addMsg('jj',msgText,true);
+        history.push({role:'assistant',content:txt});
+        autoSaveFav(txt);
+        setInput(true);
+      }
+    }else if(d.success&&d.raw){
+      addMsg('jj','🐍 '+d.raw,true);
+      history.push({role:'assistant',content:d.raw});
+      autoSaveFav(d.raw);
+      setInput(true);
+    }else{
+      addMsg('jj','🐍 我暂时无法理解你的回答...让我们继续。',false);
+      setInput(true);
+    }
+  }catch(e){loadingEl.style.display='none';addMsg('jj','🐍 网络波动，让我们稍等片刻...',false);setInput(true);}
+}
+
+/* ===== Skip ===== */
+function skipQ(){
+  addMsg('system','✦ 小码选择了跳过这道题');
+  history.push({role:'user',content:'[跳过]'});
+  qCount++;
+  setInput(false);loadingEl.style.display='block';
+  fetch('/api/jj-interview',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'skip',history,chapter_id:CHAPTER_ID})
+  }).then(r=>r.json()).then(d=>{
+    loadingEl.style.display='none';
+    if(d.success&&d.result){
+      const txt=d.result.question||d.raw;
+      addMsg('jj','🐍 '+txt,true);history.push({role:'assistant',content:txt});
+      autoSaveFav(txt);
+    }
+    setInput(true);
+  }).catch(()=>{loadingEl.style.display='none';setInput(true);});
+}
+
+/* ===== Auto-Favorite ===== */
+async function autoSaveFav(text){
+  if(!text||(text.indexOf('？')===-1&&text.indexOf('?')===-1))return;
+  try{
+    const qMatch=text.match(/[^。！？\n]*[？?]/);
+    if(qMatch){
+      const q=qMatch[0].trim();
+      if(q.length>4){
+        await fetch('/api/toggle-favorite',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({chapter_id:CHAPTER_ID,ex_index:'jj_'+Date.now(),question:'🐍 蛇蛇老师提问: '+q})
+        });
+      }
+    }
+  }catch(e){}
+}
+
+/* ===== Finish ===== */
+function finish(res,txt){
+  active=false;setInput(false);
+  const avg=(results.length?Math.round(totalScore/results.length*10)/10:0);
+  const grade=avg>=8?'S':avg>=6?'A':avg>=4?'B':'C';
+  const gradeColors={S:'#00d4ff',A:'#00d4ff',B:'#a371f7',C:'#f85149'};
+
+  let rHtml='<h2 style="color:'+gradeColors[grade]+'">哲思检验完成</h2>'+
+    '<div class="grade '+grade+'">'+avg+'</div>'+
+    '<div style="font-size:13px;color:rgba(230,237,243,.25);font-family:\'Consolas\',monospace">/'+(results.length*10)+' MAX · 评级 '+grade+'</div>'+
+    '<div class="detail">'+(txt||res.comment||'蛇蛇老师给出了他的哲思评判...')+'</div>';
+
+  if(results.length){
+    rHtml+='<div id="results-list">';
+    results.forEach(r=>{
+      const c=r.score>=7?'high':r.score>=4?'mid':'low';
+      rHtml+='<div class="r-item"><span class="rs" style="color:'+(c==='high'?'#00d4ff':c==='mid'?'#a371f7':'#f85149')+'">'+r.score+'</span><span class="rq">'+r.q.substring(0,50)+(r.q.length>50?'...':'')+'</span></div>';
+    });
+    rHtml+='</div>';
+  }
+
+  rHtml+='<div class="btn-group">'+
+    '<button class="btn-retry" onclick="retry()">🔄 再次接受检验</button>'+
+    '<a class="btn-back" href="../index.html">← 返回学习仪表盘</a>'+
+  '</div>';
+
+  document.getElementById('result').innerHTML=rHtml;
+  document.getElementById('result-overlay').classList.add('show');
+}
+
+function retry(){
+  document.getElementById('result-overlay').classList.remove('show');
+  chatEl.innerHTML='';history=[];qCount=0;totalScore=0;results=[];active=true;
+  document.getElementById('result').innerHTML='';
+  start();
+}
+
+start();
+</script>
+</body>
+</html>

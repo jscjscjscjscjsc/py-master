@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>编码启示 · PyMaster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700;900&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:'Noto Serif SC',serif;color:#e6edf3}
+#cosmic-canvas{position:fixed;inset:0;z-index:1}
+#overlay{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.revelation-wrap{max-width:680px;padding:0 5vw;text-align:center;opacity:0;transition:opacity 1.5s ease}
+.revelation-wrap.show{opacity:1}
+.revelation-title{font-size:clamp(18px,3vw,26px);font-weight:300;letter-spacing:8px;color:rgba(0,212,255,.7);margin-bottom:24px}
+.revelation-text{font-size:clamp(15px,2vw,20px);line-height:2;font-weight:300;letter-spacing:2px;color:rgba(255,255,255,.85);text-shadow:0 0 20px rgba(0,212,255,.25)}
+.revelation-text .highlight{background:linear-gradient(120deg,#00d4ff,#a371f7,#f85149);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+.revelation-char{display:inline;animation:charIn .3s ease both}
+@keyframes charIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+.cta-btn{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:20;pointer-events:auto;display:none;
+  padding:16px 48px;border-radius:50px;background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(163,113,247,.15));
+  border:1px solid rgba(0,212,255,.4);color:rgba(0,212,255,.9);font-size:16px;font-weight:500;cursor:pointer;
+  letter-spacing:4px;font-family:'Noto Serif SC',serif;transition:all .4s;backdrop-filter:blur(8px);
+  text-decoration:none;text-align:center}
+.cta-btn:hover{background:linear-gradient(135deg,rgba(0,212,255,.25),rgba(163,113,247,.25));border-color:rgba(0,212,255,.8);
+  box-shadow:0 0 40px rgba(0,212,255,.35),0 0 80px rgba(163,113,247,.2);transform:translateX(-50%) translateY(-2px);color:#fff}
+.cta-btn.show{display:block;animation:ctaIn .8s ease both}
+@keyframes ctaIn{0%{opacity:0;transform:translateX(-50%) translateY(20px)}100%{opacity:1;transform:translateX(-50%) translateY(0)}}
+.brand{position:fixed;top:24px;left:28px;z-index:20;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:3px}
+.chapter-label{position:fixed;top:24px;right:28px;z-index:20;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(0,212,255,.4);letter-spacing:2px}
+#loading{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:15;color:rgba(0,212,255,.5);font-size:13px;letter-spacing:3px;font-family:'JetBrains Mono',monospace;display:none}
+@media(max-width:640px){.revelation-wrap{max-width:90vw}}
+</style>
+</head>
+<body>
+
+<canvas id="cosmic-canvas"></canvas>
+<div class="brand">PyMaster · 编码启示</div>
+<div class="chapter-label" id="chapterLabel"></div>
+
+<div id="overlay">
+  <div class="revelation-wrap" id="revelationWrap">
+    <div class="revelation-title" id="revelationTitle"></div>
+    <div class="revelation-text" id="revelationText"></div>
+  </div>
+</div>
+
+<div id="loading">✦ 正在链接代码星海...</div>
+
+<a class="cta-btn" id="ctaBtn" href="#">✦ 接受蛇蛇老师的哲思检验 ✦</a>
+
+<script>
+"use strict";
+const params = new URL(location.href).searchParams;
+const CHAPTER_ID = parseInt(params.get('ch') || '1', 10);
+
+/* ===== Canvas Starfield (cyan/purple tones) ===== */
+const canvas = document.getElementById('cosmic-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, DPR = Math.min(window.devicePixelRatio||1, 2);
+let stars = [], time = 0, rafId;
+
+function resize(){
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = W*DPR; canvas.height = H*DPR;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+function initStars(){
+  stars = [];
+  const n = Math.floor(W*H/8000);
+  for(let i=0;i<n;i++){
+    stars.push({
+      x:Math.random()*W, y:Math.random()*H, z:Math.random()*0.9+0.1,
+      tw:Math.random()*Math.PI*2, sp:0.3+Math.random()*0.7,
+      col:['rgba(0,212,255,.7)','rgba(163,113,247,.7)','rgba(255,255,255,.8)','rgba(63,185,80,.5)'][Math.floor(Math.random()*4)]
+    });
+  }
+}
+initStars();
+
+function draw(timestamp){
+  const dt = Math.min(timestamp - (draw.lastTs||timestamp), 50);
+  draw.lastTs = timestamp;
+  time += dt;
+  ctx.fillStyle = 'rgba(10,10,15,0.18)';
+  ctx.fillRect(0,0,W,H);
+
+  ctx.globalCompositeOperation = 'lighter';
+  for(const s of stars){
+    s.tw += dt*0.0006*s.sp;
+    s.y += s.z*0.015*dt*0.06*s.sp;
+    if(s.y>H+10){s.y=-10;s.x=Math.random()*W;}
+    const r = s.z*2.2* (0.7+0.3*Math.abs(Math.sin(s.tw)));
+    const a = (0.2+0.5*Math.abs(Math.sin(s.tw)))*s.z;
+    ctx.globalAlpha = a;
+    ctx.fillStyle = s.col;
+    ctx.fillRect(s.x,s.y,r,r);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
+
+  // Nebula glow (cyan + purple)
+  const nx = W*0.5 + Math.sin(time*0.0002)*W*0.15;
+  const ny = H*0.45 + Math.cos(time*0.0003)*H*0.1;
+  const ng = ctx.createRadialGradient(nx,ny,0,nx,ny,Math.min(W,H)*0.35);
+  ng.addColorStop(0,'rgba(0,212,255,0.03)');
+  ng.addColorStop(0.5,'rgba(163,113,247,0.015)');
+  ng.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = ng;
+  ctx.fillRect(0,0,W,H);
+
+  rafId = requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+/* ===== Typewriter ===== */
+const wrap = document.getElementById('revelationWrap');
+const titleEl = document.getElementById('revelationTitle');
+const textEl = document.getElementById('revelationText');
+const ctaBtn = document.getElementById('ctaBtn');
+const chapterLabel = document.getElementById('chapterLabel');
+const loadingEl = document.getElementById('loading');
+
+// Update CTA link — jump to JJ teacher interview after CG
+ctaBtn.href = 'jj_interview.html?ch=' + CHAPTER_ID;
+chapterLabel.textContent = 'CHAPTER ' + String(CHAPTER_ID).padStart(2,'0');
+
+const FALLBACK = { title: '代码之路', text: '🐍 你已穿越了代码的密林，每一行代码都是通往精通的路标。继续前行，编程者。' };
+
+async function fetchRevelation(){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000);
+  try {
+    const res = await fetch('/api/chapter-revelation/' + CHAPTER_ID, { signal: ctrl.signal });
+    const data = await res.json();
+    if (data.success && data.title) return { title: data.title, text: data.text };
+  } catch(e) {
+    // fall through to fallback text
+  } finally {
+    clearTimeout(timer);
+  }
+  return FALLBACK;
+}
+
+function typewriter(element, text, onChar, onDone){
+  let i = 0; element.innerHTML = '';
+  function next(){
+    if (i >= text.length){ if(onDone) onDone(); return; }
+    const char = text[i]; i++;
+    const span = document.createElement('span');
+    span.className = 'revelation-char';
+    span.textContent = char;
+    element.appendChild(span);
+    if(onChar) onChar(char);
+    const delay = char === '。'||char==='，'||char==='\n' ? 180 : char===' ' ? 50 : 60+Math.random()*40;
+    setTimeout(next, delay);
+  }
+  setTimeout(next, 600);
+}
+
+async function start(){
+  loadingEl.style.display = 'block';
+  const data = await fetchRevelation();
+  loadingEl.style.display = 'none';
+  titleEl.textContent = '✦ ' + data.title + ' ✦';
+  wrap.classList.add('show');
+
+  setTimeout(() => {
+    typewriter(textEl, data.text, null, () => {
+      setTimeout(() => { ctaBtn.classList.add('show'); }, 400);
+    });
+  }, 800);
+}
+
+start();
+</script>
+</body>
+</html>

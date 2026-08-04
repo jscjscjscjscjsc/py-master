@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 学习仪表盘</title>
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="dashboard-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏">⭐ <span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本">📕 <span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:4px;">
+        🐍 练习场
+      </a>
+      <div class="mode-toggle-wrap">
+        <label class="mode-toggle" title="切换学习模式">
+          <input type="checkbox" id="mode-toggle" checked onchange="toggleMode()">
+          <span class="mode-toggle-slider"></span>
+        </label>
+        <span class="mode-label" id="mode-label">🔓 全部解锁</span>
+      </div>
+      <div class="user-avatar">访</div>
+      <span class="user-name">访客</span>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="开启背景音乐" style="background:none;border:none;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;color:var(--text-muted);">🎶</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换主题" style="background:none;border:none;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;color:var(--text-secondary);">🌙</button>
+      <button class="btn-logout" onclick="logout()">退出登录</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="dashboard-content">
+  <div class="dashboard-header">
+    <h2>欢迎回来，<span class="gradient-text">访客</span></h2>
+    <p>选择章节，开始你的 Python 学习之旅</p>
+    <div class="stats-row">
+      <div class="stat-chip">
+        📚 <span>共 <span class="stat-value" id="stat-chapters">-</span> 个章节</span>
+      </div>
+      <div class="stat-chip">
+        🎯 <span>知识点 <span class="stat-value" id="stat-kps">-</span> 个</span>
+      </div>
+      <div class="stat-chip">
+        ✏️ <span>练习题 <span class="stat-value" id="stat-exercises">-</span> 道</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="window.location.href='canvas.html'">
+        🎨 <span>画布工具</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="showGlossary()">
+        📖 <span>专业术语</span>
+      </div>
+      <div class="stat-chip" id="quota-chip" style="opacity:0.8;">
+        🤖 <span>AI 余额：<span id="quota-display">作品展示模式</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapters Grid (JS rendered) -->
+  <div class="chapters-grid" id="chapters-grid">
+    <div style="text-align:center;padding:60px;color:var(--text-muted);">加载中...</div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Glossary Modal -->
+<div id="glossary-modal" class="modal-overlay">
+  <div class="modal-container" style="max-width:800px;">
+    <div class="modal-header">
+      <span>📖 Python 专业术语大全</span>
+      <button class="modal-close" onclick="closeModal('glossary-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="glossary-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/static-main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script>
+function goToChapter(id) {
+  window.location.href = 'chapter.html?id=' + id;
+}
+function logout() {
+  window.location.href = 'index.html';
+}
+
+// Load courses and render chapter cards
+(async function() {
+  try {
+    const res = await fetch('data/courses.json');
+    const courses = await res.json();
+    const grid = document.getElementById('chapters-grid');
+    let totalKPs = 0, totalEx = 0;
+
+    grid.innerHTML = courses.map(function(ch, idx) {
+      const kpCount = (ch.knowledge_points || []).length;
+      const exCount = (ch.exercises || []).length;
+      totalKPs += kpCount;
+      totalEx += exCount;
+      const pptHtml = ch.ppt_url
+        ? '<a href="' + ch.ppt_url + '" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">📊 查看 PPT</a>'
+        : '';
+      return '<div class="chapter-card animate-in" style="animation-delay: ' + (idx * 0.08) + 's">' +
+        '<span class="card-icon" onclick="goToChapter(' + ch.id + ')">' + ch.icon + '</span>' +
+        '<div class="card-num" onclick="goToChapter(' + ch.id + ')">第 ' + ch.id + ' 章</div>' +
+        '<h3 onclick="goToChapter(' + ch.id + ')">' + ch.title + '</h3>' +
+        '<p onclick="goToChapter(' + ch.id + ')">' + ch.description + '</p>' +
+        '<div class="card-meta" onclick="goToChapter(' + ch.id + ')">' +
+          '<span>📖 ' + kpCount + ' 个知识点</span>' +
+          '<span>✏️ ' + exCount + ' 道练习</span>' +
+        '</div>' +
+        '<div class="progress-wrap" onclick="goToChapter(' + ch.id + ')">' +
+          '<div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>' +
+          '<div class="progress-label">0% 完成</div>' +
+        '</div>' +
+        pptHtml +
+      '</div>';
+    }).join('');
+
+    document.getElementById('stat-chapters').textContent = courses.length;
+    document.getElementById('stat-kps').textContent = totalKPs;
+    document.getElementById('stat-exercises').textContent = totalEx;
+  } catch (e) {
+    document.getElementById('chapters-grid').innerHTML =
+      '<div style="text-align:center;padding:60px;color:var(--red);">课程数据加载失败：' + e.message + '</div>';
+  }
+})();
+</script>
+</body>
+</html>

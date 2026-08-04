@@ -1,0 +1,171 @@
+/*
+ * func_cg_intro.css — 函数章节 CG 开场动画样式
+ * 神秘星空主题
+ */
+
+/* Full-screen overlay */
+#func-cg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #020108;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#func-cg-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#func-cg-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 760px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Code display area */
+#func-cg-code {
+  display: none;
+  width: 100%;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 20px;
+  margin-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 212, 255, 0.3) transparent;
+}
+
+#func-cg-code::-webkit-scrollbar {
+  width: 4px;
+}
+#func-cg-code::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 2px;
+}
+
+.cg-code-line {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 15px;
+  line-height: 1.8;
+  white-space: pre;
+  text-shadow: 0 0 12px currentColor;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+/* Philosophy text */
+#func-cg-philosophy {
+  display: none;
+  width: 100%;
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.cg-philosophy-line {
+  font-size: 20px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 12px 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  text-shadow: 0 0 20px rgba(108, 92, 231, 0.4);
+}
+
+/* Definition */
+#func-cg-definition {
+  display: none;
+  text-align: center;
+  padding: 16px;
+}
+
+.cg-def-label {
+  font-size: 14px;
+  color: rgba(0, 212, 255, 0.6);
+  letter-spacing: 8px;
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+
+.cg-def-text {
+  font-size: 28px;
+  color: #00d4ff;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-shadow: 0 0 30px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 212, 255, 0.2);
+  line-height: 1.4;
+}
+
+/* CTA */
+#func-cg-cta {
+  display: none;
+  text-align: center;
+  font-size: 22px;
+  color: #ffd93d;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-shadow: 0 0 30px rgba(255, 217, 61, 0.4);
+  padding: 20px;
+  opacity: 0;
+}
+
+/* Skip button */
+#func-cg-skip {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s;
+  backdrop-filter: blur(4px);
+}
+
+#func-cg-skip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cg-code-line {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .cg-philosophy-line {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .cg-def-text {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+  #func-cg-cta {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  #func-cg-code {
+    max-height: 40vh;
+    padding: 12px;
+  }
+}
