@@ -1,0 +1,540 @@
+[
+  {
+    "id": 1,
+    "title": "Python 简介与环境搭建",
+    "icon": "🚀",
+    "description": "了解 Python 语言的历史、特点，学会安装 Python 并编写你的第一个程序",
+    "knowledge_points": [
+      {
+        "title": "Python 是什么？",
+        "content": "<h3>Python 的起源</h3><p>Python 由荷兰程序员 <strong>Guido van Rossum</strong>（吉多·范罗苏姆）于 1989 年圣诞节期间开始设计，1991 年发布第一个版本。Guido 当时在荷兰数学与计算机科学研究中心（CWI）工作，他希望创造一种语法简洁、易于阅读的脚本语言。</p><h3>为什么叫 Python？</h3><p>名字来源于 Guido 喜爱的英国喜剧团体 <strong>Monty Python</strong>（蒙提·派森），而不是蟒蛇。这也是为什么 Python 官方文档中经常出现 Monty Python 的梗。</p>\n<h3>Python 的设计哲学</h3><ul><li><strong>优美胜于丑陋</strong>（Beautiful is better than ugly）</li><li><strong>明了胜于晦涩</strong>（Explicit is better than implicit）</li><li><strong>简洁胜于复杂</strong>（Simple is better than complex）</li><li><strong>可读性很重要</strong>（Readability counts）</li></ul><p>在 Python 解释器中输入 <code>import this</code> 可以查看完整的 Python 之禅（The Zen of Python）。</p>\n<h3>Python 的特点</h3><ul><li><strong>简洁优雅</strong>：语法接近自然语言，代码可读性极高，强制缩进使代码结构清晰</li><li><strong>解释型语言</strong>：不需要编译，逐行执行方便调试（实际上 Python 会先将源码编译为字节码 .pyc 再执行）</li><li><strong>动态类型</strong>：变量不需要声明类型，运行时可改变类型，开发效率高</li><li><strong>跨平台</strong>：Windows、macOS、Linux 都能运行，一套代码多平台复用</li><li><strong>丰富的库</strong>：标准库就已非常强大，更有海量第三方库（PyPI 上超过 40 万个包），覆盖 AI、Web、数据分析等领域</li><li><strong>开源免费</strong>：PSF（Python 软件基金会）维护，社区活跃</li></ul>\n<h3>Python 2 vs Python 3</h3><table><tr><th>对比项</th><th>Python 2</th><th>Python 3</th></tr><tr><td>print</td><td>print \"hello\"（语句）</td><td>print(\"hello\")（函数）</td></tr><tr><td>整数除法</td><td>3/2 = 1（截断）</td><td>3/2 = 1.5（浮点）</td></tr><tr><td>Unicode</td><td>默认 ASCII，需声明</td><td>默认 UTF-8</td></tr><tr><td>状态</td><td>2020年已停止维护</td><td>当前主流版本</td></tr></table><p><strong>重要：初学者应学习 Python 3！Python 2 已不再维护。</strong></p>\n<h3>Python 的应用领域</h3><ul><li>人工智能与机器学习（TensorFlow, PyTorch, scikit-learn）</li><li>数据科学与分析（Pandas, NumPy, Matplotlib）</li><li>Web 开发（Django, Flask, FastAPI）</li><li>自动化运维与测试（脚本化重复任务）</li><li>网络爬虫（requests + BeautifulSoup / Scrapy）</li><li>游戏开发（Pygame）</li><li>桌面应用（PyQt, Tkinter）</li></ul>"
+      },
+      {
+        "title": "Python 的安装",
+        "content": "<h3>Windows 安装步骤</h3><ol><li>访问 Python 官网 <a href=\"https://python.org\">python.org</a></li><li>点击 Downloads，选择 Windows 版本（推荐 3.10+）</li><li>下载安装包</li><li><strong>重要：勾选「Add Python to PATH」复选框！</strong> 这让你可以在命令行任意位置运行 Python</li><li>点击 Install Now 完成安装</li><li>打开命令提示符，输入 <code>python --version</code> 验证</li></ol><pre><code>C:\\Users\\你的用户名> python --version\nPython 3.12.3</code></pre><h3>macOS 安装</h3><p>macOS 通常自带 Python 2.x（已废弃），建议使用 Homebrew 安装 Python 3：</p><pre><code>brew install python3</code></pre><p>或者从 python.org 下载 macOS 安装包直接安装。</p><h3>Linux 安装</h3><pre><code># Ubuntu/Debian\nsudo apt update && sudo apt install python3\n\n# CentOS/RHEL\nsudo yum install python3</code></pre><h3>PATH 环境变量</h3><p>「Add Python to PATH」的作用是让系统知道 Python 在哪。如果忘记勾选：</p><ol><li>搜索「编辑系统环境变量」</li><li>点击「环境变量」→ 在 Path 中添加 Python 安装目录（如 <code>C:\\Python312</code>）和 Scripts 目录（如 <code>C:\\Python312\\Scripts</code>）</li></ol><h3>pip 包管理器</h3><p>安装 Python 时会自动安装 <strong>pip</strong>，它是 Python 的包管理器，用于安装第三方库：</p><pre><code>pip install 库名     # 安装库\npip list             # 查看已安装的库\npip uninstall 库名   # 卸载库</code></pre>"
+      },
+      {
+        "title": "第一个 Python 程序",
+        "content": "<h3>Hello, World!</h3><p>创建你的第一个 Python 程序：</p><pre><code>print(\"Hello, World!\")</code></pre><p>运行后屏幕上显示 <code>Hello, World!</code>。</p><h3>运行 Python 代码的三种方式</h3>\n<table><tr><th>方式</th><th>说明</th><th>适用场景</th></tr><tr><td><strong>交互模式</strong></td><td>终端输入 <code>python</code>，逐行输入代码立即执行</td><td>快速测试、临时计算</td></tr><tr><td><strong>脚本模式</strong></td><td>代码写入 .py 文件，用 <code>python 文件名.py</code> 运行</td><td>正式项目、保存代码</td></tr><tr><td><strong>IDE 运行</strong></td><td>在 VS Code / PyCharm 中按 F5 或点击运行按钮</td><td>日常开发最常用</td></tr></table>\n<h3>交互模式详解</h3><pre><code>$ python\n>>> 2 + 3\n5\n>>> print(\"Hello\")\nHello\n>>> exit()  # 退出交互模式</code></pre><p>交互模式中 <code>>>></code> 是提示符，表示 Python 已准备好接收指令。</p>\n<h3>Python 脚本结构</h3><pre><code>#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\"\"\"这是脚本的文档字符串，描述脚本功能\"\"\"\n\n# 导入模块\nimport math\n\n# 定义函数\ndef greet(name):\n    return f\"你好，{name}！\"\n\n# 主程序入口\nif __name__ == \"__main__\":\n    print(greet(\"世界\"))\n    print(f\"圆周率是 {math.pi}\")</code></pre><p><code>if __name__ == \"__main__\"</code> 是 Python 的常见模式，表示「当这个文件被直接运行时才执行以下代码」。</p>"
+      },
+      {
+        "title": "IDE 与代码编辑器",
+        "content": "<h3>常用开发工具对比</h3><table><tr><th>工具</th><th>特点</th><th>价格</th><th>适合人群</th></tr><tr><td><strong>IDLE</strong></td><td>Python 自带，简单轻量，无需安装</td><td>免费</td><td>初学者快速体验</td></tr><tr><td><strong>VS Code</strong></td><td>微软出品，免费开源，插件市场丰富，启动快</td><td>免费</td><td>绝大多数开发者（推荐！）</td></tr><tr><td><strong>PyCharm</strong></td><td>JetBrains 出品，专业 Python IDE，智能补全、重构</td><td>社区版免费</td><td>专业 Python 开发者</td></tr><tr><td><strong>Jupyter Notebook</strong></td><td>浏览器中交互编程，代码+文档+图表一体</td><td>免费</td><td>数据科学家、教学</td></tr><tr><td><strong>Thonny</strong></td><td>专为 Python 初学者设计，简单直观</td><td>免费</td><td>零基础入门</td></tr></table>\n<h3>推荐：VS Code 配置 Python</h3><ol><li>安装 VS Code（<a href=\"https://code.visualstudio.com\">code.visualstudio.com</a>）</li><li>打开 VS Code → 左侧扩展图标（Ctrl+Shift+X）</li><li>搜索并安装 <strong>Python</strong> 扩展（Microsoft 官方）</li><li>还可以安装：<strong>Pylance</strong>（智能提示）、<strong>Python Debugger</strong>（调试）</li><li>创建一个 .py 文件，开始写代码</li></ol><h3>写代码的基本流程</h3><ol><li><strong>创建文件</strong>：新建一个 .py 文件</li><li><strong>编写代码</strong>：在编辑器中输入代码</li><li><strong>运行代码</strong>：按 F5 或在终端中运行</li><li><strong>查看结果</strong>：在终端中查看输出</li><li><strong>修改调试</strong>：根据报错信息修改代码</li></ol><p><strong>小建议：</strong>新手从 IDLE 或 Thonny 开始，熟悉后换 VS Code。不要一上来就配 PyCharm，太复杂反而劝退。</p>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "Python 语言的名字来源于什么？",
+        "options": [
+          "A. 一种蛇",
+          "B. 一个喜剧团体 Monty Python",
+          "C. 发明者的名字",
+          "D. 一个地名"
+        ],
+        "answer": 1,
+        "explanation": "Python 的名字来源于 Guido van Rossum 喜爱的英国喜剧团体 Monty Python（蒙提·派森），而不是蟒蛇。这也是为什么 Python 官方文档中经常出现 Monty Python 的梗。"
+      },
+      {
+        "question": "以下哪个是正确的 Python 输出语句？",
+        "options": [
+          "A. printf(\"Hello\")",
+          "B. console.log(\"Hello\")",
+          "C. print(\"Hello\")",
+          "D. echo \"Hello\""
+        ],
+        "answer": 2,
+        "explanation": "Python 使用 <code>print()</code> 函数进行输出。A 是 C 语言的写法，B 是 JavaScript 的写法，D 是 PHP/Shell 的写法。Python 的设计哲学是简洁明了，<code>print</code> 这个单词本身就是「打印」的意思，非常直观。"
+      },
+      {
+        "question": "Python 是编译型语言还是解释型语言？",
+        "options": [
+          "A. 编译型",
+          "B. 解释型",
+          "C. 两者都是",
+          "D. 两者都不是"
+        ],
+        "answer": 1,
+        "explanation": "Python 是<strong>解释型语言</strong>。代码在运行时由 Python 解释器逐行翻译成机器码并执行，不需要预先编译。不过实际上 Python 会先将源码编译成字节码（.pyc），然后再由虚拟机执行，但从使用角度看它属于解释型语言。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/JeXMsQ0J2lYuW1dGPXPchL1znDh",
+    "mindmap": "# Python 简介与环境搭建\n## Python 是什么\n### Guido van Rossum 1989年创造\n### 名字来源: Monty Python 喜剧团\n### 核心特点\n#### 简洁优雅，可读性高\n#### 解释型语言，无需编译\n#### 动态类型，自动推断\n#### 跨平台: Windows/macOS/Linux\n#### 丰富第三方库生态\n#### 开源免费\n### 应用领域\n#### AI & 机器学习(TensorFlow/PyTorch)\n#### 数据科学(Pandas/NumPy)\n#### Web开发(Django/Flask)\n#### 自动化运维与测试\n#### 网络爬虫 / 游戏开发\n## Python 安装\n### Windows\n#### 官网下载 python.org\n#### 勾选 Add Python to PATH\n#### 验证: python --version\n### macOS: brew install python3\n## 第一个程序\n### print(\"Hello, World!\")\n### print() 是内置输出函数\n### 交互模式 vs 脚本模式\n#### 交互: 终端逐行执行\n#### 脚本: .py 文件批量运行\n## IDE 编辑器\n### IDLE: 自带轻量\n### VS Code: 免费插件丰富[推荐]\n### PyCharm: 专业IDE\n### Jupyter: 交互式数据分析"
+  },
+  {
+    "id": 2,
+    "title": "变量与数据类型",
+    "icon": "📦",
+    "description": "学习如何存储数据，认识 Python 中的数字、字符串、布尔值等基本数据类型",
+    "knowledge_points": [
+      {
+        "title": "什么是变量？",
+        "content": "<h3>变量的概念</h3><p>变量是一个<strong>存储数据的容器</strong>。想象你有一个贴了标签的盒子，标签叫 <code>name</code>，盒子里装着 <code>\"Alice\"</code>，以后提到 <code>name</code> 就知道里面是什么。</p><pre><code>name = \"Alice\"   # 把 \"Alice\" 放进贴了 name 标签的盒子\nage = 25          # 把 25 放进贴了 age 标签的盒子\nprint(name)       # 输出盒子里的内容 → Alice</code></pre>\n<h3>Python 变量 vs 其他语言</h3><p>Python 不需要声明变量类型：</p><pre><code># Java/C++ 风格（Python 不需要这样做）\nint age = 25;      # 声明类型\nString name = \"Tom\";  # 声明类型\n\n# Python 风格（直接赋值，自动推断类型）\nage = 25           # Python 自动知道这是整数\nname = \"Tom\"       # Python 自动知道这是字符串</code></pre>\n<h3>变量命名规则（必记！）</h3><ul><li>只能包含<strong>字母、数字和下划线</strong>（_）</li><li><strong>不能以数字开头</strong></li><li><strong>区分大小写</strong>（name、Name、NAME 是三个不同变量）</li><li><strong>不能使用 Python 关键字</strong>（如 if、for、while、class、def 等）</li></ul><pre><code># ✅ 合法的变量名\nname = \"Alice\"\nage = 25\nuser_name = \"bob\"\n_count = 100         # 下划线开头也合法（常用于私有变量）\n名字 = \"小明\"         # Python 3 支持中文变量名（但不推荐）\n\n# ❌ 不合法的变量名\n2name = \"error\"      # 不能以数字开头\nmy-name = \"error\"    # 不能使用连字符\nif = 10              # 不能使用关键字</code></pre>\n<h3>命名规范（PEP 8 官方推荐）</h3><ul><li><strong>变量和函数</strong>：小写字母 + 下划线 <code>my_variable</code>、<code>calculate_score()</code></li><li><strong>类名</strong>：大驼峰 <code>StudentRecord</code>、<code>DataAnalyzer</code></li><li><strong>常量</strong>：全大写 + 下划线 <code>MAX_SIZE = 100</code>、<code>PI = 3.14</code></li><li><strong>见名知意</strong>：<code>student_name</code> 远好于 <code>sn</code> 或 <code>s</code></li></ul><h3>变量重新赋值与类型变化</h3><pre><code>x = 10        # x 是整数\nprint(x)      # 10\nx = \"hello\"   # x 现在是字符串了（Python 允许这样做）\nprint(x)      # hello\nx = [1,2,3]   # x 又变成列表了\nprint(x)      # [1, 2, 3]</code></pre><p>这叫<strong>动态类型</strong>——同一个变量在不同时刻可以指向不同类型的数据。</p>"
+      },
+      {
+        "title": "数字类型",
+        "content": "<h3>整数（int）</h3><p>没有小数点的数字。Python 3 中整数可以<strong>任意大</strong>（不受 32 位或 64 位限制），只要内存够大：</p><pre><code>age = 25\nyear = 2024\npopulation = 8_000_000_000  # 下划线作为千分位分隔符，更易读\nbig = 123456789012345678901234567890  # Python 自动处理大整数</code></pre><h3>浮点数（float）</h3><p>带小数点的数字。计算机用 IEEE 754 标准存储浮点数，存在精度问题：</p><pre><code>pi = 3.1415926\nheight = 1.75\nspeed_of_light = 3e8  # 科学计数法：3 × 10⁸\n\n# ⚠️ 浮点数精度问题\nprint(0.1 + 0.2)       # 0.30000000000000004（不是精确的 0.3！）\nprint(0.1 + 0.2 == 0.3)  # False！\n\n# 解决方案：用 round() 或 decimal 模块\nprint(round(0.1 + 0.2, 1))  # 0.3 ✓</code></pre>\n<h3>复数（complex）</h3><p>Python 原生支持复数，数学和工程计算很方便：</p><pre><code>c = 3 + 4j\nprint(c.real)    # 3.0（实部）\nprint(c.imag)    # 4.0（虚部）\nprint(abs(c))    # 5.0（模长 = sqrt(3²+4²)）\nprint(c * c)     # (-7+24j)</code></pre>\n<h3>类型判断与转换</h3><pre><code># 判断类型\nprint(type(42))        # &lt;class 'int'&gt;\nprint(type(3.14))      # &lt;class 'float'&gt;\nprint(isinstance(42, int))  # True\n\n# 类型转换\nint(\"123\")      # 123（字符串→整数）\nint(3.99)       # 3（浮点→整数，直接截断不四舍五入）\nfloat(\"3.14\")   # 3.14\nfloat(10)       # 10.0\nstr(100)        # \"100\"（数字→字符串）\nbool(0)         # False\nbool(\"hello\")   # True（非空字符串为 True）</code></pre>\n<h3>常用数值运算</h3><pre><code>print(abs(-5))       # 5（绝对值）\nprint(pow(2, 10))    # 1024（2的10次方，等价于 2**10）\nprint(divmod(17, 5)) # (3, 2)（商和余数）\nprint(max(1,5,3))    # 5（取最大值）\nprint(min(1,5,3))    # 1（取最小值）\nprint(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>"
+      },
+      {
+        "title": "字符串类型（str）",
+        "content": "<h3>创建字符串的四种方式</h3><pre><code>s1 = 'Hello'              # 单引号\ns2 = \"Python\"             # 双引号（效果相同）\ns3 = '''第一行\n第二行\n第三行'''                  # 三单引号：保留换行\ns4 = \"\"\"也是多行\n字符串\"\"\"                  # 三双引号：常用于文档字符串(docstring)</code></pre><p><strong>引号的选择：</strong>单引号和双引号在 Python 中完全等价。当字符串内含引号时交替使用：<code>\"I'm fine\"</code> 或 <code>'他说\"你好\"'</code>。</p>\n<h3>转义字符</h3><table><tr><th>转义</th><th>含义</th><th>转义</th><th>含义</th></tr><tr><td>\\n</td><td>换行</td><td>\\t</td><td>制表符(Tab)</td></tr><tr><td>\\\\</td><td>反斜杠本身</td><td>\\'</td><td>单引号</td></tr><tr><td>\\\"</td><td>双引号</td><td>\\r</td><td>回车</td></tr></table>\n<pre><code>print(\"第一行\\n第二行\")   # 换行输出\nprint(\"他说：\\\"你好\\\"\")    # 在字符串中包含引号\nprint(\"路径：C:\\\\\\Users\\\\Admin\")  # 路径中的反斜杠</code></pre>\n<h3>原始字符串（raw string）</h3><pre><code># 原始字符串中 \\ 就是普通的 \\，不用转义\npath = r\"C:\\Users\\Admin\\Documents\"  # r 前缀\nprint(path)  # C:\\Users\\Admin\\Documents</code></pre>\n<h3>字符串基本操作</h3><pre><code>name = \"Alice\"\n# 拼接\ngreeting = \"Hello, \" + name  # \"Hello, Alice\"\n# 重复\nprint(\"Hi\" * 3)       # \"HiHiHi\"\n# 长度\nprint(len(name))      # 5\n# 索引（从 0 开始）\nprint(name[0])        # \"A\"\nprint(name[-1])       # \"e\"（倒数第一个）\nprint(name[-2])       # \"c\"（倒数第二个）\n# 成员检查\nprint(\"li\" in name)   # True</code></pre>\n<h3>f-string 格式化（Python 3.6+，推荐！）</h3><pre><code>name = \"Bob\"\nage = 20\nscore = 92.567\n# 基本用法\nprint(f\"我叫{name}，今年{age}岁\")\n# 表达式直接嵌入\nprint(f\"明年{age + 1}岁\")\n# 格式控制\nprint(f\"分数：{score:.1f}\")     # 92.6（保留1位小数）\nprint(f\"{name:>10}\")            # \"      Bob\"（右对齐，占10格）\nprint(f\"{name:*^10}\")           # \"***Bob****\"（居中对齐，*填充）\n# 大数字千分位\nnum = 1234567890\nprint(f\"{num:,}\")               # 1,234,567,890</code></pre>\n<h3>字符串不可变性</h3><pre><code>s = \"Hello\"\n# s[0] = \"h\"   # ❌ 报错！字符串不能修改单个字符\ns = \"h\" + s[1:]  # ✅ 正确做法：创建新字符串\nprint(s)         # \"hello\"</code></pre>"
+      },
+      {
+        "title": "布尔类型与 None",
+        "content": "<h3>布尔值（bool）</h3><p>只有两个值：<strong>True</strong> 和 <strong>False</strong>。注意首字母必须<strong>大写</strong>！</p><pre><code>is_student = True\nis_raining = False\nprint(10 > 5)     # True\nprint(3 == 5)     # False</code></pre>\n<h3>哪些值被视为 False？</h3><p>在条件判断中，以下值等同于 False（称为 <strong>falsy</strong> 值）：</p><table><tr><th>类型</th><th>Falsy 值</th></tr><tr><td>数字</td><td>0, 0.0, 0j</td></tr><tr><td>字符串</td><td>\"\"（空字符串）</td></tr><tr><td>容器</td><td>[]（空列表）、{}（空字典）、()（空元组）、set()（空集合）</td></tr><tr><td>None</td><td>None</td></tr><tr><td>布尔</td><td>False</td></tr></table><p>除此以外的所有值都视为 True（<strong>truthy</strong>）。</p>\n<pre><code># 利用 falsy/truthy 写的简洁条件\nname = \"\"          # 空字符串是 falsy\nif not name:       # 等价于 if name == \"\"\n    print(\"名字不能为空\")\n\nitems = []         # 空列表是 falsy\nif items:          # 等价于 if len(items) > 0\n    print(\"有内容\")\nelse:\n    print(\"列表为空\")</code></pre>\n<h3>None 类型</h3><p><code>None</code> 代表「没有值」或「空」，是 Python 的<strong>空对象</strong>。常用于：</p><ul><li>函数的默认返回值（无 return 语句时返回 None）</li><li>表示变量尚未赋值</li><li>初始化占位</li></ul><pre><code>result = None  # 先占个位，后面再赋值\nif result is None:\n    print(\"还没有结果\")\n# 判断 None 应该用 is，而不是 ==\n# None 是单例，is 更快且不会被自定义 __eq__ 干扰</code></pre>\n<h3>布尔运算</h3><pre><code># and: 两者都 True 才返回 True\nprint(True and True)   # True\nprint(True and False)  # False\n\n# or: 一个为 True 就返回 True\nprint(True or False)   # True\nprint(False or False)  # False\n\n# not: 取反\nprint(not True)   # False\nprint(not False)  # True</code></pre>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "以下哪个变量名是合法的？",
+        "options": [
+          "A. 2player",
+          "B. my-name",
+          "C. _count",
+          "D. class"
+        ],
+        "answer": 2,
+        "explanation": "<code>_count</code> 以下划线开头是合法的变量名。A 以数字开头不合法，B 包含连字符不合法，D 中 class 是 Python 关键字，不能用作变量名。"
+      },
+      {
+        "question": "执行 print(type(3.14)) 会输出什么？",
+        "options": [
+          "A. <class 'int'>",
+          "B. <class 'float'>",
+          "C. <class 'str'>",
+          "D. <class 'bool'>"
+        ],
+        "answer": 1,
+        "explanation": "3.14 是一个带小数点的数字，属于 <code>float</code>（浮点数）类型。<code>type()</code> 函数用于查看数据的类型。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh",
+    "mindmap": "# 变量与数据类型\n## 变量概念\n### 存储数据的容器(贴标签的盒子)\n### 命名规则\n#### 字母、数字、下划线组成\n#### 不能以数字开头\n#### 区分大小写(name != Name)\n#### 不能用关键字(if/for/while)\n### 命名规范(PEP 8)\n#### 小写+下划线: user_name\n#### 见名知意: student_name > sn\n## 数字类型\n### int 整数: 无小数点\n### float 浮点数: 3.14, -5.5\n### complex 复数: 3+4j\n### 类型转换\n#### int(\"123\") -> 123\n#### float(\"3.14\") -> 3.14\n#### str(100) -> \"100\"\n## 字符串 str\n### 创建方式\n#### 单引号 'Hello'\n#### 双引号 \"World\"\n#### 三引号 '''多行'''\n### 常用操作\n#### + 拼接, * 重复\n#### len() 长度\n#### 索引[0]/[-1] 取值\n### f-string 格式化\n#### f\"我叫{name}今年{age}岁\"\n## 布尔与None\n### True / False 首字母大写\n### False值: 0, \"\", [], None\n### None 表示\"没有值\""
+  },
+  {
+    "id": 3,
+    "title": "运算符与表达式",
+    "icon": "⚡",
+    "description": "掌握算术、比较、逻辑、赋值等运算符，理解运算优先级",
+    "knowledge_points": [
+      {
+        "title": "算术运算符",
+        "content": "<h3>算术运算符一览</h3><table><tr><th>运算符</th><th>说明</th><th>示例</th><th>结果</th></tr><tr><td>+</td><td>加法</td><td>3 + 2</td><td>5</td></tr><tr><td>-</td><td>减法</td><td>3 - 2</td><td>1</td></tr><tr><td>*</td><td>乘法</td><td>3 * 2</td><td>6</td></tr><tr><td>/</td><td>除法（浮点）</td><td>7 / 2</td><td>3.5</td></tr><tr><td>//</td><td>整除</td><td>7 // 2</td><td>3</td></tr><tr><td>%</td><td>取余（取模）</td><td>7 % 2</td><td>1</td></tr><tr><td>**</td><td>幂运算</td><td>2 ** 3</td><td>8</td></tr></table>\n<h3>重点辨析：/ vs //</h3><pre><code>print(7 / 2)    # 3.5（普通除法，总是返回 float）\nprint(7 // 2)   # 3（整除，向下取整，丢弃小数部分）\nprint(-7 // 2)  # -4（注意！向下取整：-3.5 → -4，不是 -3）\nprint(int(-7 / 2))  # -3（int() 是向零截断，与 // 不同！）</code></pre>\n<h3>% 取模的妙用</h3><pre><code># 判断奇偶\nnum = 7\nif num % 2 == 0:\n    print(\"偶数\")\nelse:\n    print(\"奇数\")\n\n# 循环数组\ncolors = [\"红\", \"绿\", \"蓝\"]\nfor i in range(10):\n    print(colors[i % 3])  # 红绿蓝红绿蓝红绿蓝红\n\n# 获取个位数\nprint(1234 % 10)   # 4\nprint(1234 % 100)  # 34</code></pre>\n<h3>** 幂运算</h3><pre><code>print(2 ** 10)    # 1024（2的10次方）\nprint(4 ** 0.5)   # 2.0（开平方根）\nprint(8 ** (1/3)) # 2.0（开立方根）</code></pre>"
+      },
+      {
+        "title": "比较运算符",
+        "content": "<h3>比较运算符</h3><table><tr><th>运算符</th><th>说明</th><th>示例</th></tr><tr><td>==</td><td>等于</td><td>5 == 5 → True</td></tr><tr><td>!=</td><td>不等于</td><td>5 != 3 → True</td></tr><tr><td>></td><td>大于</td><td>5 > 3 → True</td></tr><tr><td><</td><td>小于</td><td>5 < 3 → False</td></tr><tr><td>>=</td><td>大于等于</td><td>5 >= 5 → True</td></tr><tr><td><=</td><td>小于等于</td><td>5 <= 3 → False</td></tr></table><p>比较运算符返回<strong>布尔值</strong>，常用于条件判断和循环中。</p>\n<h3>== vs is（重要！）</h3><pre><code># == 比较值是否相等\n# is 比较是否是同一个对象（同一内存地址）\na = [1, 2, 3]\nb = [1, 2, 3]\nprint(a == b)  # True（值相同）\nprint(a is b)  # False（不同的列表对象）\n\n# 对于小整数和短字符串，Python 有缓存机制\nx = 256\ny = 256\nprint(x is y)  # True（小整数被缓存）\n\nx = 257\ny = 257\nprint(x is y)  # 可能是 False（大整数不一定缓存）</code></pre>\n<h3>链式比较（Python 特色语法）</h3><pre><code># Python 支持链式比较！\nage = 25\n# 等价于 age >= 18 and age <= 60\nif 18 <= age <= 60:\n    print(\"成年人\")\n\nx = 10\nprint(1 < x < 20)  # True（等价于 1 < x and x < 20）\nprint(1 < x > 5)   # True（等价于 1 < x and x > 5，但这样写容易混淆）</code></pre>"
+      },
+      {
+        "title": "逻辑运算符",
+        "content": "<h3>逻辑运算符</h3><table><tr><th>运算符</th><th>说明</th><th>示例</th></tr><tr><td>and</td><td>与（两边都为 True 才返回 True）</td><td>True and False → False</td></tr><tr><td>or</td><td>或（一边为 True 就返回 True）</td><td>True or False → True</td></tr><tr><td>not</td><td>非（取反）</td><td>not True → False</td></tr></table>\n<h3>短路求值（Short-circuit Evaluation）</h3><p>Python 的逻辑运算会在能确定结果时立即停止：</p><pre><code># and: 第一个为 False 就不看第二个\ndef expensive_check():\n    print(\"执行了耗时检查\")\n    return True\n\nFalse and expensive_check()  # \"执行了耗时检查\"不会被打印，因为 False 已经确定了\n\n# or: 第一个为 True 就不看第二个\nTrue or expensive_check()  # \"执行了耗时检查\"不会被打印，因为 True 已经确定了</code></pre>\n<h3>短路求值的实用技巧</h3><pre><code># 安全访问：如果 name 非空才访问 .upper()\nname = \"\" or \"默认名称\"\nprint(name)  # \"默认名称\"\n\n# 防止除零\nb = 0\nresult = b != 0 and (10 / b)  # False，不会执行除法\nprint(result)  # False\n\n# 条件赋值\nuser_input = input(\"输入名字: \")\ndisplay_name = user_input or \"匿名用户\"  # 如果 user_input 为空就用默认值\nprint(display_name)</code></pre>\n<h3>逻辑运算 vs 位运算</h3><pre><code># 逻辑运算（操作布尔值）\nprint(True and False)  # False\n\n# 位运算（操作整数二进制位）—— 先了解一下，后面会详细学\nprint(5 & 3)   # 1（按位与：101 & 011 = 001）\nprint(5 | 3)   # 7（按位或：101 | 011 = 111）\nprint(~5)      # -6（按位取反）\nprint(5 ^ 3)   # 6（按位异或：101 ^ 011 = 110）</code></pre>"
+      },
+      {
+        "title": "赋值运算符",
+        "content": "<h3>赋值运算符</h3><table><tr><th>运算符</th><th>等价于</th></tr><tr><td>x += 3</td><td>x = x + 3</td></tr><tr><td>x -= 3</td><td>x = x - 3</td></tr><tr><td>x *= 3</td><td>x = x * 3</td></tr><tr><td>x /= 3</td><td>x = x / 3</td></tr><tr><td>x //= 3</td><td>x = x // 3</td></tr><tr><td>x %= 3</td><td>x = x % 3</td></tr><tr><td>x **= 3</td><td>x = x ** 3</td></tr></table>\n<h3>多重赋值与元组解包</h3><pre><code># 同时赋值\na = b = c = 100       # 三个变量都是 100\n\n# 元组解包（最优雅的 Python 特性之一）\nx, y = 10, 20         # x=10, y=20\nx, y = y, x           # 交换变量值！不需要临时变量\n\n# 多返回值接住\ndef get_user():\n    return \"张三\", 25, \"北京\"\nname, age, city = get_user()  # 一次性解包\nprint(f\"{name}，{age}岁，来自{city}\")\n\n# 用 * 收集剩余\nfirst, *rest = [1, 2, 3, 4, 5]\nprint(first)  # 1\nprint(rest)   # [2, 3, 4, 5]\n\n*head, last = [1, 2, 3, 4, 5]\nprint(head)  # [1, 2, 3, 4]\nprint(last)  # 5</code></pre>\n<h3>海象运算符 :=（Python 3.8+）</h3><pre><code># 在表达式中赋值并立即使用\n# 传统写法\nn = len(data)\nif n > 10:\n    print(f\"数据有{n}条\")\n\n# 海象运算符写法\nif (n := len(data)) > 10:\n    print(f\"数据有{n}条\")\n\n# 在 while 中特别有用\nwhile (line := file.readline()):\n    process(line)</code></pre>\n<h3>运算符优先级（从高到低）</h3><table><tr><th>优先级</th><th>运算符</th></tr><tr><td>最高</td><td>() 括号</td></tr><tr><td></td><td>** 幂运算</td></tr><tr><td></td><td>-x（一元负号）</td></tr><tr><td></td><td>* / // %</td></tr><tr><td></td><td>+ -</td></tr><tr><td></td><td>< <= > >= == !=</td></tr><tr><td></td><td>not</td></tr><tr><td></td><td>and</td></tr><tr><td>最低</td><td>or</td></tr></table><p><strong>记不住？加括号！</strong> <code>(a + b) * c</code> 比 <code>a + b * c</code> 更清晰。</p>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "表达式 17 % 5 的结果是多少？",
+        "options": [
+          "A. 3",
+          "B. 2",
+          "C. 5",
+          "D. 1"
+        ],
+        "answer": 1,
+        "explanation": "17 ÷ 5 = 3 余 <strong>2</strong>，所以 <code>17 % 5</code> 的结果是 2。<code>%</code> 是取余运算符，返回除法后的余数。"
+      },
+      {
+        "question": "执行 print(3 ** 2) 会输出什么？",
+        "options": [
+          "A. 6",
+          "B. 9",
+          "C. 8",
+          "D. 5"
+        ],
+        "answer": 1,
+        "explanation": "<code>**</code> 是幂运算符，<code>3 ** 2</code> 表示 3 的 2 次方，即 3 × 3 = <strong>9</strong>。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh",
+    "mindmap": "# 运算符与表达式\n## 算术运算符\n### + 加法 / - 减法\n### * 乘法 / ** 幂运算\n### / 除法(浮点) / // 整除(向下取整)\n### % 取模(取余数)\n## 比较运算符\n### == 等于 / != 不等于\n### > 大于 / < 小于\n### >= 大于等于 / <= 小于等于\n### 结果: True 或 False\n## 逻辑运算符\n### and 与: 两者都为True才为True\n### or 或: 一个为True即为True\n### not 非: 取反\n### 短路求值特性\n#### a and b: a为False跳过b\n#### a or b: a为True跳过b\n## 赋值运算符\n### = 基本赋值\n### += -= *= /= 复合赋值\n### 多重赋值: a = b = c = 100\n### 元组解包: x, y = 10, 20\n### 变量交换: a, b = b, a\n## 运算符优先级\n### ** > * / // % > + -\n### 比较 > not > and > or\n### () 括号改变优先级"
+  },
+  {
+    "id": 4,
+    "title": "条件判断与循环",
+    "icon": "🔄",
+    "description": "学习 if-elif-else 条件分支、for/while 循环，让程序拥有决策和重复执行的能力",
+    "knowledge_points": [
+      {
+        "title": "if 条件语句",
+        "content": "<h3>基本结构</h3><pre><code>age = 18\n\nif age >= 18:\n    print(\"你已成年\")\nelse:\n    print(\"你未成年\")</code></pre>\n<h3>多分支结构（if-elif-else）</h3><pre><code>score = 85\n\nif score >= 90:\n    grade = \"A\"\nelif score >= 80:\n    grade = \"B\"\nelif score >= 70:\n    grade = \"C\"\nelif score >= 60:\n    grade = \"D\"\nelse:\n    grade = \"F\"\n\nprint(f\"你的等级是：{grade}\")  # B</code></pre>\n<h3>关键规则</h3><ul><li><strong>缩进</strong>：Python 用缩进（4 个空格）表示代码块，同一块的缩进必须一致</li><li><strong>冒号</strong>：每个 if / elif / else 后面必须有冒号 <code>:</code></li><li><strong>elif 可以有多个</strong>，按顺序检查，命中一个就跳过后面的</li><li><strong>else 可选</strong>：不需要默认分支时可以省略</li></ul>\n<h3>三元表达式（条件表达式）</h3><p>一行代码完成简单判断：</p><pre><code>age = 20\nstatus = \"成年\" if age >= 18 else \"未成年\"\nprint(status)  # 成年\n\n# 等价于：\nif age >= 18:\n    status = \"成年\"\nelse:\n    status = \"未成年\"</code></pre>\n<h3>嵌套 if 与常见陷阱</h3><pre><code># 嵌套判断\nscore = 85\nif score >= 60:\n    if score >= 90:\n        print(\"优秀\")\n    elif score >= 80:\n        print(\"良好\")\n    else:\n        print(\"及格\")\nelse:\n    print(\"不及格\")\n\n# ⚠️ 经典错误：条件写成了赋值\n# if x = 5:  # ❌ 语法错误！= 是赋值，== 才是比较\n# if x == 5: # ✅ 正确</code></pre>"
+      },
+      {
+        "title": "for 循环",
+        "content": "<h3>遍历序列</h3><pre><code># 遍历列表\nfruits = [\"苹果\", \"香蕉\", \"橙子\"]\nfor fruit in fruits:\n    print(f\"我爱吃{fruit}\")\n\n# 遍历字符串\nfor char in \"Python\":\n    print(char)\n# P y t h o n\n\n# 遍历字典\nd = {\"name\": \"张三\", \"age\": 20}\nfor key in d:         # 默认遍历键\n    print(key)\nfor val in d.values(): # 遍历值\n    print(val)\nfor k, v in d.items(): # 遍历键值对\n    print(f\"{k}: {v}\")</code></pre>\n<h3>range() 函数详解</h3><pre><code># range(stop)：0 到 stop-1\nprint(list(range(5)))  # [0, 1, 2, 3, 4]\n\n# range(start, stop)：start 到 stop-1\nprint(list(range(2, 6)))  # [2, 3, 4, 5]\n\n# range(start, stop, step)：步长\nprint(list(range(1, 10, 2)))  # [1, 3, 5, 7, 9]\nprint(list(range(10, 0, -1)))  # [10, 9, 8, 7, 6, 5, 4, 3, 2, 1] 倒序！</code></pre>\n<h3>enumerate() 获取索引</h3><pre><code>names = [\"Alice\", \"Bob\", \"Charlie\"]\n# 同时拿到索引和值\nfor i, name in enumerate(names):\n    print(f\"{i}: {name}\")\n# 0: Alice  1: Bob  2: Charlie\n\n# 从指定序号开始\nfor i, name in enumerate(names, start=1):\n    print(f\"{i}: {name}\")\n# 1: Alice  2: Bob  3: Charlie</code></pre>\n<h3>zip() 并行遍历</h3><pre><code>names = [\"张三\", \"李四\", \"王五\"]\nscores = [85, 92, 78]\nfor name, score in zip(names, scores):\n    print(f\"{name}: {score}分\")</code></pre>\n<h3>列表推导式替代简单 for</h3><pre><code># 传统方式\nsquares = []\nfor x in range(10):\n    squares.append(x**2)\n\n# 列表推导式（更简洁）\nsquares = [x**2 for x in range(10)]</code></pre>"
+      },
+      {
+        "title": "while 循环",
+        "content": "<h3>基本结构</h3><pre><code>count = 0\nwhile count < 5:\n    print(f\"第{count}次\")\n    count += 1    # 必须有的递增，否则会死循环！\n# 输出: 0 1 2 3 4</code></pre>\n<h3>无限循环与 break</h3><pre><code># 经典模式：无限循环 + 条件跳出\nwhile True:\n    user_input = input(\"输入 'quit' 退出: \")\n    if user_input == 'quit':\n        break     # 立即跳出循环\n    print(f\"你输入了: {user_input}\")\n\n# break 只跳出最内层循环\nfor i in range(3):\n    for j in range(3):\n        if j == 1:\n            break       # 只跳出内层 for j 循环\n        print(f\"({i},{j})\", end=\" \")\n    print()  # 换行</code></pre>\n<h3>continue 跳过当前迭代</h3><pre><code># 只打印奇数\nfor i in range(10):\n    if i % 2 == 0:\n        continue  # 跳到下一次循环，不执行后面的 print\n    print(i, end=\" \")  # 1 3 5 7 9</code></pre>\n<h3>for vs while 选择指南</h3><table><tr><th>场景</th><th>推荐</th><th>原因</th></tr><tr><td>遍历已知序列</td><td>for</td><td>简洁安全，不会死循环</td></tr><tr><td>知道循环次数</td><td>for i in range()</td><td>明确控制次数</td></tr><tr><td>依赖外部条件</td><td>while</td><td>条件灵活</td></tr><tr><td>等待用户输入</td><td>while True + break</td><td>经典模式</td></tr></table>\n<h3>else 子句（Python 特色）</h3><pre><code># for/while 循环可以接 else！\n# else 在循环正常结束（非 break）时执行\n\nfor n in range(2, 10):\n    for x in range(2, n):\n        if n % x == 0:\n            print(f\"{n} = {x}*{n//x}\")\n            break\n    else:  # 这个 else 属于 for，不是 if！\n        print(f\"{n} 是质数\")</code></pre>\n<h3>死循环的预防</h3><pre><code># ❌ 死循环\n# while True:\n#     print(\"停不下来...\")\n\n# ✅ 安全模式\nmax_iterations = 1000\ncount = 0\nwhile True:\n    # ... do something ...\n    count += 1\n    if count > max_iterations:\n        print(\"达到最大迭代次数，强制退出\")\n        break</code></pre>"
+      },
+      {
+        "title": "嵌套循环",
+        "content": "<h3>嵌套循环示例</h3><h3>九九乘法表</h3><pre><code>for i in range(1, 10):       # 外层：行\n    for j in range(1, i + 1):  # 内层：列（每行列数递增）\n        print(f\"{j}×{i}={i*j}\", end=\"\\t\")\n    print()  # 每行结束换行</code></pre><h3>嵌套循环注意事项</h3><ul><li><strong>复杂度</strong>：双重循环 O(n²)，三重 O(n³)。数据量大时注意性能</li><li><strong>break 只跳出最内层</strong>：要跳出外层需用标志变量或封装成函数用 return</li><li><strong>避免过深嵌套</strong>：超过三层时考虑重构（提取函数、用列表推导式等）</li></ul>\n<h3>跳出多层循环的技巧</h3><pre><code># 方法1：标志变量\nfound = False\nfor i in range(10):\n    for j in range(10):\n        if i * j > 50:\n            found = True\n            break   # 跳出内层\n    if found:\n        break       # 跳出外层\n\n# 方法2：封装成函数 + return（推荐！）\ndef search():\n    for i in range(10):\n        for j in range(10):\n            if i * j > 50:\n                return i, j  # 直接返回，跳出所有循环\nresult = search()</code></pre>\n<h3>综合练习：打印图形</h3><pre><code># 直角三角形\nfor i in range(1, 6):\n    print(\"*\" * i)\n\n# 等腰三角形\nfor i in range(1, 6):\n    print(\" \" * (5 - i) + \"*\" * (2 * i - 1))\n\n# 菱形\nn = 5\nfor i in range(1, n+1):\n    print(\" \"*(n-i) + \"*\"*(2*i-1))\nfor i in range(n-1, 0, -1):\n    print(\" \"*(n-i) + \"*\"*(2*i-1))</code></pre>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "以下代码的输出是什么？\nfor i in range(1, 5):\n    if i == 3:\n        continue\n    print(i, end=' ')",
+        "options": [
+          "A. 1 2 3 4",
+          "B. 1 2 4",
+          "C. 1 2",
+          "D. 1 2 3"
+        ],
+        "answer": 1,
+        "explanation": "range(1,5) 产生 1,2,3,4。当 i=3 时，<code>continue</code> 跳过 print，所以只输出 1, 2, 4。注意 <code>continue</code> 是跳过当前迭代，不是终止循环。"
+      },
+      {
+        "question": "if x = 5: 这行代码在 Python 中会怎样？",
+        "options": [
+          "A. 正常运行",
+          "B. 语法错误",
+          "C. 总是为 True",
+          "D. 总是为 False"
+        ],
+        "answer": 1,
+        "explanation": "Python 中 <code>=</code> 是赋值运算符，不能用在 if 条件中，这会引发 <strong>SyntaxError</strong>。判断相等应该使用 <code>==</code>，正确写法是 <code>if x == 5:</code>。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/JUbOsaW9qlrWLpdhqm8cuuRrnNh",
+    "mindmap": "# 条件判断与循环\n## if 条件分支\n### 基本结构\n#### if 条件: 代码块\n#### elif 条件: 代码块\n#### else: 代码块\n### 关键规则\n#### 冒号 : 不可省略\n#### 4空格缩进表示代码块\n#### elif 可以有多个\n#### else 可选\n## for 循环\n### for x in 序列: 遍历\n### 遍历列表/字符串/元组\n### range() 函数\n#### range(n): 0到n-1\n#### range(a,b): a到b-1\n#### range(a,b,step): 步长\n### enumerate() 同时取索引和值\n## while 循环\n### while 条件: 循环体\n### 注意避免死循环!\n### break: 跳出整个循环\n### continue: 跳过本次迭代\n## for vs while 选择\n### 知道次数 -> for\n### 依赖条件 -> while\n## 嵌套循环\n### 九九乘法表示例\n### 注意 O(n²) 复杂度\n### break 只跳出最内层"
+  },
+  {
+    "id": 5,
+    "title": "字符串操作",
+    "icon": "📝",
+    "description": "深入学习字符串的切片、常用方法、格式化输出和编码知识",
+    "knowledge_points": [
+      {
+        "title": "字符串索引与切片",
+        "content": "<h3>索引（从 0 开始）</h3><pre><code>s = \"Hello Python\"\nprint(s[0])   # H（第一个字符）\nprint(s[6])   # P（第七个字符，空格也算一个字符）\nprint(s[-1])  # n（最后一个字符）\nprint(s[-3])  # h（倒数第三个）</code></pre><h3>切片 [start:stop:step]</h3><pre><code>s = \"Hello Python\"\n# 三个参数都可以省略\nprint(s[0:5])    # Hello（索引 0~4，含头不含尾）\nprint(s[6:])     # Python（从索引6到末尾）\nprint(s[:5])     # Hello（从开头到索引4）\nprint(s[::2])    # HloPto（步长为2，隔一个取一个）\nprint(s[::-1])   # nohtyP olleH（反转字符串！经典技巧）</code></pre>\n<h3>切片的三个参数</h3><pre><code># s[start:stop:step]\n# start: 起始索引（默认0）\n# stop:  结束索引（默认末尾），不包含该索引位置\n# step:  步长（默认1），负数表示反向\n\ns = \"0123456789\"\nprint(s[2:8])     # \"234567\"\nprint(s[2:8:2])   # \"246\"\nprint(s[8:2:-1])  # \"876543\"（反向切片）</code></pre>\n<h3>切片 vs 索引：越界行为不同</h3><pre><code>s = \"Hello\"\n# 索引越界 → 报错\n# print(s[100])  # IndexError!\n\n# 切片越界 → 不报错，返回空或截断到末尾\nprint(s[0:100])  # \"Hello\"（安全！）\nprint(s[100:])   # \"\"（空字符串）</code></pre>\n<h3>字符串不可变性（复习）</h3><pre><code>s = \"Hello\"\n# s[0] = \"h\"  # ❌ 报错\ns = \"h\" + s[1:]  # ✅ 创建新字符串</code></pre>"
+      },
+      {
+        "title": "字符串常用方法（上）",
+        "content": "<h3>大小写转换</h3><pre><code>s = \"Hello World\"\nprint(s.upper())       # HELLO WORLD\nprint(s.lower())       # hello world\nprint(s.title())       # Hello World（每个单词首字母大写）\nprint(s.capitalize())  # Hello world（只有第一个字符大写）\nprint(s.swapcase())    # hELLO wORLD（大小写互换）\n\n# 实用场景\nuser_input = \"  YES  \"\nif user_input.strip().lower() == \"yes\":  # 不区分大小写\n    print(\"确认\")</code></pre>\n<h3>去除空白</h3><pre><code>s = \"  hello world  \\n\"\nprint(repr(s.strip()))   # 'hello world'（去两端）\nprint(repr(s.lstrip()))  # 'hello world  \\n'（去左侧）\nprint(repr(s.rstrip()))  # '  hello world'（去右侧）</code></pre>\n<h3>查找与替换</h3><pre><code>s = \"Hello World, Hello Python\"\n# find vs index\nprint(s.find(\"World\"))     # 6（找到返回索引）\nprint(s.find(\"Java\"))      # -1（没找到返回-1，不报错）\n# print(s.index(\"Java\"))   # ❌ ValueError!（没找到会报错）\n\n# rfind: 从右侧查找\nprint(s.rfind(\"Hello\"))    # 13（最后一次出现的位置）\n\n# count: 统计次数\nprint(s.count(\"Hello\"))    # 2\nprint(s.count(\"l\"))        # 5\n\n# replace\nprint(s.replace(\"Hello\", \"你好\"))  # 你好 World, 你好 Python\nprint(s.replace(\"Hello\", \"你好\", 1))  # 你好 World, Hello Python（只替换第一处）</code></pre>"
+      },
+      {
+        "title": "字符串常用方法（下）",
+        "content": "<h3>字符串判断方法（返回 True/False）</h3><pre><code># 内容类型判断\nprint(\"123\".isdigit())    # True（全数字）\nprint(\"abc\".isalpha())    # True（全字母）\nprint(\"abc123\".isalnum()) # True（字母或数字）\nprint(\"  \".isspace())     # True（全空白字符）\nprint(\"Hello\".isascii())  # True（全 ASCII 字符）\n\n# 大小写判断\nprint(\"hello\".islower())  # True\nprint(\"HELLO\".isupper())  # True\nprint(\"Hello\".istitle())  # True\n\n# 前后缀判断\nprint(\"hello.py\".startswith(\"hello\"))  # True\nprint(\"hello.py\".endswith(\".py\"))      # True（判断文件类型常用）</code></pre>\n<h3>分割与连接</h3><pre><code># split: 字符串 → 列表（重要！）\ns = \"苹果,香蕉,橙子,葡萄\"\nfruits = s.split(\",\")\nprint(fruits)  # ['苹果', '香蕉', '橙子', '葡萄']\n\n# 限制分割次数\nprint(s.split(\",\", 2))  # ['苹果', '香蕉', '橙子,葡萄']\n\n# rsplit: 从右侧分割\nprint(s.rsplit(\",\", 1))  # ['苹果,香蕉,橙子', '葡萄']\n\n# splitlines: 按行分割\ntext = \"第一行\\n第二行\\n第三行\"\nprint(text.splitlines())  # ['第一行', '第二行', '第三行']\n\n# join: 列表 → 字符串（split 的逆操作）\nprint(\" | \".join(fruits))   # 苹果 | 香蕉 | 橙子 | 葡萄\nprint(\"\".join([\"H\",\"e\",\"l\",\"l\",\"o\"]))  # Hello</code></pre>\n<h3>partition: 分割成三部分</h3><pre><code>email = \"user@example.com\"\nlocal, at, domain = email.partition(\"@\")\nprint(local)   # user\nprint(at)      # @\nprint(domain)  # example.com</code></pre>"
+      },
+      {
+        "title": "字符串格式化",
+        "content": "<h3>四种格式化方式（推荐 f-string）</h3><pre><code>name = \"Alice\"\nage = 25\n\n# 1. f-string（Python 3.6+，⭐最推荐！）\nprint(f\"我叫{name}，明年{age + 1}岁\")\n\n# 2. str.format() 方法\nprint(\"我叫{}，今年{}岁\".format(name, age))\nprint(\"我叫{0}，今年{1}岁\".format(name, age))  # 按位置\nprint(\"我叫{n}，今年{a}岁\".format(n=name, a=age))  # 按名称\n\n# 3. % 格式化（旧式，不推荐新代码使用）\nprint(\"我叫%s，今年%d岁\" % (name, age))\n\n# 4. 字符串拼接（最差，不用）\nprint(\"我叫\" + name + \"，今年\" + str(age) + \"岁\")</code></pre>\n<h3>f-string 高级格式化</h3><pre><code>price = 12345.6789\n# 小数控制\nprint(f\"{price:.2f}\")    # 12345.68（保留2位小数，四舍五入）\nprint(f\"{price:.0f}\")    # 12346\n\n# 千分位\nprint(f\"{price:,.2f}\")   # 12,345.68\n\n# 对齐与填充\nname = \"Bob\"\nprint(f\"|{name:<10}|\")   # |Bob       |（左对齐，占10格）\nprint(f\"|{name:>10}|\")   # |       Bob|（右对齐）\nprint(f\"|{name:^10}|\")   # |   Bob    |（居中对齐）\nprint(f\"|{name:*^10}|\")  # |***Bob****|（*填充居中）\n\n# 进制转换\nn = 255\nprint(f\"{n:b}\")   # 11111111（二进制）\nprint(f\"{n:x}\")   # ff（十六进制）\nprint(f\"{n:#x}\")  # 0xff\n\n# 百分比\nrate = 0.857\nprint(f\"{rate:.1%}\")  # 85.7%</code></pre>\n<h3>format() 高级用法</h3><pre><code># 按位置\nprint(\"{1} 比 {0} 大\".format(3, 5))  # 5 比 3 大\n\n# 按名称\nprint(\"坐标: ({x}, {y})\".format(x=10, y=20))\n\n# 解包字典\ndata = {\"name\": \"Tom\", \"score\": 95}\nprint(\"{name}: {score}分\".format(**data))</code></pre>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "s = \"Python\"，执行 s[::-1] 的结果是什么？",
+        "options": [
+          "A. \"Python\"",
+          "B. \"nohtyP\"",
+          "C. \"P\"",
+          "D. 报错"
+        ],
+        "answer": 1,
+        "explanation": "<code>[::-1]</code> 表示从末尾到开头，步长为 -1，即<strong>反转字符串</strong>。这是 Python 中最简洁的字符串反转方式，结果就是 \"nohtyP\"。"
+      },
+      {
+        "question": "以下哪个方法可以将字符串列表合并为一个字符串？",
+        "options": [
+          "A. split()",
+          "B. join()",
+          "C. merge()",
+          "D. concat()"
+        ],
+        "answer": 1,
+        "explanation": "<code>join()</code> 是字符串的方法，用于将可迭代对象中的元素用指定分隔符连接成一个字符串。用法：<code>\"分隔符\".join(列表)</code>。而 <code>split()</code> 是相反的操作，将字符串分割成列表。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/GbQesnTmvleEcLdNRwlchu40nFv",
+    "mindmap": "# 字符串操作\n## 索引与切片\n### 正向索引[0开始]\n### 反向索引[-1开始]\n### 切片 [开始:结束:步长]\n#### [0:5] 取前5个\n#### [::-1] 反转字符串\n#### 切片安全(不越界)\n## 大小写转换\n### upper() 全大写\n### lower() 全小写\n### title() 单词首字母大写\n### swapcase() 大小写互换\n## 去除空白\n### strip() 去两端空白\n### lstrip() 去左侧\n### rstrip() 去右侧\n## 查找与替换\n### find() 返回索引/-1\n### index() 返回索引/报错\n### count() 统计次数\n### replace(old,new) 替换\n## 判断方法\n### isdigit() 纯数字\n### isalpha() 纯字母\n### startswith() 以..开头\n### endswith() 以..结尾\n## 分割与连接\n### split(\",\") 字符串->列表\n### join(\"|\") 列表->字符串\n## 格式化方式\n### f-string [推荐] f\"{var}\"\n### .format() 方法\n### % 旧式(不推荐)\n### :.2f 保留小数 / :^居中 / :<左齐"
+  },
+  {
+    "id": 6,
+    "title": "列表与元组",
+    "icon": "📋",
+    "description": "掌握 Python 中最常用的序列类型：可变列表与不可变元组",
+    "knowledge_points": [
+      {
+        "title": "列表基础",
+        "content": "<h3>创建列表</h3><pre><code># 字面量创建\nempty = []\nnumbers = [1, 2, 3, 4, 5]\nmixed = [1, \"hello\", True, 3.14]  # 可混合不同类型\nnested = [[1, 2], [3, 4]]         # 嵌套列表（二维数组）\n\n# list() 函数创建\nprint(list(\"Python\"))   # ['P', 'y', 't', 'h', 'o', 'n']\nprint(list(range(5)))   # [0, 1, 2, 3, 4]</code></pre>\n<h3>列表的特点</h3><ul><li><strong>有序</strong>：元素有固定位置，索引访问</li><li><strong>可变</strong>：可以增删改元素（与元组的最大区别）</li><li><strong>可重复</strong>：允许相同元素出现多次</li><li><strong>任意类型</strong>：可以放数字、字符串、甚至函数和对象</li></ul>\n<h3>访问元素</h3><pre><code>fruits = [\"苹果\", \"香蕉\", \"橙子\", \"葡萄\"]\nprint(fruits[0])      # 苹果\nprint(fruits[-1])     # 葡萄（倒数第一个）\nprint(fruits[1:3])    # ['香蕉', '橙子']（切片返回新列表）\nprint(fruits[::2])    # ['苹果', '橙子']（隔一个取一个）\n\n# 列表嵌套访问\nmatrix = [[1,2,3], [4,5,6], [7,8,9]]\nprint(matrix[1][2])   # 6（第二行第三列）</code></pre>\n<h3>列表是可变对象（重要！）</h3><pre><code>a = [1, 2, 3]\nb = a          # b 和 a 指向同一个列表！\nb.append(4)\nprint(a)       # [1, 2, 3, 4]  ← a 也变了！\n\n# 要复制一份独立的列表\nc = a.copy()   # 或 c = a[:] 或 c = list(a)\nc.append(5)\nprint(a)       # [1, 2, 3, 4]  ← a 不变\nprint(c)       # [1, 2, 3, 4, 5]</code></pre>"
+      },
+      {
+        "title": "列表的增删改查",
+        "content": "<h3>添加元素</h3><pre><code>nums = [1, 2, 3]\n\n# append: 在末尾添加一个元素（最常用）\nnums.append(4)           # [1, 2, 3, 4]\nnums.append([5, 6])      # [1, 2, 3, 4, [5, 6]]  ← 整个列表作为一个元素\n\n# insert: 在指定位置插入\nnums.insert(0, 0)        # [0, 1, 2, 3, 4, [5, 6]]\n\n# extend: 扩展多个元素（逐个添加）\nnums2 = [1, 2, 3]\nnums2.extend([4, 5, 6])  # [1, 2, 3, 4, 5, 6]\n# extend vs append 的区别：\n# append([4,5,6]) → [1,2,3,[4,5,6]]\n# extend([4,5,6]) → [1,2,3,4,5,6]</code></pre>\n<h3>删除元素</h3><pre><code>nums = [1, 2, 3, 2, 4]\n\n# remove: 删除第一个匹配的值\nnums.remove(2)       # [1, 3, 2, 4]（只删了第一个2）\n# nums.remove(99)    # ❌ ValueError（值不存在）\n\n# pop: 删除并返回元素\nlast = nums.pop()    # 删除并返回最后一个\n# [1, 3, 2]，last = 4\nitem = nums.pop(1)   # 删除并返回索引1的元素\n# [1, 2]，item = 3\n\n# del: 直接删除\ndel nums[0]          # [2]（删除索引0）\n\n# clear: 清空\nnums.clear()         # []</code></pre>\n<h3>查找与统计</h3><pre><code>nums = [1, 2, 3, 2, 4, 2]\nprint(nums.index(3))    # 2（首次出现的索引）\nprint(nums.index(2, 2)) # 3（从索引2开始查找值2）\nprint(nums.count(2))    # 3（统计出现次数）\nprint(len(nums))        # 6（列表长度）\nprint(3 in nums)        # True（元素是否存在）\nprint(5 not in nums)    # True</code></pre>"
+      },
+      {
+        "title": "列表排序与推导式",
+        "content": "<h3>排序方法</h3><pre><code>nums = [3, 1, 4, 1, 5, 9, 2, 6]\n\n# sort(): 原地排序（修改原列表）\nnums.sort()\nprint(nums)              # [1, 1, 2, 3, 4, 5, 6, 9]\nnums.sort(reverse=True)  # 降序：[9, 6, 5, 4, 3, 2, 1, 1]\n\n# sorted(): 返回新列表（不修改原列表）\noriginal = [3, 1, 4, 1, 5]\nnew = sorted(original)\nprint(original)  # [3, 1, 4, 1, 5]（不变）\nprint(new)       # [1, 1, 3, 4, 5]（新列表）\n\n# 自定义排序：key 参数\nwords = [\"apple\", \"banana\", \"kiwi\", \"cherry\"]\nprint(sorted(words, key=len))        # 按长度排序\nprint(sorted(words, key=str.lower))  # 忽略大小写排序\n\n# 反转\nnums = [1, 2, 3, 4, 5]\nnums.reverse()  # [5, 4, 3, 2, 1]\n# 或 nums[::-1]（返回新列表，不修改原列表）</code></pre>\n<h3>列表推导式（Python 精华！）</h3><pre><code># 基本语法：[表达式 for 变量 in 可迭代对象]\nsquares = [x**2 for x in range(10)]\n# [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]\n\n# 带条件：[表达式 for 变量 in 可迭代对象 if 条件]\nevens = [x for x in range(20) if x % 2 == 0]\n# [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]\n\n# 带 if-else：[A if 条件 else B for x in ...]\nlabels = [\"偶数\" if x%2==0 else \"奇数\" for x in range(5)]\n# ['偶数', '奇数', '偶数', '奇数', '偶数']\n\n# 嵌套循环推导式\npairs = [(x, y) for x in range(3) for y in range(2)]\n# [(0,0),(0,1),(1,0),(1,1),(2,0),(2,1)]\n\n# 字符串处理\nnames = [\"alice\", \"bob\", \"charlie\"]\nupper_names = [n.upper() for n in names]  # 全部大写</code></pre>"
+      },
+      {
+        "title": "元组（tuple）",
+        "content": "<h3>创建元组</h3><pre><code>t1 = (1, 2, 3)\nt2 = 1, 2, 3        # 括号可省略\nt3 = (\"hello\",)     # ⚠️ 单元素必须加逗号！\nt4 = ()             # 空元组\nt5 = tuple([1,2,3]) # 从列表转换\n\n# 对比：单元素陷阱\nnot_a_tuple = (1)    # 这是整数 1，不是元组！\nis_a_tuple = (1,)    # 这才是元组\nprint(type(not_a_tuple))  # &lt;class 'int'&gt;\nprint(type(is_a_tuple))   # &lt;class 'tuple'&gt;</code></pre>\n<h3>元组 vs 列表</h3><table><tr><th>特性</th><th>列表 list</th><th>元组 tuple</th></tr><tr><td>语法</td><td>[1, 2, 3]</td><td>(1, 2, 3)</td></tr><tr><td>可变性</td><td>可变（可增删改）</td><td>不可变（创建后不能改）</td></tr><tr><td>性能</td><td>稍慢（需要动态扩容）</td><td>更快（固定大小）</td></tr><tr><td>内存</td><td>占用更多</td><td>占用更少</td></tr><tr><td>字典键</td><td>不可以</td><td>可以（因为不可变）</td></tr><tr><td>适用场景</td><td>同类型数据集合</td><td>异构固定结构、函数返回值</td></tr></table>\n<h3>元组解包（tuple unpacking）</h3><pre><code># 基础解包\npoint = (10, 20, 30)\nx, y, z = point\nprint(x, y, z)  # 10 20 30\n\n# 变量交换（本质是元组解包）\na, b = b, a\n\n# 使用 * 收集剩余元素\nfirst, *rest = [1, 2, 3, 4, 5]\nprint(first)  # 1\nprint(rest)   # [2, 3, 4, 5]\n\n# 忽略不需要的值（用 _ 占位）\nname, _, score = (\"张三\", 20, 95)  # 忽略年龄\nprint(name, score)  # 张三 95</code></pre>\n<h3>命名元组 namedtuple</h3><pre><code>from collections import namedtuple\n\n# 创建一个\"学生\"命名元组\nStudent = namedtuple(\"Student\", [\"name\", \"age\", \"score\"])\ns1 = Student(\"张三\", 20, 95)\nprint(s1.name)   # 张三（像属性一样访问）\nprint(s1[0])     # 张三（也可以像元组一样索引）\nprint(s1)        # Student(name='张三', age=20, score=95)</code></pre>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "执行 [1, 2] + [3, 4] 的结果是什么？",
+        "options": [
+          "A. [1, 2, [3, 4]]",
+          "B. [1, 2, 3, 4]",
+          "C. [4, 6]",
+          "D. 报错"
+        ],
+        "answer": 1,
+        "explanation": "列表的 <code>+</code> 运算符将两个列表<strong>拼接</strong>成一个新列表，结果就是 <code>[1, 2, 3, 4]</code>。如果需要将整个列表作为一个元素添加，应该用 <code>append()</code>。"
+      },
+      {
+        "question": "以下哪个不是合法的元组创建方式？",
+        "options": [
+          "A. (1, 2, 3)",
+          "B. 1, 2, 3",
+          "C. (1)",
+          "D. tuple([1, 2, 3])"
+        ],
+        "answer": 2,
+        "explanation": "<code>(1)</code> 创建的不是元组，而是整数 1（括号被当作数学运算括号）。要创建单元素元组，必须加逗号：<code>(1,)</code>。这是一个常见的陷阱。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/VfsHsBF9mlGuBAdDhdecD3JPnze",
+    "mindmap": "# 列表与元组\n## 列表 list (可变)\n### 创建: [] 或 list()\n### 特点: 有序/可重复/索引\n## 增删改查\n### 添加元素\n#### append(x) 末尾加\n#### insert(i,x) 指定位置\n#### extend([..]) 扩展多个\n### 删除元素\n#### remove(x) 删首个匹配\n#### pop(i) 弹出并返回\n#### del list[i] 直接删除\n#### clear() 清空\n### 查找统计\n#### index(x) 返回位置\n#### count(x) 统计次数\n#### len(l) 长度 in 判断存在\n## 排序\n### sort() 原地排序\n### sorted() 返回新列表\n### reverse=True 降序\n## 列表推导式 [精华]\n### [x**2 for x in range(10)]\n### [x for x in list if 条件]\n### 可嵌套但别太深\n## 元组 tuple (不可变)\n### (1,2,3) 或 1,2,3\n### 单元素: (1,) 必须有逗号!\n### 不可变->更快/可作字典键\n### 元组解包: x,y = point\n### *收集: first,*rest = [1,2,3,4]"
+  },
+  {
+    "id": 7,
+    "title": "字典与集合",
+    "icon": "🔑",
+    "description": "学习键值对存储的字典和无序不重复的集合，掌握哈希表的使用",
+    "knowledge_points": [
+      {
+        "title": "字典基础",
+        "content": "<h3>创建字典的多种方式</h3><pre><code># 花括号创建（最常用）\nstudent = {\"name\": \"张三\", \"age\": 20, \"score\": 95}\n\n# dict() 关键字参数\nd2 = dict(name=\"李四\", age=21, city=\"北京\")\n\n# dict() + 可迭代对象\nd3 = dict([(\"a\", 1), (\"b\", 2), (\"c\", 3)])\n\n# dict() + zip\nkeys = [\"name\", \"age\"]\nvalues = [\"王五\", 22]\nd4 = dict(zip(keys, values))\n\n# 字典推导式\nd5 = {x: x**2 for x in range(5)}\n# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}\n\n# 空字典\nempty = {}  # ⚠️ 不能用 empty = set() 那是空集合</code></pre><h3>字典的特点</h3><ul><li><strong>键值对存储</strong>：每个元素是一个 key: value 对，通过 key 快速查找 value</li><li><strong>键唯一</strong>：同一个 key 出现多次，后面的覆盖前面的</li><li><strong>键不可变</strong>：key 必须是不可变类型（字符串、数字、元组），不能是列表</li><li><strong>Python 3.7+ 保序</strong>：字典记住插入顺序（3.6 是 CPython 实现细节，3.7 起是语言保证）</li><li><strong>查找快</strong>：基于哈希表，O(1) 平均复杂度</li></ul>\n<h3>键的类型限制</h3><pre><code># ✅ 合法键\nd = {\n    \"name\": \"ok\",    # 字符串\n    42: \"ok\",        # 整数\n    3.14: \"ok\",      # 浮点数\n    True: \"ok\",      # 布尔值\n    (1,2): \"ok\",     # 元组（不可变）\n}\n\n# ❌ 非法键\n# d[ [1,2] ] = \"no\"   # 列表可变，不能做键 → TypeError\n# d[ {\"a\":1} ] = \"no\" # 字典可变，不能做键 → TypeError</code></pre>"
+      },
+      {
+        "title": "字典的增删改查",
+        "content": "<h3>访问元素</h3><pre><code>d = {\"name\": \"张三\", \"age\": 20}\n\n# 方式1: d[key]（键不存在会报错）\nprint(d[\"name\"])      # 张三\n# print(d[\"gender\"])  # ❌ KeyError!\n\n# 方式2: d.get(key, default)（安全，推荐！）\nprint(d.get(\"name\"))          # 张三\nprint(d.get(\"gender\"))        # None（不存在返回None）\nprint(d.get(\"gender\", \"未知\")) # 未知（指定默认值）</code></pre>\n<h3>修改与添加</h3><pre><code>d = {\"name\": \"张三\"}\n\n# 添加/修改（语法相同）\nd[\"age\"] = 20         # 键不存在 → 添加\nd[\"name\"] = \"李四\"    # 键存在 → 修改\n\n# setdefault: 键不存在时设置默认值\nd.setdefault(\"city\", \"北京\")  # city不存在 → 设为\"北京\"\nd.setdefault(\"name\", \"王五\")  # name存在 → 不修改，返回现有值\n\n# update: 批量更新（合并字典）\nd.update({\"age\": 21, \"score\": 95, \"city\": \"上海\"})</code></pre>\n<h3>删除元素</h3><pre><code>d = {\"a\": 1, \"b\": 2, \"c\": 3}\n\n# pop: 删除并返回值\nval = d.pop(\"b\")      # 删除 \"b\"，val = 2\n# d.pop(\"z\")         # ❌ KeyError（键不存在）\nval = d.pop(\"z\", 0)   # ✅ 给默认值，不存在不报错\n\n# popitem: 删除并返回最后一个键值对（Python 3.7+ LIFO）\nitem = d.popitem()    # 删除最后一项\n\n# del: 直接删除\ndel d[\"a\"]            # 删除键 \"a\"\n\n# clear: 清空\nd.clear()             # 变为空字典 {}</code></pre>\n<h3>字典合并（Python 3.9+）</h3><pre><code>d1 = {\"a\": 1, \"b\": 2}\nd2 = {\"b\": 3, \"c\": 4}\n\n# | 运算符合并（Python 3.9+）\nd3 = d1 | d2      # {'a':1,'b':3,'c':4}（重复键用右边的值）\n\n# |= 原地更新\nd1 |= d2          # d1 变为 {'a':1,'b':3,'c':4}</code></pre>"
+      },
+      {
+        "title": "字典遍历与推导式",
+        "content": "<h3>遍历字典</h3><pre><code>d = {\"name\": \"张三\", \"age\": 20, \"score\": 95}\n\n# 遍历键（默认行为）\nfor key in d:\n    print(key)              # name, age, score\nfor key in d.keys():        # 等价写法\n    print(key)\n\n# 遍历值\nfor value in d.values():\n    print(value)            # 张三, 20, 95\n\n# 遍历键值对（最常用！）\nfor key, value in d.items():\n    print(f\"{key}: {value}\")\n# name: 张三 / age: 20 / score: 95</code></pre>\n<h3>字典推导式</h3><pre><code># 基本格式: {key_expr: value_expr for item in iterable}\nsquares = {x: x**2 for x in range(5)}\n# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}\n\n# 带条件\neven_squares = {x: x**2 for x in range(10) if x % 2 == 0}\n# {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}\n\n# 反转键值对\nd = {\"a\": 1, \"b\": 2, \"c\": 3}\nreversed_d = {v: k for k, v in d.items()}\n# {1: 'a', 2: 'b', 3: 'c'}\n\n# 从列表中生成字典（统计词频）\nwords = [\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\", \"apple\"]\nword_count = {word: words.count(word) for word in set(words)}\n# {'banana': 2, 'cherry': 1, 'apple': 3}</code></pre>\n<h3>defaultdict 和 Counter</h3><pre><code>from collections import defaultdict, Counter\n\n# defaultdict: 访问不存在的键返回默认值而非报错\ndd = defaultdict(int)\ndd[\"apple\"] += 1  # 不存在时默认值为0，直接加1\nprint(dd)  # {'apple': 1}\n\n# Counter: 专门用来计数的字典\nwords = [\"a\",\"b\",\"a\",\"c\",\"b\",\"a\"]\ncnt = Counter(words)\nprint(cnt)           # {'a':3, 'b':2, 'c':1}\nprint(cnt.most_common(2))  # [('a',3),('b',2)] 前2名</code></pre>"
+      },
+      {
+        "title": "集合（set）",
+        "content": "<h3>创建集合</h3><pre><code># 花括号创建\ns = {1, 2, 3, 3, 2, 1}   # {1, 2, 3} 自动去重\ns2 = set([1, 2, 2, 3])    # 从列表创建（去重好方法）\ns3 = set(\"hello\")          # {'h','e','l','o'}（字符串→字符集合）\nempty = set()              # 空集合（不能写 {}！那是空字典）</code></pre>\n<h3>集合的特点</h3><ul><li><strong>无序</strong>：不保证顺序（每次打印顺序可能不同）</li><li><strong>不重复</strong>：相同元素自动去重，只保留一个</li><li><strong>可变</strong>：可以添加和删除元素</li><li><strong>元素不可变</strong>：集合内只能包含不可变类型（数字、字符串、元组）</li><li><strong>哈希查找</strong>：O(1) 平均复杂度，查找极快</li></ul>\n<h3>集合运算（数学集合操作）</h3><pre><code>a = {1, 2, 3, 4}\nb = {3, 4, 5, 6}\n\n# 并集：两集合所有元素\nprint(a | b)   # {1, 2, 3, 4, 5, 6}\nprint(a.union(b))\n\n# 交集：两集合共有元素\nprint(a & b)   # {3, 4}\nprint(a.intersection(b))\n\n# 差集：a有b没有\nprint(a - b)   # {1, 2}\nprint(a.difference(b))\n\n# 对称差集：不同时在两边的元素\nprint(a ^ b)   # {1, 2, 5, 6}\nprint(a.symmetric_difference(b))\n\n# 子集和超集判断\nprint({1,2}.issubset(a))       # True\nprint(a.issuperset({1,2}))     # True\nprint({1,2}.isdisjoint({5,6})) # True（没有交集）</code></pre>\n<h3>集合的增删</h3><pre><code>s = {1, 2, 3}\ns.add(4)          # {1,2,3,4} 添加一个\ns.add(2)          # {1,2,3,4} 已存在，无变化\ns.update([5,6,7]) # {1,2,3,4,5,6,7} 批量添加\ns.remove(3)       # {1,2,4,5,6,7} 删除，不存在报错\ns.discard(99)     # 删除，不存在不报错\npopped = s.pop()  # 随机删除并返回一个元素</code></pre>\n<h3>经典应用：列表去重</h3><pre><code>nums = [1, 2, 2, 3, 3, 3, 4, 4, 5]\nunique = list(set(nums))\nprint(unique)  # [1, 2, 3, 4, 5]（顺序不保证）\n\n# 去重 + 保持顺序\nseen = set()\nunique_ordered = []\nfor x in nums:\n    if x not in seen:\n        seen.add(x)\n        unique_ordered.append(x)\nprint(unique_ordered)  # [1, 2, 3, 4, 5]（保持原顺序）</code></pre>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "d = {'a': 1, 'b': 2}，执行 d.get('c', 0) 返回什么？",
+        "options": [
+          "A. None",
+          "B. 0",
+          "C. KeyError",
+          "D. 'c'"
+        ],
+        "answer": 1,
+        "explanation": "<code>get()</code> 方法在键不存在时不会报错，而是返回提供的默认值。这里键 'c' 不存在，返回默认值 <strong>0</strong>。而直接使用 <code>d['c']</code> 会引发 KeyError。"
+      },
+      {
+        "question": "以下关于集合的说法哪个是正确的？",
+        "options": [
+          "A. 集合是有序的",
+          "B. 集合可以有重复元素",
+          "C. 集合可以进行交集、并集运算",
+          "D. 集合用 [] 表示"
+        ],
+        "answer": 2,
+        "explanation": "集合支持数学中的<strong>交集(&)、并集(|)、差集(-)</strong>等运算。集合是无序的、不重复的、用 {} 表示（空集合用 set()）。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/VbsesSsPxloxGddI6TQc4nFbnKd",
+    "mindmap": "# 字典与集合\n## 字典 dict\n### 创建\n#### {\"key\":\"value\"} 花括号\n#### dict(name=\"张三\",age=20)\n### 核心特点\n#### 键唯一且不可变\n#### Python3.7+ 保持插入顺序\n## 增删改查\n### 访问\n#### d[\"key\"] 不存在报错\n#### d.get(\"key\",默认) 安全\n### 修改\n#### d[\"k\"]=v 添加或修改\n#### d.update({...}) 批量更新\n### 删除\n#### pop(\"k\") 删除并返回值\n#### del d[\"k\"] 直接删除\n#### clear() 清空\n## 字典遍历\n### for k in d: 遍历键\n### for v in d.values(): 遍历值\n### for k,v in d.items(): 遍历键值\n## 字典推导式\n### {x: x**2 for x in range(5)}\n## 集合 set\n### {1,2,3} 或 set([...])\n### 空集合必须用 set()\n### 特点: 无序/不重复/可变\n## 集合运算\n### | 并集 / & 交集\n### - 差集 / ^ 对称差集\n### 去重: list(set(list))"
+  },
+  {
+    "id": 8,
+    "title": "函数进阶",
+    "icon": "🔧",
+    "description": "从函数基础到装饰器、生成器、闭包、类型提示——全面掌握 Python 函数式编程",
+    "knowledge_points": [
+      {
+        "title": "函数的定义与文档",
+        "content": "<h3>定义函数的语法</h3><pre><code>def 函数名(参数列表):\n    \"\"\"文档字符串（docstring）—— 描述函数功能\"\"\"\n    # 函数体\n    return 返回值  # 可选\n\n# 简单示例\ndef greet(name):\n    \"\"\"向指定的人打招呼\"\"\"\n    return f\"你好，{name}！\"\n\n# 无参数无返回值\ndef say_hello():\n    print(\"Hello World!\")\n\n# 调用函数\nresult = greet(\"小明\")  # result = \"你好，小明！\"\nsay_hello()             # 打印 \"Hello World!\"</code></pre>\n<h3>函数的优势（为什么要用函数？）</h3><ul><li><strong>代码复用</strong>：一次定义，多次调用，避免复制粘贴</li><li><strong>模块化</strong>：将复杂问题分解为小问题，每个函数做一件事</li><li><strong>可读性</strong>：通过函数名就能知道做什么，self-documenting</li><li><strong>可测试</strong>：独立测试每个函数，定位 bug 更快</li><li><strong>单一职责</strong>：一个函数只做一件事并做好（Unix 哲学）</li></ul>\n<h3>文档字符串（docstring）</h3><pre><code>def calculate_bmi(weight, height):\n    \"\"\"计算身体质量指数(BMI)\n\n    参数:\n        weight: 体重，单位千克\n        height: 身高，单位米\n\n    返回:\n        BMI 值，float 类型\n    \"\"\"\n    return weight / (height ** 2)\n\n# 查看函数文档\nprint(calculate_bmi.__doc__)\n# 或 help(calculate_bmi)</code></pre>\n<h3>None 返回值</h3><pre><code>def no_return():\n    print(\"我没有return语句\")\n\nresult = no_return()\nprint(result)  # None（Python 自动返回 None）</code></pre>"
+      },
+      {
+        "title": "参数类型精讲（上）",
+        "content": "<h3>位置参数（最基础）</h3><pre><code>def add(a, b):\n    return a + b\nprint(add(3, 5))   # 8（3→a, 5→b，按位置匹配）</code></pre>\n<h3>默认参数（可选参数）</h3><pre><code>def greet(name, greeting=\"你好\"):\n    return f\"{greeting}，{name}！\"\n\nprint(greet(\"小明\"))              # 你好，小明！（用默认值）\nprint(greet(\"Tom\", \"Hello\"))      # Hello，Tom！（覆盖默认值）\n\n# ⚠️ 危险：可变默认参数陷阱！\ndef bad_append(item, lst=[]):\n    lst.append(item)\n    return lst\nprint(bad_append(1))  # [1]\nprint(bad_append(2))  # [1, 2] ← 预期是 [2]！默认列表被共享了！\n\n# ✅ 正确写法\ndef good_append(item, lst=None):\n    if lst is None:\n        lst = []\n    lst.append(item)\n    return lst</code></pre>\n<h3>关键字参数</h3><pre><code>def describe(name, age, city):\n    return f\"{name}，{age}岁，来自{city}\"\n\n# 按关键字传递（顺序任意，更清晰）\nprint(describe(age=25, city=\"北京\", name=\"张三\"))\n# 混合使用（位置参数在前，关键字在后）\nprint(describe(\"张三\", age=25, city=\"北京\"))</code></pre>\n<h3>可变参数 *args 和 **kwargs</h3><pre><code># *args: 接收任意数量的位置参数（打包成元组）\ndef sum_all(*args):\n    print(f\"收到了 {len(args)} 个参数: {args}\")\n    return sum(args)\n\nprint(sum_all(1, 2, 3, 4, 5))  # 15\n\n# **kwargs: 接收任意数量的关键字参数（打包成字典）\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f\"{key}: {value}\")\n\nprint_info(name=\"张三\", age=20, city=\"北京\")\n\n# 两者组合使用\ndef func(a, b, *args, **kwargs):\n    print(f\"a={a}, b={b}\")\n    print(f\"args={args}\")\n    print(f\"kwargs={kwargs}\")\n\nfunc(1, 2, 3, 4, 5, name=\"test\", enabled=True)</code></pre>\n<h3>参数顺序规则</h3><pre><code>def func(位置参数, 默认参数, *args, 关键字参数, **kwargs):\n    pass\n# 顺序：位置 → 默认 → *args → 关键字 → **kwargs</code></pre>"
+      },
+      {
+        "title": "返回值与 LEGB 作用域",
+        "content": "<h3>返回值</h3><pre><code># 单值返回\ndef square(x):\n    return x ** 2\n\n# 多值返回（本质是返回一个元组）\ndef divide(a, b):\n    quotient = a // b\n    remainder = a % b\n    return quotient, remainder  # 返回 (商, 余数)\n\nq, r = divide(17, 5)  # 解包：q=3, r=2\nresult = divide(17, 5)  # result = (3, 2) 元组</code></pre>\n<h3>作用域 LEGB 规则</h3><table><tr><th>层级</th><th>说明</th></tr><tr><td>L (Local)</td><td>函数内部定义的变量</td></tr><tr><td>E (Enclosing)</td><td>外层函数（闭包）中的变量</td></tr><tr><td>G (Global)</td><td>模块级别的全局变量</td></tr><tr><td>B (Built-in)</td><td>Python 内置的名字（print, len, range...）</td></tr></table>\n<pre><code>x = \"全局变量\"\n\ndef outer():\n    x = \"外层变量\"\n    def inner():\n        x = \"内层变量\"\n        print(x)  # \"内层变量\" ← 优先局部\n    inner()\n    print(x)      # \"外层变量\"\n\nouter()\nprint(x)          # \"全局变量\"</code></pre>\n<h3>global 和 nonlocal</h3><pre><code># global: 在函数内修改全局变量\ncount = 0\ndef increment():\n    global count   # 声明使用全局的 count\n    count += 1\n\n# nonlocal: 修改外层（非全局）变量\ndef outer():\n    x = 10\n    def inner():\n        nonlocal x  # 声明使用外层的 x\n        x = 20      # 修改外层变量\n    inner()\n    print(x)        # 20</code></pre>"
+      },
+      {
+        "title": "Lambda 与高阶函数",
+        "content": "<h3>Lambda（匿名函数）</h3><pre><code># 语法：lambda 参数: 表达式\n# lambda 是一个表达式，不是语句，可以写在任何需要函数的地方\n\nsquare = lambda x: x ** 2\nprint(square(5))  # 25\n\nadd = lambda a, b: a + b\nprint(add(3, 7))  # 10\n\n# lambda 可以有多个参数\nmax_val = lambda a, b: a if a > b else b\nprint(max_val(10, 20))  # 20</code></pre>\n<h3>高阶函数：map / filter / sorted</h3><pre><code>nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\n# map: 对每个元素应用函数，返回迭代器\nsquared = list(map(lambda x: x**2, nums))\n# [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\n\n# filter: 筛选符合条件的元素\nevens = list(filter(lambda x: x % 2 == 0, nums))\n# [2, 4, 6, 8, 10]\n\n# sorted: 按自定义规则排序\nstudents = [\n    {\"name\": \"张三\", \"score\": 85},\n    {\"name\": \"李四\", \"score\": 92},\n    {\"name\": \"王五\", \"score\": 78}\n]\nranked = sorted(students, key=lambda s: s[\"score\"], reverse=True)\n# 李四(92) > 张三(85) > 王五(78)</code></pre>\n<h3>列表推导式 vs map/filter</h3><pre><code>nums = [1, 2, 3, 4, 5]\n\n# 用 map + filter\nresult = list(map(lambda x: x**2, filter(lambda x: x%2==0, nums)))\n# [4, 16]\n\n# 用列表推导式（更清晰、更 Pythonic）\nresult = [x**2 for x in nums if x % 2 == 0]\n# [4, 16]\n# 列表推导式可读性更好，推荐在日常使用中优先选择</code></pre>\n<h3>函数式编程工具</h3><pre><code>from functools import reduce\n\n# reduce: 累积计算\nnums = [1, 2, 3, 4, 5]\ntotal = reduce(lambda a, b: a + b, nums)  # 15\n# 等价于 sum(nums)\n\nproduct = reduce(lambda a, b: a * b, nums)  # 120（5的阶乘）</code></pre>"
+      },
+      {
+        "title": "递归 (Recursion)",
+        "content": "<h3>什么是递归？</h3><p><strong>递归</strong>（Recursion）是指函数<strong>调用自身</strong>的编程技巧。递归的核心思想是：把一个复杂问题分解成与原问题相似但规模更小的子问题。</p><pre><code># 递归的两个关键要素：\n# 1. 基线条件（Base Case）：停止递归的条件\n# 2. 递归条件（Recursive Case）：函数调用自身\n\ndef countdown(n):\n    \"\"\"递归倒计时\"\"\"\n    if n <= 0:          # 基线条件\n        print(\"发射！\")\n        return\n    print(n)\n    countdown(n - 1)    # 递归条件：调用自身\n\ncountdown(5)\n# 输出: 5 4 3 2 1 发射！</code></pre>\n<h3>经典递归示例：阶乘</h3><pre><code># n! = n × (n-1) × (n-2) × ... × 1\n# 数学定义：\n#   0! = 1（基线条件）\n#   n! = n × (n-1)!（递归条件）\n\ndef factorial(n):\n    \"\"\"计算 n 的阶乘\"\"\"\n    if n <= 1:           # 基线条件\n        return 1\n    return n * factorial(n - 1)  # 递归条件\n\nprint(factorial(5))  # 120 = 5×4×3×2×1\n\n# 执行过程追踪：\n# factorial(5)\n# → 5 * factorial(4)\n# → 5 * 4 * factorial(3)\n# → 5 * 4 * 3 * factorial(2)\n# → 5 * 4 * 3 * 2 * factorial(1)\n# → 5 * 4 * 3 * 2 * 1 = 120</code></pre>\n<h3>斐波那契数列</h3><pre><code># 斐波那契数列：0, 1, 1, 2, 3, 5, 8, 13, 21, ...\n# 定义：F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2)\n\ndef fib(n):\n    \"\"\"返回第 n 个斐波那契数\"\"\"\n    if n <= 1:           # 基线条件\n        return n\n    return fib(n-1) + fib(n-2)  # 递归条件：两次调用自身\n\nprint(fib(10))  # 55\n\n# ⚠️ 这种递归效率很低！很多重复计算\n# 可以用记忆化（缓存）优化：\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib_fast(n):\n    if n <= 1:\n        return n\n    return fib_fast(n-1) + fib_fast(n-2)\n\nprint(fib_fast(100))  # 354224848179261915075（瞬间算出！）</code></pre>\n<h3>递归 vs 迭代</h3><table><tr><th>对比项</th><th>递归</th><th>迭代（循环）</th></tr><tr><td>代码可读性</td><td>更接近数学定义，清晰</td><td>需要维护循环变量</td></tr><tr><td>性能</td><td>有函数调用开销</td><td>通常更快</td></tr><tr><td>内存</td><td>每层递归消耗栈空间</td><td>只需少量变量</td></tr><tr><td>适用场景</td><td>树形结构、分治算法</td><td>线性处理、简单重复</td></tr></table>\n<pre><code># 阶乘：迭代 vs 递归对比\n\ndef factorial_iter(n):\n    \"\"\"迭代版本\"\"\"\n    result = 1\n    for i in range(2, n + 1):\n        result *= i\n    return result\n\ndef factorial_recur(n):\n    \"\"\"递归版本\"\"\"\n    return 1 if n <= 1 else n * factorial_recur(n - 1)\n\nprint(factorial_iter(5))   # 120\nprint(factorial_recur(5))  # 120</code></pre>\n<h3>递归深度限制</h3><pre><code># Python 默认递归深度限制为 1000 层\n# 超过会引发 RecursionError\n\ndef recurse(n):\n    print(n)\n    recurse(n + 1)\n\n# recurse(1)  # ❌ RecursionError: maximum recursion depth exceeded\n\n# 查看/修改递归深度限制\nimport sys\nprint(sys.getrecursionlimit())   # 默认 1000\n# sys.setrecursionlimit(2000)    # 修改限制（谨慎！）\n\n# 小贴士：能用迭代解决的问题尽量用迭代\n# 递归更适合：树遍历、分治算法、数学定义式的问题</code></pre>\n<h3>递归的应用场景</h3><pre><code># 1. 遍历目录树\nimport os\ndef list_files(path):\n    \"\"\"递归列出目录下所有文件\"\"\"\n    for item in os.listdir(path):\n        full_path = os.path.join(path, item)\n        if os.path.isdir(full_path):\n            list_files(full_path)  # 递归子目录\n        else:\n            print(full_path)\n\n# 2. 汉诺塔（经典递归问题）\ndef hanoi(n, source, target, auxiliary):\n    \"\"\"将 n 个盘子从 source 移动到 target\"\"\"\n    if n == 1:\n        print(f\"移动盘子 1: {source} → {target}\")\n        return\n    hanoi(n-1, source, auxiliary, target)\n    print(f\"移动盘子 {n}: {source} → {target}\")\n    hanoi(n-1, auxiliary, target, source)\n\nhanoi(3, 'A', 'C', 'B')\n# 递归是解决这种问题的天然思路——\n# 关注如何分解问题，而非每一步的具体操作</code></pre>"
+      },
+      {
+        "title": "装饰器 —— 函数的「外套」",
+        "content": "<h3>什么是装饰器？</h3><p>装饰器是 Python 的一种<strong>语法糖</strong>，让你在不修改原函数代码的情况下，给函数添加额外的功能。就像给手机套一个保护壳——手机本身不变，但多了防护功能。</p><pre><code># 一个简单的装饰器\ndef log_call(func):\n    def wrapper(*args, **kwargs):\n        print(f\"调用 {func.__name__}({args})\")\n        result = func(*args, **kwargs)\n        print(f\"{func.__name__} 返回 {result}\")\n        return result\n    return wrapper\n\n@log_call       # 使用装饰器\ndef add(a, b):\n    return a + b\n\nadd(3, 5)\n# 输出:\n# 调用 add((3, 5))\n# add 返回 8</code></pre>\n<h3>装饰器原理</h3><pre><code># @log_call 等价于:\n# add = log_call(add)\n# 装饰器接收函数，返回一个新函数\n\n# 装饰器也可以带参数\ndef repeat(n):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for _ in range(n):\n                result = func(*args, **kwargs)\n            return result\n        return wrapper\n    return decorator\n\n@repeat(3)\ndef say_hi():\n    print(\"Hi!\")\n\nsay_hi()  # 打印3次 Hi!</code></pre>\n<h3>常用内置装饰器</h3><pre><code># @staticmethod / @classmethod: 类中的静态/类方法\n# @property: 把方法变成属性访问\nclass Circle:\n    def __init__(self, radius):\n        self.radius = radius\n    \n    @property\n    def area(self):\n        return 3.14159 * self.radius ** 2\n\nc = Circle(5)\nprint(c.area)  # 78.53975（不用加括号！）\n\n# @functools.wraps: 保留原函数元信息\nfrom functools import wraps\ndef my_decorator(func):\n    @wraps(func)  # 保留 func 的 __name__ 和 __doc__\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs)\n    return wrapper</code></pre>"
+      },
+      {
+        "title": "生成器与迭代器",
+        "content": "<h3>生成器（Generator）</h3><p>生成器是一种<strong>惰性求值</strong>的迭代器，不像列表那样一次性产生所有元素，而是<strong>用到时才生成</strong>，节省内存。</p><pre><code># 生成器函数: 使用 yield 代替 return\ndef count_up_to(n):\n    i = 1\n    while i <= n:\n        yield i  # yield 暂停函数，返回一个值\n        i += 1\n\ngen = count_up_to(5)\nprint(next(gen))  # 1\nprint(next(gen))  # 2\nprint(list(gen))  # [3, 4, 5]\n\n# 生成器表达式（类似列表推导式，但用())\nsquares = (x**2 for x in range(1000000))\n# 内存占用极小！只在迭代时才计算\nprint(next(squares))  # 0\nprint(next(squares))  # 1</code></pre>\n<h3>生成器 vs 列表</h3><table><tr><th></th><th>列表</th><th>生成器</th></tr><tr><td>创建</td><td>[x for x in ...]</td><td>(x for x in ...)</td></tr><tr><td>内存</td><td>一次性全部加载</td><td>逐个生成</td></tr><tr><td>可以多次遍历</td><td>✓</td><td>✗（一次性消耗）</td></tr><tr><td>可以索引</td><td>✓</td><td>✗</td></tr><tr><td>适用场景</td><td>小数据、需反复访问</td><td>大数据流、文件行处理</td></tr></table>\n<h3>迭代器协议</h3><pre><code># 可迭代对象: 实现了 __iter__ 方法\n# 迭代器: 实现了 __iter__ 和 __next__ 方法\n\n# 自定义迭代器\nclass CountDown:\n    def __init__(self, start):\n        self.current = start\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.current <= 0:\n            raise StopIteration\n        self.current -= 1\n        return self.current + 1\n\nfor n in CountDown(5):\n    print(n)  # 5, 4, 3, 2, 1</code></pre>"
+      },
+      {
+        "title": "类型提示 (Type Hints)",
+        "content": "<h3>类型提示（Type Hints）</h3><p>Python 3.5+ 支持类型注释，虽然<strong>不强制检查</strong>，但能提升代码可读性和 IDE 智能提示。</p><pre><code># 变量类型注释\nname: str = \"Alice\"\nage: int = 25\nscores: list[int] = [85, 92, 78]\ndata: dict[str, int] = {\"math\": 95}\n\n# 函数类型提示\ndef greet(name: str, times: int = 1) -> str:\n    \"\"\"返回问候语，重复 times 次\"\"\"\n    return \"你好，\" + name + \"！\" * times\n\n# 复杂类型\nfrom typing import Optional, Union, Callable\n\ndef divide(a: float, b: float) -> Optional[float]:  # 可能返回 None\n    if b == 0:\n        return None\n    return a / b\n\ndef process(value: Union[int, str]) -> str:  # int 或 str\n    return str(value)\n\n# Callable: 函数类型\ndef apply(func: Callable[[int], int], x: int) -> int:\n    return func(x)</code></pre>\n<h3>用 mypy 做类型检查</h3><pre><code># pip install mypy\n# mypy script.py\n\ndef add(a: int, b: int) -> int:\n    return a + b\n\nadd(1, 2)       # ✓ OK\n# add(\"1\", \"2\")  # ✗ mypy 会报错（运行时仍正常运行）</code></pre>\n<h3>Python 3.10+ 新语法</h3><pre><code># 用 | 替代 Union\ndef process(value: int | str) -> str:  # 等价于 Union[int, str]\n    return str(value)\n\n# 用 list[X] 替代 List[X]（3.9+）\ndef get_scores() -> list[int]:\n    return [90, 85, 92]</code></pre>"
+      }
+    ],
+    "exercises": [
+      {
+        "type": "code",
+        "question": "请创建并调用任意一个简单的函数，展示你对函数定义和调用的理解。\n\n要求：\n1. 使用 def 关键字定义一个函数\n2. 函数至少有一个参数\n3. 函数有 return 返回值\n4. 调用函数并打印结果\n\n例如：实现一个计算两个数相加的函数，或者打招呼的函数，或者判断奇偶的函数。",
+        "code_prompt": "实现任意一个简单函数的创建和调用。你可以：\n• 写一个 add(a, b) 函数计算两数之和\n• 写一个 greet(name) 函数打印问候语\n• 写一个 is_even(n) 函数判断奇偶\n• 发挥创意写任何你喜欢的函数！",
+        "explanation": "函数是 Python 中最基础也是最重要的概念。使用 def 关键字定义，可以接收参数并返回值。你已经成功完成了第一个函数的创建和调用！"
+      },
+      {
+        "question": "定义 def greet(name, greeting=\"你好\"):，调用 greet(\"小明\") 时 greeting 参数的值是什么？",
+        "options": [
+          "A. 报错，缺少参数",
+          "B. \"你好\"（默认值）",
+          "C. \"小明\"",
+          "D. None"
+        ],
+        "answer": 1,
+        "explanation": "greeting 有默认值 \"你好\"，调用时没有传入第二个参数，所以使用默认值。这是<strong>默认参数</strong>的典型用法——让函数在大多数情况下更简洁，同时在需要时提供灵活性。"
+      },
+      {
+        "question": "def show(*args, **kwargs):\n    print(args, kwargs)\n\nshow(1, 2, x=3, y=4) 的输出是什么？",
+        "options": [
+          "A. (1, 2) {'x': 3, 'y': 4}",
+          "B. [1, 2] {'x': 3, 'y': 4}",
+          "C. 1 2 x=3 y=4",
+          "D. (1, 2, x=3, y=4)"
+        ],
+        "answer": 0,
+        "explanation": "*args 将多余的位置参数打包成<strong>元组</strong> (1, 2)，**kwargs 将多余的关键字参数打包成<strong>字典</strong> {'x':3, 'y':4}。这是 Python 可变参数的经典用法。"
+      },
+      {
+        "question": "x = \"全局\"\ndef outer():\n    x = \"外层\"\n    def inner():\n        x = \"内层\"\n        print(x)\n    inner()\nouter()\n\n以上代码输出什么？",
+        "options": [
+          "A. 全局",
+          "B. 外层",
+          "C. 内层",
+          "D. 报错"
+        ],
+        "answer": 2,
+        "explanation": "Python 按 LEGB 规则查找变量——先在 Local（inner 函数内）找 x，找到即用，不会继续向外查找。所以输出的是 inner 中定义的 x = \"内层\"。"
+      },
+      {
+        "question": "以下哪个是正确的高阶函数用法？",
+        "options": [
+          "A. map(lambda x: x*2, [1,2,3])",
+          "B. foreach(x => x*2, [1,2,3])",
+          "C. [1,2,3].map(lambda x: x*2)",
+          "D. map([1,2,3], lambda x: x*2)"
+        ],
+        "answer": 0,
+        "explanation": "Python 的 <code>map</code> 函数第一个参数是函数，第二个是可迭代对象。选项 A 正确。选项 C 是 JavaScript 的写法，Python 列表没有 .map() 方法。"
+      },
+      {
+        "question": "@timer 装饰器的本质是什么？\ndef timer(func):\n    def wrapper(*args, **kwargs):\n        result = func(*args, **kwargs)\n        return result\n    return wrapper\n@timer\ndef foo(): pass",
+        "options": [
+          "A. timer 函数被调用来执行 foo",
+          "B. foo 被替换为 timer(foo) 的返回值",
+          "C. foo 和 timer 同时执行",
+          "D. timer 每秒钟执行一次 foo"
+        ],
+        "answer": 1,
+        "explanation": "<code>@timer</code> 等价于 <code>foo = timer(foo)</code>，即把 foo 函数传给 timer，用返回值（wrapper）替换原来的 foo。这就是装饰器的核心机制——「接收函数，返回新函数」。"
+      },
+      {
+        "question": "生成器和列表的区别是什么？",
+        "options": [
+          "A. 没有区别，写法不同而已",
+          "B. 生成器惰性求值，列表一次性创建所有元素",
+          "C. 生成器比列表速度快",
+          "D. 列表不能转成生成器"
+        ],
+        "answer": 1,
+        "explanation": "生成器（yield 或 () 表达式）采用<strong>惰性求值</strong>——在需要时才生成下一个元素，而不是一次性创建所有数据。这让生成器在处理大数据流时内存效率极高。"
+      },
+      {
+        "question": "以下类型提示哪个是正确的 Python 3.10+ 写法？",
+        "options": [
+          "A. def f(x: Optional[str]) -> Union[int, None]:",
+          "B. def f(x: str | None) -> int | None:",
+          "C. def f(x: str?) -> int?:",
+          "D. def f(x: str?) -> ?int:"
+        ],
+        "answer": 1,
+        "explanation": "Python 3.10+ 支持用 <code>|</code> 替代 <code>Union</code> 和 <code>Optional</code>。<code>str | None</code> 等价于 <code>Optional[str]</code>；<code>int | None</code> 等价于 <code>Optional[int]</code>。更简洁直观。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/HY7YsbW66liMKydjtn2cI5qInVg",
+    "mindmap": "# 函数\n## 函数定义\n### def 函数名(参数):\n### 文档字符串(可选)\n### 函数体(缩进)\n### return 返回值\n## 参数类型 [核心]\n### 位置参数: def add(a,b)\n### 默认参数: def greet(n,g=\"你好\")\n#### ⚠️ 别用可变对象作默认值!\n### 关键字参数: fn(age=25)\n### 可变参数\n#### *args: 任意位置参数->元组\n#### **kwargs: 任意关键字->字典\n## 返回值\n### 单值: return x\n### 多值: return a,b (实质元组)\n### 无return -> 返回None\n## 作用域 LEGB 规则\n### L: Local 局部\n### E: Enclosing 闭包\n### G: Global 全局\n### B: Built-in 内置\n### global / nonlocal 关键字\n## Lambda 匿名函数\n### lambda 参数: 表达式\n### 配合 map(fn,list) 映射\n### 配合 filter(fn,list) 筛选\n### sorted(list, key=lambda x: ..)"
+  },
+  {
+    "id": 9,
+    "title": "文件操作与异常处理",
+    "icon": "📁",
+    "description": "学习读写文件、with 语句、常见异常类型以及 try-except 错误处理机制",
+    "knowledge_points": [
+      {
+        "title": "文件读取",
+        "content": "<h3>文件打开模式</h3><table><tr><th>模式</th><th>说明</th><th>文件不存在</th></tr><tr><td>'r'</td><td>只读（默认）</td><td>报错 FileNotFoundError</td></tr><tr><td>'w'</td><td>写入（覆盖）</td><td>创建新文件</td></tr><tr><td>'a'</td><td>追加（末尾添加）</td><td>创建新文件</td></tr><tr><td>'x'</td><td>独占创建</td><td>创建；已存在则报错</td></tr><tr><td>'r+'</td><td>读写</td><td>报错</td></tr><tr><td>'w+'</td><td>写读（覆盖）</td><td>创建新文件</td></tr><tr><td>'b'</td><td>二进制模式</td><td>与上面组合使用：'rb', 'wb'</td></tr></table>\n<h3>编码（encoding）</h3><pre><code># ⚠️ 读取中文文件必须指定 encoding！\nwith open(\"data.txt\", \"r\", encoding=\"utf-8\") as f:\n    content = f.read()\n\n# 常见编码\n# utf-8: 国际通用，推荐！\n# gbk/gb2312: 中文 Windows 系统默认\n# 遇到乱码就换编码试试</code></pre>\n<h3>文件路径</h3><pre><code># 绝对路径\nf = open(\"C:/Users/name/data.txt\")\n\n# 相对路径（推荐，便于移植）\nf = open(\"data.txt\")         # 当前目录\nf = open(\"../data.txt\")      # 上级目录\nf = open(\"data/input.txt\")   # 子目录\n\n# 使用 os.path 或 pathlib 处理路径\nfrom pathlib import Path\ndata_dir = Path(\"data\")\ndata_dir.mkdir(exist_ok=True)  # 确保目录存在\nfile_path = data_dir / \"output.txt\"  # 用 / 拼接路径</code></pre>"
+      },
+      {
+        "title": "文件写入与 with 语句",
+        "content": "<h3>读取文件的多种方式</h3><pre><code># 1. read(): 读取整个文件（适合小文件）\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    content = f.read()\n    print(content)\n\n# 2. read(n): 读取 n 个字符\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    chunk = f.read(100)  # 读前100个字符\n    while chunk:\n        process(chunk)\n        chunk = f.read(100)\n\n# 3. readline(): 逐行读取\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    line = f.readline()\n    while line:\n        print(line.strip())\n        line = f.readline()\n\n# 4. readlines(): 一次性读入所有行到列表\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    lines = f.readlines()  # ['第一行\\n','第二行\\n',...]\n\n# 5. for line in f: 逐行迭代（最推荐！内存友好）\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    for line in f:\n        print(line.strip())</code></pre>\n<h3>写入文件</h3><pre><code># write(): 写入字符串\nwith open(\"output.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"Hello, World!\\n\")\n    f.write(\"第二行\\n\")\n\n# writelines(): 写入字符串列表\nlines = [\"第一行\\n\", \"第二行\\n\", \"第三行\\n\"]\nwith open(\"output.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.writelines(lines)\n\n# 注意：writelines 不会自动加换行符！\n# 如果不加 \\n，所有内容会挤在一行</code></pre>\n<h3>追加模式（a）</h3><pre><code># 追加模式：不清空已有内容，在末尾添加\nwith open(\"log.txt\", \"a\", encoding=\"utf-8\") as f:\n    from datetime import datetime\n    f.write(f\"[{datetime.now()}] 程序启动\\n\")</code></pre>"
+      },
+      {
+        "title": "异常处理基础",
+        "content": "<h3>with 语句（上下文管理器）</h3><p><code>with</code> 语句确保文件在使用完毕后<strong>自动关闭</strong>，即使发生异常：</p><pre><code># ✅ 推荐：使用 with\nwith open(\"file.txt\", \"r\", encoding=\"utf-8\") as f:\n    content = f.read()\n    # 发生异常也不怕！文件会被正确关闭\n# 离开 with 块，文件自动关闭\n\n# ❌ 不推荐：手动管理\nf = open(\"file.txt\", \"r\")\ntry:\n    content = f.read()\nfinally:\n    f.close()  # 必须写在 finally 里才能保证异常时也关闭</code></pre>\n<h3>with 同时打开多个文件</h3><pre><code># Python 3.1+ 可以一行写多个 with\nwith open(\"input.txt\",\"r\") as fin, open(\"output.txt\",\"w\") as fout:\n    for line in fin:\n        fout.write(line.upper())  # 转换为大写后写出</code></pre>\n<h3>文件对象常用属性与方法</h3><pre><code>with open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    print(f.name)       # 文件名\n    print(f.mode)       # 打开模式 'r'\n    print(f.encoding)   # 编码 'utf-8'\n    print(f.closed)     # 是否已关闭 → False\n    # f.seek(0)         # 移动文件指针到开头\n    # f.tell()          # 获取当前指针位置\n\nprint(f.closed)         # True（with 离开后已自动关闭）</code></pre>\n<h3>CSV 和 JSON 文件处理</h3><pre><code># CSV 文件\nimport csv\nwith open(\"data.csv\", \"r\", encoding=\"utf-8\") as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(row[\"name\"], row[\"score\"])\n\n# JSON 文件\nimport json\ndata = {\"name\": \"张三\", \"age\": 20}\nwith open(\"data.json\", \"w\", encoding=\"utf-8\") as f:\n    json.dump(data, f, ensure_ascii=False, indent=2)</code></pre>"
+      },
+      {
+        "title": "异常处理进阶",
+        "content": "<h3>常见异常类型</h3><table><tr><th>异常类型</th><th>触发条件</th><th>示例</th></tr><tr><td>ValueError</td><td>值不合法</td><td>int(\"abc\")</td></tr><tr><td>TypeError</td><td>类型不匹配</td><td>\"a\" + 1</td></tr><tr><td>IndexError</td><td>列表索引越界</td><td>[1,2][5]</td></tr><tr><td>KeyError</td><td>字典键不存在</td><td>{}[key]</td></tr><tr><td>FileNotFoundError</td><td>文件不存在</td><td>open(\"no\")</td></tr><tr><td>ZeroDivisionError</td><td>除以零</td><td>1/0</td></tr><tr><td>NameError</td><td>变量未定义</td><td>print(x)</td></tr><tr><td>AttributeError</td><td>属性不存在</td><td>\"x\".fly()</td></tr><tr><td>ImportError</td><td>模块导入失败</td><td>mod 不存在</td></tr></table>\n<h3>异常处理完整结构</h3><pre><code>try:\n    # 可能发生异常的代码\n    num = int(input(\"输入数字: \"))\n    result = 100 / num\n    print(f\"100 / {num} = {result}\")\n\nexcept ValueError:\n    # 捕获值错误\n    print(\"请输入有效的整数！\")\n\nexcept ZeroDivisionError:\n    # 捕获除零错误\n    print(\"除数不能为零！\")\n\nexcept (TypeError, KeyError) as e:\n    # 同时捕获多个异常类型\n    print(f\"捕获到异常: {type(e).__name__}: {e}\")\n\nelse:\n    # 没有异常时执行（可选）\n    print(\"计算成功！\")\n\nfinally:\n    # 无论是否有异常都会执行（可选，用于清理）\n    print(\"程序结束。\")</code></pre>\n<h3>获取异常详情</h3><pre><code>import traceback\n\ntry:\n    x = 1 / 0\nexcept ZeroDivisionError as e:\n    print(f\"异常类型: {type(e).__name__}\")  # ZeroDivisionError\n    print(f\"异常消息: {e}\")                 # division by zero\n    # traceback.print_exc()                 # 打印完整回溯</code></pre>\n<h3>主动抛出异常</h3><pre><code>def check_age(age):\n    if age <= 0:\n        raise ValueError(f\"年龄必须为正数，现在是 {age}\")\n    if age > 150:\n        raise ValueError(f\"年龄不可能超过150岁，现在是 {age}\")\n    return age\n\n# 使用\ntry:\n    check_age(-5)\nexcept ValueError as e:\n    print(e)  # 年龄必须为正数，现在是 -5</code></pre>\n<h3>自定义异常</h3><pre><code>class ScoreError(Exception):\n    \"\"\"自定义分数异常\"\"\"\n    pass\n\ndef validate_score(score):\n    if not 0 <= score <= 100:\n        raise ScoreError(f\"分数必须在 0-100 之间，当前值: {score}\")\n    return score\n\n# 使用\ntry:\n    validate_score(150)\nexcept ScoreError as e:\n    print(f\"验证失败: {e}\")</code></pre>\n<h3>最佳实践</h3><ul><li>只捕获<strong>预期可能发生</strong>的异常，不要无差别 <code>except Exception</code></li><li>异常处理不要<strong>隐藏错误</strong>（不要 pass 掉异常不处理）</li><li>不用异常<strong>控制正常流程</strong>（异常是\"异常\"情况，不是正常分支）</li><li>在 <code>finally</code> 中<strong>释放资源</strong>（或用 with 自动管理）</li><li>抛出异常优于返回错误码（Python 风格）</li></ul>"
+      }
+    ],
+    "exercises": [
+      {
+        "question": "使用 with open() 语句的好处是什么？",
+        "options": [
+          "A. 文件读取速度更快",
+          "B. 自动关闭文件，即使发生异常",
+          "C. 不需要指定编码",
+          "D. 可以同时打开多个文件"
+        ],
+        "answer": 1,
+        "explanation": "<code>with</code> 语句是 Python 的<strong>上下文管理器</strong>，它保证在代码块执行完毕后自动关闭文件，即使代码块中发生了异常也不会影响文件的关闭。这是 Python 推荐的文件操作方式。"
+      },
+      {
+        "question": "以下代码执行后会输出什么？\ntry:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    print(\"错误\")\nfinally:\n    print(\"结束\")",
+        "options": [
+          "A. 只输出\"错误\"",
+          "B. 只输出\"结束\"",
+          "C. 先输出\"错误\"再输出\"结束\"",
+          "D. 程序崩溃"
+        ],
+        "answer": 2,
+        "explanation": "当发生 ZeroDivisionError 时，<code>except</code> 块捕获异常并输出「错误」。然后 <code>finally</code> 块<strong>无论是否发生异常都会执行</strong>，输出「结束」。所以最终输出两行。"
+      }
+    ],
+    "ppt_url": "https://feishu.doubao.com/slides/PzjJsPQbWlH8m1dtc1ZcyQaInlg",
+    "mindmap": "# 文件操作与异常处理\n## 文件操作模式\n### r 只读(文件须存在)\n### w 写入(覆盖/新建)\n### a 追加(末尾添加)\n### r+ 读写(文件须存在)\n### b 二进制(rb/wb)\n### encoding=\"utf-8\"\n## 读取操作\n### f.read() 读全部\n### f.read(n) 读n字节\n### f.readline() 读一行\n### f.readlines() 读成列表\n### for line in f: 逐行迭代\n## 写入操作\n### f.write(str) 写字符串\n### f.writelines(list) 写多行\n## with 语句 [重要!]\n### with open() as f:\n### 自动关闭文件\n### 异常也能保证关闭\n### 上下文管理器协议\n## 常见异常类型\n### ValueError 无效参数\n### TypeError 类型不匹配\n### IndexError 索引越界\n### KeyError 键不存在\n### FileNotFoundError 文件没找到\n### ZeroDivisionError 除以零\n## try-except 结构\n### try: 可能出错的代码\n### except XxxError: 捕获\n### except (A,B): 捕获多个\n### else: 没异常时执行\n### finally: 一定执行\n## 高级用法\n### raise 主动抛出异常\n### class 自定义异常\n### 最佳实践\n#### 只捕获预期异常\n#### 具体 > 泛化Exception\n#### 不用异常控制正常流程"
+  }
+]

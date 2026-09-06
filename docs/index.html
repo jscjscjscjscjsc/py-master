@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 学习仪表盘</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="static/css/atlas.css">
+</head>
+<body class="dashboard-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:4px;">
+        练习场
+      </a>
+      <div class="mode-toggle-wrap">
+        <label class="mode-toggle" title="切换学习模式">
+          <input type="checkbox" id="mode-toggle" onchange="toggleMode()" checked>
+          <span class="mode-toggle-slider"></span>
+        </label>
+        <span class="mode-label" id="mode-label">🔓 全部解锁</span>
+      </div>
+      <div class="user-avatar">G</div>
+      <span class="user-name">guest</span>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-logout" onclick="logout()">退出登录</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="dashboard-content">
+  <section class="scroll-hero">
+    <div id="atlas-world" class="atlas-world" aria-label="可拖动旋转的 Python 信号星体"></div>
+    <div class="scroll-seal">PY / 01</div>
+    <div>
+      <p class="scroll-kicker">INTERACTIVE PYTHON ATLAS / 2026</p>
+      <h1>让思想，<br>在代码中成形。</h1>
+      <p>九段空间旅程，一门创造的语言。<br>观察、交互、运行，建立属于你的 Python 世界。</p>
+    </div>
+    <button class="scroll-map-btn" onclick="openStarMap()">探索知识星海 <span>↗</span></button>
+  </section>
+  <div class="atlas-index-label"><span>01 — 09 / 学习航线</span><span>从第一束信号，到完整程序</span></div>
+  <div class="dashboard-header">
+    <h2>欢迎回来，<span class="gradient-text">guest</span></h2>
+    <p>选择章节，开始你的 Python 学习之旅</p>
+    <div class="stats-row">
+      <div class="stat-chip">
+        📚 <span>共 <span class="stat-value">9</span> 个章节</span>
+      </div>
+      <div class="stat-chip">
+        🎯 <span>知识点 <span class="stat-value">40</span> 个</span>
+      </div>
+      <div class="stat-chip">
+        ✏️ <span>练习题 <span class="stat-value">25</span> 道</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="window.location.href='canvas.html'">
+        🎨 <span>画布工具</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="showGlossary()">
+        📖 <span>专业术语</span>
+      </div>
+      <div class="stat-chip" id="quota-chip" style="opacity:0.8;">
+        <span>AI 余额：<span id="quota-display">加载中...</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapters Grid -->
+  <div class="chapters-grid">
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.0s">
+      
+      <span class="card-icon" onclick="goToChapter(1)">🚀</span>
+      <div class="card-num" onclick="goToChapter(1)">第 1 章</div>
+      <h3 onclick="goToChapter(1)">Python 简介与环境搭建</h3>
+      <p onclick="goToChapter(1)">了解 Python 语言的历史、特点，学会安装 Python 并编写你的第一个程序</p>
+      <div class="card-meta" onclick="goToChapter(1)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 3 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(1)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/JeXMsQ0J2lYuW1dGPXPchL1znDh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.08s">
+      
+      <span class="card-icon" onclick="goToChapter(2)">📦</span>
+      <div class="card-num" onclick="goToChapter(2)">第 2 章</div>
+      <h3 onclick="goToChapter(2)">变量与数据类型</h3>
+      <p onclick="goToChapter(2)">学习如何存储数据，认识 Python 中的数字、字符串、布尔值等基本数据类型</p>
+      <div class="card-meta" onclick="goToChapter(2)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(2)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.16s">
+      
+      <span class="card-icon" onclick="goToChapter(3)">⚡</span>
+      <div class="card-num" onclick="goToChapter(3)">第 3 章</div>
+      <h3 onclick="goToChapter(3)">运算符与表达式</h3>
+      <p onclick="goToChapter(3)">掌握算术、比较、逻辑、赋值等运算符，理解运算优先级</p>
+      <div class="card-meta" onclick="goToChapter(3)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(3)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.24s">
+      
+      <span class="card-icon" onclick="goToChapter(4)">🔄</span>
+      <div class="card-num" onclick="goToChapter(4)">第 4 章</div>
+      <h3 onclick="goToChapter(4)">条件判断与循环</h3>
+      <p onclick="goToChapter(4)">学习 if-elif-else 条件分支、for/while 循环，让程序拥有决策和重复执行的能力</p>
+      <div class="card-meta" onclick="goToChapter(4)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(4)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/JUbOsaW9qlrWLpdhqm8cuuRrnNh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.32s">
+      
+      <span class="card-icon" onclick="goToChapter(5)">📝</span>
+      <div class="card-num" onclick="goToChapter(5)">第 5 章</div>
+      <h3 onclick="goToChapter(5)">字符串操作</h3>
+      <p onclick="goToChapter(5)">深入学习字符串的切片、常用方法、格式化输出和编码知识</p>
+      <div class="card-meta" onclick="goToChapter(5)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(5)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/GbQesnTmvleEcLdNRwlchu40nFv" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.4s">
+      
+      <span class="card-icon" onclick="goToChapter(6)">📋</span>
+      <div class="card-num" onclick="goToChapter(6)">第 6 章</div>
+      <h3 onclick="goToChapter(6)">列表与元组</h3>
+      <p onclick="goToChapter(6)">掌握 Python 中最常用的序列类型：可变列表与不可变元组</p>
+      <div class="card-meta" onclick="goToChapter(6)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(6)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/VfsHsBF9mlGuBAdDhdecD3JPnze" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.48s">
+      
+      <span class="card-icon" onclick="goToChapter(7)">🔑</span>
+      <div class="card-num" onclick="goToChapter(7)">第 7 章</div>
+      <h3 onclick="goToChapter(7)">字典与集合</h3>
+      <p onclick="goToChapter(7)">学习键值对存储的字典和无序不重复的集合，掌握哈希表的使用</p>
+      <div class="card-meta" onclick="goToChapter(7)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(7)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/VbsesSsPxloxGddI6TQc4nFbnKd" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.56s">
+      
+      <span class="card-icon" onclick="goToChapter(8)">🔧</span>
+      <div class="card-num" onclick="goToChapter(8)">第 8 章</div>
+      <h3 onclick="goToChapter(8)">函数进阶</h3>
+      <p onclick="goToChapter(8)">从函数基础到装饰器、生成器、闭包、类型提示——全面掌握 Python 函数式编程</p>
+      <div class="card-meta" onclick="goToChapter(8)">
+        <span>📖 8 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(8)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/HY7YsbW66liMKydjtn2cI5qInVg" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.64s">
+      
+      <span class="card-icon" onclick="goToChapter(9)">📁</span>
+      <div class="card-num" onclick="goToChapter(9)">第 9 章</div>
+      <h3 onclick="goToChapter(9)">文件操作与异常处理</h3>
+      <p onclick="goToChapter(9)">学习读写文件、with 语句、常见异常类型以及 try-except 错误处理机制</p>
+      <div class="card-meta" onclick="goToChapter(9)">
+        <span>📖 4 个知识点</span>
+        <span>✏️ 2 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(9)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      <a href="https://feishu.doubao.com/slides/PzjJsPQbWlH8m1dtc1ZcyQaInlg" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      
+      
+    </div>
+    
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Glossary Modal -->
+<div id="glossary-modal" class="modal-overlay">
+  <div class="modal-container" style="max-width:800px;">
+    <div class="modal-header">
+      <span>📖 Python 专业术语大全</span>
+      <button class="modal-close" onclick="closeModal('glossary-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="glossary-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script>
+function goToChapter(id) {
+  window.location.href = location.pathname.endsWith('.html') ? 'chapter-' + id + '.html' : '/chapter/' + id;
+}
+function logout() {
+  window.location.href = location.pathname.endsWith('.html') ? 'index.html' : '/logout';
+}
+
+// Load AI quota on dashboard
+fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
+  const el=document.getElementById('quota-display');
+  if(!el)return;
+  if(d.is_unlimited) el.textContent = '∞ 无限';
+  else el.textContent = d.remaining + '/' + d.limit;
+}).catch(()=>{});
+</script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
+</body>
+</html>

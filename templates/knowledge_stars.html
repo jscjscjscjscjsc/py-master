@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#030510">
+  <title>知识星海 · PyMaster</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/knowledge_stars.css') }}">
+</head>
+<body data-view="universe" data-universe-url="{{ url_for('knowledge_universe') }}" data-dashboard-url="{{ url_for('dashboard') }}">
+  <canvas id="space" aria-label="可交互知识星海"></canvas>
+  <div class="nebula nebula-a" aria-hidden="true"></div><div class="nebula nebula-b" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button class="brand" id="homeButton" type="button"><span class="brand-mark"><i></i><i></i><i></i></span><span>PYMASTER <em>/ KNOWLEDGE ATLAS</em></span></button>
+    <div class="signal"><i></i><span>KNOWLEDGE SIGNAL ONLINE</span></div>
+    <div class="top-actions"><button id="qualityButton" type="button">画质 / AUTO</button><button id="musicButton" type="button">声音 / OFF</button><button id="dashboardButton" type="button">返回主界面 ↗</button></div>
+  </header>
+
+  <aside class="atlas-panel" id="atlasPanel">
+    <p class="eyebrow">PYTHON KNOWLEDGE UNIVERSE</p>
+    <h1>步入星海，<br><em>追寻代码的引力。</em></h1>
+    <p class="atlas-copy">每一个星系是一章旅程，每一颗星球都是一个 Python 知识点。拖拽旋转，滚轮缩放，点击进入。</p>
+    <dl class="atlas-stats"><div><dt id="galaxyCount">—</dt><dd>知识星系</dd></div><div><dt id="starCount">—</dt><dd>知识星球</dd></div><div><dt id="completedCount">—</dt><dd>已经抵达</dd></div></dl>
+    <div class="legend"><span><i class="done"></i>已完成</span><span><i class="available"></i>可探索</span><span><i class="locked"></i>未解锁</span></div>
+  </aside>
+
+  <section class="galaxy-title" id="galaxyTitle" aria-live="polite"><p>CHAPTER 00</p><h2>知识星系</h2><span>0% EXPLORED</span></section>
+  <button class="back-button" id="backButton" type="button">← 返回宇宙</button>
+  <div class="orbit-hint" id="orbitHint"><span>拖拽星图探索</span><i></i><span>点击星球查看知识</span></div>
+
+  <aside class="knowledge-panel" id="knowledgePanel" aria-live="polite">
+    <button class="panel-close" id="panelClose" type="button" aria-label="关闭知识详情">×</button>
+    <p class="panel-code" id="panelCode">STAR / 00</p><div class="planet-preview" id="planetPreview"><i></i><b></b></div>
+    <h2 id="panelTitle"></h2><p id="panelDesc"></p>
+    <div class="relation-list" id="relationList"></div>
+    <div class="panel-actions"><button class="listen-button" id="listenButton" type="button">聆听星语</button><a class="learn-button" id="learnButton" href="{{ url_for('dashboard') }}">进入知识学习 <span>→</span></a></div>
+  </aside>
+
+  <div class="loading" id="loading"><div class="loading-orbit"><i></i></div><p>正在校准知识星图</p><span>CONNECTING TO LOCAL ATLAS</span></div>
+  <div class="error-card" id="errorCard"><span>信号中断</span><h2>知识星图暂时无法抵达</h2><p id="errorMessage">请检查本地服务后重试。</p><button id="retryButton" type="button">重新连接</button></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='vendor/three.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/knowledge_stars.js') }}"></script>
+</body>
+</html>

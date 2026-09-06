@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画布工具 — PyMaster</title>
+<link rel="stylesheet" href="static/css/style.css">
+<style>
+.canvas-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.canvas-wrapper {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+.canvas-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.canvas-toolbar .tool-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-right: 1px solid var(--border-subtle);
+}
+.canvas-toolbar .tool-group:last-child { border-right: none; }
+.tool-btn {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.tool-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.tool-btn.active { background: var(--cyan-dim); color: var(--cyan); border-color: var(--cyan); }
+.tool-btn.wide {
+  width: auto;
+  padding: 0 12px;
+  gap: 4px;
+  font-size: 13px;
+}
+.color-picker-wrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+.color-picker-wrap input[type="color"] {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  background: none;
+}
+.color-picker-wrap .color-swatch {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  border: 2px solid var(--border-subtle);
+  pointer-events: none;
+}
+.size-slider { width: 80px; accent-color: var(--cyan); cursor: pointer; }
+.size-display { font-size: 12px; color: var(--text-muted); min-width: 32px; text-align: center; }
+.canvas-container {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.canvas-container canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.presets-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.btn-preset {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  border: 1px solid var(--purple);
+  background: var(--purple-dim);
+  color: var(--purple);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  white-space: nowrap;
+}
+.btn-preset:hover {
+  background: rgba(163, 113, 247, 0.25);
+  box-shadow: 0 0 12px var(--purple-glow);
+}
+@media (max-width: 768px) {
+  .canvas-wrapper { padding: 8px 12px 12px; }
+  .canvas-toolbar { padding: 8px 10px; gap: 4px; }
+  .tool-btn { width: 34px; height: 34px; font-size: 14px; }
+  .size-slider { width: 60px; }
+  .presets-panel { position: relative; top: auto; right: auto; flex-direction: row; flex-wrap: wrap; margin-top: 8px; }
+}
+</style>
+</head>
+<body class="canvas-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="brand-icon">🎨</span><span>画布工具</span></div>
+    <div class="nav-user">
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;text-decoration:none;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="canvas-wrapper">
+  <div class="canvas-toolbar">
+    <div class="tool-group">
+      <button class="tool-btn active" data-tool="pen" title="画笔">✏️</button>
+      <button class="tool-btn" data-tool="arrow" title="箭头">➡️</button>
+      <button class="tool-btn" data-tool="rect" title="矩形">⬜</button>
+      <button class="tool-btn" data-tool="circle" title="圆形">⭕</button>
+      <button class="tool-btn" data-tool="text" title="文字">🔤</button>
+      <button class="tool-btn" data-tool="eraser" title="橡皮擦">🧹</button>
+      <button class="tool-btn" data-tool="select" title="选择/拖拽">👆</button>
+    </div>
+    <div class="tool-group">
+      <div class="color-picker-wrap">
+        <input type="color" id="color-picker" value="#00d4ff">
+        <div class="color-swatch" id="color-swatch" style="background:#00d4ff;"></div>
+      </div>
+    </div>
+    <div class="tool-group">
+      <input type="range" class="size-slider" id="size-slider" min="1" max="20" value="3">
+      <span class="size-display" id="size-display">3px</span>
+    </div>
+    <div class="tool-group">
+      <button class="tool-btn wide" onclick="undoCanvas()">↩ 撤销</button>
+      <button class="tool-btn wide" onclick="redoCanvas()">↪ 重做</button>
+    </div>
+    <div class="tool-group">
+      <button class="tool-btn wide" onclick="clearCanvas()">🗑 清空</button>
+      <button class="tool-btn wide" onclick="exportCanvas()">💾 导出</button>
+    </div>
+  </div>
+
+  <div class="canvas-container" id="canvas-container">
+    <canvas id="draw-canvas"></canvas>
+    <div class="presets-panel" id="presets-panel" style="display:none;">
+      <button class="btn-preset" onclick="loadPreset('stack')">📚 函数栈调用图</button>
+      <button class="btn-preset" onclick="loadPreset('reference')">🔗 变量引用模型</button>
+      <button class="btn-preset" onclick="loadPreset('dict')">📖 字典内部结构</button>
+      <button class="btn-preset" onclick="loadPreset('func_obj')">⚙️ 函数对象内存</button>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/main.js"></script>
+<script src="static/js/canvas_presets.js"></script>
+<script>
+(function() {
+  const container = document.getElementById('canvas-container');
+  const canvas = document.getElementById('draw-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let currentTool = 'pen';
+  let currentColor = '#00d4ff';
+  let lineWidth = 3;
+  let isDrawing = false;
+  let lastX = 0, lastY = 0;
+  let startX = 0, startY = 0;
+  let paths = [];
+  let pathIndex = -1;
+  let isDragging = false;
+  let dragTarget = null;
+  let dragOffsetX = 0, dragOffsetY = 0;
+  let textInput = null;
+
+  function resize() {
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    redraw();
+  }
+
+  function redraw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i <= pathIndex; i++) drawPath(paths[i]);
+  }
+
+  function drawPath(path) {
+    if (path.type === 'text') {
+      ctx.font = path.font || '20px sans-serif';
+      ctx.fillStyle = path.color;
+      ctx.fillText(path.text, path.x, path.y);
+      return;
+    }
+    if (!path.points || path.points.length < 1) return;
+    ctx.beginPath();
+    ctx.strokeStyle = path.color || '#00d4ff';
+    ctx.lineWidth = path.width || 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    if (path.type === 'arrow' && path.points.length === 2) {
+      const x1 = path.points[0].x, y1 = path.points[0].y;
+      const x2 = path.points[1].x, y2 = path.points[1].y;
+      ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      const headLen = 12 + path.width * 1.5;
+      ctx.moveTo(x2 - headLen * Math.cos(angle - 0.4), y2 - headLen * Math.sin(angle - 0.4));
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x2 - headLen * Math.cos(angle + 0.4), y2 - headLen * Math.sin(angle + 0.4));
+      ctx.stroke();
+      return;
+    }
+    if (path.type === 'rect' && path.points.length === 2) {
+      const x = Math.min(path.points[0].x, path.points[1].x);
+      const y = Math.min(path.points[0].y, path.points[1].y);
+      ctx.strokeRect(x, y, Math.abs(path.points[1].x - path.points[0].x), Math.abs(path.points[1].y - path.points[0].y));
+      return;
+    }
+    if (path.type === 'circle' && path.points.length === 2) {
+      const cx = (path.points[0].x + path.points[1].x) / 2;
+      const cy = (path.points[0].y + path.points[1].y) / 2;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, Math.abs(path.points[1].x - path.points[0].x) / 2, Math.abs(path.points[1].y - path.points[0].y) / 2, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      return;
+    }
+    ctx.moveTo(path.points[0].x, path.points[0].y);
+    for (let i = 1; i < path.points.length; i++) ctx.lineTo(path.points[i].x, path.points[i].y);
+    ctx.stroke();
+  }
+
+  function savePath(path) {
+    paths = paths.slice(0, pathIndex + 1);
+    paths.push(path);
+    pathIndex = paths.length - 1;
+  }
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function startDrawing(e) {
+    e.preventDefault();
+    const pos = getPos(e);
+    if (currentTool === 'select') {
+      for (let i = pathIndex; i >= 0; i--) {
+        const p = paths[i];
+        if (p.type === 'text') {
+          ctx.font = p.font || '20px sans-serif';
+          if (pos.x >= p.x - 5 && pos.x <= p.x + ctx.measureText(p.text).width + 5 && pos.y >= p.y - 25 && pos.y <= p.y + 5) {
+            dragTarget = i; dragOffsetX = pos.x - p.x; dragOffsetY = pos.y - p.y; isDragging = true; return;
+          }
+        } else if (p.points) {
+          for (const pt of p.points) { if (Math.hypot(pos.x - pt.x, pos.y - pt.y) < 10) { dragTarget = i; dragOffsetX = pos.x - p.points[0].x; dragOffsetY = pos.y - p.points[0].y; isDragging = true; return; } }
+        }
+      }
+      return;
+    }
+    if (currentTool === 'text') {
+      if (textInput) document.body.removeChild(textInput);
+      textInput = document.createElement('input');
+      textInput.type = 'text';
+      textInput.placeholder = '输入文字...';
+      textInput.style.cssText = 'position:fixed;left:' + (e.clientX || 0) + 'px;top:' + (e.clientY || 0) + 'px;z-index:100;padding:6px 12px;font-size:20px;font-family:sans-serif;background:var(--bg-card);color:' + currentColor + ';border:2px solid ' + currentColor + ';border-radius:6px;outline:none;min-width:120px;';
+      document.body.appendChild(textInput);
+      textInput.focus();
+      textInput.addEventListener('blur', function() {
+        if (this.value.trim()) {
+          const text = this.value.trim();
+          const pp = { type: 'text', text: text, x: pos.x, y: pos.y, color: currentColor, font: '20px sans-serif' };
+          drawPath(pp); savePath(pp);
+        }
+        document.body.removeChild(this); textInput = null;
+      });
+      textInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') this.blur(); if (e.key === 'Escape') { document.body.removeChild(this); textInput = null; } });
+      return;
+    }
+    isDrawing = true;
+    startX = pos.x; startY = pos.y;
+    lastX = pos.x; lastY = pos.y;
+    if (currentTool === 'pen' || currentTool === 'eraser') {
+      window._currentPath = { type: 'pen', color: currentTool === 'eraser' ? '#0d1117' : currentColor, width: currentTool === 'eraser' ? lineWidth * 4 : lineWidth, points: [{x: pos.x, y: pos.y}] };
+    }
+  }
+
+  function draw(e) {
+    e.preventDefault();
+    const pos = getPos(e);
+    if (isDragging && dragTarget !== null) {
+      const p = paths[dragTarget];
+      if (p.type === 'text') { p.x = pos.x - dragOffsetX; p.y = pos.y - dragOffsetY; }
+      else if (p.points) { const dx = pos.x - p.points[0].x - dragOffsetX, dy = pos.y - p.points[0].y - dragOffsetY; for (const pt of p.points) { pt.x += dx; pt.y += dy; } }
+      redraw(); return;
+    }
+    if (!isDrawing) return;
+    if (currentTool === 'pen' || currentTool === 'eraser') {
+      const p = window._currentPath;
+      if (p) {
+        p.points.push({x: pos.x, y: pos.y});
+        ctx.beginPath(); ctx.strokeStyle = p.color; ctx.lineWidth = p.width; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.moveTo(lastX, lastY); ctx.lineTo(pos.x, pos.y); ctx.stroke();
+        lastX = pos.x; lastY = pos.y;
+      }
+    } else {
+      redraw();
+      ctx.beginPath(); ctx.strokeStyle = currentColor; ctx.lineWidth = lineWidth; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const x1 = startX, y1 = startY, x2 = pos.x, y2 = pos.y;
+      if (currentTool === 'arrow') {
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        const angle = Math.atan2(y2 - y1, x2 - x1); const headLen = 12 + lineWidth * 1.5;
+        ctx.moveTo(x2 - headLen * Math.cos(angle - 0.4), y2 - headLen * Math.sin(angle - 0.4));
+        ctx.lineTo(x2, y2); ctx.lineTo(x2 - headLen * Math.cos(angle + 0.4), y2 - headLen * Math.sin(angle + 0.4));
+        ctx.stroke();
+      } else if (currentTool === 'rect') { ctx.strokeRect(Math.min(x1,x2), Math.min(y1,y2), Math.abs(x2-x1), Math.abs(y2-y1)); }
+      else if (currentTool === 'circle') { ctx.beginPath(); ctx.ellipse((x1+x2)/2, (y1+y2)/2, Math.abs(x2-x1)/2, Math.abs(y2-y1)/2, 0, 0, Math.PI*2); ctx.stroke(); }
+    }
+  }
+
+  function stopDrawing(e) {
+    if (isDragging) { isDragging = false; dragTarget = null; return; }
+    if (!isDrawing) return;
+    isDrawing = false;
+    if (currentTool === 'pen' || currentTool === 'eraser') {
+      const p = window._currentPath;
+      if (p && p.points.length > 0) savePath(p);
+      window._currentPath = null;
+    } else if (['arrow','rect','circle'].includes(currentTool)) {
+      const pos = getPos(e);
+      savePath({ type: currentTool, points: [{x: startX, y: startY}, {x: pos.x, y: pos.y}], color: currentColor, width: lineWidth });
+      redraw();
+    }
+  }
+
+  document.querySelectorAll('.tool-btn[data-tool]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tool-btn[data-tool]').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      currentTool = this.dataset.tool;
+      canvas.style.cursor = currentTool === 'eraser' ? 'cell' : currentTool === 'text' ? 'text' : currentTool === 'select' ? 'grab' : 'crosshair';
+    });
+  });
+
+  document.getElementById('color-picker').addEventListener('input', function() { currentColor = this.value; document.getElementById('color-swatch').style.background = this.value; });
+  document.getElementById('size-slider').addEventListener('input', function() { lineWidth = parseInt(this.value); document.getElementById('size-display').textContent = lineWidth + 'px'; });
+
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseleave', stopDrawing);
+  canvas.addEventListener('touchstart', startDrawing);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', stopDrawing);
+  window.addEventListener('resize', resize);
+
+  window.undoCanvas = function() { if (pathIndex >= 0) { pathIndex--; redraw(); } };
+  window.redoCanvas = function() { if (pathIndex < paths.length - 1) { pathIndex++; redraw(); } };
+  window.clearCanvas = function() { if (paths.length === 0) return; if (confirm('确定清空画布？')) { paths = []; pathIndex = -1; ctx.clearRect(0, 0, canvas.width, canvas.height); } };
+  window.exportCanvas = function() { const link = document.createElement('a'); link.download = 'canvas_' + Date.now() + '.png'; link.href = canvas.toDataURL('image/png'); link.click(); };
+
+  window.loadPreset = function(name) {
+    if (typeof loadCanvasPreset === 'function') {
+      loadCanvasPreset(name, function(presetPaths) { paths = presetPaths.slice(); pathIndex = paths.length - 1; redraw(); });
+    }
+  };
+
+  if (typeof loadCanvasPreset === 'function') {
+    document.getElementById('presets-panel').style.display = 'flex';
+  }
+
+  resize();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,694 @@
+{
+  "galaxies": [
+    {
+      "chapter": 1,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-1",
+      "name": "Python 简介与环境搭建",
+      "name_en": "SECTOR 01",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 1,
+          "desc": "Python 的起源 Python 由荷兰程序员 Guido van Rossum （吉多·范罗苏姆）于 1989 年圣诞节期间开始设计，1991 年发布第一个版本。Guido 当时在荷兰数学与计算机科学研究中心（CWI）工作，他希望创造一种语法简洁、易于阅读的脚本语言。 为什么叫 Python？ 名字来源于 Guido 喜爱的英国喜剧团体 Monty Python （蒙提·派森），而不是蟒蛇。这也是为什么 Python 官方文档中经常出现 Monty Python 的梗。 ",
+          "index": 0,
+          "status": "available",
+          "title": "Python 是什么？",
+          "url": "chapter-1.html#kp-1"
+        },
+        {
+          "chapter": 1,
+          "desc": "Windows 安装步骤 访问 Python 官网 python.org 点击 Downloads，选择 Windows 版本（推荐 3.10+） 下载安装包 重要：勾选「Add Python to PATH」复选框！ 这让你可以在命令行任意位置运行 Python 点击 Install Now 完成安装 打开命令提示符，输入 python --version 验证 C:\\Users\\你的用户名> python --version Python 3.12.3 macOS 安装 ",
+          "index": 1,
+          "status": "available",
+          "title": "Python 的安装",
+          "url": "chapter-1.html#kp-2"
+        },
+        {
+          "chapter": 1,
+          "desc": "Hello, World! 创建你的第一个 Python 程序： print(\"Hello, World!\") 运行后屏幕上显示 Hello, World! 。 运行 Python 代码的三种方式 方式 说明 适用场景 交互模式 终端输入 python ，逐行输入代码立即执行 快速测试、临时计算 脚本模式 代码写入 .py 文件，用 python 文件名.py 运行 正式项目、保存代码 IDE 运行 在 VS Code / PyCharm 中按 F5 或点击运行按钮 日常开发",
+          "index": 2,
+          "status": "available",
+          "title": "第一个 Python 程序",
+          "url": "chapter-1.html#kp-3"
+        },
+        {
+          "chapter": 1,
+          "desc": "常用开发工具对比 工具 特点 价格 适合人群 IDLE Python 自带，简单轻量，无需安装 免费 初学者快速体验 VS Code 微软出品，免费开源，插件市场丰富，启动快 免费 绝大多数开发者（推荐！） PyCharm JetBrains 出品，专业 Python IDE，智能补全、重构 社区版免费 专业 Python 开发者 Jupyter Notebook 浏览器中交互编程，代码+文档+图表一体 免费 数据科学家、教学 Thonny 专为 Python 初学者设计，简",
+          "index": 3,
+          "status": "available",
+          "title": "IDE 与代码编辑器",
+          "url": "chapter-1.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-2",
+      "name": "变量与数据类型",
+      "name_en": "SECTOR 02",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 2,
+          "desc": "变量的概念 变量是一个 存储数据的容器 。想象你有一个贴了标签的盒子，标签叫 name ，盒子里装着 \"Alice\" ，以后提到 name 就知道里面是什么。 name = \"Alice\" # 把 \"Alice\" 放进贴了 name 标签的盒子 age = 25 # 把 25 放进贴了 age 标签的盒子 print(name) # 输出盒子里的内容 → Alice Python 变量 vs 其他语言 Python 不需要声明变量类型： # Java/C++ 风格（Pytho",
+          "index": 0,
+          "status": "available",
+          "title": "什么是变量？",
+          "url": "chapter-2.html#kp-1"
+        },
+        {
+          "chapter": 2,
+          "desc": "整数（int） 没有小数点的数字。Python 3 中整数可以 任意大 （不受 32 位或 64 位限制），只要内存够大： age = 25 year = 2024 population = 8_000_000_000 # 下划线作为千分位分隔符，更易读 big = 123456789012345678901234567890 # Python 自动处理大整数 浮点数（float） 带小数点的数字。计算机用 IEEE 754 标准存储浮点数，存在精度问题： pi = 3.14",
+          "index": 1,
+          "status": "available",
+          "title": "数字类型",
+          "url": "chapter-2.html#kp-2"
+        },
+        {
+          "chapter": 2,
+          "desc": "创建字符串的四种方式 s1 = 'Hello' # 单引号 s2 = \"Python\" # 双引号（效果相同） s3 = '''第一行 第二行 第三行''' # 三单引号：保留换行 s4 = \"\"\"也是多行 字符串\"\"\" # 三双引号：常用于文档字符串(docstring) 引号的选择： 单引号和双引号在 Python 中完全等价。当字符串内含引号时交替使用： \"I'm fine\" 或 '他说\"你好\"' 。 转义字符 转义 含义 转义 含义 \\n 换行 \\t 制表符(Tab)",
+          "index": 2,
+          "status": "available",
+          "title": "字符串类型（str）",
+          "url": "chapter-2.html#kp-3"
+        },
+        {
+          "chapter": 2,
+          "desc": "布尔值（bool） 只有两个值： True 和 False 。注意首字母必须 大写 ！ is_student = True is_raining = False print(10 > 5) # True print(3 == 5) # False 哪些值被视为 False？ 在条件判断中，以下值等同于 False（称为 falsy 值）： 类型 Falsy 值 数字 0, 0.0, 0j 字符串 \"\"（空字符串） 容器 []（空列表）、{}（空字典）、()（空元组）、set(",
+          "index": 3,
+          "status": "available",
+          "title": "布尔类型与 None",
+          "url": "chapter-2.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-3",
+      "name": "运算符与表达式",
+      "name_en": "SECTOR 03",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 3,
+          "desc": "算术运算符一览 运算符 说明 示例 结果 + 加法 3 + 2 5 - 减法 3 - 2 1 * 乘法 3 * 2 6 / 除法（浮点） 7 / 2 3.5 // 整除 7 // 2 3 % 取余（取模） 7 % 2 1 ** 幂运算 2 ** 3 8 重点辨析：/ vs // print(7 / 2) # 3.5（普通除法，总是返回 float） print(7 // 2) # 3（整除，向下取整，丢弃小数部分） print(-7 // 2) # -4（注意！向下取整：-3",
+          "index": 0,
+          "status": "available",
+          "title": "算术运算符",
+          "url": "chapter-3.html#kp-1"
+        },
+        {
+          "chapter": 3,
+          "desc": "比较运算符 运算符 说明 示例 == 等于 5 == 5 → True != 不等于 5 != 3 → True > 大于 5 > 3 → True 小于 5 >= 大于等于 5 >= 5 → True 小于等于 5 比较运算符返回 布尔值 ，常用于条件判断和循环中。 == vs is（重要！） # == 比较值是否相等 # is 比较是否是同一个对象（同一内存地址） a = [1, 2, 3] b = [1, 2, 3] print(a == b) # True（值相同） ",
+          "index": 1,
+          "status": "available",
+          "title": "比较运算符",
+          "url": "chapter-3.html#kp-2"
+        },
+        {
+          "chapter": 3,
+          "desc": "逻辑运算符 运算符 说明 示例 and 与（两边都为 True 才返回 True） True and False → False or 或（一边为 True 就返回 True） True or False → True not 非（取反） not True → False 短路求值（Short-circuit Evaluation） Python 的逻辑运算会在能确定结果时立即停止： # and: 第一个为 False 就不看第二个 def expensive_check()",
+          "index": 2,
+          "status": "available",
+          "title": "逻辑运算符",
+          "url": "chapter-3.html#kp-3"
+        },
+        {
+          "chapter": 3,
+          "desc": "赋值运算符 运算符 等价于 x += 3 x = x + 3 x -= 3 x = x - 3 x *= 3 x = x * 3 x /= 3 x = x / 3 x //= 3 x = x // 3 x %= 3 x = x % 3 x **= 3 x = x ** 3 多重赋值与元组解包 # 同时赋值 a = b = c = 100 # 三个变量都是 100 # 元组解包（最优雅的 Python 特性之一） x, y = 10, 20 # x=10, y=20 x, y ",
+          "index": 3,
+          "status": "available",
+          "title": "赋值运算符",
+          "url": "chapter-3.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 4,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-4",
+      "name": "条件判断与循环",
+      "name_en": "SECTOR 04",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 4,
+          "desc": "基本结构 age = 18 if age >= 18: print(\"你已成年\") else: print(\"你未成年\") 多分支结构（if-elif-else） score = 85 if score >= 90: grade = \"A\" elif score >= 80: grade = \"B\" elif score >= 70: grade = \"C\" elif score >= 60: grade = \"D\" else: grade = \"F\" print(f\"你的等",
+          "index": 0,
+          "status": "available",
+          "title": "if 条件语句",
+          "url": "chapter-4.html#kp-1"
+        },
+        {
+          "chapter": 4,
+          "desc": "遍历序列 # 遍历列表 fruits = [\"苹果\", \"香蕉\", \"橙子\"] for fruit in fruits: print(f\"我爱吃{fruit}\") # 遍历字符串 for char in \"Python\": print(char) # P y t h o n # 遍历字典 d = {\"name\": \"张三\", \"age\": 20} for key in d: # 默认遍历键 print(key) for val in d.values(): # 遍历值 pri",
+          "index": 1,
+          "status": "available",
+          "title": "for 循环",
+          "url": "chapter-4.html#kp-2"
+        },
+        {
+          "chapter": 4,
+          "desc": "基本结构 count = 0 while count 无限循环与 break # 经典模式：无限循环 + 条件跳出 while True: user_input = input(\"输入 'quit' 退出: \") if user_input == 'quit': break # 立即跳出循环 print(f\"你输入了: {user_input}\") # break 只跳出最内层循环 for i in range(3): for j in range(3): if j == 1",
+          "index": 2,
+          "status": "available",
+          "title": "while 循环",
+          "url": "chapter-4.html#kp-3"
+        },
+        {
+          "chapter": 4,
+          "desc": "嵌套循环示例 九九乘法表 for i in range(1, 10): # 外层：行 for j in range(1, i + 1): # 内层：列（每行列数递增） print(f\"{j}×{i}={i*j}\", end=\"\\t\") print() # 每行结束换行 嵌套循环注意事项 复杂度 ：双重循环 O(n²)，三重 O(n³)。数据量大时注意性能 break 只跳出最内层 ：要跳出外层需用标志变量或封装成函数用 return 避免过深嵌套 ：超过三层时考虑重构（提取函",
+          "index": 3,
+          "status": "available",
+          "title": "嵌套循环",
+          "url": "chapter-4.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 5,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-5",
+      "name": "字符串操作",
+      "name_en": "SECTOR 05",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 5,
+          "desc": "索引（从 0 开始） s = \"Hello Python\" print(s[0]) # H（第一个字符） print(s[6]) # P（第七个字符，空格也算一个字符） print(s[-1]) # n（最后一个字符） print(s[-3]) # h（倒数第三个） 切片 [start:stop:step] s = \"Hello Python\" # 三个参数都可以省略 print(s[0:5]) # Hello（索引 0~4，含头不含尾） print(s[6:]) # Pyt",
+          "index": 0,
+          "status": "available",
+          "title": "字符串索引与切片",
+          "url": "chapter-5.html#kp-1"
+        },
+        {
+          "chapter": 5,
+          "desc": "大小写转换 s = \"Hello World\" print(s.upper()) # HELLO WORLD print(s.lower()) # hello world print(s.title()) # Hello World（每个单词首字母大写） print(s.capitalize()) # Hello world（只有第一个字符大写） print(s.swapcase()) # hELLO wORLD（大小写互换） # 实用场景 user_input = \" YE",
+          "index": 1,
+          "status": "available",
+          "title": "字符串常用方法（上）",
+          "url": "chapter-5.html#kp-2"
+        },
+        {
+          "chapter": 5,
+          "desc": "字符串判断方法（返回 True/False） # 内容类型判断 print(\"123\".isdigit()) # True（全数字） print(\"abc\".isalpha()) # True（全字母） print(\"abc123\".isalnum()) # True（字母或数字） print(\" \".isspace()) # True（全空白字符） print(\"Hello\".isascii()) # True（全 ASCII 字符） # 大小写判断 print(\"hell",
+          "index": 2,
+          "status": "available",
+          "title": "字符串常用方法（下）",
+          "url": "chapter-5.html#kp-3"
+        },
+        {
+          "chapter": 5,
+          "desc": "四种格式化方式（推荐 f-string） name = \"Alice\" age = 25 # 1. f-string（Python 3.6+，⭐最推荐！） print(f\"我叫{name}，明年{age + 1}岁\") # 2. str.format() 方法 print(\"我叫{}，今年{}岁\".format(name, age)) print(\"我叫{0}，今年{1}岁\".format(name, age)) # 按位置 print(\"我叫{n}，今年{a}岁\".form",
+          "index": 3,
+          "status": "available",
+          "title": "字符串格式化",
+          "url": "chapter-5.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 6,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-6",
+      "name": "列表与元组",
+      "name_en": "SECTOR 06",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 6,
+          "desc": "创建列表 # 字面量创建 empty = [] numbers = [1, 2, 3, 4, 5] mixed = [1, \"hello\", True, 3.14] # 可混合不同类型 nested = [[1, 2], [3, 4]] # 嵌套列表（二维数组） # list() 函数创建 print(list(\"Python\")) # ['P', 'y', 't', 'h', 'o', 'n'] print(list(range(5))) # [0, 1, 2, 3, 4]",
+          "index": 0,
+          "status": "available",
+          "title": "列表基础",
+          "url": "chapter-6.html#kp-1"
+        },
+        {
+          "chapter": 6,
+          "desc": "添加元素 nums = [1, 2, 3] # append: 在末尾添加一个元素（最常用） nums.append(4) # [1, 2, 3, 4] nums.append([5, 6]) # [1, 2, 3, 4, [5, 6]] ← 整个列表作为一个元素 # insert: 在指定位置插入 nums.insert(0, 0) # [0, 1, 2, 3, 4, [5, 6]] # extend: 扩展多个元素（逐个添加） nums2 = [1, 2, 3] nums",
+          "index": 1,
+          "status": "available",
+          "title": "列表的增删改查",
+          "url": "chapter-6.html#kp-2"
+        },
+        {
+          "chapter": 6,
+          "desc": "排序方法 nums = [3, 1, 4, 1, 5, 9, 2, 6] # sort(): 原地排序（修改原列表） nums.sort() print(nums) # [1, 1, 2, 3, 4, 5, 6, 9] nums.sort(reverse=True) # 降序：[9, 6, 5, 4, 3, 2, 1, 1] # sorted(): 返回新列表（不修改原列表） original = [3, 1, 4, 1, 5] new = sorted(original) ",
+          "index": 2,
+          "status": "available",
+          "title": "列表排序与推导式",
+          "url": "chapter-6.html#kp-3"
+        },
+        {
+          "chapter": 6,
+          "desc": "创建元组 t1 = (1, 2, 3) t2 = 1, 2, 3 # 括号可省略 t3 = (\"hello\",) # ⚠️ 单元素必须加逗号！ t4 = () # 空元组 t5 = tuple([1,2,3]) # 从列表转换 # 对比：单元素陷阱 not_a_tuple = (1) # 这是整数 1，不是元组！ is_a_tuple = (1,) # 这才是元组 print(type(not_a_tuple)) # &lt;class 'int'&gt; print(typ",
+          "index": 3,
+          "status": "available",
+          "title": "元组（tuple）",
+          "url": "chapter-6.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 7,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-7",
+      "name": "字典与集合",
+      "name_en": "SECTOR 07",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 7,
+          "desc": "创建字典的多种方式 # 花括号创建（最常用） student = {\"name\": \"张三\", \"age\": 20, \"score\": 95} # dict() 关键字参数 d2 = dict(name=\"李四\", age=21, city=\"北京\") # dict() + 可迭代对象 d3 = dict([(\"a\", 1), (\"b\", 2), (\"c\", 3)]) # dict() + zip keys = [\"name\", \"age\"] values = [\"王五\", ",
+          "index": 0,
+          "status": "available",
+          "title": "字典基础",
+          "url": "chapter-7.html#kp-1"
+        },
+        {
+          "chapter": 7,
+          "desc": "访问元素 d = {\"name\": \"张三\", \"age\": 20} # 方式1: d[key]（键不存在会报错） print(d[\"name\"]) # 张三 # print(d[\"gender\"]) # ❌ KeyError! # 方式2: d.get(key, default)（安全，推荐！） print(d.get(\"name\")) # 张三 print(d.get(\"gender\")) # None（不存在返回None） print(d.get(\"gender\", \"",
+          "index": 1,
+          "status": "available",
+          "title": "字典的增删改查",
+          "url": "chapter-7.html#kp-2"
+        },
+        {
+          "chapter": 7,
+          "desc": "遍历字典 d = {\"name\": \"张三\", \"age\": 20, \"score\": 95} # 遍历键（默认行为） for key in d: print(key) # name, age, score for key in d.keys(): # 等价写法 print(key) # 遍历值 for value in d.values(): print(value) # 张三, 20, 95 # 遍历键值对（最常用！） for key, value in d.items(",
+          "index": 2,
+          "status": "available",
+          "title": "字典遍历与推导式",
+          "url": "chapter-7.html#kp-3"
+        },
+        {
+          "chapter": 7,
+          "desc": "创建集合 # 花括号创建 s = {1, 2, 3, 3, 2, 1} # {1, 2, 3} 自动去重 s2 = set([1, 2, 2, 3]) # 从列表创建（去重好方法） s3 = set(\"hello\") # {'h','e','l','o'}（字符串→字符集合） empty = set() # 空集合（不能写 {}！那是空字典） 集合的特点 无序 ：不保证顺序（每次打印顺序可能不同） 不重复 ：相同元素自动去重，只保留一个 可变 ：可以添加和删除元素 元素不可变",
+          "index": 3,
+          "status": "available",
+          "title": "集合（set）",
+          "url": "chapter-7.html#kp-4"
+        }
+      ]
+    },
+    {
+      "chapter": 8,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ]
+      ],
+      "id": "chapter-8",
+      "name": "函数进阶",
+      "name_en": "SECTOR 08",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 8,
+          "desc": "定义函数的语法 def 函数名(参数列表): \"\"\"文档字符串（docstring）—— 描述函数功能\"\"\" # 函数体 return 返回值 # 可选 # 简单示例 def greet(name): \"\"\"向指定的人打招呼\"\"\" return f\"你好，{name}！\" # 无参数无返回值 def say_hello(): print(\"Hello World!\") # 调用函数 result = greet(\"小明\") # result = \"你好，小明！\" say_he",
+          "index": 0,
+          "status": "available",
+          "title": "函数的定义与文档",
+          "url": "chapter-8.html#kp-1"
+        },
+        {
+          "chapter": 8,
+          "desc": "位置参数（最基础） def add(a, b): return a + b print(add(3, 5)) # 8（3→a, 5→b，按位置匹配） 默认参数（可选参数） def greet(name, greeting=\"你好\"): return f\"{greeting}，{name}！\" print(greet(\"小明\")) # 你好，小明！（用默认值） print(greet(\"Tom\", \"Hello\")) # Hello，Tom！（覆盖默认值） # ⚠️ 危险：可变",
+          "index": 1,
+          "status": "available",
+          "title": "参数类型精讲（上）",
+          "url": "chapter-8.html#kp-2"
+        },
+        {
+          "chapter": 8,
+          "desc": "返回值 # 单值返回 def square(x): return x ** 2 # 多值返回（本质是返回一个元组） def divide(a, b): quotient = a // b remainder = a % b return quotient, remainder # 返回 (商, 余数) q, r = divide(17, 5) # 解包：q=3, r=2 result = divide(17, 5) # result = (3, 2) 元组 作用域 LEGB ",
+          "index": 2,
+          "status": "available",
+          "title": "返回值与 LEGB 作用域",
+          "url": "chapter-8.html#kp-3"
+        },
+        {
+          "chapter": 8,
+          "desc": "Lambda（匿名函数） # 语法：lambda 参数: 表达式 # lambda 是一个表达式，不是语句，可以写在任何需要函数的地方 square = lambda x: x ** 2 print(square(5)) # 25 add = lambda a, b: a + b print(add(3, 7)) # 10 # lambda 可以有多个参数 max_val = lambda a, b: a if a > b else b print(max_val(10, 2",
+          "index": 3,
+          "status": "available",
+          "title": "Lambda 与高阶函数",
+          "url": "chapter-8.html#kp-4"
+        },
+        {
+          "chapter": 8,
+          "desc": "什么是递归？ 递归 （Recursion）是指函数 调用自身 的编程技巧。递归的核心思想是：把一个复杂问题分解成与原问题相似但规模更小的子问题。 # 递归的两个关键要素： # 1. 基线条件（Base Case）：停止递归的条件 # 2. 递归条件（Recursive Case）：函数调用自身 def countdown(n): \"\"\"递归倒计时\"\"\" if n 经典递归示例：阶乘 # n! = n × (n-1) × (n-2) × ... × 1 # 数学定义： # 0!",
+          "index": 4,
+          "status": "available",
+          "title": "递归 (Recursion)",
+          "url": "chapter-8.html#kp-5"
+        },
+        {
+          "chapter": 8,
+          "desc": "什么是装饰器？ 装饰器是 Python 的一种 语法糖 ，让你在不修改原函数代码的情况下，给函数添加额外的功能。就像给手机套一个保护壳——手机本身不变，但多了防护功能。 # 一个简单的装饰器 def log_call(func): def wrapper(*args, **kwargs): print(f\"调用 {func.__name__}({args})\") result = func(*args, **kwargs) print(f\"{func.__name__} 返回",
+          "index": 5,
+          "status": "available",
+          "title": "装饰器 —— 函数的「外套」",
+          "url": "chapter-8.html#kp-6"
+        },
+        {
+          "chapter": 8,
+          "desc": "生成器（Generator） 生成器是一种 惰性求值 的迭代器，不像列表那样一次性产生所有元素，而是 用到时才生成 ，节省内存。 # 生成器函数: 使用 yield 代替 return def count_up_to(n): i = 1 while i 生成器 vs 列表 列表 生成器 创建 [x for x in ...] (x for x in ...) 内存 一次性全部加载 逐个生成 可以多次遍历 ✓ ✗（一次性消耗） 可以索引 ✓ ✗ 适用场景 小数据、需反复访问 大",
+          "index": 6,
+          "status": "available",
+          "title": "生成器与迭代器",
+          "url": "chapter-8.html#kp-7"
+        },
+        {
+          "chapter": 8,
+          "desc": "类型提示（Type Hints） Python 3.5+ 支持类型注释，虽然 不强制检查 ，但能提升代码可读性和 IDE 智能提示。 # 变量类型注释 name: str = \"Alice\" age: int = 25 scores: list[int] = [85, 92, 78] data: dict[str, int] = {\"math\": 95} # 函数类型提示 def greet(name: str, times: int = 1) -> str: \"\"\"返回问候",
+          "index": 7,
+          "status": "available",
+          "title": "类型提示 (Type Hints)",
+          "url": "chapter-8.html#kp-8"
+        }
+      ]
+    },
+    {
+      "chapter": 9,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ]
+      ],
+      "id": "chapter-9",
+      "name": "文件操作与异常处理",
+      "name_en": "SECTOR 09",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 9,
+          "desc": "文件打开模式 模式 说明 文件不存在 'r' 只读（默认） 报错 FileNotFoundError 'w' 写入（覆盖） 创建新文件 'a' 追加（末尾添加） 创建新文件 'x' 独占创建 创建；已存在则报错 'r+' 读写 报错 'w+' 写读（覆盖） 创建新文件 'b' 二进制模式 与上面组合使用：'rb', 'wb' 编码（encoding） # ⚠️ 读取中文文件必须指定 encoding！ with open(\"data.txt\", \"r\", encoding=\"",
+          "index": 0,
+          "status": "available",
+          "title": "文件读取",
+          "url": "chapter-9.html#kp-1"
+        },
+        {
+          "chapter": 9,
+          "desc": "读取文件的多种方式 # 1. read(): 读取整个文件（适合小文件） with open(\"test.txt\", \"r\", encoding=\"utf-8\") as f: content = f.read() print(content) # 2. read(n): 读取 n 个字符 with open(\"test.txt\", \"r\", encoding=\"utf-8\") as f: chunk = f.read(100) # 读前100个字符 while chunk: ",
+          "index": 1,
+          "status": "available",
+          "title": "文件写入与 with 语句",
+          "url": "chapter-9.html#kp-2"
+        },
+        {
+          "chapter": 9,
+          "desc": "with 语句（上下文管理器） with 语句确保文件在使用完毕后 自动关闭 ，即使发生异常： # ✅ 推荐：使用 with with open(\"file.txt\", \"r\", encoding=\"utf-8\") as f: content = f.read() # 发生异常也不怕！文件会被正确关闭 # 离开 with 块，文件自动关闭 # ❌ 不推荐：手动管理 f = open(\"file.txt\", \"r\") try: content = f.read() finall",
+          "index": 2,
+          "status": "available",
+          "title": "异常处理基础",
+          "url": "chapter-9.html#kp-3"
+        },
+        {
+          "chapter": 9,
+          "desc": "常见异常类型 异常类型 触发条件 示例 ValueError 值不合法 int(\"abc\") TypeError 类型不匹配 \"a\" + 1 IndexError 列表索引越界 [1,2][5] KeyError 字典键不存在 {}[key] FileNotFoundError 文件不存在 open(\"no\") ZeroDivisionError 除以零 1/0 NameError 变量未定义 print(x) AttributeError 属性不存在 \"x\".fly() I",
+          "index": 3,
+          "status": "available",
+          "title": "异常处理进阶",
+          "url": "chapter-9.html#kp-4"
+        }
+      ]
+    }
+  ],
+  "success": true,
+  "summary": {
+    "completed": 0,
+    "galaxies": 9,
+    "stars": 40
+  }
+}

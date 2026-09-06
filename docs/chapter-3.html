@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 运算符与表达式</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+</head>
+<body class="chapter-page" data-chapter-id="3" data-chapter-title="运算符与表达式" data-chapter-description="掌握算术、比较、逻辑、赋值等运算符，理解运算优先级">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 03</p>
+    <span class="hero-icon">⚡</span>
+    <h2>第 3 章 · 运算符与表达式</h2>
+    <p class="hero-desc">掌握算术、比较、逻辑、赋值等运算符，理解运算优先级</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      <a href="https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh" target="_blank" class="btn-ppt-hero">
+        📊 查看本章 PPT 课件
+      </a>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="3_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          算术运算符
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3>算术运算符一览</h3><table><tr><th>运算符</th><th>说明</th><th>示例</th><th>结果</th></tr><tr><td>+</td><td>加法</td><td>3 + 2</td><td>5</td></tr><tr><td>-</td><td>减法</td><td>3 - 2</td><td>1</td></tr><tr><td>*</td><td>乘法</td><td>3 * 2</td><td>6</td></tr><tr><td>/</td><td>除法（浮点）</td><td>7 / 2</td><td>3.5</td></tr><tr><td>//</td><td>整除</td><td>7 // 2</td><td>3</td></tr><tr><td>%</td><td>取余（取模）</td><td>7 % 2</td><td>1</td></tr><tr><td>**</td><td>幂运算</td><td>2 ** 3</td><td>8</td></tr></table>
+<h3>重点辨析：/ vs //</h3><pre><code>print(7 / 2)    # 3.5（普通除法，总是返回 float）
+print(7 // 2)   # 3（整除，向下取整，丢弃小数部分）
+print(-7 // 2)  # -4（注意！向下取整：-3.5 → -4，不是 -3）
+print(int(-7 / 2))  # -3（int() 是向零截断，与 // 不同！）</code></pre>
+<h3>% 取模的妙用</h3><pre><code># 判断奇偶
+num = 7
+if num % 2 == 0:
+    print("偶数")
+else:
+    print("奇数")
+
+# 循环数组
+colors = ["红", "绿", "蓝"]
+for i in range(10):
+    print(colors[i % 3])  # 红绿蓝红绿蓝红绿蓝红
+
+# 获取个位数
+print(1234 % 10)   # 4
+print(1234 % 100)  # 34</code></pre>
+<h3>** 幂运算</h3><pre><code>print(2 ** 10)    # 1024（2的10次方）
+print(4 ** 0.5)   # 2.0（开平方根）
+print(8 ** (1/3)) # 2.0（开立方根）</code></pre>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(3, 0, "\u7b97\u672f\u8fd0\u7b97\u7b26", [{"answer": 1, "ex_idx": 0, "explanation": "17 \u00f7 5 = 3 \u4f59 \u003cstrong\u003e2\u003c/strong\u003e\uff0c\u6240\u4ee5 \u003ccode\u003e17 % 5\u003c/code\u003e \u7684\u7ed3\u679c\u662f 2\u3002\u003ccode\u003e%\u003c/code\u003e \u662f\u53d6\u4f59\u8fd0\u7b97\u7b26\uff0c\u8fd4\u56de\u9664\u6cd5\u540e\u7684\u4f59\u6570\u3002", "options": ["A. 3", "B. 2", "C. 5", "D. 1"], "question": "\u8868\u8fbe\u5f0f 17 % 5 \u7684\u7ed3\u679c\u662f\u591a\u5c11\uff1f", "type": "choice"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(3, '0', "\u8868\u8fbe\u5f0f 17 % 5 \u7684\u7ed3\u679c\u662f\u591a\u5c11\uff1f")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Multiple Choice -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:12px;white-space:pre-wrap;font-family:monospace;background:var(--bg-secondary);padding:10px 12px;border-radius:6px;line-height:1.6;">表达式 17 % 5 的结果是多少？</div>
+            <div class="ex-options" data-ex-type="choice" data-correct="1">
+              
+              <label class="ex-option" data-opt="0">
+                <span class="opt-letter">A</span>
+                <span> 3</span>
+              </label>
+              
+              <label class="ex-option" data-opt="1">
+                <span class="opt-letter">B</span>
+                <span> 2</span>
+              </label>
+              
+              <label class="ex-option" data-opt="2">
+                <span class="opt-letter">C</span>
+                <span> 5</span>
+              </label>
+              
+              <label class="ex-option" data-opt="3">
+                <span class="opt-letter">D</span>
+                <span> 1</span>
+              </label>
+              
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-submit" onclick="submitChoiceEx(this, 3, 0, 0)">提交答案</button>
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看解析</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("\u8868\u8fbe\u5f0f 17 % 5 \u7684\u7ed3\u679c\u662f\u591a\u5c11\uff1f")">请教 AI 助教</button>
+            </div>
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 答案解析</div>
+              <div class="answer-text">17 ÷ 5 = 3 余 <strong>2</strong>，所以 <code>17 % 5</code> 的结果是 2。<code>%</code> 是取余运算符，返回除法后的余数。</div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(3, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u7b97\u672f\u8fd0\u7b97\u7b26\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：计算并打印 (10+5)*3/2 的结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(3, 0, 1, "\u8ba1\u7b97\u5e76\u6253\u5370 (10+5)*3/2 \u7684\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="3_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(3, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(3, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(3, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="3_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(3, 0, '算术运算符')">
+            🎨 漫画讲解
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="3_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          比较运算符
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3>比较运算符</h3><table><tr><th>运算符</th><th>说明</th><th>示例</th></tr><tr><td>==</td><td>等于</td><td>5 == 5 → True</td></tr><tr><td>!=</td><td>不等于</td><td>5 != 3 → True</td></tr><tr><td>></td><td>大于</td><td>5 > 3 → True</td></tr><tr><td><</td><td>小于</td><td>5 < 3 → False</td></tr><tr><td>>=</td><td>大于等于</td><td>5 >= 5 → True</td></tr><tr><td><=</td><td>小于等于</td><td>5 <= 3 → False</td></tr></table><p>比较运算符返回<strong>布尔值</strong>，常用于条件判断和循环中。</p>
+<h3>== vs is（重要！）</h3><pre><code># == 比较值是否相等
+# is 比较是否是同一个对象（同一内存地址）
+a = [1, 2, 3]
+b = [1, 2, 3]
+print(a == b)  # True（值相同）
+print(a is b)  # False（不同的列表对象）
+
+# 对于小整数和短字符串，Python 有缓存机制
+x = 256
+y = 256
+print(x is y)  # True（小整数被缓存）
+
+x = 257
+y = 257
+print(x is y)  # 可能是 False（大整数不一定缓存）</code></pre>
+<h3>链式比较（Python 特色语法）</h3><pre><code># Python 支持链式比较！
+age = 25
+# 等价于 age >= 18 and age <= 60
+if 18 <= age <= 60:
+    print("成年人")
+
+x = 10
+print(1 < x < 20)  # True（等价于 1 < x and x < 20）
+print(1 < x > 5)   # True（等价于 1 < x and x > 5，但这样写容易混淆）</code></pre>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(3, 1, "\u6bd4\u8f83\u8fd0\u7b97\u7b26", [{"answer": 1, "ex_idx": 0, "explanation": "\u003ccode\u003e**\u003c/code\u003e \u662f\u5e42\u8fd0\u7b97\u7b26\uff0c\u003ccode\u003e3 ** 2\u003c/code\u003e \u8868\u793a 3 \u7684 2 \u6b21\u65b9\uff0c\u5373 3 \u00d7 3 = \u003cstrong\u003e9\u003c/strong\u003e\u3002", "options": ["A. 6", "B. 9", "C. 8", "D. 5"], "question": "\u6267\u884c print(3 ** 2) \u4f1a\u8f93\u51fa\u4ec0\u4e48\uff1f", "type": "choice"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(3, '0', "\u6267\u884c print(3 ** 2) \u4f1a\u8f93\u51fa\u4ec0\u4e48\uff1f")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Multiple Choice -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:12px;white-space:pre-wrap;font-family:monospace;background:var(--bg-secondary);padding:10px 12px;border-radius:6px;line-height:1.6;">执行 print(3 ** 2) 会输出什么？</div>
+            <div class="ex-options" data-ex-type="choice" data-correct="1">
+              
+              <label class="ex-option" data-opt="0">
+                <span class="opt-letter">A</span>
+                <span> 6</span>
+              </label>
+              
+              <label class="ex-option" data-opt="1">
+                <span class="opt-letter">B</span>
+                <span> 9</span>
+              </label>
+              
+              <label class="ex-option" data-opt="2">
+                <span class="opt-letter">C</span>
+                <span> 8</span>
+              </label>
+              
+              <label class="ex-option" data-opt="3">
+                <span class="opt-letter">D</span>
+                <span> 5</span>
+              </label>
+              
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-submit" onclick="submitChoiceEx(this, 3, 1, 0)">提交答案</button>
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看解析</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("\u6267\u884c print(3 ** 2) \u4f1a\u8f93\u51fa\u4ec0\u4e48\uff1f")">请教 AI 助教</button>
+            </div>
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 答案解析</div>
+              <div class="answer-text"><code>**</code> 是幂运算符，<code>3 ** 2</code> 表示 3 的 2 次方，即 3 × 3 = <strong>9</strong>。</div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(3, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u6bd4\u8f83\u8fd0\u7b97\u7b26\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码验证 10 是否大于 5 且小于 20。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(3, 1, 1, "\u7528\u4ee3\u7801\u9a8c\u8bc1 10 \u662f\u5426\u5927\u4e8e 5 \u4e14\u5c0f\u4e8e 20\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="3_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(3, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(3, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(3, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="3_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(3, 1, '比较运算符')">
+            🎨 漫画讲解
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="3_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          逻辑运算符
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3>逻辑运算符</h3><table><tr><th>运算符</th><th>说明</th><th>示例</th></tr><tr><td>and</td><td>与（两边都为 True 才返回 True）</td><td>True and False → False</td></tr><tr><td>or</td><td>或（一边为 True 就返回 True）</td><td>True or False → True</td></tr><tr><td>not</td><td>非（取反）</td><td>not True → False</td></tr></table>
+<h3>短路求值（Short-circuit Evaluation）</h3><p>Python 的逻辑运算会在能确定结果时立即停止：</p><pre><code># and: 第一个为 False 就不看第二个
+def expensive_check():
+    print("执行了耗时检查")
+    return True
+
+False and expensive_check()  # "执行了耗时检查"不会被打印，因为 False 已经确定了
+
+# or: 第一个为 True 就不看第二个
+True or expensive_check()  # "执行了耗时检查"不会被打印，因为 True 已经确定了</code></pre>
+<h3>短路求值的实用技巧</h3><pre><code># 安全访问：如果 name 非空才访问 .upper()
+name = "" or "默认名称"
+print(name)  # "默认名称"
+
+# 防止除零
+b = 0
+result = b != 0 and (10 / b)  # False，不会执行除法
+print(result)  # False
+
+# 条件赋值
+user_input = input("输入名字: ")
+display_name = user_input or "匿名用户"  # 如果 user_input 为空就用默认值
+print(display_name)</code></pre>
+<h3>逻辑运算 vs 位运算</h3><pre><code># 逻辑运算（操作布尔值）
+print(True and False)  # False
+
+# 位运算（操作整数二进制位）—— 先了解一下，后面会详细学
+print(5 & 3)   # 1（按位与：101 & 011 = 001）
+print(5 | 3)   # 7（按位或：101 | 011 = 111）
+print(~5)      # -6（按位取反）
+print(5 ^ 3)   # 6（按位异或：101 ^ 011 = 110）</code></pre>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(3, 2, "\u903b\u8f91\u8fd0\u7b97\u7b26", [{"code_prompt": "\u7528 and/or/not \u5404\u5199\u4e00\u4e2a\u8868\u8fbe\u5f0f\u5e76\u6253\u5370\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u903b\u8f91\u8fd0\u7b97\u7b26\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(3, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u903b\u8f91\u8fd0\u7b97\u7b26\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用 and/or/not 各写一个表达式并打印结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(3, 2, 0, "\u7528 and/or/not \u5404\u5199\u4e00\u4e2a\u8868\u8fbe\u5f0f\u5e76\u6253\u5370\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="3_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(3, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(3, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(3, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="3_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(3, 2, '逻辑运算符')">
+            🎨 漫画讲解
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="3_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          赋值运算符
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3>赋值运算符</h3><table><tr><th>运算符</th><th>等价于</th></tr><tr><td>x += 3</td><td>x = x + 3</td></tr><tr><td>x -= 3</td><td>x = x - 3</td></tr><tr><td>x *= 3</td><td>x = x * 3</td></tr><tr><td>x /= 3</td><td>x = x / 3</td></tr><tr><td>x //= 3</td><td>x = x // 3</td></tr><tr><td>x %= 3</td><td>x = x % 3</td></tr><tr><td>x **= 3</td><td>x = x ** 3</td></tr></table>
+<h3>多重赋值与元组解包</h3><pre><code># 同时赋值
+a = b = c = 100       # 三个变量都是 100
+
+# 元组解包（最优雅的 Python 特性之一）
+x, y = 10, 20         # x=10, y=20
+x, y = y, x           # 交换变量值！不需要临时变量
+
+# 多返回值接住
+def get_user():
+    return "张三", 25, "北京"
+name, age, city = get_user()  # 一次性解包
+print(f"{name}，{age}岁，来自{city}")
+
+# 用 * 收集剩余
+first, *rest = [1, 2, 3, 4, 5]
+print(first)  # 1
+print(rest)   # [2, 3, 4, 5]
+
+*head, last = [1, 2, 3, 4, 5]
+print(head)  # [1, 2, 3, 4]
+print(last)  # 5</code></pre>
+<h3>海象运算符 :=（Python 3.8+）</h3><pre><code># 在表达式中赋值并立即使用
+# 传统写法
+n = len(data)
+if n > 10:
+    print(f"数据有{n}条")
+
+# 海象运算符写法
+if (n := len(data)) > 10:
+    print(f"数据有{n}条")
+
+# 在 while 中特别有用
+while (line := file.readline()):
+    process(line)</code></pre>
+<h3>运算符优先级（从高到低）</h3><table><tr><th>优先级</th><th>运算符</th></tr><tr><td>最高</td><td>() 括号</td></tr><tr><td></td><td>** 幂运算</td></tr><tr><td></td><td>-x（一元负号）</td></tr><tr><td></td><td>* / // %</td></tr><tr><td></td><td>+ -</td></tr><tr><td></td><td>< <= > >= == !=</td></tr><tr><td></td><td>not</td></tr><tr><td></td><td>and</td></tr><tr><td>最低</td><td>or</td></tr></table><p><strong>记不住？加括号！</strong> <code>(a + b) * c</code> 比 <code>a + b * c</code> 更清晰。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(3, 3, "\u8d4b\u503c\u8fd0\u7b97\u7b26", [{"code_prompt": "\u4f7f\u7528\u591a\u91cd\u8d4b\u503c\u4ea4\u6362\u4e24\u4e2a\u53d8\u91cf\u7684\u503c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u8d4b\u503c\u8fd0\u7b97\u7b26\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(3, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u8d4b\u503c\u8fd0\u7b97\u7b26\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：使用多重赋值交换两个变量的值。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(3, 3, 0, "\u4f7f\u7528\u591a\u91cd\u8d4b\u503c\u4ea4\u6362\u4e24\u4e2a\u53d8\u91cf\u7684\u503c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="3_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(3, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(3, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(3, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="3_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(3, 3, '赋值运算符')">
+            🎨 漫画讲解
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 运算符与表达式 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 运算符与表达式 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 运算符与表达式
+## 算术运算符
+### + 加法 / - 减法
+### * 乘法 / ** 幂运算
+### / 除法(浮点) / // 整除(向下取整)
+### % 取模(取余数)
+## 比较运算符
+### == 等于 / != 不等于
+### &gt; 大于 / &lt; 小于
+### &gt;= 大于等于 / &lt;= 小于等于
+### 结果: True 或 False
+## 逻辑运算符
+### and 与: 两者都为True才为True
+### or 或: 一个为True即为True
+### not 非: 取反
+### 短路求值特性
+#### a and b: a为False跳过b
+#### a or b: a为True跳过b
+## 赋值运算符
+### = 基本赋值
+### += -= *= /= 复合赋值
+### 多重赋值: a = b = c = 100
+### 元组解包: x, y = 10, 20
+### 变量交换: a, b = b, a
+## 运算符优先级
+### ** &gt; * / // % &gt; + -
+### 比较 &gt; not &gt; and &gt; or
+### () 括号改变优先级</script>
+
+
+<script>
+  const CHAPTER_ID = 3;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["\u7b97\u672f\u8fd0\u7b97\u7b26", "\u6bd4\u8f83\u8fd0\u7b97\u7b26", "\u903b\u8f91\u8fd0\u7b97\u7b26", "\u8d4b\u503c\u8fd0\u7b97\u7b26"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u8fd0\u7b97\u7b26\u4e0e\u8868\u8fbe\u5f0f";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(3, "\u8fd0\u7b97\u7b26\u4e0e\u8868\u8fbe\u5f0f", "\u638c\u63e1\u7b97\u672f\u3001\u6bd4\u8f83\u3001\u903b\u8f91\u3001\u8d4b\u503c\u7b49\u8fd0\u7b97\u7b26\uff0c\u7406\u89e3\u8fd0\u7b97\u4f18\u5148\u7ea7", ["\u7b97\u672f\u8fd0\u7b97\u7b26", "\u6bd4\u8f83\u8fd0\u7b97\u7b26", "\u903b\u8f91\u8fd0\u7b97\u7b26", "\u8d4b\u503c\u8fd0\u7b97\u7b26"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

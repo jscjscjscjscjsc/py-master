@@ -1,0 +1,20 @@
+/* A quiet opening page for every chapter, in the same paper-and-ink language. */
+.chapter-intro-overlay { position:fixed; inset:0; z-index:18000; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(41,37,31,.42); backdrop-filter:blur(3px); opacity:0; transition:opacity .35s ease; }
+.chapter-intro-overlay.is-visible { opacity:1; }
+.chapter-intro-card { position:relative; width:min(720px,100%); padding:46px 54px 40px; background:#f7f0e2; color:#29251f; border:1px solid rgba(91,72,52,.5); box-shadow:0 24px 70px rgba(41,37,31,.28); }
+.chapter-intro-card::before,.chapter-intro-card::after { content:''; position:absolute; width:58px; height:58px; border-color:#b8883b; opacity:.7; }
+.chapter-intro-card::before { top:14px; left:14px; border-top:1px solid; border-left:1px solid; }
+.chapter-intro-card::after { right:14px; bottom:14px; border-right:1px solid; border-bottom:1px solid; }
+.chapter-intro-seal { position:absolute; right:28px; top:24px; color:#a94b36; border:1px solid #a94b36; padding:5px 7px; font:12px var(--font-serif); writing-mode:vertical-rl; letter-spacing:.18em; }
+.chapter-intro-kicker { color:#a94b36; font:12px var(--font-serif); letter-spacing:.22em; }
+.chapter-intro-title { margin:10px 70px 12px 0; font:700 clamp(26px,4vw,42px)/1.25 var(--font-serif); letter-spacing:.06em; }
+.chapter-intro-desc { max-width:600px; color:#756957; font:16px/1.9 var(--font-serif); }
+.chapter-intro-rule { height:1px; margin:26px 0 20px; background:linear-gradient(90deg,transparent,#b8883b,transparent); opacity:.55; }
+.chapter-intro-quote { color:#2e6f68; font:600 20px/1.7 var(--font-serif); }
+.chapter-intro-route { margin-top:12px; color:#756957; font-size:13px; }
+.chapter-intro-actions { display:flex; justify-content:space-between; align-items:center; margin-top:30px; gap:16px; }
+.chapter-intro-skip,.chapter-intro-start { padding:10px 18px; border:1px solid rgba(91,72,52,.45); border-radius:2px; background:transparent; color:#756957; cursor:pointer; font:14px var(--font-serif); }
+.chapter-intro-start { border-color:#2e6f68; color:#2e6f68; }
+.chapter-intro-skip:hover { color:#a94b36; border-color:#a94b36; }
+.chapter-intro-start:hover { background:rgba(46,111,104,.09); }
+@media(max-width:640px){ .chapter-intro-card{padding:36px 24px 28px}.chapter-intro-title{margin-right:42px}.chapter-intro-quote{font-size:17px}.chapter-intro-actions{align-items:stretch;flex-direction:column-reverse}.chapter-intro-skip,.chapter-intro-start{width:100%} }

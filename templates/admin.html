@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 管理后台</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+.admin-page { min-height: 100vh; }
+.admin-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px 24px; position: relative; z-index: 1; }
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.admin-header h1 { font-size: 24px; margin: 0; }
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px 20px; }
+.stat-card .label { font-size: 13px; color: var(--text-muted); }
+.stat-card .value { font-size: 28px; font-weight: 700; color: var(--cyan); margin-top: 4px; }
+.section { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; }
+.section h2 { font-size: 18px; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px; }
+.add-form { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: end; }
+.add-form .field { display: flex; flex-direction: column; gap: 4px; }
+.add-form .field label { font-size: 12px; color: var(--text-muted); }
+.add-form input, .add-form select {
+  padding: 8px 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle); background: var(--bg-secondary);
+  color: var(--text-primary); font-size: 14px;
+}
+.add-form input:focus { outline: none; border-color: var(--cyan); }
+.btn { padding: 8px 18px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.15s; }
+.btn-primary { background: var(--cyan); color: #000; }
+.btn-primary:hover { box-shadow: var(--shadow-glow-cyan); }
+.btn-danger { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+th { color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+td { color: var(--text-secondary); }
+td .username { color: var(--cyan); font-weight: 600; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.badge-green { background: var(--green-dim); color: var(--green); }
+.badge-red { background: var(--red-dim); color: var(--red); }
+.badge-yellow { background: var(--orange-dim); color: var(--orange); }
+td .actions { display: flex; gap: 6px; }
+td .actions button { padding: 4px 10px; font-size: 12px; }
+.empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: var(--radius-md); z-index: 1000; font-size: 14px; font-weight: 600; animation: fadeInOut 2.5s ease; }
+.toast.success { background: var(--green); color: #000; }
+.toast.error { background: var(--red); color: #fff; }
+@keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; } }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; align-items: center; justify-content: center; }
+.modal-overlay.active { display: flex; }
+.modal-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; min-width: 400px; max-width: 600px; max-height: 80vh; overflow-y: auto; }
+.modal-box h3 { margin: 0 0 16px 0; }
+.usage-chart { font-size: 12px; color: var(--text-muted); max-height: 200px; overflow-y: auto; }
+.usage-chart .day { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border-subtle); }
+.usage-chart .day:last-child { border-bottom: none; }
+@media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } .add-form { flex-direction: column; } .add-form .field { width: 100%; } .modal-box { min-width: auto; margin: 0 16px; } }
+</style>
+</head>
+<body class="admin-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="brand-icon">🔐</span><span>PyMaster 管理后台</span></div>
+    <div class="nav-user">
+      <span class="user-name" style="margin-right:12px;">管理员</span>
+      <a href="{{ url_for('dashboard') }}" class="btn-ghost" style="padding:6px 12px;font-size:13px;text-decoration:none;">📊 用户首页</a>
+      <a href="{{ url_for('logout') }}" class="btn-logout">退出登录</a>
+    </div>
+  </div>
+</nav>
+
+<div class="admin-wrapper">
+
+  <div class="admin-header">
+    <h1>🔐 用户白名单管理</h1>
+    <button class="btn btn-ghost" onclick="loadStats()" title="刷新数据">🔄 刷新</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="admin-grid" id="stats-grid">
+    <div class="stat-card"><div class="label">白名单用户总数</div><div class="value" id="stat-total">-</div></div>
+    <div class="stat-card"><div class="label">已注册用户</div><div class="value" id="stat-registered">-</div></div>
+    <div class="stat-card"><div class="label">今日 AI 调用次数</div><div class="value" id="stat-today-calls">-</div></div>
+    <div class="stat-card"><div class="label">今日活跃用户</div><div class="value" id="stat-today-users">-</div></div>
+  </div>
+
+  <!-- Add User Form -->
+  <div class="section">
+    <h2>➕ 添加 / 编辑白名单用户</h2>
+    <form class="add-form" id="add-form" onsubmit="return addUser(event)">
+      <div class="field">
+        <label>用户名 *</label>
+        <input type="text" id="wl-username" placeholder="输入用户名" required style="min-width:160px;">
+      </div>
+      <div class="field">
+        <label>过期日期</label>
+        <input type="date" id="wl-expiry">
+      </div>
+      <div class="field">
+        <label>每日 AI 问答上限</label>
+        <input type="number" id="wl-limit" value="30" min="0" style="width:100px;">
+        <small style="color:var(--text-muted);font-size:11px;">0 = 不限</small>
+      </div>
+      <div class="field">
+        <label>备注</label>
+        <input type="text" id="wl-note" placeholder="备注信息" style="min-width:140px;">
+      </div>
+      <button type="submit" class="btn btn-primary">添加 / 更新</button>
+    </form>
+  </div>
+
+  <!-- User List -->
+  <div class="section">
+    <h2>📋 白名单列表</h2>
+    <div id="user-table-wrap">
+      <div class="empty-state">加载中...</div>
+    </div>
+  </div>
+
+  <!-- Daily Usage Modal -->
+  <div class="modal-overlay" id="usage-modal">
+    <div class="modal-box">
+      <h3>📊 AI 调用统计</h3>
+      <div id="usage-content" class="usage-chart">加载中...</div>
+      <br>
+      <button class="btn btn-ghost" onclick="document.getElementById('usage-modal').classList.remove('active')">关闭</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+function showToast(msg, type) {
+  const t = document.createElement('div'); t.className = 'toast ' + type; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+
+async function loadWhitelist() {
+  try {
+    const r = await fetch('/admin/api/whitelist');
+    const d = await r.json();
+    if (!d.success) throw new Error(d.message);
+    const wrap = document.getElementById('user-table-wrap');
+    if (!d.users || d.users.length === 0) {
+      wrap.innerHTML = '<div class="empty-state">📭 暂无白名单用户，在上方添加</div>';
+      return;
+    }
+    let html = `<table><thead><tr>
+      <th>用户名</th><th>过期日期</th><th>每日限额</th><th>今日已用</th><th>状态</th><th>注册</th><th>备注</th><th>操作</th>
+    </tr></thead><tbody>`;
+    d.users.forEach(u => {
+      const expired = u.expiry_date && new Date(u.expiry_date) < new Date(new Date().toDateString());
+      const status = expired ? '<span class="badge badge-red">已过期</span>' : '<span class="badge badge-green">有效</span>';
+      const registered = u.is_registered ? '<span class="badge badge-green">已注册</span>' : '<span class="badge badge-yellow">未注册</span>';
+      const usedPct = u.daily_limit > 0 ? Math.round(u.today_used / u.daily_limit * 100) : 0;
+      const usedStr = u.daily_limit > 0 ? u.today_used + '/' + u.daily_limit + ' (' + usedPct + '%)' : (u.today_used > 0 ? u.today_used : '0');
+      html += `<tr>
+        <td><span class="username">${escapeHtml(u.username)}</span></td>
+        <td>${u.expiry_date || '永久'}</td>
+        <td>${u.daily_limit > 0 ? u.daily_limit + ' 次' : '不限'}</td>
+        <td style="color:${usedPct >= 80 ? 'var(--orange)' : usedPct >= 100 ? 'var(--red)' : 'var(--text-secondary)'}">${usedStr}</td>
+        <td>${status}</td>
+        <td>${registered}</td>
+        <td style="font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.note || '')}</td>
+        <td><div class="actions">
+          <button class="btn btn-danger" onclick="deleteUser('${escapeHtml(u.username)}')">删除</button>
+        </div></td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+  } catch (e) { document.getElementById('user-table-wrap').innerHTML = '<div class="empty-state">加载失败: ' + e.message + '</div>'; }
+}
+
+async function loadStats() {
+  try {
+    const r = await fetch('/admin/api/stats');
+    const d = await r.json();
+    if (!d.success) throw new Error(d.message);
+    document.getElementById('stat-total').textContent = d.stats.total_whitelist;
+    document.getElementById('stat-registered').textContent = d.stats.total_registered;
+    document.getElementById('stat-today-calls').textContent = d.stats.today_total_calls;
+    document.getElementById('stat-today-users').textContent = d.stats.today_users;
+  } catch (e) { showToast('统计加载失败', 'error'); }
+}
+
+async function addUser(e) {
+  e.preventDefault();
+  const username = document.getElementById('wl-username').value.trim();
+  const expiry = document.getElementById('wl-expiry').value;
+  const limit = document.getElementById('wl-limit').value;
+  const note = document.getElementById('wl-note').value.trim();
+  if (!username) { showToast('请输入用户名', 'error'); return; }
+  try {
+    const r = await fetch('/admin/api/whitelist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, expiry_date: expiry, daily_limit: limit, note })
+    });
+    const d = await r.json();
+    if (d.success) {
+      showToast(d.message, 'success');
+      document.getElementById('wl-username').value = '';
+      document.getElementById('wl-expiry').value = '';
+      document.getElementById('wl-note').value = '';
+      loadWhitelist();
+      loadStats();
+    } else { showToast(d.message, 'error'); }
+  } catch (e) { showToast('网络错误', 'error'); }
+  return false;
+}
+
+async function deleteUser(username) {
+  if (!confirm('确认从白名单移除 ' + username + '？')) return;
+  try {
+    const r = await fetch('/admin/api/whitelist/' + encodeURIComponent(username), { method: 'DELETE' });
+    const d = await r.json();
+    if (d.success) { showToast(d.message, 'success'); loadWhitelist(); loadStats(); }
+    else { showToast(d.message, 'error'); }
+  } catch (e) { showToast('网络错误', 'error'); }
+}
+
+// Init
+loadWhitelist();
+loadStats();
+</script>
+</body>
+</html>

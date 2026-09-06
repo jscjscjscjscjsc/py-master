@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 登录</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<div class="auth-container">
+  <div class="auth-logo">
+    <span class="logo-icon">🐍</span>
+    <h1>PyMaster</h1>
+    <p>Python 编程学习平台</p>
+  </div>
+
+  <div class="glass-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">登 录</button>
+      <button class="auth-tab" data-tab="register">注 册</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" class="auth-form active">
+      <div class="input-group">
+        <span class="input-icon">👤</span>
+        <input type="text" id="login-username" placeholder="用户名" autocomplete="username" required>
+      </div>
+      <div class="input-group">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="login-password" placeholder="密码" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">登 录</button>
+    </form>
+
+    <!-- Register Form -->
+    <form id="register-form" class="auth-form">
+      <div class="input-group">
+        <span class="input-icon">👤</span>
+        <input type="text" id="reg-username" placeholder="用户名（至少3个字符）" autocomplete="username" required minlength="3">
+      </div>
+      <div class="input-group">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="reg-password" placeholder="密码（至少6个字符）" autocomplete="new-password" required minlength="6">
+      </div>
+      <div class="input-group">
+        <span class="input-icon">✅</span>
+        <input type="password" id="reg-password-confirm" placeholder="确认密码" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">注 册</button>
+    </form>
+  </div>
+
+  <div class="auth-footer">
+    开发人：JJ老师 &nbsp;|&nbsp; <a href="/admin/login" style="color:var(--purple);text-decoration:none;font-size:12px;">🔐 管理后台</a>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
+<script>
+document.addEventListener('click', function _mu() {
+  AmbientMusic.play();
+  document.removeEventListener('click', _mu);
+  document.removeEventListener('touchstart', _mu);
+});
+document.addEventListener('touchstart', function _mu2() {
+  AmbientMusic.play();
+  document.removeEventListener('click', _mu2);
+  document.removeEventListener('touchstart', _mu2);
+});
+</script>
+</body>
+</html>

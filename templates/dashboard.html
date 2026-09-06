@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 学习仪表盘</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/star_map.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/atlas.css') }}">
+</head>
+<body class="dashboard-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="{{ url_for('playground') }}" class="btn-playground-nav" style="margin-right:4px;">
+        练习场
+      </a>
+      <div class="mode-toggle-wrap">
+        <label class="mode-toggle" title="切换学习模式">
+          <input type="checkbox" id="mode-toggle" onchange="toggleMode()" {% if mode == 'all_unlocked' %}checked{% endif %}>
+          <span class="mode-toggle-slider"></span>
+        </label>
+        <span class="mode-label" id="mode-label">{{ '🔓 全部解锁' if mode == 'all_unlocked' else '🔒 探索模式' }}</span>
+      </div>
+      <div class="user-avatar">{{ username[0].upper() }}</div>
+      <span class="user-name">{{ username }}</span>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-logout" onclick="logout()">退出登录</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="dashboard-content">
+  <section class="scroll-hero">
+    <div id="atlas-world" class="atlas-world" aria-label="可拖动旋转的 Python 信号星体"></div>
+    <div class="scroll-seal">PY / 01</div>
+    <div>
+      <p class="scroll-kicker">INTERACTIVE PYTHON ATLAS / 2026</p>
+      <h1>让思想，<br>在代码中成形。</h1>
+      <p>九段空间旅程，一门创造的语言。<br>观察、交互、运行，建立属于你的 Python 世界。</p>
+    </div>
+    <button class="scroll-map-btn" onclick="openStarMap()">探索知识星海 <span>↗</span></button>
+  </section>
+  <div class="atlas-index-label"><span>01 — 09 / 学习航线</span><span>从第一束信号，到完整程序</span></div>
+  <div class="dashboard-header">
+    <h2>欢迎回来，<span class="gradient-text">{{ username }}</span></h2>
+    <p>选择章节，开始你的 Python 学习之旅</p>
+    <div class="stats-row">
+      <div class="stat-chip">
+        📚 <span>共 <span class="stat-value">{{ chapters|length }}</span> 个章节</span>
+      </div>
+      <div class="stat-chip">
+        🎯 <span>知识点 <span class="stat-value">{{ chapters|sum(attribute='knowledge_count') }}</span> 个</span>
+      </div>
+      <div class="stat-chip">
+        ✏️ <span>练习题 <span class="stat-value">{{ chapters|sum(attribute='exercise_count') }}</span> 道</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="window.location.href='/canvas'">
+        🎨 <span>画布工具</span>
+      </div>
+      <div class="stat-chip" style="cursor:pointer;" onclick="showGlossary()">
+        📖 <span>专业术语</span>
+      </div>
+      <div class="stat-chip" id="quota-chip" style="opacity:0.8;">
+        <span>AI 余额：<span id="quota-display">加载中...</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapters Grid -->
+  <div class="chapters-grid">
+    {% for ch in chapters %}
+    {% set unlocked = chapter_unlocked.get(ch.id, false) or mode == 'all_unlocked' %}
+    <div class="chapter-card animate-in {% if not unlocked %}chapter-locked{% endif %}" style="animation-delay: {{ loop.index0 * 0.08 }}s">
+      {% if unlocked %}
+      <span class="card-icon" onclick="goToChapter({{ ch.id }})">{{ ch.icon }}</span>
+      <div class="card-num" onclick="goToChapter({{ ch.id }})">第 {{ ch.id }} 章</div>
+      <h3 onclick="goToChapter({{ ch.id }})">{{ ch.title }}</h3>
+      <p onclick="goToChapter({{ ch.id }})">{{ ch.description }}</p>
+      <div class="card-meta" onclick="goToChapter({{ ch.id }})">
+        <span>📖 {{ ch.knowledge_count }} 个知识点</span>
+        <span>✏️ {{ ch.exercise_count }} 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter({{ ch.id }})">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ ch.progress }}%"></div>
+        </div>
+        <div class="progress-label">{{ ch.progress }}% 完成</div>
+      </div>
+      {% if ch.ppt_url %}
+      <a href="{{ ch.ppt_url }}" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+        📊 查看 PPT
+      </a>
+      {% endif %}
+      {% else %}
+      <div class="card-locked-overlay">
+        <div class="card-locked-icon">🔒</div>
+        <h3 style="margin-bottom:8px;">{{ ch.title }}</h3>
+        <p style="font-size:13px;color:var(--text-muted);">完成前一章节所有知识点即可解锁</p>
+        {% if ch.ppt_url %}
+        <a href="{{ ch.ppt_url }}" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
+          📊 PPT 课件（可提前查看）
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Glossary Modal -->
+<div id="glossary-modal" class="modal-overlay">
+  <div class="modal-container" style="max-width:800px;">
+    <div class="modal-header">
+      <span>📖 Python 专业术语大全</span>
+      <button class="modal-close" onclick="closeModal('glossary-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="glossary-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
+<script src="{{ url_for('static', filename='js/star_map.js') }}"></script>
+<script>
+function goToChapter(id) {
+  window.location.href = location.pathname.endsWith('.html') ? 'chapter-' + id + '.html' : '/chapter/' + id;
+}
+function logout() {
+  window.location.href = location.pathname.endsWith('.html') ? 'index.html' : '/logout';
+}
+
+// Load AI quota on dashboard
+fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
+  const el=document.getElementById('quota-display');
+  if(!el)return;
+  if(d.is_unlimited) el.textContent = '∞ 无限';
+  else el.textContent = d.remaining + '/' + d.limit;
+}).catch(()=>{});
+</script>
+<script src="{{ url_for('static', filename='vendor/three.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chapter_intro_3d.js') }}"></script>
+<script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 管理后台</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+.admin-badge { color: var(--purple); font-size: 12px; margin-top: 4px; display: block; }
+</style>
+</head>
+<body class="auth-page">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<div class="auth-container">
+  <div class="auth-logo">
+    <span class="logo-icon">🔐</span>
+    <h1>管理后台</h1>
+    <p>PyMaster 用户管理系统</p>
+  </div>
+
+  <div class="glass-card">
+    <form id="admin-login-form" class="auth-form active">
+      <div class="input-group">
+        <span class="input-icon">👤</span>
+        <input type="text" id="admin-username" placeholder="管理员账号" value="admin" readonly style="opacity:0.7;">
+      </div>
+      <div class="input-group">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="admin-password" placeholder="管理员密码" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">登 录 后 台</button>
+      <span class="admin-badge">默认密码: admin888</span>
+    </form>
+  </div>
+
+  <div class="auth-footer">
+    <a href="{{ url_for('login_page') }}" style="color:var(--cyan);text-decoration:none;font-size:13px;">← 返回用户登录</a>
+  </div>
+</div>
+
+<script>
+document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const password = document.getElementById('admin-password').value.trim();
+  if (!password) { alert('请输入密码'); return; }
+  try {
+    const res = await fetch('/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'admin', password })
+    });
+    const data = await res.json();
+    if (data.success) {
+      window.location.href = '/admin';
+    } else {
+      alert(data.message || '登录失败');
+    }
+  } catch (e) { alert('网络错误'); }
+});
+</script>
+
+</body>
+</html>
