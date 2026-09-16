@@ -28732,5 +28732,1208 @@
     "audio_seconds": 18.19
    }
   ]
+ },
+ "7_1": {
+  "chapter_id": 7,
+  "kp_index": 1,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.1 为什么需要函数",
+  "title": "为什么要把代码装进函数",
+  "hook_line": "同一段逻辑写三遍，改一个 bug 要改三处",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "人工撰稿（无外部模型）",
+  "narration_chars": 1831,
+  "scene_count": 16,
+  "created_at": "2026-09-16 17:19:04",
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "改一处，漏两处",
+    "narration": "你要算三个班的平均分，都是去掉最高最低再求平均。第一遍写完，第二遍复制粘贴改改变量名，第三遍再来一次。跑起来没问题。可过了一个月老师说改成去掉最高两个，你要改几个地方？三个。漏一个，程序就悄悄算错，还不报错。",
+    "caption": "逻辑复制三遍 → 改 bug 要改三处，漏一处就出错",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "改一处，漏两处",
+     "subtitle": "",
+     "caption": "",
+     "question": "同一段逻辑复制了三遍，算法要改，你得改几个地方？",
+     "mood": "happy",
+     "bullets": []
+    },
+    "image": "narrations/7_1/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_5a94e04e66a2027d5fbb5337a275fe98.mp3",
+    "audio_seconds": 21.62
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "重复代码的三宗罪",
+    "narration": "复制粘贴的代码叫重复代码，代价有三个。一是维护成本翻倍，改算法要同步改多处，漏一处就是隐蔽的 bug。二是代码越来越长，读的人要在几段几乎一样的代码里找区别。三是意图不清，别人不知道你是故意写三遍，还是忘了抽出来。",
+    "caption": "维护成本翻倍 / 可读性差 / 意图不明",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "重复代码的三宗罪",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "改一处要改多处"
+      },
+      {
+       "icon": "",
+       "text": "代码越长越难读"
+      },
+      {
+       "icon": "",
+       "text": "看不出你的意图"
+      }
+     ],
+     "highlight": "重复代码是万恶之源"
+    },
+    "image": "narrations/7_1/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_d694a02cec7de573001c1fd2109ca908.mp3",
+    "audio_seconds": 21.43
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "重复写法长什么样",
+    "narration": "看教材这个例子，两段结构完全一样，只有名字不同。你可能觉得两遍还好，但如果是二十个班呢？还有个隐藏问题：remove 是原地修改，跑完以后 nums1 和 nums2 的原始数据已经被改掉了。这两件事函数版都能顺手解决。",
+    "caption": "同一套逻辑粘贴两遍，只是变量名不同",
+    "code": "nums1 = [88, 92, 76]\nnums1.remove(max(nums1))\nnums1.remove(min(nums1))\navg1 = sum(nums1) / len(nums1)\n\nnums2 = [95, 89, 91]\nnums2.remove(max(nums2))\nnums2.remove(min(nums2))\navg2 = sum(nums2) / len(nums2)",
+    "visual": {
+     "layout": "code",
+     "title": "重复写法长什么样",
+     "subtitle": "",
+     "caption": "",
+     "code": "nums1 = [88, 92, 76]\nnums1.remove(max(nums1))\nnums1.remove(min(nums1))\navg1 = sum(nums1) / len(nums1)\n\nnums2 = [95, 89, 91]\nnums2.remove(max(nums2))\nnums2.remove(min(nums2))",
+     "output": "两次都在做「去掉最大最小再求平均」",
+     "bullets": []
+    },
+    "image": "narrations/7_1/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_431e6adf27f054f04b5c51fff10a90a5.mp3",
+    "audio_seconds": 19.61
+   },
+   {
+    "id": 4,
+    "type": "concept",
+    "title": "函数的本质：给逻辑起名字",
+    "narration": "函数思路很朴素：把一段逻辑打包，起个名字，以后喊名字就行。就像家里的电饭煲，你不关心怎么控温，只按煮饭键。任何地方需要这个计算，写一行调用就够了，不用再抄一遍内部逻辑。",
+    "caption": "打包 + 命名 + 随处调用",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "函数的本质：给逻辑起名字",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "把逻辑打包"
+      },
+      {
+       "icon": "",
+       "text": "起一个名字"
+      },
+      {
+       "icon": "",
+       "text": "随用随调"
+      }
+     ],
+     "highlight": "函数 = 可复用的逻辑单元"
+    },
+    "image": "narrations/7_1/s04.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_a8f34903abbef8d697798f5500f29a1c.mp3",
+    "audio_seconds": 15.38
+   },
+   {
+    "id": 5,
+    "type": "code",
+    "title": "函数版：逻辑只写一遍",
+    "narration": "def 开头是定义，trimmed_average 是名字，括号里的 scores 是参数。第二行把列表复制一份，避免改到调用者的原始数据，这个细节很关键。中间两行干掉最大最小，return 把结果交出去。下面两次 print 就是调用，数据不同，逻辑只有一份。",
+    "caption": "定义一次，调用任意次",
+    "code": "def trimmed_average(scores):\n    scores = scores[:]\n    scores.remove(max(scores))\n    scores.remove(min(scores))\n    return sum(scores) / len(scores)\n\nprint(trimmed_average([88, 92, 76]))\nprint(trimmed_average([95, 89, 91]))",
+    "visual": {
+     "layout": "code",
+     "title": "函数版：逻辑只写一遍",
+     "subtitle": "",
+     "caption": "",
+     "code": "def trimmed_average(scores):\n    scores = scores[:]\n    scores.remove(max(scores))\n    scores.remove(min(scores))\n    return sum(scores) / len(scores)\n\nprint(trimmed_average([88, 92, 76]))\nprint(trimmed_average([95, 89, 91]))",
+     "output": "84.0\n90.0",
+     "bullets": []
+    },
+    "image": "narrations/7_1/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_89db9e16028763af830536c239b516e3.mp3",
+    "audio_seconds": 22.01
+   },
+   {
+    "id": 6,
+    "type": "flow",
+    "title": "调用函数时发生了什么",
+    "narration": "调用时内部发生了什么？第一，程序执行到函数名加括号，知道要跳走。第二，括号里的实际数据传给定义时的参数，这叫实参传给形参。第三，进入函数体逐行执行。第四，遇到 return 把结果交回调用处。第五，接着往下走。理解这个来回，后面学作用和递归都会轻松。",
+    "caption": "传参 → 执行 → 返回 → 继续",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "调用函数时发生了什么",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "遇到函数名和括号",
+      "实参传给形参",
+      "执行函数体",
+      "return 交回结果",
+      "继续往下走"
+     ],
+     "highlight": "参数进去，返回值出来"
+    },
+    "image": "narrations/7_1/s06.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_7c33541011499e0f06d02b7e7531c01f.mp3",
+    "audio_seconds": 26.47
+   },
+   {
+    "id": 7,
+    "type": "pitfall",
+    "title": "坑一：函数里改了原列表",
+    "narration": "第一个坑很隐蔽。左边直接对传进来的列表做 remove，跑完之后外面那个 data 已经被改掉了，因为列表是可变对象，函数内外指的是同一个列表。右边多了中括号冒号，复制一份再操作，外面的数据就安全了。函数里要改容器，先复制。",
+    "caption": "scores[:] 复制一份，避免副作用",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑一：函数里改了原列表",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "直接改传进来的列表，调用者的数据被偷偷改了",
+     "wrong_code": "def bad(scores):\n    scores.remove(max(scores))\n    return scores\n",
+     "right_answer": "先复制一份再操作，不动调用者的数据",
+     "right_code": "def good(scores):\n    scores = scores[:]\n    scores.remove(max(scores))\n    return scores",
+     "highlight": "函数不该悄悄改调用者的数据"
+    },
+    "image": "narrations/7_1/s07.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_50eb54a42d54cbbe322e4e4dcf07e496.mp3",
+    "audio_seconds": 20.9
+   },
+   {
+    "id": 8,
+    "type": "pitfall",
+    "title": "坑二：忘记 return",
+    "narration": "第二个坑最常见：函数里算完了，但忘了写 return。左边这个跑起来不报错，打印出来却是 None，因为 Python 里没有 return 的函数默认返回 None。它不给你任何提示，你只会看到结果是 None。判断很简单：需要交出结果，就必须写 return。",
+    "caption": "算完不 return → 调用处拿到 None",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑二：忘记 return",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "算完了却没 return，调用处拿到的是 None",
+     "wrong_code": "def average(scores):\n    total = sum(scores) / len(scores)\n\nprint(average([80, 90]))",
+     "right_answer": "把结果 return 出去，否则函数白算",
+     "right_code": "def average(scores):\n    total = sum(scores) / len(scores)\n    return total\n",
+     "highlight": "没有 return 的函数返回 None"
+    },
+    "image": "narrations/7_1/s08.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_2d2c525eb6d92b33d2f6f6c970d7453c.mp3",
+    "audio_seconds": 20.5
+   },
+   {
+    "id": 9,
+    "type": "compare",
+    "title": "复制粘贴 vs 抽成函数",
+    "narration": "把两种做法摆一起看。左边复制粘贴：改动要同步多处、容易漏改、代码越来越长、意图看不出来。右边抽成函数：逻辑只有一份、改一处全部生效、调用处一眼看懂、还能单独测试。那是不是都要抽？不是，只跑一次的直接写就行。",
+    "caption": "只用一次的可以粘贴，会复用的必须抽函数",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "复制粘贴 vs 抽成函数",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "复制粘贴",
+      "lines": [
+       "改动要同步多处",
+       "容易漏改",
+       "代码越来越长",
+       "意图看不出来"
+      ]
+     },
+     "right": {
+      "label": "抽成函数",
+      "lines": [
+       "逻辑只有一份",
+       "改一处全部生效",
+       "调用处一眼看懂",
+       "可以单独测试"
+      ]
+     },
+     "highlight": "会被复用的逻辑，就该抽成函数"
+    },
+    "image": "narrations/7_1/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_789df3c55b978597715e420a800aa93e.mp3",
+    "audio_seconds": 21.98
+   },
+   {
+    "id": 10,
+    "type": "code",
+    "title": "函数让意图浮出水面",
+    "narration": "函数还有个容易被忽略的好处：让代码读起来像自然语言。level 里写着如果 is_pass 就返回及格，is_pass 这个名字把判断条件的意思说清楚了，你不用去数 score 大于等于 60。哪怕过半年再看也能一眼读懂。给函数起好名字，是最便宜也最值钱的一步。",
+    "caption": "好代码读起来像一句话",
+    "code": "def is_pass(score):\n    return score >= 60\n\ndef level(score):\n    if is_pass(score):\n        return \"及格\"\n    return \"不及格\"\n\nprint(level(72))",
+    "visual": {
+     "layout": "code",
+     "title": "函数让意图浮出水面",
+     "subtitle": "",
+     "caption": "",
+     "code": "def is_pass(score):\n    return score >= 60\n\ndef level(score):\n    if is_pass(score):\n        return \"及格\"\n    return \"不及格\"\n",
+     "output": "及格",
+     "bullets": []
+    },
+    "image": "narrations/7_1/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f2bf089770eb522bc6eaf5d18c2ef135.mp3",
+    "audio_seconds": 23.71
+   },
+   {
+    "id": 11,
+    "type": "concept",
+    "title": "什么小逻辑也值得抽",
+    "narration": "有人问，就两行逻辑，抽成函数是不是过度设计？判断标准不是长短，而是三条：会不会被调用第二次；起了名字是不是比直接读代码更清楚；将来有没有可能要改。命中一条就划算。只在原地用一次、逻辑又直白的，硬抽反而让人来回跳。",
+    "caption": "短不是理由，会重复才是理由",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "什么小逻辑也值得抽",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "会被调用第二次"
+      },
+      {
+       "icon": "",
+       "text": "名字比代码更清楚"
+      },
+      {
+       "icon": "",
+       "text": "将来可能还要改"
+      }
+     ],
+     "highlight": "判断标准是复用与清晰，不是代码长短"
+    },
+    "image": "narrations/7_1/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_e56ea3128ec5cc2b1fc27d388ed14d05.mp3",
+    "audio_seconds": 21.43
+   },
+   {
+    "id": 12,
+    "type": "flow",
+    "title": "从重复代码到函数的四步",
+    "narration": "把重复逻辑改成函数，动手就四步。第一，找出重复出现的那段。第二，确定输入是什么、输出是什么，输入就是参数，输出就是 return。第三，写成 def 并起个好名字。第四，把调用处换成一行函数调用。第二步花的时间最值。",
+    "caption": "找重复 → 定进出 → 写 def → 换调用",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "从重复代码到函数的四步",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "找出重复出现的逻辑",
+      "确定输入与输出",
+      "写成 def 并起名",
+      "把调用处换成函数调用"
+     ],
+     "highlight": "输入输出想清楚，函数就成型了"
+    },
+    "image": "narrations/7_1/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3a7144453dd04174563c1f2577ad49f6.mp3",
+    "audio_seconds": 21.74
+   },
+   {
+    "id": 13,
+    "type": "pitfall",
+    "title": "坑三：函数起名太随便",
+    "narration": "第三个坑是命名。左边叫 f1，参数叫 a，你今天还记得，两周后完全想不起来它干什么。右边叫 average_score，参数叫 scores，光看名字就知道是求平均分。函数名习惯动词开头，get、calc、is、has，后面跟对象。这一个小改动能大幅提升可读性。",
+    "caption": "func1 → average_score，一眼看懂",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑三：函数起名太随便",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "叫 func1、doit、calc，过两周自己都认不",
+     "wrong_code": "def f1(a):\n    return sum(a) / len(a)",
+     "right_answer": "动词开头，说清做什么、作用于什么",
+     "right_code": "def average_score(scores):\n    return sum(scores) / len(scores)",
+     "highlight": "名字说清做什么，就不用看实现"
+    },
+    "image": "narrations/7_1/s13.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_86893a13873b9399543dace6b8cc8359.mp3",
+    "audio_seconds": 24.43
+   },
+   {
+    "id": 14,
+    "type": "concept",
+    "title": "函数带来的三个能力",
+    "narration": "把逻辑装进函数之后，你会得到三个能力。第一是能单独测试，给一组输入看输出对不对，不用跑整个程序。第二是能组合，小函数拼成大函数，大函数拼成系统。第三是能被别人复用，同事不需要看懂实现，只要知道传什么、返回什么就能用。",
+    "caption": "可测试 / 可组合 / 可复用",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "函数带来的三个能力",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "可以单独测试"
+      },
+      {
+       "icon": "",
+       "text": "可以组合成更大功能"
+      },
+      {
+       "icon": "",
+       "text": "可以被别人复用"
+      }
+     ],
+     "highlight": "函数是模块化开发的起点"
+    },
+    "image": "narrations/7_1/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3561d041d008f609d6874b6330579172.mp3",
+    "audio_seconds": 21.1
+   },
+   {
+    "id": 15,
+    "type": "pitfall",
+    "title": "坑四：一个函数干太多事",
+    "narration": "第四个坑是贪多。左边这个函数又读文件、又算总和、又打印，三件事混在一起。你想改成写进文件，就得动这个函数，还怕碰坏读文件的逻辑。右边拆成两个：read_scores 只管读，total 只管算，打印交给调用处。职责单一，每块都好改、好测。",
+    "caption": "职责单一，才好改、好测、好复用",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑四：一个函数干太多事",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "又读文件又算数据又打印，改一处怕碰坏别处",
+     "wrong_code": "def process(path):\n    data = open(path).read()\n    total = sum(map(int, data.split()))\n    print(\"合计\", total)",
+     "right_answer": "读写、计算、输出分开，每个函数只干一件事",
+     "right_code": "def read_scores(path):\n    return open(path).read().split()\n\ndef total(nums):",
+     "highlight": "一个函数只做一件事"
+    },
+    "image": "narrations/7_1/s15.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_1df499ba33e1ef2723129a6718a1d110.mp3",
+    "audio_seconds": 23.62
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "这一节记住三条",
+    "narration": "最后收束成三条。第一，重复代码是万恶之源，只要一段逻辑会用第二次，就该抽成函数，这叫 DRY 原则。第二，函数就是打包加命名，通过参数接收输入、通过 return 交出输出，输入输出想清楚就写好了。第三，函数里要改传进来的容器，先复制一份。",
+    "caption": "DRY / 输入输出 / 别改调用者的数据",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "这一节记住三条",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "会被复用的逻辑就抽成函数，这就是 DRY",
+      "函数 = 打包 + 命名 + 传参 + ",
+      "函数里改容器先复制，别改调用者的数据"
+     ]
+    },
+    "image": "narrations/7_1/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_0e48296c1915bc89c3085631a037e769.mp3",
+    "audio_seconds": 22.34
+   }
+  ],
+  "total_seconds": 348.3
+ },
+ "7_6": {
+  "chapter_id": 7,
+  "kp_index": 6,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.6 lambda 与高阶函数",
+  "title": "lambda 与高阶函数",
+  "hook_line": "给排行榜排序，排序依据怎么交进去",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "人工撰稿（无外部模型）",
+  "narration_chars": 1881,
+  "scene_count": 14,
+  "created_at": "2026-09-16 17:19:06",
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "成绩排行榜怎么排",
+    "narration": "你要做一个成绩排行榜，数据是张三八十八、李四九十五、王五七十六，想按分数从高到低列出来。直接对字典排序行不行？不行，字典本身不保证顺序。那取出来排呢？取出来的是姓名和分数成对的数据，Python 怎么知道你要按姓名排还是按分数排？这就得告诉它排序依据。",
+    "caption": "字典本身无序 → 要先取出来，再按分数排",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "成绩排行榜怎么排",
+     "subtitle": "",
+     "caption": "",
+     "question": "字典里存着姓名和分数，要按分数从高到低排，怎么办？",
+     "mood": "happy",
+     "bullets": []
+    },
+    "image": "narrations/7_6/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_60209e9006ed9163b9dc5493be81cc0d.mp3",
+    "audio_seconds": 25.01
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "排序依据要交给 key",
+    "narration": "sorted 默认按元素本身比大小，数字比数值、字符串比编码。但实际排序往往不是按元素本身，而是按元素的某个属性。所以 sorted 提供了一个 key 参数：你给它一个函数，它拿每个元素喂给这个函数，用返回值当排序依据。注意 key 接收的是函数，这正是 lambda 最常出现的地方。",
+    "caption": "sorted(列表, key=函数) → 用函数算出比较依据",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "排序依据要交给 key",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "sorted 默认按元素本身排"
+      },
+      {
+       "icon": "",
+       "text": "想按别的规则排要传 key"
+      },
+      {
+       "icon": "",
+       "text": "key 接收的是函数"
+      }
+     ],
+     "highlight": "key 决定拿什么去比大小"
+    },
+    "image": "narrations/7_6/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_302cd9f9f282a721e108cea9a3f0e1b0.mp3",
+    "audio_seconds": 23.83
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "按单词长度排序",
+    "narration": "四个单词按长度排序，写成 sorted 括号 words 逗号 key 等于 len。len 本身就是函数，接收一个单词返回长度。sorted 拿长度去比较，谁短谁在前，kiwi 排第一，cherry 排最后。注意 key 等于 len 这里，len 后面不带括号，传的是函数本身。",
+    "caption": "key=len → 用长度当排序依据",
+    "code": "words = [\"banana\", \"apple\", \"cherry\", \"kiwi\"]\nprint(sorted(words, key=len))",
+    "visual": {
+     "layout": "code",
+     "title": "按单词长度排序",
+     "subtitle": "",
+     "caption": "",
+     "code": "words = [\"banana\", \"apple\", \"cherry\", \"kiwi\"]\nprint(sorted(words, key=len))",
+     "output": "['kiwi', 'apple', 'banana', 'cherry']",
+     "bullets": []
+    },
+    "image": "narrations/7_6/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3ed998c47af3d274f7e33cc1ebc56304.mp3",
+    "audio_seconds": 21.48
+   },
+   {
+    "id": 4,
+    "type": "concept",
+    "title": "lambda 是什么",
+    "narration": "有时候你要用的函数特别简单，就一行，而且只用一次，专门为它写个 def 占三行有点浪费。Python 提供了 lambda，叫匿名函数，意思是没有名字的函数。写法是 lambda 空格参数 冒号 表达式，冒号后面这个表达式的值自动作为返回值，不需要写 return。",
+    "caption": "lambda 参数: 表达式",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "lambda 是什么",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "没有名字的函数"
+      },
+      {
+       "icon": "",
+       "text": "一行写完"
+      },
+      {
+       "icon": "",
+       "text": "冒号后面是返回值"
+      }
+     ],
+     "highlight": "lambda 就是 def 的简写"
+    },
+    "image": "narrations/7_6/s04.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f5be955a7c00865d715ee4680d19be20.mp3",
+    "audio_seconds": 22.85
+   },
+   {
+    "id": 5,
+    "type": "code",
+    "title": "lambda 基础写法",
+    "narration": "lambda x 冒号 x 乘 2，读作接收 x 返回 x 乘 2。第一行把它赋值给 double，之后 double 括号 5 就能调用，结果十。第三行更直接，把 lambda 整体用括号包起来，后面直接跟括号 5，当场定义当场调用，结果也是十。两种写法都可以，赋值给变量那种更常见。",
+    "caption": "赋值给变量再调，或者直接调用",
+    "code": "double = lambda x: x * 2\nprint(double(5))\nprint((lambda x: x * 2)(5))",
+    "visual": {
+     "layout": "code",
+     "title": "lambda 基础写法",
+     "subtitle": "",
+     "caption": "",
+     "code": "double = lambda x: x * 2\nprint(double(5))\nprint((lambda x: x * 2)(5))",
+     "output": "10\n10",
+     "bullets": []
+    },
+    "image": "narrations/7_6/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_94f20d5cb5a7451cb9708f6953252746.mp3",
+    "audio_seconds": 23.28
+   },
+   {
+    "id": 6,
+    "type": "compare",
+    "title": "lambda 与 def 对比",
+    "narration": "有人担心 lambda 是不是高级特性。不是。lambda 能做的事 def 都能做，它只是简写。区别是：def 有名字、能写多行多条语句，适合复用；lambda 没名字、只能一个表达式、自动返回，适合当场传给别人用一次。看到 lambda，心里翻译成 def 就懂了。",
+    "caption": "lambda 只是简写，不是新能力",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "lambda 与 def 对比",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "def",
+      "lines": [
+       "有名字",
+       "可以多行",
+       "可以写多条语句",
+       "适合复用"
+      ]
+     },
+     "right": {
+      "label": "lambda",
+      "lines": [
+       "没有名字",
+       "只能一个表达式",
+       "自动返回",
+       "适合一次性传参"
+      ]
+     },
+     "highlight": "lambda 能做的事，def 都能做"
+    },
+    "image": "narrations/7_6/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_096c63522f9342b68adc06d4f263d08e.mp3",
+    "audio_seconds": 22.7
+   },
+   {
+    "id": 7,
+    "type": "code",
+    "title": "排行榜标准写法",
+    "narration": "回到开头的排行榜。scores 点 items 得到姓名和分数配成的元组列表，每个元素长这样：括号 张三 逗号 88。我们要按分数排，也就是取每个元组的第二个元素，写成 key 等于 lambda item 冒号 item 中括号 1。再加 reverse 等于 True 变成从高到低，就得到排行榜。",
+    "caption": "按元组的第二个元素从高到低",
+    "code": "scores = {\"张三\": 88, \"李四\": 95, \"王五\": 76}\nranked = sorted(scores.items(),\n                key=lambda item: item[1],\n                reverse=True)\nfor name, score in ranked:\n    print(f\"{name}: {score}\")",
+    "visual": {
+     "layout": "code",
+     "title": "排行榜标准写法",
+     "subtitle": "",
+     "caption": "",
+     "code": "scores = {\"张三\": 88, \"李四\": 95, \"王五\": 76}\nranked = sorted(scores.items(),\n                key=lambda item: item[1],\n                reverse=True)\nfor name, score in ranked:\n    print(f\"{name}: {score}\")",
+     "output": "李四: 95\n张三: 88\n王五: 76",
+     "bullets": []
+    },
+    "image": "narrations/7_6/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_dc9303345d3deaf844dc5ae0d2eeaf16.mp3",
+    "audio_seconds": 22.61
+   },
+   {
+    "id": 8,
+    "type": "pitfall",
+    "title": "坑一：lambda 里 item 忘了取",
+    "narration": "第一个坑很典型。左边写 key 等于 lambda item 冒号 item，直接返回整个元组。元组比较先比第一个元素，于是变成按姓名排序，分数完全没起作用。右边加上中括号 1 取出分数才对。记住 item 是整个元组，item 中括号 1 才是分数。",
+    "caption": "漏掉 [1] → 按姓名排了",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑一：lambda 里 item",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "key 直接返回整个元组，变成先按姓名排了",
+     "wrong_code": "ranked = sorted(scores.items(),\n                key=lambda item: item)\nprint(ranked)",
+     "right_answer": "要指明取元组的第几个元素当依据",
+     "right_code": "ranked = sorted(scores.items(),\n                key=lambda item: item[1])\nprint(ranked)",
+     "highlight": "item[1] 才是分数，item 是整"
+    },
+    "image": "narrations/7_6/s08.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_84dda017cd2f7cf981095c5fc9041b40.mp3",
+    "audio_seconds": 21.46
+   },
+   {
+    "id": 9,
+    "type": "pitfall",
+    "title": "坑二：lambda 写太长",
+    "narration": "第二个坑是滥用。左边这个 lambda 里塞了一串嵌套判断，你自己过两天都读不懂。lambda 的定位是简单的一次性函数，超过一个表达式就该换回 def。函数能拆成有名字的几行，读的人一眼就懂。判断标准很简单：如果 lambda 里出现了 and 或者 or 连着好几个条件，就说明该换写法了。",
+    "caption": "逻辑一长就该退回 def",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑二：lambda 写太长",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "把一整套判断逻辑塞进 lambda，一行里嵌套三四个",
+     "wrong_code": "key=lambda x: 0 if x == \"\" else\\\n    (1 if x.isdigit() else 2)",
+     "right_answer": "超过一个表达式就换回 def，可读性优先",
+     "right_code": "def sort_key(x):\n    if not x:\n        return 0\n    return 1 if x.isdigit() else 2",
+     "highlight": "lambda 只适合一行说得清的规则"
+    },
+    "image": "narrations/7_6/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_a58ac1e97ba673469a11032541f341a7.mp3",
+    "audio_seconds": 25.13
+   },
+   {
+    "id": 10,
+    "type": "flow",
+    "title": "sorted 加 key 的执行过程",
+    "narration": "理一下执行过程。第一，从列表里取出两个元素。第二，分别喂给你给的 key 函数。第三，用两个返回值比大小。第四，按结果决定顺序，重复直到排完。key 只负责算依据，怎么比是 sorted 的事。另外 sorted 返回新列表，原列表不动。",
+    "caption": "元素 → key 函数 → 比较依据 → 排序",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "sorted 加 key 的执行",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "取出列表里两个元素",
+      "把元素喂给 key 函数",
+      "用返回值比大小",
+      "按结果排好序",
+      "原列表不变"
+     ],
+     "highlight": "key 只负责算依据，不负责比较"
+    },
+    "image": "narrations/7_6/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_21f329e5359006e66e1e29f11fe4c118.mp3",
+    "audio_seconds": 22.87
+   },
+   {
+    "id": 11,
+    "type": "concept",
+    "title": "map 与 filter 是同类思路",
+    "narration": "同样把函数当参数传进去的还有 map 和 filter。map 是对每个元素套一遍函数，得到新结果，也就是映射；filter 保留函数返回真的元素，也就是过滤。它们返回的是惰性迭代器，要用 list 包一层才看得到结果。实际工作里更常用列表推导式，写法更直观。",
+    "caption": "了解级：实际更常用列表推导式",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "map 与 filter 是同类",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "map 对每个元素套函数"
+      },
+      {
+       "icon": "",
+       "text": "filter 保留返回真的元素"
+      },
+      {
+       "icon": "",
+       "text": "它们返回惰性迭代器"
+      }
+     ],
+     "highlight": "都是把函数当参数传进去"
+    },
+    "image": "narrations/7_6/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_857e738386ade199506f7c6503c52780.mp3",
+    "audio_seconds": 22.42
+   },
+   {
+    "id": 12,
+    "type": "code",
+    "title": "map 与 filter 用法",
+    "narration": "看代码。map 把每个数乘二，结果是二四六八。filter 保留大于二的，剩三四。两处都套了 list 括号，因为不加的话打印出来是一串迭代器对象，看不到内容。这个坑很常见，写完一看输出是 object at 什么什么，八成就是忘了转列表。",
+    "caption": "都要用 list() 包一层才看得到结果",
+    "code": "nums = [1, 2, 3, 4]\ndoubled = list(map(lambda x: x * 2, nums))\nbig = list(filter(lambda x: x > 2, nums))\nprint(doubled)\nprint(big)",
+    "visual": {
+     "layout": "code",
+     "title": "map 与 filter 用法",
+     "subtitle": "",
+     "caption": "",
+     "code": "nums = [1, 2, 3, 4]\ndoubled = list(map(lambda x: x * 2, nums))\nbig = list(filter(lambda x: x > 2, nums))\nprint(doubled)\nprint(big)",
+     "output": "[2, 4, 6, 8]\n[3, 4]",
+     "bullets": []
+    },
+    "image": "narrations/7_6/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_9772e8b04b511f227619601acb1b1590.mp3",
+    "audio_seconds": 20.88
+   },
+   {
+    "id": 13,
+    "type": "pitfall",
+    "title": "坑三：忘记转列表",
+    "narration": "第三个坑：直接打印 map 的结果，输出是 map object at 一串地址，看着像坏了，其实只是没转列表。因为 map 返回的是惰性迭代器，你不去取它就不算。解决方法是外面套一层 list。顺便说一句，同样的需求用列表推导式写是 x 乘 2 for x in nums，一行搞定还不用记这个坑。",
+    "caption": "<map object at ...> → 忘了 list()",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑三：忘记转列表",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "直接打印 map 的结果，看到的是迭代器对象",
+     "wrong_code": "nums = [1, 2, 3]\nprint(map(lambda x: x * 2, nums))",
+     "right_answer": "用 list() 包一层，或者直接用列表推导式",
+     "right_code": "nums = [1, 2, 3]\nprint(list(map(lambda x: x * 2, nums)))",
+     "highlight": "迭代器是惰性的，要用才产出"
+    },
+    "image": "narrations/7_6/s13.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_bc000eb4dbdf5ae492317fe3ca15f706.mp3",
+    "audio_seconds": 24.7
+   },
+   {
+    "id": 14,
+    "type": "summary",
+    "title": "这一节记住三条",
+    "narration": "收束成三条。第一，lambda 是 def 的简写，没有新能力，只适合一行说得清的规则。第二，sorted 的 key 接收函数，用它算出排序依据，按字典值排排行榜是标准用法。第三，把函数当参数传给另一个函数，这就是高阶函数的思路。",
+    "caption": "lambda 简写 / key 定依据 / 函数可传参",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "这一节记住三条",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "lambda 是 def 的简写，只适合",
+      "sorted 的 key 接收函数，用它",
+      "把函数当参数传出去，就是高阶函数的用法"
+     ]
+    },
+    "image": "narrations/7_6/s14.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_a1726533d24bfb58fd3f5a407ec96a5e.mp3",
+    "audio_seconds": 20.64
+   }
+  ],
+  "total_seconds": 319.8
+ },
+ "7_7": {
+  "chapter_id": 7,
+  "kp_index": 7,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.7 函数即对象：把函数当\"值\"传来传去",
+  "title": "函数即对象：把函数当值传来传去",
+  "hook_line": "带不带括号，隔着一个世界",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "人工撰稿（无外部模型）",
+  "narration_chars": 1857,
+  "scene_count": 14,
+  "created_at": "2026-09-16 17:19:09",
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "少写一对括号的后果",
+    "narration": "看这一行代码：fn 等于 say_hello，没有括号；再看另一行：fn 等于 say_hello 括号。就差一对括号，含义完全不同。前者是把函数本身交给 fn，此时函数并没有执行；后者是当场调用它，把返回的结果交给 fn。很多人调试半天，问题就在这对括号上。",
+    "caption": "不带括号是函数本身，带括号是调用结果",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "少写一对括号的后果",
+     "subtitle": "",
+     "caption": "",
+     "question": "fn = say_hello 和 fn = say_",
+     "mood": "happy",
+     "bullets": []
+    },
+    "image": "narrations/7_7/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_632300d4b245f0fdbb31e203865864fe.mp3",
+    "audio_seconds": 23.4
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "函数是一等公民",
+    "narration": "为什么会有这种区别？因为在 Python 里，函数本身就是对象，跟数字、字符串、列表是同一类东西。既然它是对象，就能赋值给变量、能放进列表、能当参数传给另一个函数、也能被返回。这个特性有个说法叫函数是一等公民。理解这一点，是理解回调、装饰器的钥匙。",
+    "caption": "函数能像数字、字符串一样被传递",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "函数是一等公民",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "可以赋值给变量"
+      },
+      {
+       "icon": "",
+       "text": "可以放进列表"
+      },
+      {
+       "icon": "",
+       "text": "可以作为参数传给别的函数"
+      }
+     ],
+     "highlight": "在 Python 里，函数本身就是对象"
+    },
+    "image": "narrations/7_7/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_acbe14feffa134f3b954304954e6d6ce.mp3",
+    "audio_seconds": 23.83
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "把函数赋给变量",
+    "narration": "看代码。定义 say_hello，返回字符串 hello。第四行 fn 等于 say_hello，注意这里没有括号，意思是把函数本身交给 fn，此时什么都不会打印。第五行 fn 括号，这才真正执行函数，输出 hello。所以判断方法很直接：不带括号，函数不会跑；带括号，才会跑。",
+    "caption": "不带括号拿函数本身，带括号才执行",
+    "code": "def say_hello():\n    return \"hello\"\n\nfn = say_hello\nprint(fn())",
+    "visual": {
+     "layout": "code",
+     "title": "把函数赋给变量",
+     "subtitle": "",
+     "caption": "",
+     "code": "def say_hello():\n    return \"hello\"\n\nfn = say_hello\nprint(fn())",
+     "output": "hello",
+     "bullets": []
+    },
+    "image": "narrations/7_7/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_8aba0c509016d752d23384d9bf77e909.mp3",
+    "audio_seconds": 25.58
+   },
+   {
+    "id": 4,
+    "type": "pitfall",
+    "title": "坑一：该传函数时写了括号",
+    "narration": "左边写 map 括号 double 括号 2，等于先把 double 执行了，传进去的是个数字，map 拿数字当函数用直接报错。右边传 double 本身，不带括号，map 自己决定什么时候调。所以记住：别人要你把函数交过去，就交函数本身，不要提前调用。",
+    "caption": "map(double(2), ...) → 参数类型都不对了",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑一：该传函数时写了括号",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "把调用结果传进去，函数在传参那一刻就被执行了",
+     "wrong_code": "def double(x):\n    return x * 2\n\nprint(list(map(double(2), [1, 2])))",
+     "right_answer": "传函数本身，让接收方决定什么时候调",
+     "right_code": "def double(x):\n    return x * 2\n\nprint(list(map(double, [1, 2])))",
+     "highlight": "传函数本身，不要提前调用"
+    },
+    "image": "narrations/7_7/s04.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_55e01a7e8fb748d09221e92ae1b11901.mp3",
+    "audio_seconds": 20.54
+   },
+   {
+    "id": 5,
+    "type": "concept",
+    "title": "回调：把函数当零件插进去",
+    "narration": "把函数当参数传进去，这种机制叫回调。意思是：我把一段行为交给你，你在合适的时机替我调用。这样写出来的函数就是一个框架，具体干什么由传进来的函数决定。就像插座，插什么电器就干什么活。同一个流程配上不同的零件，能变出完全不同的功能。",
+    "caption": "传不同的函数，同一个框架干不同的事",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "回调：把函数当零件插进去",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "函数作为参数传给另一个函数"
+      },
+      {
+       "icon": "",
+       "text": "接收方在内部调用它"
+      },
+      {
+       "icon": "",
+       "text": "传什么函数就得到什么行为"
+      }
+     ],
+     "highlight": "这就是回调，函数成了可插拔的零件"
+    },
+    "image": "narrations/7_7/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_b97daa00e1951af692239f38ce3946d5.mp3",
+    "audio_seconds": 23.88
+   },
+   {
+    "id": 6,
+    "type": "code",
+    "title": "回调的实际写法",
+    "narration": "apply_op 有三个参数，a、b 是数据，op 是操作，函数体只有一行：把 a 和 b 交给你传进来的函数去算。下面三次调用，前两次数据都是三和四，传的零件不同：加法得七，乘法得十二；第三次换成十和二做减法得八。同一个 apply_op，行为完全由传进来的函数决定。",
+    "caption": "同一个函数，传不同零件得到不同结果",
+    "code": "def apply_op(a, b, op):\n    return op(a, b)\n\nprint(apply_op(3, 4, lambda x, y: x + y))\nprint(apply_op(3, 4, lambda x, y: x * y))\nprint(apply_op(10, 2, lambda x, y: x - y))",
+    "visual": {
+     "layout": "code",
+     "title": "回调的实际写法",
+     "subtitle": "",
+     "caption": "",
+     "code": "def apply_op(a, b, op):\n    return op(a, b)\n\nprint(apply_op(3, 4, lambda x, y: x + y))\nprint(apply_op(3, 4, lambda x, y: x * y))\nprint(apply_op(10, 2, lambda x, y: x - y))",
+     "output": "7\n12\n8",
+     "bullets": []
+    },
+    "image": "narrations/7_7/s06.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_513f51117d1747f7ed8b7660b9c4bcf0.mp3",
+    "audio_seconds": 25.46
+   },
+   {
+    "id": 7,
+    "type": "flow",
+    "title": "回调的执行顺序",
+    "narration": "理一下执行顺序。第一，调用 apply_op，第三个位置传的是函数而不是数据。第二，形参 op 拿到这个函数对象。第三，函数体执行到 op 括号 a 逗号 b，这时才真正调用它。第四，返回值被 return 交回。参数里装的不只是数据，还可以装行为。",
+    "caption": "数据 + 行为 一起传进去",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "回调的执行顺序",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "调用 apply_op 并传",
+      "形参 op 拿到函数对象",
+      "函数体里 op(a, b) ",
+      "结果 return 回来"
+     ],
+     "highlight": "参数里装的不只是数据，也可以是行为"
+    },
+    "image": "narrations/7_7/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_7abdf8441a59e7fe68ef381f19480444.mp3",
+    "audio_seconds": 24.05
+   },
+   {
+    "id": 8,
+    "type": "compare",
+    "title": "写死逻辑 vs 回调",
+    "narration": "对比两种做法。左边是写死：加法写一个函数，乘法再写一个，减法又写一个，同一套框架重复三遍。右边是回调：框架只写一次，具体行为作为参数传进去，将来要加一个除法操作，只要再写一个函数就行，框架代码一行都不用动。这就是把变化的部分参数化，把不变的部分留在框架里。",
+    "caption": "变的传进来，不变的写死在框架里",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "写死逻辑 vs 回调",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "写死",
+      "lines": [
+       "加法写一个函数",
+       "乘法再写一个",
+       "减法又写一个",
+       "重复三遍框架"
+      ]
+     },
+     "right": {
+      "label": "回调",
+      "lines": [
+       "框架只写一次",
+       "行为作为参数传入",
+       "要加新操作只加一个函数",
+       "框架代码完全不动"
+      ]
+     },
+     "highlight": "把变化的部分参数化，把不变的部分留下来"
+    },
+    "image": "narrations/7_7/s08.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_d153248d47bd4ed914a91e23e986ca44.mp3",
+    "audio_seconds": 26.16
+   },
+   {
+    "id": 9,
+    "type": "concept",
+    "title": "真实场景里到处是回调",
+    "narration": "回调不是玩具。图形界面里按钮点击后执行什么，是回调。爬虫里拿到网页后用哪套规则解析，是回调。数据分析里 pandas 的 apply 对每行套一个函数，也是回调。你上一节刚学过的 sorted 的 key 参数，本质同样是回调。可以说只要一个流程里某一步的具体做法要留给人决定，就会用回调。",
+    "caption": "GUI / 爬虫 / 数据分析 / 排序 都在用",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "真实场景里到处是回调",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "按钮点击的处理函数"
+      },
+      {
+       "icon": "",
+       "text": "爬虫的页面解析策略"
+      },
+      {
+       "icon": "",
+       "text": "pandas 的 apply"
+      },
+      {
+       "icon": "",
+       "text": "排序的 key 参数"
+      }
+     ],
+     "highlight": "回调是框架设计的基本手法"
+    },
+    "image": "narrations/7_7/s09.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_e787185a114fe454c1c15f1ab05cffae.mp3",
+    "audio_seconds": 26.42
+   },
+   {
+    "id": 10,
+    "type": "pitfall",
+    "title": "坑二：回调的参数个数对不上",
+    "narration": "第二个坑是参数对不上。左边框架里写的是 op 括号 a 逗号 b，会传两个参数进去，但你给的 lambda 只收一个 x，直接报参数个数错误。回调函数的形参该怎么写，是由调用它的那一方决定的，你得看清楚框架准备传几个参数。不确定的时候，先按最常见的写法写，报错信息里会告诉你是多给了还是少给了。",
+    "caption": "框架传两个，你就得收两个",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑二：回调的参数个数对不上",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "框架按两个参数调用你，你的函数只收一个，直接报错",
+     "wrong_code": "def apply_op(a, b, op):\n    return op(a, b)\n\nprint(apply_op(3, 4, lambda x: x * 2))",
+     "right_answer": "回调函数的形参要和框架调用时的实参对齐",
+     "right_code": "def apply_op(a, b, op):\n    return op(a, b)\n\nprint(apply_op(3, 4, lambda x, y: x * y))",
+     "highlight": "回调的签名由调用方决定"
+    },
+    "image": "narrations/7_7/s10.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_6911d38583d24ff613ea98efaf0869b7.mp3",
+    "audio_seconds": 27.12
+   },
+   {
+    "id": 11,
+    "type": "code",
+    "title": "用字典做行为分发",
+    "narration": "既然函数是对象，就能存进字典。先定义 add 和 mul，再存进 actions 字典，注意值的位置写的是函数名，不带括号。最后一行 actions 中括号 mul 取出函数，紧跟括号三逗号四，结果是十二。这种按名字取函数调用的写法，在命令行工具和路由分发里很常见。",
+    "caption": "把函数存进字典，按键取出来调用",
+    "code": "def add(a, b):\n    return a + b\n\ndef mul(a, b):\n    return a * b\n\nactions = {\"add\": add, \"mul\": mul}\nprint(actions[\"mul\"](3, 4))",
+    "visual": {
+     "layout": "code",
+     "title": "用字典做行为分发",
+     "subtitle": "",
+     "caption": "",
+     "code": "def add(a, b):\n    return a + b\n\ndef mul(a, b):\n    return a * b\n\nactions = {\"add\": add, \"mul\": mul}\nprint(actions[\"mul\"](3, 4))",
+     "output": "12",
+     "bullets": []
+    },
+    "image": "narrations/7_7/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_7a848d1f005d7e6842b3c6a1e5974aa3.mp3",
+    "audio_seconds": 22.49
+   },
+   {
+    "id": 12,
+    "type": "pitfall",
+    "title": "坑三：存进字典时写了括号",
+    "narration": "第三个坑跟前面同源：往字典里存的时候多写了括号。左边存的是 add 括号，那是在定义字典的那一刻就把函数执行了，而且 add 还需要两个参数，直接就报错了。右边存 add 本身，之后取值再调用才正确。规律就是：凡是把函数交给别人保管，都写函数名不带括号。",
+    "caption": "add() → 存的是结果；add → 存的是函数",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "坑三：存进字典时写了括号",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "字典里存的是调用结果，取值时再调用就报错了",
+     "wrong_code": "actions = {\"add\": add(), \"mul\": mul()}\"\n\"\nprint(actions[\"mul\"](3, 4))",
+     "right_answer": "存函数名本身，不带括号",
+     "right_code": "actions = {\"add\": add, \"mul\": mul}\nprint(actions[\"mul\"](3, 4))",
+     "highlight": "存进容器的应该是函数，不是它的结果"
+    },
+    "image": "narrations/7_7/s12.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_fdd08bede1724ff650b6b674b96f3402.mp3",
+    "audio_seconds": 24.22
+   },
+   {
+    "id": 13,
+    "type": "concept",
+    "title": "这是通往装饰器的钥匙",
+    "narration": "最后说一个更远的影响。既然函数能当参数传进去，也能被返回出来，那就可以写一个函数，它接收一个函数，包一层新逻辑，再把这个新函数返回给你。这就是装饰器的原理，第 12 章会专门讲。包括第 24 章 FastAPI 里的依赖注入，背后也是函数作为参数在传递。所以这一节不是冷知识，它是后面好几章的地基。",
+    "caption": "能传能返 → 才能包一层加功能",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "这是通往装饰器的钥匙",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "函数能当参数传"
+      },
+      {
+       "icon": "",
+       "text": "函数也能被返回"
+      },
+      {
+       "icon": "",
+       "text": "返回函数的函数就是装饰器的基础"
+      }
+     ],
+     "highlight": "第 12 章的装饰器，根就在这儿"
+    },
+    "image": "narrations/7_7/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_59e700c0cf6de2803071522cf7b7e4c7.mp3",
+    "audio_seconds": 26.5
+   },
+   {
+    "id": 14,
+    "type": "summary",
+    "title": "这一节记住三条",
+    "narration": "收束成三条。第一，函数是对象，可以赋值给变量、放进字典、当参数传给别的函数，也能被返回。第二，不带括号拿到的是函数本身，带括号才是执行它，这一对括号是很多 bug 的来源。第三，把函数当参数传出去叫回调，它让框架和具体行为解耦，是装饰器、路由分发、依赖注入的共同基础。",
+    "caption": "函数是对象 / 括号决定调用 / 回调是框架手法",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "这一节记住三条",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "函数是对象：能赋值、能进容器、能当参数能",
+      "不带括号是函数本身，带括号才是调用",
+      "把函数当参数传就是回调，框架与零件分离"
+     ]
+    },
+    "image": "narrations/7_7/s14.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_7a2563bf4d43512ce5817f90811d3851.mp3",
+    "audio_seconds": 26.38
+   }
+  ],
+  "total_seconds": 346.0
  }
 }

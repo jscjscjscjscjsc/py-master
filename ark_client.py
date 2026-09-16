@@ -2,12 +2,18 @@
 import json
 import os
 import time
+import uuid
 import threading
 import urllib.request
 import urllib.error
 
 BASE = 'https://ark.cn-beijing.volces.com/api/v3'
 DEFAULT_MODEL = 'doubao-seed-2-0-code-preview-260215'
+
+# 网关（Cloudflare）会对 urllib 默认 UA 直接返回 403 code 1010，
+# 用浏览器 UA 才能过；x-opencode-session 是 opencode go 套餐的必填路由头。
+BROWSER_UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+              '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
 
 
 def endpoint(url):
@@ -30,12 +36,21 @@ class ArkClient:
         self.exhausted = set()
         self.lock = threading.Lock()
         self.active_model = self.models[0]
+        self.session_id = str(uuid.uuid4())
+        # 推理模型的思考过程会让首字延迟从 2 秒级涨到 8 秒级，
+        # 面向学生的问答要的是即时感，所以默认关掉，可用环境变量打开。
+        self.thinking_disabled = os.getenv('PYMASTER_AI_THINKING', 'disabled').strip().lower() != 'enabled'
 
     @staticmethod
     def quota_error(code):
         # Rate limits and invalid keys must never masquerade as exhausted free quota.
         return code in {'InsufficientQuota', 'QuotaExceeded', 'FreeTierQuotaExceeded',
                         'AllocationQuota.FreeTierOnly', 'QuotaExceeded.FreeTier'}
+
+    @staticmethod
+    def overdue_error(code):
+        # 欠费账户返回 403 且密钥本身是有效的，提示必须指向充值而不是换 key
+        return code in {'AccountOverdueError', 'AccountOverdue'}
 
     def events(self, messages, max_tokens=800):
         if not self.key:
@@ -47,10 +62,14 @@ class ArkClient:
             payload = {'model': model, 'messages': messages, 'stream': True,
                        'max_tokens': max_tokens, 'temperature': 0.35,
                        'stream_options': {'include_usage': True}}
-            if model.startswith('doubao-seed'):
+            if self.thinking_disabled or model.startswith('doubao-seed'):
                 payload['thinking'] = {'type': 'disabled'}
-            req = urllib.request.Request(self.url, data=json.dumps(payload).encode(),
-                headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + self.key})
+            req = urllib.request.Request(self.url, data=json.dumps(payload).encode(), headers={
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + self.key,
+                'User-Agent': BROWSER_UA,
+                'x-opencode-session': self.session_id,
+            })
             try:
                 with urllib.request.urlopen(req, timeout=15) as response:
                     self.active_model = model
@@ -91,13 +110,16 @@ class ArkClient:
                         self.exhausted.add(model)
                     yield {'type': 'switch', 'message': '当前模型额度已用尽，正在尝试备用模型。'}
                     continue
+                if self.overdue_error(code):
+                    raise ArkError('模型账号已欠费（AccountOverdueError），AI 功能全部不可用；'
+                                   '请到服务商控制台充值，或在「首次运行配置」页换成其他服务商的 Key。') from None
                 if exc.code in (401, 403):
-                    raise ArkError(f'火山鉴权或模型权限失败（HTTP {exc.code}），请核对 API Key 和模型开通状态。') from None
+                    raise ArkError(f'模型鉴权或模型权限失败（HTTP {exc.code}），请核对 API Key 和模型名是否正确。') from None
                 if exc.code == 429:
-                    raise ArkError('火山请求限流，请稍后再试。') from None
-                raise ArkError(f'火山服务返回 HTTP {exc.code}，请检查模型配置。') from None
+                    raise ArkError('模型请求限流，请稍后再试。') from None
+                raise ArkError(f'模型服务返回 HTTP {exc.code}，请检查模型配置。') from None
             except (OSError, ValueError) as exc:
-                raise ArkError('火山连接超时或返回格式异常，请稍后重试。') from None
+                raise ArkError('模型连接超时或返回格式异常，请稍后重试。') from None
         raise ArkError('所配置模型的可用额度已耗尽，请配置仍有额度且已开通的备用模型。')
 
     def complete(self, messages, max_tokens=800):

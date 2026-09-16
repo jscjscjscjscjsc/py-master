@@ -1,0 +1,128 @@
+{
+  "chapter_id": 7,
+  "kp_index": 6,
+  "title": "lambda 与高阶函数",
+  "hook_line": "给排行榜排序，排序依据怎么交进去",
+  "scenes": [
+    {
+      "t": "hook",
+      "vt": "成绩排行榜怎么排",
+      "vq": "字典里存着姓名和分数，要按分数从高到低排，怎么办？",
+      "cap": "字典本身无序 → 要先取出来，再按分数排",
+      "nar": "你要做一个成绩排行榜，数据是张三八十八、李四九十五、王五七十六，想按分数从高到低列出来。直接对字典排序行不行？不行，字典本身不保证顺序。那取出来排呢？取出来的是姓名和分数成对的数据，Python 怎么知道你要按姓名排还是按分数排？这就得告诉它排序依据。"
+    },
+    {
+      "t": "concept",
+      "vt": "排序依据要交给 key",
+      "vb": "sorted 默认按元素本身排|想按别的规则排要传 key|key 接收的是函数",
+      "vh": "key 决定拿什么去比大小",
+      "cap": "sorted(列表, key=函数) → 用函数算出比较依据",
+      "nar": "sorted 默认按元素本身比大小，数字比数值、字符串比编码。但实际排序往往不是按元素本身，而是按元素的某个属性。所以 sorted 提供了一个 key 参数：你给它一个函数，它拿每个元素喂给这个函数，用返回值当排序依据。注意 key 接收的是函数，这正是 lambda 最常出现的地方。"
+    },
+    {
+      "t": "code",
+      "vt": "按单词长度排序",
+      "cap": "key=len → 用长度当排序依据",
+      "code": "words = [\"banana\", \"apple\", \"cherry\", \"kiwi\"]\nprint(sorted(words, key=len))",
+      "out": "['kiwi', 'apple', 'banana', 'cherry']",
+      "nar": "四个单词按长度排序，写成 sorted 括号 words 逗号 key 等于 len。len 本身就是函数，接收一个单词返回长度。sorted 拿长度去比较，谁短谁在前，kiwi 排第一，cherry 排最后。注意 key 等于 len 这里，len 后面不带括号，传的是函数本身。"
+    },
+    {
+      "t": "concept",
+      "vt": "lambda 是什么",
+      "vb": "没有名字的函数|一行写完|冒号后面是返回值",
+      "vh": "lambda 就是 def 的简写",
+      "cap": "lambda 参数: 表达式",
+      "nar": "有时候你要用的函数特别简单，就一行，而且只用一次，专门为它写个 def 占三行有点浪费。Python 提供了 lambda，叫匿名函数，意思是没有名字的函数。写法是 lambda 空格参数 冒号 表达式，冒号后面这个表达式的值自动作为返回值，不需要写 return。"
+    },
+    {
+      "t": "code",
+      "vt": "lambda 基础写法",
+      "cap": "赋值给变量再调，或者直接调用",
+      "code": "double = lambda x: x * 2\nprint(double(5))\nprint((lambda x: x * 2)(5))",
+      "out": "10\n10",
+      "nar": "lambda x 冒号 x 乘 2，读作接收 x 返回 x 乘 2。第一行把它赋值给 double，之后 double 括号 5 就能调用，结果十。第三行更直接，把 lambda 整体用括号包起来，后面直接跟括号 5，当场定义当场调用，结果也是十。两种写法都可以，赋值给变量那种更常见。"
+    },
+    {
+      "t": "compare",
+      "vt": "lambda 与 def 对比",
+      "left": "def:有名字|可以多行|可以写多条语句|适合复用",
+      "right": "lambda:没有名字|只能一个表达式|自动返回|适合一次性传参",
+      "vh": "lambda 能做的事，def 都能做",
+      "cap": "lambda 只是简写，不是新能力",
+      "nar": "有人担心 lambda 是不是高级特性。不是。lambda 能做的事 def 都能做，它只是简写。区别是：def 有名字、能写多行多条语句，适合复用；lambda 没名字、只能一个表达式、自动返回，适合当场传给别人用一次。看到 lambda，心里翻译成 def 就懂了。"
+    },
+    {
+      "t": "code",
+      "vt": "排行榜标准写法",
+      "cap": "按元组的第二个元素从高到低",
+      "code": "scores = {\"张三\": 88, \"李四\": 95, \"王五\": 76}\nranked = sorted(scores.items(),\n                key=lambda item: item[1],\n                reverse=True)\nfor name, score in ranked:\n    print(f\"{name}: {score}\")",
+      "out": "李四: 95\n张三: 88\n王五: 76",
+      "nar": "回到开头的排行榜。scores 点 items 得到姓名和分数配成的元组列表，每个元素长这样：括号 张三 逗号 88。我们要按分数排，也就是取每个元组的第二个元素，写成 key 等于 lambda item 冒号 item 中括号 1。再加 reverse 等于 True 变成从高到低，就得到排行榜。"
+    },
+    {
+      "t": "pitfall",
+      "vt": "坑一：lambda 里 item 忘了取值",
+      "wrong": "key 直接返回整个元组，变成先按姓名排了",
+      "wcode": "ranked = sorted(scores.items(),\n                key=lambda item: item)\nprint(ranked)",
+      "right_answer": "要指明取元组的第几个元素当依据",
+      "rcode": "ranked = sorted(scores.items(),\n                key=lambda item: item[1])\nprint(ranked)",
+      "vh": "item[1] 才是分数，item 是整个元组",
+      "cap": "漏掉 [1] → 按姓名排了",
+      "nar": "第一个坑很典型。左边写 key 等于 lambda item 冒号 item，直接返回整个元组。元组比较先比第一个元素，于是变成按姓名排序，分数完全没起作用。右边加上中括号 1 取出分数才对。记住 item 是整个元组，item 中括号 1 才是分数。"
+    },
+    {
+      "t": "pitfall",
+      "vt": "坑二：lambda 写太长",
+      "wrong": "把一整套判断逻辑塞进 lambda，一行里嵌套三四个条件",
+      "wcode": "key=lambda x: 0 if x == \"\" else\\\n    (1 if x.isdigit() else 2)",
+      "right_answer": "超过一个表达式就换回 def，可读性优先",
+      "rcode": "def sort_key(x):\n    if not x:\n        return 0\n    return 1 if x.isdigit() else 2",
+      "vh": "lambda 只适合一行说得清的规则",
+      "cap": "逻辑一长就该退回 def",
+      "nar": "第二个坑是滥用。左边这个 lambda 里塞了一串嵌套判断，你自己过两天都读不懂。lambda 的定位是简单的一次性函数，超过一个表达式就该换回 def。函数能拆成有名字的几行，读的人一眼就懂。判断标准很简单：如果 lambda 里出现了 and 或者 or 连着好几个条件，就说明该换写法了。"
+    },
+    {
+      "t": "flow",
+      "vt": "sorted 加 key 的执行过程",
+      "vs": "取出列表里两个元素|把元素喂给 key 函数|用返回值比大小|按结果排好序|原列表不变",
+      "vh": "key 只负责算依据，不负责比较",
+      "cap": "元素 → key 函数 → 比较依据 → 排序",
+      "nar": "理一下执行过程。第一，从列表里取出两个元素。第二，分别喂给你给的 key 函数。第三，用两个返回值比大小。第四，按结果决定顺序，重复直到排完。key 只负责算依据，怎么比是 sorted 的事。另外 sorted 返回新列表，原列表不动。"
+    },
+    {
+      "t": "concept",
+      "vt": "map 与 filter 是同类思路",
+      "vb": "map 对每个元素套函数|filter 保留返回真的元素|它们返回惰性迭代器",
+      "vh": "都是把函数当参数传进去",
+      "cap": "了解级：实际更常用列表推导式",
+      "nar": "同样把函数当参数传进去的还有 map 和 filter。map 是对每个元素套一遍函数，得到新结果，也就是映射；filter 保留函数返回真的元素，也就是过滤。它们返回的是惰性迭代器，要用 list 包一层才看得到结果。实际工作里更常用列表推导式，写法更直观。"
+    },
+    {
+      "t": "code",
+      "vt": "map 与 filter 用法",
+      "cap": "都要用 list() 包一层才看得到结果",
+      "code": "nums = [1, 2, 3, 4]\ndoubled = list(map(lambda x: x * 2, nums))\nbig = list(filter(lambda x: x > 2, nums))\nprint(doubled)\nprint(big)",
+      "out": "[2, 4, 6, 8]\n[3, 4]",
+      "nar": "看代码。map 把每个数乘二，结果是二四六八。filter 保留大于二的，剩三四。两处都套了 list 括号，因为不加的话打印出来是一串迭代器对象，看不到内容。这个坑很常见，写完一看输出是 object at 什么什么，八成就是忘了转列表。"
+    },
+    {
+      "t": "pitfall",
+      "vt": "坑三：忘记转列表",
+      "wrong": "直接打印 map 的结果，看到的是迭代器对象",
+      "wcode": "nums = [1, 2, 3]\nprint(map(lambda x: x * 2, nums))",
+      "right_answer": "用 list() 包一层，或者直接用列表推导式",
+      "rcode": "nums = [1, 2, 3]\nprint(list(map(lambda x: x * 2, nums)))",
+      "vh": "迭代器是惰性的，要用才产出",
+      "cap": "<map object at ...> → 忘了 list()",
+      "nar": "第三个坑：直接打印 map 的结果，输出是 map object at 一串地址，看着像坏了，其实只是没转列表。因为 map 返回的是惰性迭代器，你不去取它就不算。解决方法是外面套一层 list。顺便说一句，同样的需求用列表推导式写是 x 乘 2 for x in nums，一行搞定还不用记这个坑。"
+    },
+    {
+      "t": "summary",
+      "vt": "这一节记住三条",
+      "vb": "lambda 是 def 的简写，只适合一行说得清的规则|sorted 的 key 接收函数，用它算出排序依据|把函数当参数传出去，就是高阶函数的用法",
+      "cap": "lambda 简写 / key 定依据 / 函数可传参",
+      "nar": "收束成三条。第一，lambda 是 def 的简写，没有新能力，只适合一行说得清的规则。第二，sorted 的 key 接收函数，用它算出排序依据，按字典值排排行榜是标准用法。第三，把函数当参数传给另一个函数，这就是高阶函数的思路。"
+    }
+  ]
+}

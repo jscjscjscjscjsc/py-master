@@ -30,7 +30,7 @@ fi
 # 预检：额度欠费 / 密钥失效时直接退出，不要空转几十轮
 preflight() {
   python - <<'PYEOF'
-import json, os, sys, urllib.request, urllib.error
+import json, os, sys, uuid, urllib.request, urllib.error
 from pathlib import Path
 env = {}
 f = Path('.env')
@@ -44,8 +44,13 @@ model = os.environ.get('PYMASTER_AI_MODEL') or env.get('PYMASTER_AI_MODEL', '')
 if not (key and base and model):
     print('NO_CONFIG'); raise SystemExit(0)
 body = json.dumps({'model': model, 'messages': [{'role': 'user', 'content': 'hi'}], 'max_tokens': 3}).encode()
-req = urllib.request.Request(base + '/chat/completions', data=body,
-    headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'})
+# 和 ark_client 用同一套请求头：网关会拒掉非浏览器 UA（403 code 1010），
+# 少了它预检会把好密钥误判成 AUTH，白白中断整轮生产
+req = urllib.request.Request(base + '/chat/completions', data=body, headers={
+    'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json',
+    'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                   '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'),
+    'x-opencode-session': str(uuid.uuid4())})
 try:
     with urllib.request.urlopen(req, timeout=25) as r:
         print('OK')

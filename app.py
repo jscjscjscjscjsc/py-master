@@ -14,6 +14,7 @@ import urllib.error
 import urllib.parse
 import threading
 import socket
+import uuid
 from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
@@ -991,12 +992,196 @@ def _normalize_ai_endpoint(raw_url):
     return base + '/v1/chat/completions'
 
 AI_BASE_URL = _normalize_ai_endpoint(os.environ.get('PYMASTER_AI_BASE_URL'))
-from ark_client import ArkClient, ArkError
+from ark_client import ArkClient, ArkError, BROWSER_UA
 ark = ArkClient()
 AI_API_KEY = ark.key
 AI_MODEL = ark.models[0]
 AI_CACHE = {}
 AI_CACHE_TTL = 300
+
+# ── 课程知识 RAG ─────────────────────────────────────────
+# 全套教材有 39 章 / 400 个知识点，整本塞进提示词又慢又贵。
+# 这里开机后建一次内存索引，按问题检索最相关的几节，只把这部分喂给模型，
+# 回答就会落在本课程讲过的知识范围内，而不是泛泛的互联网答案。
+
+_COURSE_DOCS = None
+_COURSE_DOCS_LOCK = threading.Lock()
+_RAG_CACHE = {}
+_RAG_CACHE_TTL = 600
+
+
+def _html_to_text(html):
+    """教材正文是 HTML，检索只需要纯文字。"""
+    text = re.sub(r'<(script|style)[^>]*>.*?</\1>', ' ', html or '', flags=re.S | re.I)
+    text = re.sub(r'<br\s*/?>|</p>|</li>|</div>|</h[1-6]>', '\n', text, flags=re.I)
+    text = re.sub(r'<[^>]+>', '', text)
+    text = text.replace('&nbsp;', ' ').replace('&lt;', '<').replace('&gt;', '>').replace('&amp;', '&').replace('&quot;', '"')
+    return re.sub(r'\n{2,}', '\n', re.sub(r'[ \t]{2,}', ' ', text)).strip()
+
+
+def _rag_terms(text):
+    """中文按二元组切、英文数字按词切，够用且不需要分词依赖。"""
+    terms = {}
+    for word in re.findall(r'[a-zA-Z_][a-zA-Z0-9_\.]{1,}', text.lower()):
+        terms[word] = terms.get(word, 0) + 1
+    for run in re.findall(r'[\u4e00-\u9fff]+', text):
+        if len(run) == 1:
+            terms[run] = terms.get(run, 0) + 1
+        for i in range(len(run) - 1):
+            bigram = run[i:i + 2]
+            terms[bigram] = terms.get(bigram, 0) + 1
+    return terms
+
+
+def _build_course_docs():
+    """把每个知识点、每道练习压成一条可检索文档（只做一次）。"""
+    docs = []
+    try:
+        courses = load_json(COURSES_FILE)
+    except Exception as exc:
+        print(f'[RAG] 课程索引构建失败：{exc}')
+        return docs
+    for course in courses:
+        chapter_id = course.get('id')
+        chapter_title = course.get('title', '')
+        for kp_index, kp in enumerate(course.get('knowledge_points', [])):
+            body = _html_to_text(kp.get('content', ''))
+            docs.append({
+                'kind': 'kp',
+                'chapter_id': chapter_id,
+                'chapter_title': chapter_title,
+                'title': f'第 {chapter_id} 章 {chapter_title} · {kp.get("title", "")}',
+                'index': kp_index,
+                'text': body,
+                'terms': _rag_terms(kp.get('title', '') + ' ' + chapter_title + ' ' + body),
+            })
+        for ex in course.get('exercises', []):
+            question = ex.get('question_plain') or _html_to_text(ex.get('question', ''))
+            reference = _html_to_text(ex.get('reference', ''))[:600]
+            docs.append({
+                'kind': 'exercise',
+                'chapter_id': chapter_id,
+                'chapter_title': chapter_title,
+                'title': f'第 {chapter_id} 章练习 · 第 {ex.get("no", "?")} 题',
+                'index': ex.get('no', 0),
+                'text': question + ('\n参考答案：' + reference if reference else ''),
+                'terms': _rag_terms(question + ' ' + reference),
+            })
+    print(f'[RAG] 课程索引就绪：{len(docs)} 条文档')
+    return docs
+
+
+def retrieve_course_context(query, chapter_id=None, top_k=4, budget=2600):
+    """检索与问题最相关的课程片段，拼成一小段可直接进提示词的资料。"""
+    global _COURSE_DOCS
+    query = (query or '').strip()
+    if not query:
+        return ''
+    cache_key = (query[:200], str(chapter_id))
+    hit = _RAG_CACHE.get(cache_key)
+    if hit and time.time() - hit[0] < _RAG_CACHE_TTL:
+        return hit[1]
+
+    if _COURSE_DOCS is None:
+        with _COURSE_DOCS_LOCK:
+            if _COURSE_DOCS is None:
+                _COURSE_DOCS = _build_course_docs()
+    docs = _COURSE_DOCS
+    if not docs:
+        return ''
+
+    q_terms = _rag_terms(query)
+    if not q_terms:
+        return ''
+    try:
+        want_chapter = int(chapter_id)
+    except (TypeError, ValueError):
+        want_chapter = None
+
+    scored = []
+    for doc in docs:
+        score = 0
+        for term, count in q_terms.items():
+            weight = doc['terms'].get(term)
+            if weight:
+                # 长词更有区分度（"列表推导" 比 "列表" 值钱），出现次数封顶避免刷分
+                score += (1.6 if len(term) > 1 else 0.8) * min(weight, 3) * (1 + 0.2 * min(count, 3))
+        if not score:
+            continue
+        if want_chapter is not None and doc['chapter_id'] == want_chapter:
+            score *= 1.45  # 学生正在学的这一章优先
+        if doc['kind'] == 'exercise':
+            score *= 1.1
+        scored.append((score, doc))
+
+    scored.sort(key=lambda item: -item[0])
+    picked, used = [], 0
+    for score, doc in scored[:top_k]:
+        body = doc['text'][:900]
+        if not body:
+            continue
+        block = f'【{doc["title"]}】\n{body}'
+        if used + len(block) > budget:
+            break
+        picked.append(block)
+        used += len(block)
+    result = '\n\n'.join(picked)
+    if len(_RAG_CACHE) > 512:
+        _RAG_CACHE.clear()
+    _RAG_CACHE[cache_key] = (time.time(), result)
+    return result
+
+
+# ── 学生页面作答情况 ─────────────────────────────────────
+
+def build_student_state(data, username):
+    """把学生当前页面的作答情况整理成一段说明，让 AI 知道自己在给谁讲。"""
+    page = data.get('page') or {}
+    lines = []
+    chapter_id = str(page.get('chapter_id') or data.get('chapter_id') or '')
+    chapter_title = str(page.get('chapter_title') or '')[:60]
+    kp_title = str(page.get('kp_title') or '')[:80]
+
+    where = '第 %s 章 %s' % (chapter_id, chapter_title) if chapter_id else ''
+    if where and kp_title:
+        where += f' · 正在看「{kp_title}」'
+    if where.strip():
+        lines.append('位置：' + where.strip())
+
+    total, done = page.get('kp_total'), page.get('kp_done')
+    if isinstance(total, int) and isinstance(done, int) and total:
+        lines.append(f'本章进度：{done}/{total} 个知识点已完成')
+
+    if page.get('exercise'):
+        lines.append('当前这道练习：' + str(page['exercise'])[:400])
+    if page.get('code'):
+        lines.append('学生当前写的代码：\n```python\n' + str(page['code'])[:1200] + '\n```')
+    if page.get('output'):
+        lines.append('最近一次运行输出：\n' + str(page['output'])[:400])
+
+    wrong = page.get('wrong')
+    if isinstance(wrong, list) and wrong:
+        items = []
+        for item in wrong[-5:]:
+            if isinstance(item, dict):
+                q = str(item.get('question') or item.get('q') or '')[:120]
+                if q:
+                    items.append('- ' + q)
+            elif item:
+                items.append('- ' + str(item)[:120])
+        if items:
+            lines.append('他这一章最近答错的题：\n' + '\n'.join(items))
+    elif username and username != 'guest':
+        # 页面上没带，就从服务端记录里补，保证 AI 一定看得到答题情况
+        users = load_json(USERS_FILE)
+        records = (users.get(username, {}).get('wrong_answers') or [])[-5:]
+        items = ['- ' + str(r.get('question', ''))[:120] for r in records if r.get('question')]
+        if items:
+            lines.append('他最近答错的题：\n' + '\n'.join(items))
+
+    if not lines:
+        return ''
+    return '【学生当前情况】\n' + '\n'.join(lines)
 AI_CONNECT_TIMEOUT = 4
 # Keep interactive tutoring bounded: one stalled relay should not make the
 # chat feel frozen, while the browser's 12s abort remains a final guard.
@@ -1090,9 +1275,12 @@ def test_ai_connection(base_url, model, api_key, timeout=20):
         'max_tokens': 16,
         'temperature': 0,
     }).encode('utf-8')
+    # 头和 ArkClient 保持一致：部分网关会对非浏览器 UA 直接返回 403
     request = urllib.request.Request(url, data=payload, headers={
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {api_key}',
+        'User-Agent': BROWSER_UA,
+        'x-opencode-session': str(uuid.uuid4()),
     })
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
@@ -1173,9 +1361,47 @@ def ai_config():
         'model': ark.active_model,
         'fallback_models': ark.models[1:],
         'streaming': True,
-        'quota_note': '平台免费余额请以火山控制台为准',
+        'quota_note': '额度以所用服务商控制台为准',
         'endpoint_ready': AI_BASE_URL.endswith('/chat/completions'),
     })
+
+
+def _compose_ai_messages(question, context, chapter_id, page_state=''):
+    """系统提示 + 学生贴的内容 + 页面作答情况 + 检索到的讲义 + 提问。
+
+    只有系统提示是固定前缀，其余都放在 user 侧，
+    这样服务商的前缀缓存能命中，提问的往返时间也更短。
+    """
+    parts = []
+    if context:
+        parts.append('【学生贴出的内容】\n' + context)
+    if page_state:
+        parts.append(page_state)
+    rag = retrieve_course_context((question + ' ' + context)[:1200], chapter_id)
+    if rag:
+        parts.append('【本课程相关讲义（优先按这里讲过的来解释，不要跑题）】\n' + rag)
+    parts.append('【学生提问】\n' + question)
+    return [
+        {'role': 'system', 'content': JJ_SYSTEM_PROMPT},
+        {'role': 'user', 'content': '\n\n'.join(parts)},
+    ]
+
+
+def _ai_cache_key(messages):
+    return hashlib.sha256(json.dumps([ark.active_model, messages], ensure_ascii=False).encode()).hexdigest()
+
+
+def _ai_cache_get(key):
+    hit = AI_CACHE.get(key)
+    if hit and time.time() - hit[0] < AI_CACHE_TTL:
+        return hit[1]
+    return None
+
+
+def _ai_cache_put(key, answer):
+    if len(AI_CACHE) > 400:
+        AI_CACHE.clear()
+    AI_CACHE[key] = (time.time(), answer)
 
 
 @app.route('/api/ask-jj-stream', methods=['POST'])
@@ -1189,13 +1415,20 @@ def ask_jj_stream():
     if username != 'guest' and not check_daily_limit(username)[0]:
         return jsonify(success=False, error='今日 AI 问答次数已用完。'), 429
     chapter_id = str(data.get('chapter_id', ''))
-    messages = [{'role': 'system', 'content': JJ_SYSTEM_PROMPT}]
-    messages.append({'role': 'user', 'content': (context + '\n\n' if context else '') + question})
+    # 学生的页面作答情况随人随页面变，必须进缓存键，不能把别人的答案复用给他
+    messages = _compose_ai_messages(question, context, chapter_id, build_student_state(data, username))
+    cache_key = _ai_cache_key(messages)
+    cached = _ai_cache_get(cache_key)
+
     def generate():
         def encode(event):
             return 'data: ' + json.dumps(event, ensure_ascii=False) + '\n\n'
+        yield encode({'type': 'status', 'message': '正在连接模型…'})
+        if cached:
+            yield encode({'type': 'delta', 'text': cached})
+            yield encode({'type': 'done', 'model': ark.active_model, 'cached': True})
+            return
         answer = ''
-        yield encode({'type': 'status', 'message': '正在连接火山方舟…'})
         try:
             for event in ark.events(messages):
                 if event['type'] == 'delta':
@@ -1203,6 +1436,7 @@ def ask_jj_stream():
                 yield encode(event)
             if not answer:
                 raise ArkError('模型没有返回正文，请重试。')
+            _ai_cache_put(cache_key, answer)
             if username != 'guest':
                 increment_daily_usage(username)
                 if chapter_id:
@@ -1241,20 +1475,12 @@ def ask_jj():
             })
 
     # Build messages
-    messages = [{"role": "system", "content": JJ_SYSTEM_PROMPT}]
-
-    if context:
-        messages.append({
-            "role": "user",
-            "content": f"【上下文/代码】\n{context}\n\n【学生提问】\n{question}"
-        })
-    else:
-        messages.append({"role": "user", "content": question})
-
-    cache_key = hashlib.sha256(json.dumps([AI_MODEL, question, context], ensure_ascii=False).encode()).hexdigest()
-    cached = AI_CACHE.get(cache_key)
-    if cached and time.time() - cached[0] < AI_CACHE_TTL:
-        return jsonify({"success": True, "answer": cached[1], "error": "", "cached": True})
+    chapter_id = str(data.get('chapter_id', ''))
+    messages = _compose_ai_messages(question, context, chapter_id, build_student_state(data, username))
+    cache_key = _ai_cache_key(messages)
+    cached = _ai_cache_get(cache_key)
+    if cached:
+        return jsonify({"success": True, "answer": cached, "error": "", "cached": True})
     if not AI_API_KEY:
         return jsonify({"success": False, "answer": "", "error": "尚未配置 Python 智能体密钥，请设置 PYMASTER_AI_API_KEY"})
 
@@ -1279,12 +1505,11 @@ def ask_jj():
             return jsonify({"success": False, "answer": "", "error": transport_error})
 
         answer = result["choices"][0]["message"]["content"]
-        AI_CACHE[cache_key] = (time.time(), answer)
+        _ai_cache_put(cache_key, answer)
         if username != 'guest':
             increment_daily_usage(username)
 
         # Store JJ chat history per chapter (游客不保存)
-        chapter_id = str(data.get('chapter_id', ''))
         if chapter_id and username != 'guest':
             users = load_json(USERS_FILE)
             if username in users:

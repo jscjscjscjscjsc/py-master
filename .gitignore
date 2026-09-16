@@ -45,5 +45,10 @@ tools/render/build-plan.json
 tools/render/node_modules/
 tools/render/preview/
 
+# 环境变量文件的各种备份/变体一律不入库（里面是真实密钥）
+.env
+.env.*
+!.env.example
+
 # 临时文件
 .git-token.tmp

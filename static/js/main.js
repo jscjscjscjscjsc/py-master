@@ -426,19 +426,6 @@ function saveCodeAsPy() {
   showToast('💾 代码已保存为 .py 文件', 'success');
 }
 
-async function askJJAboutCode() {
-  if (!codeMirrorEditor) return;
-  const code = codeMirrorEditor.getValue().trim();
-  if (!code) { showToast('请先编写代码', 'error'); return; }
-  jjCodeContext = code;
-  const jjArea = document.getElementById('code-ex-jj-area');
-  if (jjArea) jjArea.style.display = jjArea.style.display === 'none' ? 'block' : 'none';
-  if (jjArea.style.display === 'block') {
-    document.getElementById('code-ex-jj-content').innerHTML = '<div style="color:var(--text-muted);padding:10px;">在下方提问，JJ老师会结合你的代码回答</div>';
-    document.getElementById('jj-input')?.focus();
-  }
-}
-
 async function runCodeEx() {
   if (!codeMirrorEditor) return;
   const output = document.getElementById('code-ex-output');
@@ -1129,36 +1116,91 @@ async function loadAIQuota() {
     else { el.textContent = '📊 ' + d.remaining + '/' + d.limit; el.style.color = d.remaining <= 2 ? 'var(--orange)' : 'var(--text-muted)'; }
   } catch(e) { el.textContent = ''; }
 }
+// 把学生「在页面上做到哪、答错什么、正在写什么代码」一起带给后端，
+// AI 才知道自己在给谁讲、讲到哪一步，而不是对着空气回答。
+function collectJJPageContext(extra) {
+  const page = { chapter_id: typeof CHAPTER_ID !== 'undefined' ? CHAPTER_ID : '',
+                 chapter_title: typeof CHAPTER_TITLE !== 'undefined' ? CHAPTER_TITLE : '' };
+  const items = Array.from(document.querySelectorAll('.kp-item'));
+  if (items.length) {
+    page.kp_total = items.length;
+    page.kp_done = typeof COMPLETED_KPS !== 'undefined'
+      ? COMPLETED_KPS.filter(k => String(k).indexOf(String(CHAPTER_ID) + '_') === 0).length
+      : items.filter(i => i.classList.contains('completed')).length;
+    // 优先取正在编辑的那个知识点，否则取第一个没做完的
+    let node = null;
+    if (typeof codeExState !== 'undefined' && codeExState && codeExState.chapterId != null) {
+      node = document.querySelector('.kp-item[data-kp-index="' + codeExState.kpIndex + '"]');
+    }
+    if (!node) node = items.find(i => !i.classList.contains('completed')) || items[0];
+    const titleEl = node && node.querySelector('.kp-title');
+    if (titleEl) page.kp_title = titleEl.textContent.replace(/\s+/g, ' ').trim().slice(0, 80);
+  }
+  if (typeof CHAPTER_WRONG !== 'undefined' && Array.isArray(CHAPTER_WRONG)) {
+    page.wrong = CHAPTER_WRONG.slice(-5).map(w => ({ question: (w && w.question) || '', user_answer: (w && w.user_answer) || '' }));
+  }
+  return Object.assign(page, extra || {});
+}
+
+// 统一的流式问答：AI 助教对话和代码讲评共用同一条链路
+async function streamJJAnswer(payload, handlers) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 60000);
+  let answer = '', done = false;
+  try {
+    const response = await fetch('/api/ask-jj-stream', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload), signal: controller.signal
+    });
+    if (!response.ok) { const error = await response.json(); throw Error(error.error || '请求失败'); }
+    const reader = response.body.getReader(), decoder = new TextDecoder();
+    let buffer = '';
+    while (true) {
+      const chunk = await reader.read();
+      buffer += decoder.decode(chunk.value || new Uint8Array(), { stream: !chunk.done });
+      const frames = buffer.split('\n\n'); buffer = frames.pop();
+      for (const frame of frames) {
+        if (!frame.startsWith('data: ')) continue;
+        const event = JSON.parse(frame.slice(6));
+        if (event.type === 'delta') { answer += event.text; handlers.onDelta(answer); }
+        if ((event.type === 'status' || event.type === 'switch') && !answer) handlers.onStatus(event.message);
+        if (event.type === 'error') throw Error(event.message);
+        if (event.type === 'done') done = true;
+      }
+      if (chunk.done) break;
+    }
+    if (!done) throw Error('连接提前结束，请重试。');
+    handlers.onDone(answer);
+    return { ok: true, answer };
+  } catch (error) {
+    const message = (answer ? answer + '\n\n' : '') +
+      (error.name === 'AbortError' ? '响应超时，请重试。' : error.message);
+    handlers.onError(message);
+    return { ok: false, error: message };
+  } finally { clearTimeout(timer); }
+}
+
 async function sendJJMessage() {
   const input=document.getElementById('jj-input'), btn=document.getElementById('jj-send-btn'), messages=document.getElementById('jj-messages'), typing=document.getElementById('jj-typing');
   const question=input.value.trim(); if(!question || btn.disabled) return;
   const user=document.createElement('div'); user.className='msg user'; user.textContent=question; messages.appendChild(user);
-  const reply=document.createElement('div'); reply.className='msg jj'; reply.setAttribute('aria-live','polite'); reply.textContent='正在连接火山方舟…'; messages.appendChild(reply);
+  const reply=document.createElement('div'); reply.className='msg jj'; reply.setAttribute('aria-live','polite'); reply.textContent='正在思考…'; messages.appendChild(reply);
   input.value=''; btn.disabled=true; typing.style.display='none';
-  const controller=new AbortController(); const timer=setTimeout(()=>controller.abort(),60000); let answer='', done=false;
   const context=jjCodeContext;
+  const scroll=()=>{messages.scrollTop=messages.scrollHeight;};
   try {
-    const response=await fetch('/api/ask-jj-stream',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,context,chapter_id:typeof CHAPTER_ID!=='undefined'?CHAPTER_ID:''}),signal:controller.signal});
-    if(!response.ok){const error=await response.json();throw Error(error.error||'请求失败');}
-    const reader=response.body.getReader(), decoder=new TextDecoder(); let buffer='';
-    while(true){
-      const chunk=await reader.read(); buffer+=decoder.decode(chunk.value||new Uint8Array(),{stream:!chunk.done});
-      const frames=buffer.split('\n\n'); buffer=frames.pop();
-      for(const frame of frames){
-        if(!frame.startsWith('data: '))continue;
-        const event=JSON.parse(frame.slice(6));
-        if(event.type==='delta'){answer+=event.text;reply.textContent=answer;}
-        if(event.type==='status'||event.type==='switch'){if(!answer)reply.textContent=event.message;}
-        if(event.type==='error')throw Error(event.message);
-        if(event.type==='done')done=true;
-        messages.scrollTop=messages.scrollHeight;
-      }
-      if(chunk.done)break;
-    }
-    if(!done)throw Error('连接提前结束，请重试。');
-    reply.innerHTML=formatJJAnswer(answer); jjCodeContext=''; loadAIQuota();
-  } catch(error){reply.textContent=(answer?answer+'\n\n':'')+(error.name==='AbortError'?'响应超时，请重试。':error.message);input.value=question;}
-  finally{clearTimeout(timer);btn.disabled=false;input.focus();}
+    const result = await streamJJAnswer({
+      question, context,
+      chapter_id: typeof CHAPTER_ID!=='undefined'?CHAPTER_ID:'',
+      page: collectJJPageContext()
+    }, {
+      onDelta: (text) => { reply.textContent=text; scroll(); },
+      onStatus: (msg) => { reply.textContent=msg; scroll(); },
+      onDone: (text) => { reply.innerHTML=formatJJAnswer(text); jjCodeContext=''; loadAIQuota(); scroll(); },
+      onError: (msg) => { reply.textContent=msg; input.value=question; scroll(); }
+    });
+    if (!result.ok) return;
+  } finally { btn.disabled=false; input.focus(); }
 }
 
 function formatJJAnswer(text){return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/```(\w*)\n?([\s\S]*?)```/g,'<pre><code>$2</code></pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');}
@@ -1647,40 +1689,36 @@ function closeScoreOverlay() {
 
 // ── JJ老师 for Code Editor ──
 async function askJJAboutCode() {
-  const editor = document.getElementById('code-ex-editor');
   const output = document.getElementById('code-ex-output');
   const jjArea = document.getElementById('code-ex-jj-area');
   const jjContent = document.getElementById('code-ex-jj-content');
-  if (!editor || !jjArea || !jjContent) return;
+  if (!jjArea || !jjContent) return;
 
-  const code = editor.value.trim();
+  // 代码要从 CodeMirror 实例取：它替换了 #code-ex-editor，那个 textarea 已隐藏且不再同步
+  const code = codeMirrorEditor ? codeMirrorEditor.getValue().trim() : '';
   if (!code) { showToast('请先编写代码再请教JJ老师', 'error'); return; }
 
   // Get output text, stripping HTML tags
-  const outputText = output ? output.textContent?.trim() || '（无输出）' : '（无输出）';
+  const outputText = output ? output.textContent?.trim() || '（还没运行过）' : '（还没运行过）';
+  const exercise = (document.getElementById('code-ex-prompt')?.textContent || '').replace('📝 ', '').trim();
   const context = '【学生代码】\n```python\n' + code + '\n```\n【运行输出】\n' + outputText;
 
   jjArea.style.display = 'block';
-  jjContent.innerHTML = '<div style="color:var(--text-muted);padding:8px;">⏳ JJ老师正在分析你的代码...</div>';
+  jjContent.innerHTML = '<div style="color:var(--text-muted);padding:8px;">⏳ JJ老师正在看你的代码…</div>';
+  jjArea.scrollTop = 0;
 
-  try {
-    const res = await fetch('/api/ask-jj', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        question: '请帮我看看这段Python代码写得怎么样，如果有错误请指出并解释如何修复。',
-        context: context
-      })
-    });
-    const data = await res.json();
-    if (data.success && data.answer) {
-      jjContent.innerHTML = '<div style="white-space:pre-wrap;line-height:1.6;padding:8px;">'
-        + escapeHtml(data.answer) + '</div>';
-    } else {
-      jjContent.innerHTML = '<div style="color:var(--orange);">❌ ' + escapeHtml(data.error || '请求失败，请稍后重试') + '</div>';
-    }
-  } catch (e) {
-    jjContent.innerHTML = '<div style="color:var(--red);">❌ 网络错误，请稍后重试</div>';
-  }
+  await streamJJAnswer({
+    question: '请帮我看看这段 Python 代码写得怎么样：有错误就指出错在哪、怎么改；没错就说说哪里写得好、哪里可以更规范。',
+    context,
+    chapter_id: codeExState.chapterId,
+    page: collectJJPageContext({ exercise, code, output: outputText })
+  }, {
+    // 流式渲染，先把话显示出来，学生不用等整段生成完
+    onDelta: (text) => { jjContent.textContent = text; jjArea.scrollTop = jjArea.scrollHeight; },
+    onStatus: (msg) => { jjContent.innerHTML = '<div style="color:var(--text-muted);padding:8px;">' + escapeHtml(msg) + '</div>'; },
+    onDone: (text) => { jjContent.innerHTML = formatJJAnswer(text); jjArea.scrollTop = jjArea.scrollHeight; },
+    onError: (msg) => { jjContent.innerHTML = '<div style="color:var(--orange);padding:8px;">❌ ' + escapeHtml(msg) + '</div>'; }
+  });
 }
 document.addEventListener('DOMContentLoaded', function() {
   // JJ Chapter Guide for first-time chapter visit

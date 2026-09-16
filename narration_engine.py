@@ -24,11 +24,14 @@ import random
 import re
 import threading
 import time
+import uuid
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
+
+from ark_client import BROWSER_UA
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / 'data'
@@ -128,7 +131,9 @@ class ArkText:
             request = urllib.request.Request(
                 self.url, data=body,
                 headers={'Content-Type': 'application/json',
-                         'Authorization': 'Bearer ' + self.api_key})
+                         'Authorization': 'Bearer ' + self.api_key,
+                         'User-Agent': BROWSER_UA,
+                         'x-opencode-session': str(uuid.uuid4())})
             try:
                 return self._read_stream(request, timeout)
             except urllib.error.HTTPError as exc:
@@ -341,12 +346,22 @@ class VoiceOver:
                         self._save(text, target_voice, rate, pitch, tmp), loop)
                     future.result(timeout=90)
                     if tmp.exists() and tmp.stat().st_size > 1024:
-                        os.replace(tmp, path)   # 原子替换，读者不会看到半个文件
+                        for _ in range(3):
+                            try:
+                                os.replace(tmp, path)   # 原子替换，读者看不到半个文件
+                                break
+                            except OSError:
+                                time.sleep(0.4)
                         return path, self.duration_of(path)
                     last_error = RuntimeError('返回空音频')
                 except Exception as exc:
                     last_error = exc
-                tmp.unlink(missing_ok=True)
+                # 清理临时文件必须容错：Windows 上杀毒软件会短暂占用刚写出的文件，
+                # 这里一旦抛错就会绕过下面的重试、把整段口播判死。
+                try:
+                    tmp.unlink(missing_ok=True)
+                except OSError:
+                    pass
                 if attempt < attempts - 1:
                     time.sleep(min(2 ** attempt, 16) + random.uniform(0, 1.5))
             raise RuntimeError(f'语音合成失败（已重试 {attempts} 次）：{last_error}')
