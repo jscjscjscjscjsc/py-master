@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 首次配置</title>
+<!-- 首次配置不引用任何外部资源：用户可能还没配好网络，页面必须能离线打开 -->
+<style>
+:root{
+  --bg:#0a0a0f; --card:#141a24; --card2:#1a2130; --line:#26303f;
+  --tx:#e6edf3; --tx2:#8b98a8; --tx3:#5f6b7c;
+  --cyan:#00d4ff; --jade:#2e6f68; --green:#3fb950; --red:#f85149; --gold:#d29922;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100vh;background:radial-gradient(1200px 700px at 50% -10%,#141c2a,#08080c 62%);
+  color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  display:flex;align-items:center;justify-content:center;padding:32px 18px;line-height:1.7;
+}
+.shell{width:100%;max-width:940px;display:grid;grid-template-columns:250px 1fr;gap:34px}
+@media(max-width:820px){.shell{grid-template-columns:1fr;gap:22px}}
+
+/* 左侧：品牌与步骤 */
+.side{display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:700;letter-spacing:.02em}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,.6)}
+.brand small{display:block;font-size:12px;color:var(--tx3);font-weight:400;letter-spacing:.06em}
+.steps{display:flex;flex-direction:column;gap:4px}
+.step{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid transparent;transition:.2s}
+.step.active{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.22)}
+.step.done{opacity:.72}
+.step .no{
+  flex:0 0 auto;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:700;background:#222c3a;color:var(--tx3);
+}
+.step.active .no{background:var(--cyan);color:#04121a}
+.step.done .no{background:var(--green);color:#04121a}
+.step .t{font-size:14px;font-weight:600}
+.step .d{font-size:12px;color:var(--tx3);line-height:1.6}
+
+/* 右侧：面板 */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 32px;
+  box-shadow:0 24px 60px rgba(0,0,0,.4)}
+@media(max-width:520px){.panel{padding:22px 18px}}
+h1{font-size:23px;font-weight:700;margin-bottom:7px}
+.lead{color:var(--tx2);font-size:13.5px;margin-bottom:24px}
+
+.field{margin-bottom:17px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--tx)}
+label .opt{font-weight:400;color:var(--tx3);font-size:12px}
+input[type=text],input[type=password],input[type=email]{
+  width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);
+  background:#0d1219;color:var(--tx);font-size:14px;font-family:inherit;transition:.16s;
+}
+input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.11)}
+input::placeholder{color:var(--tx3)}
+.hint{font-size:12px;color:var(--tx3);margin-top:6px;line-height:1.65}
+.hint code{background:#1d2432;padding:1.5px 6px;border-radius:4px;color:#9fd9ff;font-size:11.5px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;border-radius:10px;border:1px solid var(--line);background:var(--card2);
+  color:var(--tx);font-size:14.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:.16s;
+}
+.btn:hover:not(:disabled){border-color:var(--cyan)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-main{background:linear-gradient(135deg,#2e6f68,#0d8fa8);border-color:transparent;color:#fff;width:100%}
+.btn-main:hover:not(:disabled){filter:brightness(1.12)}
+.btn-ghost{background:transparent}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+
+.msg{margin-top:16px;padding:12px 15px;border-radius:9px;font-size:13.5px;display:none;line-height:1.7}
+.msg.show{display:block}
+.msg.ok{background:rgba(63,185,80,.11);border:1px solid rgba(63,185,80,.34);color:#7ee787}
+.msg.err{background:rgba(248,81,73,.11);border:1px solid rgba(248,81,73,.34);color:#ffa198}
+.msg.info{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.28);color:#9fdcf0}
+
+.tabs{display:flex;gap:6px;background:#0d1219;padding:4px;border-radius:10px;margin-bottom:22px}
+.tab{flex:1;text-align:center;padding:9px;border-radius:7px;font-size:13.5px;font-weight:600;
+  color:var(--tx3);cursor:pointer;transition:.16s;border:none;background:none;font-family:inherit}
+.tab.active{background:var(--card2);color:var(--tx)}
+
+.pane{display:none}
+.pane.active{display:block}
+
+/* 登录方式 */
+.or{display:flex;align-items:center;gap:14px;margin:22px 0;color:var(--tx3);font-size:12px}
+.or::before,.or::after{content:'';flex:1;height:1px;background:var(--line)}
+.oauth{display:flex;gap:10px}
+.oauth .btn{flex:1}
+.wx{color:#5fd08a}
+.wx.off{opacity:.5;cursor:not-allowed}
+details{margin-top:14px;font-size:12.5px;color:var(--tx2)}
+details summary{cursor:pointer;color:var(--tx2);padding:4px 0}
+details p{margin:9px 0;line-height:1.8}
+details ul{margin:8px 0 8px 18px}
+details li{margin:5px 0}
+.preset{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.preset button{
+  padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#0d1219;
+  color:var(--tx2);font-size:12px;cursor:pointer;font-family:inherit;transition:.16s;
+}
+.preset button:hover{border-color:var(--cyan);color:var(--tx)}
+.done-wrap{text-align:center;padding:16px 0}
+.done-ico{font-size:52px;margin-bottom:14px}
+.kv{background:#0d1219;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+  margin:18px 0;font-size:13px;text-align:left}
+.kv div{display:flex;justify-content:space-between;gap:14px;padding:5px 0}
+.kv span:first-child{color:var(--tx3)}
+.kv span:last-child{color:var(--tx);font-weight:600;word-break:break-all;text-align:right}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="side">
+    <div class="brand">
+      <span class="dot"></span>
+      <div>PyMaster<small>Python → AI 应用开发</small></div>
+    </div>
+    <div class="steps">
+      <div class="step active" id="side-1">
+        <span class="no">1</span>
+        <div><div class="t">创建账号</div><div class="d">QQ 邮箱注册，或登录已有账号</div></div>
+      </div>
+      <div class="step" id="side-2">
+        <span class="no">2</span>
+        <div><div class="t">接入大模型</div><div class="d">填自己的模型地址与密钥</div></div>
+      </div>
+      <div class="step" id="side-3">
+        <span class="no">3</span>
+        <div><div class="t">开始学习</div><div class="d">39 章 / 400 个知识点</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+
+    <!-- ── 第一步：账号 ── -->
+    <div class="pane active" id="pane-1">
+      <h1>欢迎使用 PyMaster</h1>
+      <p class="lead">第一次打开需要两步：先建一个账号，再接入你自己的大模型。</p>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="reg">QQ 邮箱注册</button>
+        <button class="tab" data-tab="login">已有账号登录</button>
+      </div>
+
+      <div id="form-reg">
+        <div class="field">
+          <label>QQ 邮箱</label>
+          <input type="text" id="reg-email" placeholder="123456@qq.com" autocomplete="username">
+          <div class="hint">用 QQ 邮箱当账号，方便记。其他邮箱也可以。</div>
+        </div>
+        <div class="field">
+          <label>设置密码</label>
+          <input type="password" id="reg-pass" placeholder="至少 6 位" autocomplete="new-password">
+        </div>
+        <div class="field">
+          <label>确认密码</label>
+          <input type="password" id="reg-pass2" placeholder="再输一遍" autocomplete="new-password">
+        </div>
+        <button class="btn btn-main" id="btn-reg">注册并继续</button>
+      </div>
+
+      <div id="form-login" style="display:none">
+        <div class="field">
+          <label>账号（QQ 邮箱）</label>
+          <input type="text" id="log-user" placeholder="123456@qq.com" autocomplete="username">
+        </div>
+        <div class="field">
+          <label>密码</label>
+          <input type="password" id="log-pass" placeholder="你的密码" autocomplete="current-password">
+        </div>
+        <button class="btn btn-main" id="btn-login">登录并继续</button>
+      </div>
+
+      <div class="or">或者</div>
+      <div class="oauth">
+        <button class="btn wx {{ '' if wechat_ready else 'off' }}" id="btn-wx"
+                {{ '' if wechat_ready else 'title="需要先配置微信开放平台参数"' }}>
+          <span>💬</span> 微信扫码进入
+        </button>
+      </div>
+
+      <details>
+        <summary>微信扫码登录为什么还不能用？</summary>
+        <p>微信扫码需要「微信开放平台 → 网站应用」的 AppID 与 AppSecret，
+           并且回调地址必须是<b>已备案的公网域名</b>。本程序运行在你自己的电脑上（127.0.0.1），
+           微信服务器无法回调进来，所以单机版默认关闭。</p>
+        <p>要开启的话，在 <code>.env</code> 里补上三项后重启即可，界面会自动放行：</p>
+        <ul>
+          <li><code>WECHAT_APP_ID=</code> 开放平台网站应用的 AppID</li>
+          <li><code>WECHAT_APP_SECRET=</code> 对应的 AppSecret</li>
+          <li><code>OAUTH_CALLBACK_BASE=</code> 公网可访问的地址，例如 <code>https://your.domain</code></li>
+        </ul>
+        <p>另外，即使没有微信登录，你也可以先在手机浏览器打开本机地址使用
+           （同一局域网下访问 <code>http://电脑IP:5000</code>）。</p>
+      </details>
+    </div>
+
+    <!-- ── 第二步：接入大模型 ── -->
+    <div class="pane" id="pane-2">
+      <h1>接入你的大模型</h1>
+      <p class="lead">PyMaster 不捆绑模型额度，用你自己的 API。填完点「测试连接」确认可用。</p>
+
+      <div class="field">
+        <label>接口地址（Base URL）</label>
+        <input type="text" id="cfg-url" placeholder="https://ark.cn-beijing.volces.com/api/v3"
+               value="{{ base_url or '' }}">
+        <div class="hint">
+          任何 OpenAI 兼容接口都可以。填到 <code>/v1</code> 或 <code>/v3</code> 为止即可，不用带后面的路径。
+          <div class="preset">
+            <button data-url="https://ark.cn-beijing.volces.com/api/v3" data-model="doubao-seed-2-0-code-preview-260215">火山方舟</button>
+            <button data-url="https://api.deepseek.com/v1" data-model="deepseek-chat">DeepSeek</button>
+            <button data-url="https://api.siliconflow.cn/v1" data-model="Qwen/Qwen2.5-7B-Instruct">硅基流动</button>
+            <button data-url="https://dashscope.aliyuncs.com/compatible-mode/v1" data-model="qwen-plus">通义千问</button>
+            <button data-url="http://localhost:11434/v1" data-model="qwen2.5:7b">本地 Ollama</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>模型名称</label>
+        <input type="text" id="cfg-model" placeholder="例如 deepseek-chat" value="{{ model or '' }}">
+        <div class="hint">要和你在服务商控制台开通的模型名称完全一致。</div>
+      </div>
+
+      <div class="field">
+        <label>API Key</label>
+        <input type="password" id="cfg-key" placeholder="{{ '已保存 ' + key_tail + '，留空表示不改' if key_tail else '粘贴你的 API Key' }}">
+        <div class="hint">只保存在本机 <code>.env</code> 文件里，不会上传到任何地方。</div>
+      </div>
+
+      <div class="field">
+        <label>备用模型 <span class="opt">（可选）</span></label>
+        <input type="text" id="cfg-fallback" placeholder="主模型额度用尽时自动切换，多个用英文逗号分隔"
+               value="{{ fallback or '' }}">
+      </div>
+
+      <div class="row" style="margin-top:22px">
+        <button class="btn btn-ghost" id="btn-test">测试连接</button>
+        <button class="btn btn-main" id="btn-save" style="flex:1">保存并进入平台</button>
+      </div>
+      <div class="msg" id="msg-2"></div>
+    </div>
+
+    <!-- ── 第三步：完成 ── -->
+    <div class="pane" id="pane-3">
+      <div class="done-wrap">
+        <div class="done-ico">🎉</div>
+        <h1>配置完成</h1>
+        <p class="lead" style="margin-bottom:0">现在可以正式开始学习了。</p>
+        <div class="kv">
+          <div><span>账号</span><span id="done-user">—</span></div>
+          <div><span>模型地址</span><span id="done-url">—</span></div>
+          <div><span>模型名称</span><span id="done-model">—</span></div>
+        </div>
+        <p class="hint" style="text-align:left">
+          课程内容：39 章 / 400 个知识点 / 212 道练习，覆盖 Python 基础到 AI 应用开发。
+          每个知识点配一节 5 分钟图文讲解。
+        </p>
+        <button class="btn btn-main" id="btn-go" style="margin-top:22px">进入学习平台</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var configured = {{ 'true' if configured else 'false' }};
+  var loggedIn = {{ 'true' if logged_in else 'false' }};
+  var username = {{ username|tojson }};
+
+  function $(id) { return document.getElementById(id); }
+
+  function showMsg(box, kind, text) {
+    box.className = 'msg show ' + kind;
+    box.textContent = text;
+  }
+
+  function step(n) {
+    [1, 2, 3].forEach(function (i) {
+      $('pane-' + i).classList.toggle('active', i === n);
+      var side = $('side-' + i);
+      side.classList.toggle('active', i === n);
+      side.classList.toggle('done', i < n);
+      if (i < n) { side.querySelector('.no').textContent = '✓'; }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 已经配好模型的话，直接从第二步开始（用户可能只想改配置）
+  if (configured) {
+    $('side-1').classList.add('done');
+    $('side-1').querySelector('.no').textContent = '✓';
+    step(2);
+  } else if (loggedIn) {
+    $('side-1').classList.add('done');
+    $('side-1').querySelector('.no').textContent = '✓';
+    step(2);
+  }
+
+  // 注册 / 登录切换
+  document.querySelectorAll('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var isReg = tab.dataset.tab === 'reg';
+      $('form-reg').style.display = isReg ? '' : 'none';
+      $('form-login').style.display = isReg ? 'none' : '';
+    });
+  });
+
+  function post(url, body) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json(); });
+  }
+
+  $('btn-reg').addEventListener('click', function () {
+    var email = $('reg-email').value.trim();
+    var p1 = $('reg-pass').value, p2 = $('reg-pass2').value;
+    var box = $('msg-2');
+    if (!email) { alert('请填 QQ 邮箱'); return; }
+    if (p1.length < 6) { alert('密码至少 6 位'); return; }
+    if (p1 !== p2) { alert('两次输入的密码不一致'); return; }
+    this.disabled = true; this.textContent = '注册中…';
+    var self = this;
+    post('/api/register', { username: email, email: email, password: p1 }).then(function (res) {
+      self.disabled = false; self.textContent = '注册并继续';
+      if (res.success) { username = email; step(2); }
+      else { alert(res.message || '注册失败'); }
+    }).catch(function () {
+      self.disabled = false; self.textContent = '注册并继续';
+      alert('网络异常，请重试');
+    });
+  });
+
+  $('btn-login').addEventListener('click', function () {
+    var user = $('log-user').value.trim(), pass = $('log-pass').value;
+    if (!user || !pass) { alert('请填账号和密码'); return; }
+    this.disabled = true; this.textContent = '登录中…';
+    var self = this;
+    post('/api/login', { username: user, password: pass }).then(function (res) {
+      self.disabled = false; self.textContent = '登录并继续';
+      if (res.success) { username = user; step(2); }
+      else { alert(res.message || '登录失败'); }
+    }).catch(function () {
+      self.disabled = false; self.textContent = '登录并继续';
+      alert('网络异常，请重试');
+    });
+  });
+
+  $('btn-wx').addEventListener('click', function () {
+    if (this.classList.contains('off')) {
+      alert('微信扫码需要先配置微信开放平台的 AppID / AppSecret 与公网回调地址，\n' +
+            '具体见下方说明。');
+      return;
+    }
+    location.href = '/oauth/wechat/start';
+  });
+
+  // 服务商预设
+  document.querySelectorAll('.preset button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $('cfg-url').value = b.dataset.url;
+      if (!$('cfg-model').value) { $('cfg-model').value = b.dataset.model; }
+    });
+  });
+
+  function collect() {
+    return {
+      base_url: $('cfg-url').value.trim(),
+      model: $('cfg-model').value.trim(),
+      api_key: $('cfg-key').value.trim(),
+      fallback: $('cfg-fallback').value.trim()
+    };
+  }
+
+  $('btn-test').addEventListener('click', function () {
+    var box = $('msg-2'), data = collect();
+    if (!data.base_url || !data.model) { showMsg(box, 'err', '请先填接口地址和模型名称'); return; }
+    this.disabled = true; this.textContent = '测试中…';
+    var self = this;
+    showMsg(box, 'info', '正在向模型发一条测试请求…');
+    post('/api/setup/test', data).then(function (res) {
+      self.disabled = false; self.textContent = '测试连接';
+      showMsg(box, res.success ? 'ok' : 'err', (res.success ? '✓ ' : '✗ ') + (res.message || ''));
+    }).catch(function () {
+      self.disabled = false; self.textContent = '测试连接';
+      showMsg(box, 'err', '测试请求失败，请检查网络或地址');
+    });
+  });
+
+  $('btn-save').addEventListener('click', function () {
+    var box = $('msg-2'), data = collect();
+    if (!data.base_url || !data.model) { showMsg(box, 'err', '请先填接口地址和模型名称'); return; }
+    if (!data.api_key && !{{ 'true' if key_tail else 'false' }}) {
+      showMsg(box, 'err', '请填 API Key'); return;
+    }
+    this.disabled = true; this.textContent = '保存中…';
+    var self = this;
+    post('/api/setup/save', data).then(function (res) {
+      self.disabled = false; self.textContent = '保存并进入平台';
+      if (!res.success) { showMsg(box, 'err', res.message || '保存失败'); return; }
+      $('done-user').textContent = username || '当前账号';
+      $('done-url').textContent = res.status.base_url;
+      $('done-model').textContent = res.status.model;
+      step(3);
+    }).catch(function () {
+      self.disabled = false; self.textContent = '保存并进入平台';
+      showMsg(box, 'err', '保存失败，请重试');
+    });
+  });
+
+  $('btn-go').addEventListener('click', function () { location.href = '/dashboard'; });
+})();
+</script>
+</body>
+</html>

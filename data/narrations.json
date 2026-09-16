@@ -24479,5 +24479,2423 @@
     "audio_seconds": 23.42
    }
   ]
+ },
+ "6_4": {
+  "chapter_id": 6,
+  "kp_index": 4,
+  "chapter_title": "数据结构（下）：字典与集合",
+  "kp_title": "6.4 本章 Debug 四件套",
+  "title": "字典集合Debug四件套",
+  "hook_line": "4步快速修复90%的字典集合错误",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 365.5,
+  "narration_chars": 1990,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:18:37",
+  "build_seconds": 102.8,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "这场景你见过吗",
+    "narration": "同学们好，我是你们的Python讲师。上周批改你们电商系统作业，发现90%的同学都栽在字典集合的坑上：要么查不到键程序直接崩，要么空集合写错类型报错。今天这节课，我们就学教材里的四件套，5分钟快速扫平所有常见错误，再也不被这类报错卡半天。",
+    "caption": "上周90%的作业栽在字典集合错误",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "字典集合踩坑记",
+     "subtitle": "",
+     "caption": "",
+     "question": "你被KeyError卡过多久？",
+     "mood": "alert",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "查外部API直接崩溃"
+      },
+      {
+       "icon": "",
+       "text": "空集合写成空字典"
+      }
+     ]
+    },
+    "image": "narrations/6_4/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3a26382e05beadb962b1ed4390f97f97.mp3",
+    "audio_seconds": 21.17
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "Debug四件套框架",
+    "narration": "好，先给大家搭个Debug的整体框架。教材里把本章最常见的四个错误分成了四件套，顺序刚好是从读入外部数据，到创建容器，到使用容器，再到处理输入场景，全链路覆盖。今天我们就顺着这个顺序，一个坑一个坑的踩，再一个坑一个坑的补。",
+    "caption": "读→创→用→输 全链路扫错",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "Debug四件套总览",
+     "subtitle": "覆盖全链路常见错误",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "KeyError查无此键"
+      },
+      {
+       "icon": "②",
+       "text": "空集合类型错误"
+      },
+      {
+       "icon": "③",
+       "text": "可变对象当键"
+      },
+      {
+       "icon": "④",
+       "text": "外部输入漏处理"
+      }
+     ],
+     "highlight": "按四件套顺次排查效率最高"
+    },
+    "image": "narrations/6_4/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_83c7ef7c09a7b3690b0e0d90a8a157a0.mp3",
+    "audio_seconds": 20.04
+   },
+   {
+    "id": 3,
+    "type": "pitfall",
+    "title": "常见坑1：查无此键",
+    "narration": "第一个坑，也是大家遇到最多的，KeyError。上周作业里，有同学直接用电商API返回的字典里的中括号取值法查运费字段，结果API偶尔漏返回，整个程序就停了。我们先看教材里的这个极简例子，逻辑是一样的：想查用户字典里的年龄，但字典里没这个键，直接就报错。",
+    "caption": "直接中括号查无此键→KeyError",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "踩坑1：KeyError",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "直接中括号查字典无键",
+     "wrong_code": "user = {\"name\": \"张三\"}\nprint(user[\"age\"])",
+     "right_answer": "用get方法加默认值",
+     "right_code": "user = {\"name\": \"张三\"}\nprint(user.get(\"age\", 0))",
+     "highlight": "不确定键是否存在→用get"
+    },
+    "image": "narrations/6_4/s03.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_01bdc70be5a62847a700185a861da11d.mp3",
+    "audio_seconds": 24.12
+   },
+   {
+    "id": 4,
+    "type": "code",
+    "title": "get方法演示",
+    "narration": "好，我们现在来具体运行一下这段修正后的get代码。左边是刚才的错误代码，右边是加了get的正确版。get方法的第一个参数是要查的键，第二个参数是键不存在时的默认值，这里我们填了0。运行后你看，不会报错了，而是输出了我们设置的默认值0，非常安全。",
+    "caption": "get方法：键有取值 无取默认值",
+    "code": "user = {\"name\": \"张三\"}\nprint(user.get(\"age\", 0))\nprint(user.get(\"name\", \"未知\"))",
+    "visual": {
+     "layout": "code",
+     "title": "get方法演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "",
+     "output": "0\n张三",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "外部数据必须用get"
+      }
+     ]
+    },
+    "image": "narrations/6_4/s04.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_4b4dca53667b5a7264123acf21738efe.mp3",
+    "audio_seconds": 21.7
+   },
+   {
+    "id": 5,
+    "type": "concept",
+    "title": "get方法的标配场景",
+    "narration": "刚才我们提到作业里的电商API场景，这是get方法的第一个标配场景。教材里还提到了读取用户提交的数据，比如表单里用户可能漏填邮箱地址，用get就能返回空字符串或者请补填的提示。记住这句话，所有读取外部不可控数据的地方，查字典都用get。",
+    "caption": "外部不可控数据查字典→必须用get",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "get的标配场景",
+     "subtitle": "这些地方别用中括号",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "📱",
+       "text": "用户提交表单数据"
+      },
+      {
+       "icon": "🌐",
+       "text": "调用外部API返回"
+      },
+      {
+       "icon": "📁",
+       "text": "解析本地配置文件"
+      }
+     ],
+     "highlight": "外部数据→查字典用get"
+    },
+    "image": "narrations/6_4/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_d3d2a8bad6b14b23611b267414ab3f5c.mp3",
+    "audio_seconds": 21.72
+   },
+   {
+    "id": 6,
+    "type": "pitfall",
+    "title": "常见坑2：空集合写错",
+    "narration": "第二个坑，就是把空字典当成空集合用，这个坑虽然出现次数不如第一个，但一出现新手可能要找半小时。教材里的例子是想创建一个标签集合，然后添加Python标签，结果报错字典没有add方法。新手可能会纳闷，我明明写的是花括号，怎么成字典了？",
+    "caption": "花括号是空字典→无add方法→AttributeError",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "踩坑2：空集合类型错",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用花括号创建空集合",
+     "wrong_code": "tags = {}\ntags.add(\"python\")",
+     "right_answer": "用set函数创建空集合",
+     "right_code": "tags = set()\ntags.add(\"python\")",
+     "highlight": "空集合→用set()创建"
+    },
+    "image": "narrations/6_4/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_9c66350d14c67c4b4ed74fa510064b30.mp3",
+    "audio_seconds": 22.27
+   },
+   {
+    "id": 7,
+    "type": "compare",
+    "title": "空字典vs空集合",
+    "narration": "好，我们现在对比一下空字典和空集合的区别。左边是空字典，用花括号直接创建，类型是dict，没有add方法，得用赋值或者update方法加键值对。右边是空集合，必须用set函数创建，类型是set，有add、remove这些集合专属方法。记住这个对比，下次再也不会搞混。",
+    "caption": "空字典{} vs 空集合set()",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "空容器对比",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "空字典",
+      "lines": [
+       "创建用{}",
+       "类型是dict",
+       "无add方法"
+      ]
+     },
+     "right": {
+      "label": "空集合",
+      "lines": [
+       "创建用set()",
+       "类型是set",
+       "有add方法"
+      ]
+     },
+     "highlight": "花括号≠空集合 是字典"
+    },
+    "image": "narrations/6_4/s07.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_bdc0f778033d8439f025972df308f6c2.mp3",
+    "audio_seconds": 24.84
+   },
+   {
+    "id": 8,
+    "type": "concept",
+    "title": "AttributeError的直觉",
+    "narration": "刚才教材里的第二个坑报错是AttributeError，说字典对象没有add属性。其实不管是字典集合还是其他数据类型，只要遇到这类报错，你的第一直觉应该是什么？对，类型搞错了。你以为手里是集合，实际是字典；以为是列表，实际是字符串，都会报这个错。这个直觉非常重要。",
+    "caption": "AttributeError→第一反应是类型错了",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "AttributeError速判",
+     "subtitle": "不用看详细内容先检查类型",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "遇到AttributeError"
+      },
+      {
+       "icon": "②",
+       "text": "用type函数查变量类型"
+      },
+      {
+       "icon": "③",
+       "text": "确认是否是预期类型"
+      }
+     ],
+     "highlight": "AttributeError→查变量类型"
+    },
+    "image": "narrations/6_4/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_2651047853aa05ec1165ab6aadb3ee2e.mp3",
+    "audio_seconds": 24.91
+   },
+   {
+    "id": 9,
+    "type": "code",
+    "title": "type函数查类型",
+    "narration": "那怎么用type函数查类型呢？我们来看这段演示代码。左边打印花括号创建的空容器类型，结果是dict；右边打印set函数创建的，结果是set。非常直观，下次遇到类似的AttributeError，先把type加上打印出来，3秒钟就能找到问题所在，不用再瞎猜半天。",
+    "caption": "type()快速确认变量实际类型",
+    "code": "empty1 = {}\nempty2 = set()\nprint(type(empty1))\nprint(type(empty2))",
+    "visual": {
+     "layout": "code",
+     "title": "type函数演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "",
+     "output": "<class 'dict'>\n<class 'set'>",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "3秒速查类型错"
+      }
+     ]
+    },
+    "image": "narrations/6_4/s09.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_71edf9261e2c2fbd551c18e7df979bcf.mp3",
+    "audio_seconds": 21.1
+   },
+   {
+    "id": 10,
+    "type": "pitfall",
+    "title": "常见坑3：可变对象当键",
+    "narration": "第三个坑，是把可变对象当字典的键，这个坑教材里用了权限配置的例子，非常贴近真实开发。新手可能想把用户名和角色的组合当键，方便查权限，就随手用了列表，结果报错不可哈希类型。这里教材里提到了一个重要的概念，可哈希，简单说就是不可变。",
+    "caption": "可变对象（列表）当键→TypeError",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "踩坑3：可变当键",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用列表等可变对象当键",
+     "wrong_code": "config = {[\"user\", \"admin\"]: \"权限配置\"}",
+     "right_answer": "用元组等不可变对象当键",
+     "right_code": "config = {(\"user\", \"admin\"): \"权限配置\"}",
+     "highlight": "字典键必须可哈希（不可变）"
+    },
+    "image": "narrations/6_4/s10.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_60de28b91b89c4297bb57d4b64953da4.mp3",
+    "audio_seconds": 23.42
+   },
+   {
+    "id": 11,
+    "type": "concept",
+    "title": "可哈希对象有哪些",
+    "narration": "好，我们快速回忆一下前面学过的可哈希和不可变对象，这个概念和字典键的要求是一一对应的。可哈希的对象包括整数、浮点数、字符串、布尔值，还有刚才用的元组。不可哈希的就是可变的，比如列表、字典、集合本身。记住这些，下次就不会随便用列表当键了。",
+    "caption": "整数字符串元组→可哈希当键",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "可哈希vs不可哈希",
+     "subtitle": "哪些能当字典键",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "✅",
+       "text": "整数浮点数字符串"
+      },
+      {
+       "icon": "✅",
+       "text": "布尔值和元组"
+      },
+      {
+       "icon": "❌",
+       "text": "列表字典和集合"
+      }
+     ],
+     "highlight": "字典键→仅可哈希对象"
+    },
+    "image": "narrations/6_4/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_b58c77b9359737a736dd21efcde02f20.mp3",
+    "audio_seconds": 23.47
+   },
+   {
+    "id": 12,
+    "type": "compare",
+    "title": "列表vs元组当键",
+    "narration": "那为什么元组能当键，列表就不能呢？因为元组创建后不能修改，是不可变的，所以有固定的哈希值；列表可以随时增删改，没有固定的哈希值，字典就没法根据键找值了。我们看这个对比，左边的列表键报错，右边的元组键创建成功，非常直观。",
+    "caption": "可变列表不可当键→不可变元组可以",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "组合键对比",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "列表键",
+      "lines": [
+       "创建后可修改",
+       "无固定哈希值",
+       "报错不可用"
+      ]
+     },
+     "right": {
+      "label": "元组键",
+      "lines": [
+       "创建后不可修改",
+       "有固定哈希值",
+       "可以正常用"
+      ]
+     },
+     "highlight": "组合键→用元组替代列表"
+    },
+    "image": "narrations/6_4/s12.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_ad390d83496c21b67f33e2e6668df153.mp3",
+    "audio_seconds": 21.29
+   },
+   {
+    "id": 13,
+    "type": "code",
+    "title": "组合键正确用法",
+    "narration": "好，我们来运行一下这段正确的组合键代码。首先创建一个权限配置字典，键是用户和管理员的元组，值是权限配置的字符串。然后用get方法查这个键，虽然之前提过这个键是我们自己写的，但为了养成好习惯，还是用get更稳妥。运行后输出了正确的权限配置。",
+    "caption": "组合键用元组+get双重保险",
+    "code": "config = {(\"user\", \"admin\"): \"读写权限\"}\nprint(config.get((\"user\", \"admin\"), \"无权限\"))",
+    "visual": {
+     "layout": "code",
+     "title": "组合键演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "",
+     "output": "读写权限",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "组合键用元组更稳妥"
+      }
+     ]
+    },
+    "image": "narrations/6_4/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_2d404a9ee970f220c2571034517c4590.mp3",
+    "audio_seconds": 23.3
+   },
+   {
+    "id": 14,
+    "type": "pitfall",
+    "title": "常见坑4：输入漏处理",
+    "narration": "第四个坑，是忘记处理用户输入导致的KeyError，这个坑和第一个有点像，但更严重，因为用户输入是完全不可控的。教材里的例子是让用户输入想查的字段，然后直接用中括号查，用户随便输入一个不存在的score，程序就直接崩了。这种场景在真实开发里绝对不能出现。",
+    "caption": "用户输入→直接中括号查→程序崩溃",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "踩坑4：输入漏处理",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "直接用中括号查用户输入的键",
+     "wrong_code": "data = {\"name\": \"张三\", \"age\": 19}\nkey = input(\"想查哪个字段：\")\nprint(data[key])",
+     "right_answer": "用get方法加友好提示",
+     "right_code": "data = {\"name\": \"张三\", \"age\": 19}\nkey = input(\"想查哪个字段：\")\nprint(data.get(key, \"字段不存在\"))",
+     "highlight": "外部输入→必须加默认值处理"
+    },
+    "image": "narrations/6_4/s14.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_04cb7ebe8d14c0298d68ba573ced01ff.mp3",
+    "audio_seconds": 23.4
+   },
+   {
+    "id": 15,
+    "type": "flow",
+    "title": "字典集合Debug流程",
+    "narration": "好，四个坑我们都踩完补完了，现在把它们串成一个完整的Debug流程，下次遇到字典集合的错误，就按这个流程走。第一步，先看报错类型；第二步，如果是KeyError，检查是否用了get；第三步，如果是AttributeError，用type查类型；第四步，如果是TypeError，检查键是否可哈希。",
+    "caption": "看报错→查Key用get→查类型→查键哈希",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "四件套Debug流程",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "① 先看具体报错类型",
+      "② KeyError→检查是",
+      "③ AttributeErr",
+      "④ TypeError→检查"
+     ],
+     "highlight": "按流程走1分钟搞定错误"
+    },
+    "image": "narrations/6_4/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_89bb4e1b3e3d1f88e8e4dc0079aa3edb.mp3",
+    "audio_seconds": 22.92
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲3条核心结论",
+    "narration": "最后，我们把今天学的四件套浓缩成3条必须刻在脑子里的结论。第一条，所有查字典的外部不可控数据，必须用get方法加默认值；第二条，空集合用set()创建，AttributeError第一反应查类型；第三条，字典键只能用可哈希的不可变对象，组合键用元组。记住这三条，字典集合的错误就再也难不倒你了。",
+    "caption": "刻在脑子里的3条核心结论",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "Debug四件套总结",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "外部查字典→必须用get",
+      "空集合用set()→类型错用type查",
+      "字典键→仅可哈希不可变对象"
+     ]
+    },
+    "image": "narrations/6_4/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_0aa6320f6d623f55de0b3dfb1aaa19b1.mp3",
+    "audio_seconds": 25.87
+   }
+  ]
+ },
+ "6_5": {
+  "chapter_id": 6,
+  "kp_index": 5,
+  "chapter_title": "数据结构（下）：字典与集合",
+  "kp_title": "6.5 Vibe Coding 任务卡（L1）",
+  "title": "Vibe Coding练词频字典统计",
+  "hook_line": "手写代码练熟，AI模拟讲透字典词频",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 328.2,
+  "narration_chars": 2003,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:20:38",
+  "build_seconds": 117.6,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "Vibe Coding来了",
+    "narration": "职业院校的同学练Python不要只敲代码，我们来试试Vibe Coding，先自己手写运行再用合适的问题让AI拆解细节。比如今天的词频统计，就是字典核心键值对增减的绝佳案例，上节课学了列表，这节课用字典解决有没有计数快一倍的问题。",
+    "caption": "先手写运行，再让AI拆解字典细节",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "Vibe Coding词频练",
+     "subtitle": "",
+     "caption": "",
+     "question": "你会手写这段简单的词频代码吗",
+     "mood": "happy",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "手写8道字典题再用AI"
+      },
+      {
+       "icon": "",
+       "text": "用规范prompt引导AI讲解"
+      }
+     ]
+    },
+    "image": "narrations/6_5/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f87ee3bcbacef08d6bd596a32e154021.mp3",
+    "audio_seconds": 20.11
+   },
+   {
+    "id": 2,
+    "type": "code",
+    "title": "先看教材代码",
+    "narration": "首先我们要做的，是跟着教材先把这段词频统计的原始代码手写下来，一个字符一个缩进都不能错，这是Vibe Coding L1的纪律自查第一条，绝对不能偷懒直接复制代码，手写能帮你记住字典的空定义和循环判断逻辑。",
+    "caption": "严格按教材手写并运行这段代码",
+    "code": "words = [\"hello\", \"world\", \"hello\"]\ncounter = {}\nfor word in words:\n if word in counter:\n  counter[word] += 1\n else:\n  counter[word] = 1\nprint(counter)",
+    "visual": {
+     "layout": "code",
+     "title": "教材词频代码",
+     "subtitle": "",
+     "caption": "",
+     "code": "words = [\"hello\", \"world\", \"hello\"]\ncounter = {}\nfor word in words:\n if word in counter:\n  counter[word] += 1\n else:\n  counter[word] = 1\nprint(counter)",
+     "output": "{'hello': 2, 'world': 1}",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "缩进要对齐，空字典别写错"
+      }
+     ]
+    },
+    "image": "narrations/6_5/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_b1df9a9510e53f78878df636bc7cc490.mp3",
+    "audio_seconds": 16.01
+   },
+   {
+    "id": 3,
+    "type": "pitfall",
+    "title": "踩坑提醒1",
+    "narration": "很多同学手写这段代码时第一个坑就是缩进，for循环下面的if else必须缩进，教材里用了四个空格，我们也严格用四个，千万不能一会空格一会Tab，不然Python解释器会报错缩进错误，连代码都跑不起来，更别说后续的AI讲解了。",
+    "caption": "Python缩进错误最常见，别混用空格Tab",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "缩进别踩坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "混用空格和Tab缩进",
+     "wrong_code": "for word in words:\n if word in counter:\n\tcounter[word] += 1\n else:",
+     "right_answer": "全程统一用4个空格缩进",
+     "right_code": "for word in words:\n if word in counter:\n  counter[word] += 1\n else:",
+     "highlight": "Python靠缩进区分代码块"
+    },
+    "image": "narrations/6_5/s03.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_69aeb9c3bd1fd954404e1b5d726ef9b0.mp3",
+    "audio_seconds": 19.9
+   },
+   {
+    "id": 4,
+    "type": "concept",
+    "title": "空字典的准备",
+    "narration": "我们手写好代码，先自己分析，首先定义了一个空字典counter，字典和我们之前学的列表不一样，列表是有序的序列，用索引找元素，字典是无序的键值对集合，用键找对应的值，这里counter的键是要统计的词，值是词出现的次数，所以初始是空的。",
+    "caption": "字典是键值对无序集合，用键取值",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "认识空counter字典",
+     "subtitle": "词频统计的核心容器",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "键是words里的词"
+      },
+      {
+       "icon": "②",
+       "text": "值是对应词的次数"
+      },
+      {
+       "icon": "③",
+       "text": "初始状态完全为空"
+      },
+      {
+       "icon": "④",
+       "text": "用键判断是否统计过"
+      }
+     ],
+     "highlight": "字典靠键定位，不是索引"
+    },
+    "image": "narrations/6_5/s04.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f9eb00c71dd9495ca0aa16c9267fb32e.mp3",
+    "audio_seconds": 18.55
+   },
+   {
+    "id": 5,
+    "type": "flow",
+    "title": "三轮循环流程",
+    "narration": "接下来我们进入循环，遍历words列表里的三个元素，每一个元素都是一个词，循环的核心就是判断这个词是不是已经在counter的键里了，如果在就加一，如果不在就把这个词加进去，次数设为一，这其实就是教材Review清单里要求我们画的三个状态的文字版。",
+    "caption": "遍历每个词 → 判断键是否存在 → 计数",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "词频统计流程",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "取第一个待统计词",
+      "判断键是否在counter",
+      "在就加一不在设一",
+      "取下一个词重复",
+      "输出最终统计结果"
+     ],
+     "highlight": "判断键用in操作符"
+    },
+    "image": "narrations/6_5/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_90b4014feee472dcef60baaaa0e7a334.mp3",
+    "audio_seconds": 19.06
+   },
+   {
+    "id": 6,
+    "type": "compare",
+    "title": "in用在哪",
+    "narration": "这里有个细节，判断键在不在字典里，为什么用in而不用其他方法呢？因为这是教材明确提到的，上节课学列表的时候我们也用过in判断元素，但字典用in默认是判断键，刚好符合我们的需求，如果我们要判断值的话，教材虽然没提，但暂时我们不需要，现在只需要记住判断键用in。",
+    "caption": "字典in默认查键，列表in默认查值",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "in操作符对比",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "字典用in",
+      "lines": [
+       "默认检查键是否存在",
+       "快速定位已有统计"
+      ]
+     },
+     "right": {
+      "label": "列表用in",
+      "lines": [
+       "默认检查值是否存在",
+       "从头遍历效率低"
+      ]
+     },
+     "highlight": "词频查键用in最直接"
+    },
+    "image": "narrations/6_5/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_1dad969340abbc668fbc4ee01dd62395.mp3",
+    "audio_seconds": 23.9
+   },
+   {
+    "id": 7,
+    "type": "pitfall",
+    "title": "踩坑提醒2",
+    "narration": "第二个同学常犯的坑，就是没有先判断键在不在，直接用中括号取值然后加一，比如counter中括号hello直接加一，这时候因为counter初始是空的，没有hello这个键，Python会直接报键错误，所以必须先加判断，这一步非常重要，不能省略。",
+    "caption": "直接取值加一必报键错误",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "键错误别犯",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "未判断直接对键赋值加一",
+     "wrong_code": "counter = {}\nfor word in words:\n counter[word] += 1",
+     "right_answer": "先判断键是否存在再操作",
+     "right_code": "counter = {}\nfor word in words:\n if word in counter:\n  counter[word] += 1",
+     "highlight": "查键是修改值的前提"
+    },
+    "image": "narrations/6_5/s07.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_cb315656b722dbf0d42f0b8aae057ac7.mp3",
+    "audio_seconds": 20.66
+   },
+   {
+    "id": 8,
+    "type": "concept",
+    "title": "第一轮循环",
+    "narration": "我们来模拟第一轮循环，现在取到的词是hello，首先判断hello在不在空字典counter里，当然不在，所以走else分支，把hello作为键，1作为值加到counter里，这时候counter就从空字典变成了只有hello键对应1值的字典，这就是第一个状态，我们要记住并画下来。",
+    "caption": "第一轮：hello不在 → 设值为1",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "第一轮循环状态",
+     "subtitle": "counter第一次变化",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "取到的词是hello"
+      },
+      {
+       "icon": "②",
+       "text": "hello不在counter键里"
+      },
+      {
+       "icon": "③",
+       "text": "执行else分支添加"
+      },
+      {
+       "icon": "④",
+       "text": "counter现在有hello:"
+      }
+     ],
+     "highlight": "不在就新增键值对"
+    },
+    "image": "narrations/6_5/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_ac857395b28b34495f6ac22ce601271f.mp3",
+    "audio_seconds": 20.95
+   },
+   {
+    "id": 9,
+    "type": "concept",
+    "title": "第二轮循环",
+    "narration": "接下来进入第二轮循环，取到的词是world，同样判断world在不在现在的counter里，现在counter只有hello键，所以world不在，继续走else分支，把world作为键，1作为值加进去，这时候counter就有了两个键值对，hello对应1，world对应1，这是第二个状态。",
+    "caption": "第二轮：world不在 → 设值为1",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "第二轮循环状态",
+     "subtitle": "counter第二次变化",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "取到的词是world"
+      },
+      {
+       "icon": "②",
+       "text": "world不在counter键里"
+      },
+      {
+       "icon": "③",
+       "text": "执行else分支添加"
+      },
+      {
+       "icon": "④",
+       "text": "counter有两个键值对了"
+      }
+     ],
+     "highlight": "每次新词都新增一次"
+    },
+    "image": "narrations/6_5/s09.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_ada77514d2d1082b11dd734f8d933173.mp3",
+    "audio_seconds": 20.64
+   },
+   {
+    "id": 10,
+    "type": "concept",
+    "title": "第三轮循环",
+    "narration": "最后进入第三轮循环，取到的词又是hello，现在判断hello在不在counter里，当然在，所以走if分支，用中括号取出hello对应的1，再加1变成2，再赋值回去，这时候counter里hello对应的值就变成了2，world还是1，这就是第三个状态，也是最终要打印的状态。",
+    "caption": "第三轮：hello在 → 原值加1变2",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "第三轮循环状态",
+     "subtitle": "counter第三次最终变化",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "取到的词还是hello"
+      },
+      {
+       "icon": "②",
+       "text": "hello在counter键里"
+      },
+      {
+       "icon": "③",
+       "text": "执行if分支加1"
+      },
+      {
+       "icon": "④",
+       "text": "counter变成最终结果"
+      }
+     ],
+     "highlight": "在就对原有值加1"
+    },
+    "image": "narrations/6_5/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f18cd5b25d618d26a2f9e1098d543798.mp3",
+    "audio_seconds": 22.8
+   },
+   {
+    "id": 11,
+    "type": "code",
+    "title": "回顾规范prompt",
+    "narration": "我们自己模拟完三轮循环，接下来就可以用AI讲解了，教材给了规范的prompt，千万不要只说帮我讲这段代码，要具体，比如分三轮问每轮counter的状态，问为什么最后是这个结果，还要明确要求只讲解不要给新代码，这是Vibe Coding的关键，不然容易依赖AI。",
+    "caption": "用教材给的规范三步提问AI",
+    "code": "请模拟下面这段 Python 代码的执行过程：\n1. 第一轮循环时 counter 里有什么？执行了 if 还是 else？\n2. 第二轮、第三轮分别发生了什么？\n3. 为什么最后输出 {'hello': 2, 'world': 1}？\n只做讲解，不要修改代码，也不要生成新代码。",
+    "visual": {
+     "layout": "code",
+     "title": "规范AI提问句式",
+     "subtitle": "",
+     "caption": "",
+     "code": "请模拟下面这段 Python 代码的执行过程：\n1. 第一轮循环时 counter 里有什么？执行了 if 还是 else？\n2. 第二轮、第三轮分别发生了什么？\n3. 为什么最后输出 {'hello': 2, 'world': 1}？\n只做讲解，不要修改代码，也不要生成新代码。",
+     "output": "",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "明确要求不要给新代码"
+      }
+     ]
+    },
+    "image": "narrations/6_5/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_542beaacf096ab5fe59a883435751c12.mp3",
+    "audio_seconds": 19.2
+   },
+   {
+    "id": 12,
+    "type": "concept",
+    "title": "Review清单检查1",
+    "narration": "看完AI的讲解，我们要对照教材的Review清单检查自己的学习成果，第一条就是能不能画出counter三轮循环的三个状态，空字典、第一轮结束的状态、第二轮结束的状态、第三轮也就是最终的状态，这四个步骤其实三个变化节点，画出来能加深对字典键值对动态变化的理解。",
+    "caption": "Review1：画出counter三轮三个状态",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "Review清单第一项",
+     "subtitle": "检验字典动态理解",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "初始状态：空字典"
+      },
+      {
+       "icon": "②",
+       "text": "第一轮后：hello:1"
+      },
+      {
+       "icon": "③",
+       "text": "第二轮后：hello:1 wor"
+      },
+      {
+       "icon": "④",
+       "text": "第三轮后：hello:2 wor"
+      }
+     ],
+     "highlight": "画状态图能快速巩固"
+    },
+    "image": "narrations/6_5/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_945c8e98d3a5dd93f86fd3540b110def.mp3",
+    "audio_seconds": 21.74
+   },
+   {
+    "id": 13,
+    "type": "concept",
+    "title": "Review清单检查23",
+    "narration": "接下来第二条Review清单，能不能解释键在不在为什么用in，刚才我们对比过，字典in默认查键，刚好符合需求，第三条Review清单，AI有没有给新代码，如果给了，千万不要复制，要记录下来，并且可能重新调整prompt，比如再次强调不要生成新代码。",
+    "caption": "Review23：解释in用法，拒绝AI新代码",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "Review清单第二三项",
+     "subtitle": "规范使用AI工具",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "解释清楚in查键的原因"
+      },
+      {
+       "icon": "②",
+       "text": "检查AI是否给新代码"
+      },
+      {
+       "icon": "③",
+       "text": "给了就不复制并记录"
+      },
+      {
+       "icon": "④",
+       "text": "必要时重新调整prompt"
+      }
+     ],
+     "highlight": "规范AI使用是L1重点"
+    },
+    "image": "narrations/6_5/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_db6cd271803989b185e380574304b1c5.mp3",
+    "audio_seconds": 20.59
+   },
+   {
+    "id": 14,
+    "type": "concept",
+    "title": "L1纪律自查",
+    "narration": "除了Review清单，还有L1的纪律自查要严格遵守，第一条是本章8道练习题全部手写完成，不能复制粘贴，第二条是让AI讲解前必须先自己运行代码，第三条是必须记录Prompt日志，包括AI的讲解要点和自己的理解，这三条是学好Vibe Coding L1的基础。",
+    "caption": "严格遵守三条L1纪律自查",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "L1纪律自查三条",
+     "subtitle": "保证自主学习效果",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "本章8道题全手写"
+      },
+      {
+       "icon": "②",
+       "text": "用AI前自己先运行"
+      },
+      {
+       "icon": "③",
+       "text": "记录Prompt日志"
+      }
+     ],
+     "highlight": "自主练习为主，AI为辅"
+    },
+    "image": "narrations/6_5/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_13f7580b74ee70b4da2fe0d7e70aac7d.mp3",
+    "audio_seconds": 21.12
+   },
+   {
+    "id": 15,
+    "type": "concept",
+    "title": "M3微任务卡",
+    "narration": "最后教材还给了一个M3微任务卡，讲解卡L1，要求把四种数据结构发给AI，也就是列表元组字典集合，让AI给一个根据场景选数据结构的判断清单，还要用一句话记录选型口诀，这个任务我们课后可以马上做，为下节课或者以后的项目做准备。",
+    "caption": "M3微任务：向AI要数据结构选型清单",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "M3讲解卡L1任务",
+     "subtitle": "为选型打基础",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "发四种数据结构给AI"
+      },
+      {
+       "icon": "②",
+       "text": "要场景化的判断清单"
+      },
+      {
+       "icon": "③",
+       "text": "用一句话记选型口诀"
+      }
+     ],
+     "highlight": "四种结构选对效率翻倍"
+    },
+    "image": "narrations/6_5/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_cc09ee4872526e0b18d2eb00c75c3ef8.mp3",
+    "audio_seconds": 20.69
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲核心总结",
+    "narration": "好了，今天的Vibe Coding L1词频统计就讲到这里，我们来收束成三条必须记住的结论，第一条先手写运行代码再用规范prompt引导AI讲解，第二条词频统计靠字典键值对，判断键用in操作符，第三条严格遵守L1的三条纪律和三条Review清单，自主练习为主。",
+    "caption": "记住三条核心结论，练熟词频字典",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本讲核心结论",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "先手写运行再规范问AI",
+      "词频靠字典键值对+in",
+      "严格遵守纪律和Review清单"
+     ]
+    },
+    "image": "narrations/6_5/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_9fee51a3e6ce994e574ff255913742c4.mp3",
+    "audio_seconds": 22.27
+   }
+  ]
+ },
+ "6_6": {
+  "chapter_id": 6,
+  "kp_index": 6,
+  "chapter_title": "数据结构（下）：字典与集合",
+  "kp_title": "6.6 本章小结与知识树",
+  "title": "字典与集合超实用知识梳理",
+  "hook_line": "2分钟回顾核心，3分钟避坑练选型",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 327.0,
+  "narration_chars": 1732,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:22:39",
+  "build_seconds": 116.7,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "你踩过这些坑吗",
+    "narration": "同学们大家好，上周我们学完了字典与集合的所有用法，有没有同学犯过用空花括号创建空集合、或者直接用中括号查外部数据的键导致程序崩掉的情况？今天这节5分钟的收尾课，我们既要搭好完整的知识树，还要把必须记住的避坑指南刻进脑子里",
+    "caption": "上周的坑今天全补上，还要搭知识树",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "上周踩坑了吗？",
+     "subtitle": "",
+     "caption": "",
+     "question": "这些错误你有没有犯过？",
+     "mood": "alert",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "{}创空集合报错"
+      },
+      {
+       "icon": "",
+       "text": "查外部键直接崩"
+      }
+     ]
+    },
+    "image": "narrations/6_6/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_351a0d37cce37533fdc6082d9c889d0a.mp3",
+    "audio_seconds": 21.31
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "整章知识树总览",
+    "narration": "首先我们来搭整章的知识框架，这棵知识树的根就是字典与集合，它有四个大分支，第一个是核心容器字典，第二个是核心容器集合，第三个是选型指南帮我们选合适的容器，第四个是综合应用词频统计，接下来我们逐个拆解每个分支的重点内容",
+    "caption": "整章知识树有四个核心大分支",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "整章知识树总览",
+     "subtitle": "4个核心模块全覆盖",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "核心容器字典详解"
+      },
+      {
+       "icon": "②",
+       "text": "核心容器集合详解"
+      },
+      {
+       "icon": "③",
+       "text": "容器快速选型指南"
+      },
+      {
+       "icon": "④",
+       "text": "词频统计综合应用"
+      }
+     ],
+     "highlight": "先搭框架再抠细节"
+    },
+    "image": "narrations/6_6/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_fdaa2dfe9a15cac0e614987ac7180243.mp3",
+    "audio_seconds": 21.17
+   },
+   {
+    "id": 3,
+    "type": "concept",
+    "title": "字典的核心能力",
+    "narration": "先看第一个核心容器字典，它的最大特点就是按键取值，时间复杂度是O1，也就是无论字典里有多少数据，找键的速度都和只有一个键值对一样快，这是列表元组做不到的，接下来我们回忆字典的六个具体操作和两个关键属性",
+    "caption": "字典按键取值，速度超快O1",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "字典核心能力梳理",
+     "subtitle": "6操作+2属性要记牢",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "创建键值对容器"
+      },
+      {
+       "icon": "②",
+       "text": "增删改查遍历灵活"
+      },
+      {
+       "icon": "③",
+       "text": "底层哈希表支撑O1"
+      },
+      {
+       "icon": "④",
+       "text": "可嵌套成JSON雏形"
+      }
+     ],
+     "highlight": "列表元组干不了的找它"
+    },
+    "image": "narrations/6_6/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_ad3bd8d7fc4dc5d3391a9ecd0fd40d22.mp3",
+    "audio_seconds": 19.51
+   },
+   {
+    "id": 4,
+    "type": "compare",
+    "title": "两种字典取值方式",
+    "narration": "接下来对比字典最常用的两种取值方式，第一种是直接用中括号，键存在的时候没问题直接返回值，但是键不存在会直接报错程序中断；第二种是用get方法，键存在返回值，不存在可以返回我们预设的默认值，完全不会影响程序运行",
+    "caption": "外部数据必须用get方法取值",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "两种取值方式对比",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "中括号取值",
+      "lines": [
+       "键存在返回值",
+       "键不存在报错中断"
+      ]
+     },
+     "right": {
+      "label": "get方法取值",
+      "lines": [
+       "键存在返回值",
+       "键不存在返默认值"
+      ]
+     },
+     "highlight": "外部数据一律用get"
+    },
+    "image": "narrations/6_6/s04.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_c1cf2cfb657e6ad66994717669a3eba5.mp3",
+    "audio_seconds": 20.45
+   },
+   {
+    "id": 5,
+    "type": "pitfall",
+    "title": "外部数据取键的坑",
+    "narration": "这里是第一个必须避开的大坑，很多同学处理比如用户输入或者网络爬取的外部数据时，习惯直接用中括号查键，但外部数据的键完全不受我们控制，万一用户没填或者爬取的数据漏了键，整个程序就会直接崩溃，上次作业里就有一半同学踩了这个坑",
+    "caption": "外部数据用get加默认值防崩溃",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "取外部数据键的坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "直接用中括号查外部键",
+     "wrong_code": "user = {\"name\": \"张三\"}\nage = user[\"age\"]",
+     "right_answer": "用get加预设默认值查",
+     "right_code": "user = {\"name\": \"张三\"}\nage = user.get(\"age\", 0)",
+     "highlight": "外部数据必须用get"
+    },
+    "image": "narrations/6_6/s05.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_5ca55391ae8db8407b3d9dbf9aab59b4.mp3",
+    "audio_seconds": 21.67
+   },
+   {
+    "id": 6,
+    "type": "concept",
+    "title": "字典的增改与嵌套",
+    "narration": "接下来回忆字典的增改操作，特别简单，同一个赋值语句就可以搞定，键不存在的时候就是添加新的键值对，键存在的时候就是覆盖原来的旧值；然后是嵌套，字典里可以套列表、套字典，这其实就是JSON格式的雏形，我们以后处理网络数据会经常用到",
+    "caption": "同一个赋值搞定增改，可嵌套成JSON",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "字典增改与嵌套",
+     "subtitle": "一个操作两用，支持多层嵌套",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "键不存在=添加键值对"
+      },
+      {
+       "icon": "②",
+       "text": "键存在=覆盖旧值"
+      },
+      {
+       "icon": "③",
+       "text": "套列表套字典都行"
+      },
+      {
+       "icon": "④",
+       "text": "JSON结构的基础原型"
+      }
+     ],
+     "highlight": "同一个赋值两用真方便"
+    },
+    "image": "narrations/6_6/s06.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_4ee0e4762bca9e22a0e84c9a2a51c925.mp3",
+    "audio_seconds": 22.32
+   },
+   {
+    "id": 7,
+    "type": "pitfall",
+    "title": "字典键的类型坑",
+    "narration": "第二个必须避开的大坑是字典键的类型，教材里明确说了键必须是不可变的类型，比如字符串、数字、元组，因为字典底层是哈希表，需要用键的哈希值来定位，列表是可变的不能当键，一用就会报错类型错误，说不可哈希",
+    "caption": "字典键必须用不可变类型",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "字典键的类型限制",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用可变的列表当字典键",
+     "wrong_code": "d = {[1,2]: \"数值对\"}",
+     "right_answer": "用不可变的元组当键",
+     "right_code": "d = {(1,2): \"数值对\"}",
+     "highlight": "键必须是不可变类型"
+    },
+    "image": "narrations/6_6/s07.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_11da510d29a43714e720b295bc0c7b2d.mp3",
+    "audio_seconds": 19.44
+   },
+   {
+    "id": 8,
+    "type": "concept",
+    "title": "集合的核心能力",
+    "narration": "看完字典我们看第二个核心容器集合，它的两个最大特点是无序和不重复，无序就是不能用索引取值，上次也有同学犯过这个错，不重复就是创建的时候自动去掉重复的元素，接下来我们回忆集合的三个具体操作和四个数学运算",
+    "caption": "集合无序不重复，支持数学运算",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "集合核心能力梳理",
+     "subtitle": "2特点+3操作+4运算",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "无序不能用索引取值"
+      },
+      {
+       "icon": "②",
+       "text": "创建时自动去重"
+      },
+      {
+       "icon": "③",
+       "text": "增删操作灵活简单"
+      },
+      {
+       "icon": "④",
+       "text": "支持四种集合运算"
+      }
+     ],
+     "highlight": "去重找它准没错"
+    },
+    "image": "narrations/6_6/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_1049aa44266a13c73a735eb3d25cb5ff.mp3",
+    "audio_seconds": 17.98
+   },
+   {
+    "id": 9,
+    "type": "pitfall",
+    "title": "空集合的创建坑",
+    "narration": "第三个必须记住的点，很多同学以为空花括号就是空集合，其实不是，空花括号是Python默认的空字典，创建空集合必须用set函数，这个点上次单元小测考了，好多同学都答错了，今天再强调一遍，刻进脑子里",
+    "caption": "set()是空集合，{}是空字典",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "空集合的正确创建",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用空花括号创建空集合",
+     "wrong_code": "s = {}\nprint(type(s))",
+     "right_answer": "用set函数创建空集合",
+     "right_code": "s = set()\nprint(type(s))",
+     "highlight": "{}是空字典哦"
+    },
+    "image": "narrations/6_6/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_88a0f04f248224807eecedc1d2028927.mp3",
+    "audio_seconds": 18.77
+   },
+   {
+    "id": 10,
+    "type": "concept",
+    "title": "集合的增删与运算",
+    "narration": "接下来回忆集合的增删操作，添加用add，删除有两个方法，remove如果元素不存在会报错，discard不会，大家可以根据需求选；然后是四个数学运算，分别是交集用与符号，并集用或符号，差集用减号，对称差用异或符号，这些以后做数据分析会经常用到",
+    "caption": "集合四运算：交并差对称差",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "集合增删与四运算",
+     "subtitle": "按需选增删方法，牢记四运算符号",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "add添加元素"
+      },
+      {
+       "icon": "②",
+       "text": "remove/discard删元"
+      },
+      {
+       "icon": "③",
+       "text": "交并差对称差"
+      },
+      {
+       "icon": "④",
+       "text": "去重用list(set())"
+      }
+     ],
+     "highlight": "去重一行代码就搞定"
+    },
+    "image": "narrations/6_6/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_25a69fc01b978b8aa0c475970980f75c.mp3",
+    "audio_seconds": 20.69
+   },
+   {
+    "id": 11,
+    "type": "code",
+    "title": "集合快速去重演示",
+    "narration": "这里给大家演示一下集合最常用的去重功能，直接把列表转成集合，自动去掉重复的元素，再转回来就行，但是要注意一点，教材里明确说了，转成集合再转回列表是不保证原来的顺序的，这点大家不要忽略，如果需要保序去重，我们后面进阶课再讲",
+    "caption": "list(set())去重但不保原顺序",
+    "code": "nums = [1, 2, 2, 3, 3, 3]\nunique_nums = list(set(nums))\nprint(unique_nums)",
+    "visual": {
+     "layout": "code",
+     "title": "集合快速去重演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "nums = [1, 2, 2, 3, 3, 3]\nunique_nums = list(set(nums))\nprint(unique_nums)",
+     "output": "[1, 2, 3]",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "去重不保原顺序哦"
+      }
+     ]
+    },
+    "image": "narrations/6_6/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_4ea1dbcc253e7b697545872c67f13ef5.mp3",
+    "audio_seconds": 19.06
+   },
+   {
+    "id": 12,
+    "type": "concept",
+    "title": "容器快速选型指南",
+    "narration": "现在我们来看第三个大分支选型指南，教材里给了非常清晰的标准：如果需要按顺序存数据，选列表或者元组；如果需要按名字或者某个标识快速找数据，选字典；如果需要去重或者做集合的数学运算，选集合；如果数据不需要修改，选元组更安全",
+    "caption": "按需求快速选对合适的容器",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "容器快速选型表",
+     "subtitle": "4个标准帮你1秒选容器",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "顺序存储→列表元组"
+      },
+      {
+       "icon": "②",
+       "text": "按键快速找→字典"
+      },
+      {
+       "icon": "③",
+       "text": "去重/运算→集合"
+      },
+      {
+       "icon": "④",
+       "text": "数据不变→元组"
+      }
+     ],
+     "highlight": "选对容器效率翻倍"
+    },
+    "image": "narrations/6_6/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_d135a53bd974dacb34b1337840c66f9a.mp3",
+    "audio_seconds": 20.47
+   },
+   {
+    "id": 13,
+    "type": "flow",
+    "title": "词频统计标准流程",
+    "narration": "最后我们来看第四个大分支综合应用词频统计，这是整章最实用的案例，标准流程其实就是教材里说的计数器模式：首先初始化一个空字典，然后遍历每一个要统计的词，判断这个词在不在字典里，如果在就加一，如果不在就初始化为一，非常简单",
+    "caption": "词频统计=空字典+in判断+赋值",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "词频统计标准流程",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "初始化空字典",
+      "遍历每个词",
+      "判断词是否在字典",
+      "在就加一不在就初始化"
+     ],
+     "highlight": "计数器模式万能好用"
+    },
+    "image": "narrations/6_6/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_93d27ea199b435d8307fd72edddcd1ee.mp3",
+    "audio_seconds": 19.58
+   },
+   {
+    "id": 14,
+    "type": "code",
+    "title": "词频统计代码演示",
+    "narration": "这里给大家写一个简化版的词频统计代码演示，比如统计这段文字里每个词出现的次数，严格按照刚才的流程来，先初始化空字典，然后遍历单词列表，用in判断，在就加一，不在就初始化为一，最后打印出来看看结果，是不是很简单",
+    "caption": "词频统计简化版代码演示",
+    "code": "words = [\"Python\", \"AI\", \"Python\", \"数据\", \"AI\", \"AI\"]\ncount = {}\nfor word in words:\n    if word in count:\n        count[word] += 1\n    else:\n        count[word] = 1\nprint(count)",
+    "visual": {
+     "layout": "code",
+     "title": "词频统计简化代码",
+     "subtitle": "",
+     "caption": "",
+     "code": "words = [\"Python\", \"AI\", \"Python\", \"数据\", \"AI\", \"AI\"]\ncount = {}\nfor word in words:\n    if word in count:\n        count[word] += 1\n    else:\n        count[word] = 1\nprint(count)",
+     "output": "{\"Python\": 2, \"AI\": 3, \"数据\": 1}",
+     "bullets": []
+    },
+    "image": "narrations/6_6/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_31bc6124ea8f0658cec9717ad7678510.mp3",
+    "audio_seconds": 18.31
+   },
+   {
+    "id": 15,
+    "type": "compare",
+    "title": "教材要求的五件事",
+    "narration": "现在我们把教材里必须记住的五件事快速梳理一遍，前三个是字典的核心坑和操作：外部数据用get，同一个赋值两用，键必须不可变；第四个是集合的创建坑：set是空集合；第五个是集合的核心用法：四运算和去重，接下来我们把它们浓缩成三条更方便记忆的",
+    "caption": "教材五件事快速过一遍",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "必须记住的五件事",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "字典三件事",
+      "lines": [
+       "外部数据用get",
+       "同一赋值两用",
+       "键必须不可变"
+      ]
+     },
+     "right": {
+      "label": "集合两件事",
+      "lines": [
+       "set是空集合",
+       "四运算+去重"
+      ]
+     },
+     "highlight": "五件事刻进脑子里"
+    },
+    "image": "narrations/6_6/s15.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_3deb61db18bce825694ca97051401a9d.mp3",
+    "audio_seconds": 23.04
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲核心内容总结",
+    "narration": "最后我们把整节课的内容浓缩成三条必须记住的核心结论：第一条，字典按键取值快，外部数据必须用get，键必须不可变；第二条，集合无序不重复，空集合用set，四运算加去重；第三条，选容器按需求：顺序找列表元组，按键找字典，去重运算找集合，不变找元组",
+    "caption": "三条核心结论帮你掌握整章",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本讲核心总结",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "字典用get键不可变",
+      "集合用set四运算去重",
+      "按需求快速选对容器"
+     ]
+    },
+    "image": "narrations/6_6/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_7f9bae543c9fe3189f3eb9d594b0219c.mp3",
+    "audio_seconds": 23.26
+   }
+  ]
+ },
+ "6_7": {
+  "chapter_id": 6,
+  "kp_index": 7,
+  "chapter_title": "数据结构（下）：字典与集合",
+  "kp_title": "本章速查",
+  "title": "字典与集合速查避坑",
+  "hook_line": "5分钟搞定职测AI必考的字典集合核心",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 413.7,
+  "narration_chars": 2198,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:24:40",
+  "build_seconds": 118.1,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "考前必救速查",
+    "narration": "同学们现在模拟一下考场上或者敲代码卡壳查知识点的场景，翻书太费时间翻不到重点，背过的API又忘了细节对吧？别慌，这节课我们用5分钟把字典和集合的考点浓缩，再把职测和实训里最常踩的两个坑揪出来，连场景都给你对应好，下次再也不用慌。",
+    "caption": "查字典找单词→对应Python字典→联想考点",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "考前必救速查",
+     "subtitle": "",
+     "caption": "",
+     "question": "敲代码翻书卡壳，背过API又忘细节？",
+     "mood": "alert",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "浓缩2分钟知识点速览"
+      },
+      {
+       "icon": "",
+       "text": "揪出2个职测实训高频坑"
+      }
+     ]
+    },
+    "image": "narrations/6_7/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_28f195af6daac0028ac2b4eae13a8adb.mp3",
+    "audio_seconds": 22.85
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "核心容器速看",
+    "narration": "好首先，先把字典和集合这两个核心的无序容器拎出来讲透。我们都知道列表是有序的，今天这俩不用记顺序，记用途就行。字典叫键值对容器，就像查英语词典，单词是唯一的键，意思是对应的值，查起来特别快。集合呢，像去重后的购物清单，只存元素，不能有重复的。",
+    "caption": "两种高频无序容器，定位功能各不同",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "核心容器速看",
+     "subtitle": "两种无序高频容器",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "📖",
+       "text": "字典=键值对组合"
+      },
+      {
+       "icon": "⚡",
+       "text": "字典按键查找特别快"
+      },
+      {
+       "icon": "🛒",
+       "text": "集合=去重无序元素"
+      },
+      {
+       "icon": "🔀",
+       "text": "集合做数学运算方便"
+      }
+     ],
+     "highlight": "记用途比记属性更重要"
+    },
+    "image": "narrations/6_7/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_7af6a87c0d85ae1287f31705e7a2836a.mp3",
+    "audio_seconds": 23.9
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "字典基础定义",
+    "narration": "先来看字典的基础定义，用大括号，每个键值对用冒号隔开，不同键值对用逗号。注意这里的键必须是不可变类型，像字符串数字元组都可以，列表不能当键，后面会讲这个坑。值就随便了，字符串数字列表字典都行。比如定义一个学生信息字典，名字是张三，年龄是十八，这样就搞定了。",
+    "caption": "大括号加冒号，键唯一值任意",
+    "code": "student = {\"name\": \"张三\", \"age\": 18}\nprint(student)",
+    "visual": {
+     "layout": "code",
+     "title": "字典基础定义",
+     "subtitle": "",
+     "caption": "",
+     "code": "student = {\"name\": \"张三\", \"age\": 18}\nprint(student)",
+     "output": "{\"name\": \"张三\", \"age\": 18}",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "键不可变，值任意类型"
+      }
+     ]
+    },
+    "image": "narrations/6_7/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_d38b785575a154f283500bb5ac3c5412.mp3",
+    "audio_seconds": 25.58
+   },
+   {
+    "id": 4,
+    "type": "compare",
+    "title": "两种取值方式",
+    "narration": "定义好了字典，接下来最常用的就是取值。有两种方式，中括号和get方法。如果我们用中括号找键，键存在的话没问题，直接返回对应的值，但如果键不存在，程序会直接报错中断，实训里可麻烦了。用get方法就安全很多，键存在返回值，不存在的话返回我们设定的默认值，没设默认就返回空。",
+    "caption": "中括号取值→无键报错→get安全→可设默认",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "两种取值方式",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "中括号取值",
+      "lines": [
+       "键存在直接返回值",
+       "键不存在直接报错"
+      ]
+     },
+     "right": {
+      "label": "get方法取值",
+      "lines": [
+       "键存在直接返回值",
+       "键不存在返回默认"
+      ]
+     },
+     "highlight": "日常开发优先选get"
+    },
+    "image": "narrations/6_7/s04.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_91d43402232be52d8581418bec0aee3b.mp3",
+    "audio_seconds": 27.1
+   },
+   {
+    "id": 5,
+    "type": "code",
+    "title": "取值实战演示",
+    "narration": "来我们实战演示一下这两种方法的区别。比如刚才的学生信息字典，我们用get取性别，键不存在，设定默认值是未知，就会输出未知。如果没设定默认值，比如取城市，就会输出空。大家敲代码的时候一定要养成用get的习惯，特别是处理用户输入或者不确定键存在的场景，能避免很多不必要的报错。",
+    "caption": "用get取不存在的键，返回设定默认值",
+    "code": "student = {\"name\": \"张三\", \"age\": 18}\nprint(student.get(\"gender\", \"未知\"))\nprint(student.get(\"city\"))",
+    "visual": {
+     "layout": "code",
+     "title": "取值实战演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "student = {\"name\": \"张三\", \"age\": 18}\nprint(student.get(\"gender\", \"未知\"))\nprint(student.get(\"city\"))",
+     "output": "未知\nNone",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "不确定键存在→用get"
+      }
+     ]
+    },
+    "image": "narrations/6_7/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_10e2fd9a631139cc387f100209e6113e.mp3",
+    "audio_seconds": 23.95
+   },
+   {
+    "id": 6,
+    "type": "flow",
+    "title": "字典遍历流程",
+    "narration": "接下来是字典的遍历，这可是职测填空题和编程题的高频考点，三个常用的方法，大家按需求选就行。第一个keys方法，遍历所有的键；第二个values方法，遍历所有的值；第三个items方法，遍历所有的键值对，是最常用的一个。遍历的时候配合循环用，比如for循环，就能把每个内容都取出来。",
+    "caption": "三个方法→分别遍历键值对→按需选择",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "字典遍历流程",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "调用keys方法",
+      "调用values方法",
+      "调用items方法",
+      "配合for循环遍历"
+     ],
+     "highlight": "遍历键值对优先选items"
+    },
+    "image": "narrations/6_7/s06.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_be308872f61ab190fa2af9e7c9ef8e5f.mp3",
+    "audio_seconds": 23.86
+   },
+   {
+    "id": 7,
+    "type": "code",
+    "title": "遍历实战演示",
+    "narration": "来我们用items方法实战演示一下。还是刚才的学生信息字典，用for循环配合items，每次循环都能拿到一个键和一个值，用print打印出来，格式非常清晰。大家对比一下，如果分别用keys再去中括号取值，不仅麻烦，效率还低一点点，所以遍历键值对的时候直接选items就行，记住这个小技巧。",
+    "caption": "用items同时取键值，代码简洁高效",
+    "code": "student = {\"name\": \"张三\", \"age\": 18}\nfor k, v in student.items():\n    print(f\"{k}: {v}\")",
+    "visual": {
+     "layout": "code",
+     "title": "遍历实战演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "student = {\"name\": \"张三\", \"age\": 18}\nfor k, v in student.items():\n    print(f\"{k}: {v}\")",
+     "output": "name: 张三\nage: 18",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "同时取键值→选items"
+      }
+     ]
+    },
+    "image": "narrations/6_7/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_94530ece7ae1653d338bcab2381322d8.mp3",
+    "audio_seconds": 24.67
+   },
+   {
+    "id": 8,
+    "type": "concept",
+    "title": "字典删除操作",
+    "narration": "接下来是字典的两个删除操作，pop和clear。pop可以删除指定的键，并且返回这个键对应的值，也就是说删除之后我们还能用这个值，比如做个统计或者记录。clear就比较彻底了，直接把整个字典清空，变成一个空的大括号，里面的所有键值对都没有了，大家用的时候要小心，别误删了重要数据。",
+    "caption": "pop删指定键返回值→clear清空整个字典",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "字典删除操作",
+     "subtitle": "两个常用删除方法",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "📤",
+       "text": "pop删指定键返回值"
+      },
+      {
+       "icon": "🗑️",
+       "text": "clear清空整个字典"
+      },
+      {
+       "icon": "⚠️",
+       "text": "用clear前记得备份"
+      }
+     ],
+     "highlight": "删除前确认是否需要数据"
+    },
+    "image": "narrations/6_7/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_33138f3f0f9662bcc50cb58cb55b8ad3.mp3",
+    "audio_seconds": 23.04
+   },
+   {
+    "id": 9,
+    "type": "pitfall",
+    "title": "字典第一坑",
+    "narration": "好，讲完字典的基础操作，我们来揪第一个职测和实训里的高频坑，就是用可变类型当字典的键。前面我们提到过，字典的键必须是不可变类型，比如字符串数字元组，那可变类型就是列表字典这种，比如你想把一个列表当键存学生的兴趣爱好，程序会直接报错，为什么呢？因为可变类型的内容会变，键的位置就找不到了。",
+    "caption": "列表当字典键→直接报错→选不可变类型",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "字典第一坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用列表等可变类型当字典键",
+     "wrong_code": "bad_dict = {[1,2]: \"错误示例\"}",
+     "right_answer": "用字符串数字元组等不可变类型",
+     "right_code": "good_dict = {(1,2): \"正确示例\"}",
+     "highlight": "字典键必须是不可变类型"
+    },
+    "image": "narrations/6_7/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_4662b46628be268ba2bddba8db3283d5.mp3",
+    "audio_seconds": 27.67
+   },
+   {
+    "id": 10,
+    "type": "concept",
+    "title": "集合基础定义",
+    "narration": "好，接下来我们来看集合。集合的定义也用大括号，但和字典不一样，字典是键值对，集合只有元素。而且集合有个自动去重的特性，不管你往里面放多少重复的元素，最后只会保留一个。还有一点，集合是无序的，你不能像列表那样用索引取值，这也是集合的一个特点，后面可能会有对比的题目。",
+    "caption": "大括号存元素→自动去重→无序排列",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "集合基础定义",
+     "subtitle": "自动去重的无序容器",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "🔄",
+       "text": "自动去除重复元素"
+      },
+      {
+       "icon": "❌",
+       "text": "不能用索引取值"
+      },
+      {
+       "icon": "➕",
+       "text": "支持数学集合运算"
+      }
+     ],
+     "highlight": "自动去重是核心特性"
+    },
+    "image": "narrations/6_7/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_75210c4e7af10644386c713702d78b62.mp3",
+    "audio_seconds": 24.79
+   },
+   {
+    "id": 11,
+    "type": "code",
+    "title": "集合去重实战",
+    "narration": "集合最常用的场景就是去重，怎么操作呢？很简单，把需要去重的列表转成集合，自动去重，再转回来成列表就行。但这里要注意一个小细节，教材里明确说了，这种方法不保序，也就是说原来列表里元素的顺序可能会变。如果大家在实训里需要保序去重，等后面学了其他方法再说，现在先记住这个方法的特性。",
+    "caption": "list套set→快速去重→但不保序哦",
+    "code": "nums = [1, 2, 2, 3, 3, 3]\nunique_nums = list(set(nums))\nprint(unique_nums)",
+    "visual": {
+     "layout": "code",
+     "title": "集合去重实战",
+     "subtitle": "",
+     "caption": "",
+     "code": "nums = [1, 2, 2, 3, 3, 3]\nunique_nums = list(set(nums))\nprint(unique_nums)",
+     "output": "[1, 2, 3]",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "list套set→快速去重不保序"
+      }
+     ]
+    },
+    "image": "narrations/6_7/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3558b8bc164e8e272a075e1e8ffe8654.mp3",
+    "audio_seconds": 26.06
+   },
+   {
+    "id": 12,
+    "type": "pitfall",
+    "title": "集合第一坑",
+    "narration": "好，集合的第一个高频坑来了，就是空集合的定义。大家是不是觉得空集合应该用空的大括号？不对不对，教材里没说，但这里结合前面的知识讲，空的大括号默认是用来定义空字典的，不是空集合。那怎么定义空集合呢？要用内置的set函数，括号里面什么都不放，这样才是空集合，别搞混了，职测判断题里经常考这个。",
+    "caption": "空集合不能用{}→会变成空字典→用set()",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "集合第一坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用空大括号定义空集合",
+     "wrong_code": "empty = {}",
+     "right_answer": "用set函数定义空集合",
+     "right_code": "empty = set()",
+     "highlight": "空集合必须用set()定义"
+    },
+    "image": "narrations/6_7/s12.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_73e181aa01d250b9182aa5418a3d1a15.mp3",
+    "audio_seconds": 28.42
+   },
+   {
+    "id": 13,
+    "type": "concept",
+    "title": "集合数学运算",
+    "narration": "接下来是集合的另一个核心用途，做数学集合运算，四个常用的符号，记住对应的中文就行。第一个是按位与的符号，对应交集，就是两个集合都有的元素；第二个是按位或的符号，对应并集，就是两个集合所有的元素；第三个是减号，对应差集，就是前一个有后一个没有的；第四个是异或符号，对应对称差，就是两个集合各自独有的。",
+    "caption": "四个符号→对应交并差对称差→快速运算",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "集合数学运算",
+     "subtitle": "四个常用运算符号",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "∩",
+       "text": "按位与→取交集"
+      },
+      {
+       "icon": "∪",
+       "text": "按位或→取并集"
+      },
+      {
+       "icon": "−",
+       "text": "减号→取前差集"
+      },
+      {
+       "icon": "⊕",
+       "text": "异或→取对称差"
+      }
+     ],
+     "highlight": "数学运算用集合很方便"
+    },
+    "image": "narrations/6_7/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_618fae64f8b3ced736df8b08b5bcf24f.mp3",
+    "audio_seconds": 26.66
+   },
+   {
+    "id": 14,
+    "type": "code",
+    "title": "集合运算实战",
+    "narration": "来我们实战演示一下这四个数学运算。先定义两个集合a和b，a有123，b有345。按位与取交集，只有3；按位或取并集，所有元素都有；减号取a的差集，就是a有b没有的1和2；异或取对称差，就是a和b各自独有的1245。这些运算在处理数据筛选的时候特别好用，比如筛选同时报名两门课的学生。",
+    "caption": "交并差对称差→符号对应运算→快速求解",
+    "code": "a = {1, 2, 3}\nb = {3, 4, 5}\nprint(a & b)\nprint(a | b)\nprint(a - b)\nprint(a ^ b)",
+    "visual": {
+     "layout": "code",
+     "title": "集合运算实战",
+     "subtitle": "",
+     "caption": "",
+     "code": "a = {1, 2, 3}\nb = {3, 4, 5}\nprint(a & b)\nprint(a | b)\nprint(a - b)\nprint(a ^ b)",
+     "output": "{3}\n{1, 2, 3, 4, 5}\n{1, 2}\n{1, 2, 4, 5}",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "处理筛选用集合运算很快"
+      }
+     ]
+    },
+    "image": "narrations/6_7/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3059c06c2345dbb2061c84474feffebf.mp3",
+    "audio_seconds": 29.47
+   },
+   {
+    "id": 15,
+    "type": "flow",
+    "title": "本章考点速览",
+    "narration": "好，我们现在快速把整个本章的考点串一遍，方便大家记忆。首先是字典的核心：键值对、用get安全取值、用items遍历键值对、pop和clear删除。然后是集合的核心：自动去重、四个数学运算、list套set去重不保序。最后是两个必记的坑：字典键不能是可变类型，空集合用set函数定义。这些都是高频考点。",
+    "caption": "字典核心→集合核心→避坑→结束",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "本章考点速览",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "过一遍字典核心考点",
+      "过一遍集合核心考点",
+      "牢记两个高频易错坑",
+      "多做几道题目巩固"
+     ],
+     "highlight": "记住核心用途和避坑点"
+    },
+    "image": "narrations/6_7/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_92cf026b6f0b6b6531ecd9ea46b31a95.mp3",
+    "audio_seconds": 27.67
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲必记三条",
+    "narration": "最后我们把所有内容浓缩成三条必须记住的结论，方便大家考前或者卡壳的时候快速回忆。第一条：字典按键查找特别快，键必须是不可变类型，日常开发优先用get安全取值。第二条：集合自动去重，list套set去重不保序，四个数学运算处理筛选很方便。第三条：空集合必须用set函数定义，别和空字典搞混。",
+    "caption": "三条结论→覆盖核心考点→快速回忆",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本讲必记三条",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "字典键不可变，优先用get",
+      "集合自动去重不保序",
+      "空集合必须用set()"
+     ]
+    },
+    "image": "narrations/6_7/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_2555afda263543c726c77a632ce47648.mp3",
+    "audio_seconds": 27.98
+   }
+  ]
+ },
+ "7_0": {
+  "chapter_id": 7,
+  "kp_index": 0,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.0 学习目标与前置知识",
+  "title": "函数章前的准备清单",
+  "hook_line": "函数不是黑箱是你的代码积木",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 290.2,
+  "narration_chars": 1692,
+  "scene_count": 15,
+  "created_at": "2026-09-16 13:27:38",
+  "build_seconds": 173.7,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "代码变乱了？",
+    "narration": "前六章你是不是写过很多重复的代码，比如算班级平均分每次都复制粘贴列表求和除以长度那段，要是突然要加个剔除缺考的功能，那所有粘贴的地方都得改一遍，累不累烦不烦，这就是我们为什么要学函数的第一个原因，今天这节课，我们先把函数章的目标和地基理清楚",
+    "caption": "重复改粘贴代码→用函数解决→先理清单",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "代码变乱重复了？",
+     "subtitle": "",
+     "caption": "",
+     "question": "复制粘贴10段代码敢不敢改一处",
+     "mood": "alert",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "每次复制都可能出错"
+      },
+      {
+       "icon": "",
+       "text": "想修改得找所有地方"
+      }
+     ]
+    },
+    "image": "narrations/7_0/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_a60da06fec61f71b574927aaae8a3959.mp3",
+    "audio_seconds": 19.73
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "函数章三大意义",
+    "narration": "刚才开场的例子，对应函数的第一个意义打包，把常用的几十行甚至几百行代码打包成一个小盒子，第二个意义复用，以后用这个功能直接喊盒子名字不用重写，第三个意义接口，盒子只告诉你输入什么输出什么，不用管里面怎么算",
+    "caption": "函数三大意义→打包复用接口",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "函数的三大核心意义",
+     "subtitle": "彻底告别重复改代码的苦",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "📦",
+       "text": "打包零散代码成整体"
+      },
+      {
+       "icon": "🔄",
+       "text": "多次使用只写一次逻辑"
+      },
+      {
+       "icon": "🔌",
+       "text": "只留输入输出做接口"
+      }
+     ],
+     "highlight": "记住接口是模块化的开始"
+    },
+    "image": "narrations/7_0/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_32a73d49f1b364c9341d0f252915750d.mp3",
+    "audio_seconds": 17.14
+   },
+   {
+    "id": 3,
+    "type": "flow",
+    "title": "函数章学习路线",
+    "narration": "接下来我们走一遍函数章的学习路线，第一步先学会怎么定义调用函数，搞懂返回值和没有返回值的区别，第二步掌握四种给函数传数据的方式，第三步理解数据怎么在函数内外传，内存里是怎么动的，第四步搞定递归、高阶函数这些进阶的，最后收尾练六个高频内置工具",
+    "caption": "定义调用→参数传递→进阶函数→内置工具",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "本章学习路线图",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "学会定义调用函数",
+      "掌握四种参数形态",
+      "理解内存与作用域",
+      "搞定进阶核心用法",
+      "熟练高频内置工具"
+     ],
+     "highlight": "按路线走效率翻倍"
+    },
+    "image": "narrations/7_0/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_e59990d53ef9316f98ad69b2404effd3.mp3",
+    "audio_seconds": 20.71
+   },
+   {
+    "id": 4,
+    "type": "concept",
+    "title": "必须掌握的硬技能",
+    "narration": "学习路线说完了，我们说硬技能清单，首先是四种参数形态位置关键字默认值可变长的那两个，然后是参数引用和LEGB作用域，还要避开绑定错误，递归要懂三要素写三个经典题，lambda和三个高阶函数也得会，还有六个高频内置，这些每一个都要练熟，考试和做项目都会用到",
+    "caption": "硬技能清单→参数递归高阶内置作用域",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "硬技能必须逐个练熟",
+     "subtitle": "考试做项目都高频出现",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "四种参数形态全掌握"
+      },
+      {
+       "icon": "②",
+       "text": "理解内存与LEGB规则"
+      },
+      {
+       "icon": "③",
+       "text": "会递归懂高阶用内置"
+      }
+     ],
+     "highlight": "每个技能都得动手敲代码"
+    },
+    "image": "narrations/7_0/s04.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_93cd520bc548bde4ef7f9504c03e4a75.mp3",
+    "audio_seconds": 24.55
+   },
+   {
+    "id": 5,
+    "type": "pitfall",
+    "title": "别让白帮写全码",
+    "narration": "注意啊，我们的L1纪律从第一章到现在一直没变，AI只能给你讲解知识点，只能帮你看写好的代码找问题，绝对不能直接让AI帮你写完整的作业或者项目代码，上次有个同学写汉诺塔直接让AI生成，结果考试的时候连三要素都背不出来，千万别犯这个错",
+    "caption": "L1纪律→AI只讲解不写完整码",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "记住L1使用纪律",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "让AI直接写完整作业代码",
+     "wrong_code": "",
+     "right_answer": "AI讲解自己写调试找问题",
+     "right_code": "",
+     "highlight": "自己动手才是真学会"
+    },
+    "image": "narrations/7_0/s05.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_7a06b908112102d0fdbfacc94b2dabcf.mp3",
+    "audio_seconds": 22.22
+   },
+   {
+    "id": 6,
+    "type": "compare",
+    "title": "有返回vs无返回",
+    "narration": "提前讲一个定义调用里的对比坑，有没有返回值很重要，有返回值的函数可以赋值给变量，可以继续运算，比如班级平均分那个，返回数值可以存下来排总分，没有返回值的函数，默认返回None，不能赋值运算，比如只是打印个菜单，这种就不需要返回值",
+    "caption": "有返回可运算→无返回默认None",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "提前看return和None",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "有return的函数",
+      "lines": [
+       "可以赋值给变量",
+       "可以参与后续运算",
+       "有明确的输出值"
+      ]
+     },
+     "right": {
+      "label": "无return的函数",
+      "lines": [
+       "默认返回None",
+       "不能参与运算",
+       "只能做纯操作"
+      ]
+     },
+     "highlight": "默认无return就是返回None"
+    },
+    "image": "narrations/7_0/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_33bf0dceb4a9dc9fad1777972fddaee7.mp3",
+    "audio_seconds": 21.38
+   },
+   {
+    "id": 7,
+    "type": "concept",
+    "title": "内置函数提前认脸",
+    "narration": "再提前认一下六个高频内置函数的脸，第一个第二个是判断逻辑的，判断可迭代对象里全是真还是有真，第三个打包数据，第四个倒序，第五个四舍五入，第六个查对象属性，这些不用现在就会用，先有个印象，后面每一个都会单独讲单独练",
+    "caption": "提前认脸→all any zip reversed round dir",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "六个高频内置先认脸",
+     "subtitle": "后面每一个单独拆讲解",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "🤔",
+       "text": "all any判断真假逻辑"
+      },
+      {
+       "icon": "📦",
+       "text": "zip打包多组数据"
+      },
+      {
+       "icon": "🔃",
+       "text": "reversed round d"
+      }
+     ],
+     "highlight": "内置函数不用重复造轮子"
+    },
+    "image": "narrations/7_0/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_423f607309fca2ca99cf8c02034f609e.mp3",
+    "audio_seconds": 19.82
+   },
+   {
+    "id": 8,
+    "type": "flow",
+    "title": "前置知识快速回忆",
+    "narration": "现在说最重要的地基，前置知识是前六章全部内容，尤其是流程控制和数据结构，流程控制里的循环分支必须信手拈来，数据结构里的列表字典字符串的增删改查必须熟练，因为函数里全是这些东西，地基不牢后面学起来会非常费劲",
+    "caption": "前六章全要会→重点流程控制数据结构",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "快速回忆前置知识",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "分支循环必须熟练",
+      "列表字典字符串操作",
+      "前六章所有核心内容"
+     ],
+     "highlight": "流程控制数据结构是核心"
+    },
+    "image": "narrations/7_0/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_9bde3625dde183ba844c3b56c2b4e22b.mp3",
+    "audio_seconds": 18.7
+   },
+   {
+    "id": 9,
+    "type": "pitfall",
+    "title": "参数引用提前踩坑",
+    "narration": "再提前踩一个参数传递的坑，很多同学以为函数里传列表是复制一份，其实不是，传的是对象的引用，就像给你家门钥匙，你在里面翻箱倒柜外面的家当然会变，但是如果传数字字符串这种不可变类型，函数里改的只是临时副本，外面不会变，这个坑后面会细讲现在先记下来",
+    "caption": "可变对象传引用→不可变传副本",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "提前踩参数传递的坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "以为函数内改列表外部不变",
+     "wrong_code": "",
+     "right_answer": "可变对象传引用不可变传副本",
+     "right_code": "",
+     "highlight": "可变对象修改外部会同步变"
+    },
+    "image": "narrations/7_0/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_0931f2707460c18080436254193adfbd.mp3",
+    "audio_seconds": 23.4
+   },
+   {
+    "id": 10,
+    "type": "concept",
+    "title": "递归进阶提前预告",
+    "narration": "递归是很多同学觉得难的部分，提前说一下，只要记住三要素就没问题，第一个要有终止条件，不能无限循环，第二个每次递归要比上一次简单，第三个要有递推公式，汉诺塔就是经典的递归题，学会了递归，很多复杂问题会变得非常简单",
+    "caption": "递归三要素→终止简化递推公式",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "递归提前讲三要素",
+     "subtitle": "复杂问题可以变简单",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "✋",
+       "text": "必须有明确终止条件"
+      },
+      {
+       "icon": "⬇️",
+       "text": "每次递归规模要缩小"
+      },
+      {
+       "icon": "🔗",
+       "text": "要有清晰的递推公式"
+      }
+     ],
+     "highlight": "三要素缺一不可"
+    },
+    "image": "narrations/7_0/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_227be56b28ff4a7fb552f1153c32524d.mp3",
+    "audio_seconds": 19.06
+   },
+   {
+    "id": 11,
+    "type": "compare",
+    "title": "高阶函数回调思想",
+    "narration": "再提前说一下高阶函数和回调思想，高阶函数就是能接收或者返回函数的函数，回调思想就是把一个函数当参数传给另一个，让它在合适的时候调用，比如排序的时候，我们可以传一个指定排序规则的函数，这个就是回调，sorted的关键字参数就是干这个的",
+    "caption": "高阶函数→接收/返回函数→回调传规则",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "提前懂回调思想",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "普通函数",
+      "lines": [
+       "只能接收普通数据",
+       "只能返回普通数据",
+       "没有灵活的规则"
+      ]
+     },
+     "right": {
+      "label": "高阶函数",
+      "lines": [
+       "可以接收函数参数",
+       "可以返回函数对象",
+       "灵活定制执行规则"
+      ]
+     },
+     "highlight": "sorted的key是典型回调"
+    },
+    "image": "narrations/7_0/s11.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_6318376fdee95633edb6af81e33dcfd8.mp3",
+    "audio_seconds": 21.89
+   },
+   {
+    "id": 12,
+    "type": "concept",
+    "title": "内存栈递归耗内存",
+    "narration": "最后提前提一下内存栈的问题，函数调用的时候会把当前状态压进栈，返回的时候弹出来，递归调用多少次就会压多少次栈，如果递归深度太大，栈满了就会报错，这就是递归为什么耗内存的原因，普通循环就不会有这个问题，不过递归的可读性有时候更好",
+    "caption": "调用压栈返回弹栈→递归太深栈溢出",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "内存栈与递归的关系",
+     "subtitle": "递归耗内存的原理",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "📥",
+       "text": "函数调用状态压入栈"
+      },
+      {
+       "icon": "📤",
+       "text": "函数返回状态弹出栈"
+      },
+      {
+       "icon": "⚠️",
+       "text": "递归太深会栈溢出"
+      }
+     ],
+     "highlight": "递归有深度限制"
+    },
+    "image": "narrations/7_0/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_8b045511777dd2bcc6ec7aed803381c5.mp3",
+    "audio_seconds": 19.8
+   },
+   {
+    "id": 13,
+    "type": "concept",
+    "title": "模块化思想很重要",
+    "narration": "学完函数章之后，最重要的不是会写多少递归多少高阶函数，而是建立函数等于接口的模块化思想，把大程序拆成一个个小函数，每个函数只做一件事，这样代码既好读又好改，以后做团队项目，每个人负责一个接口，效率会特别高",
+    "caption": "大程序拆成小函数→每个只做一件事",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "建立模块化核心思想",
+     "subtitle": "为团队项目打基础",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "🔨",
+       "text": "大程序拆成小模块"
+      },
+      {
+       "icon": "👤",
+       "text": "每个模块只做一件事"
+      },
+      {
+       "icon": "🤝",
+       "text": "模块之间用接口连接"
+      }
+     ],
+     "highlight": "模块化才是最终目的"
+    },
+    "image": "narrations/7_0/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_c523f41812f1626644c34cd1e6a9e795.mp3",
+    "audio_seconds": 18.6
+   },
+   {
+    "id": 14,
+    "type": "flow",
+    "title": "课前准备动作",
+    "narration": "讲了这么多，现在说一下你课前需要做的三个小准备，第一个快速翻一遍前六章的笔记，尤其是流程控制和数据结构的部分，第二个打开你的Python编辑器，第三个准备好草稿纸，后面学递归的时候要画三要素的图，别偷懒，准备充分学起来才快",
+    "caption": "翻笔记开编辑器备草稿纸→准备充分",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "课前三个小准备",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "快速翻前六章笔记",
+      "打开Python编辑器",
+      "准备好草稿纸"
+     ],
+     "highlight": "准备充分效率更高"
+    },
+    "image": "narrations/7_0/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "",
+    "audio_seconds": 0
+   },
+   {
+    "id": 15,
+    "type": "summary",
+    "title": "章前清单三条必记",
+    "narration": "最后我们把今天讲的所有内容收束成三条必须记住的结论，第一条函数的三大意义是打包复用接口，第二条前置知识是前六章全部尤其是流程控制和数据结构，第三条严格遵守L1纪律AI只讲解不写完整的作业或项目代码，好，下节课我们正式开始学定义和调用函数",
+    "caption": "打包复用接口→前六章重点→L1纪律",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "章前三条必记结论",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "记住函数的三大意义",
+      "前六章重点内容要熟",
+      "严格遵守L1使用纪律"
+     ]
+    },
+    "image": "narrations/7_0/s15.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_28055485b41788a38c4ea4991d0b42d3.mp3",
+    "audio_seconds": 23.21
+   }
+  ]
  }
 }

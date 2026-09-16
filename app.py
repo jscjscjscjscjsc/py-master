@@ -11,6 +11,7 @@ import time
 import re
 import urllib.request
 import urllib.error
+import urllib.parse
 import threading
 import socket
 from datetime import datetime
@@ -254,29 +255,239 @@ def login_page():
     return render_template('login.html')
 
 
+# ── 首次运行配置向导 ───────────────────────────────────────
+# 用户下载压缩包后第一次打开，要先注册账号并填自己的模型配置。
+# 这些以前只能在终端里靠 setup_api.py 问答完成，现在改成网页向导。
+
+SETUP_EXEMPT_PREFIXES = ('/setup', '/api/setup', '/static', '/login', '/api/login',
+                         '/api/register', '/logout', '/favicon.ico', '/oauth')
+
+
+@app.before_request
+def require_ai_config():
+    """AI 没配置好就把用户引到配置向导，避免进去之后处处报错。"""
+    path = request.path or '/'
+    if path.startswith(SETUP_EXEMPT_PREFIXES):
+        return None
+    if ai_config_status()['configured']:
+        return None
+    return redirect(url_for('setup_wizard'))
+
+
+@app.route('/setup')
+def setup_wizard():
+    status = ai_config_status()
+    return render_template('setup.html',
+                           configured=status['configured'],
+                           base_url=status['base_url'],
+                           model=status['model'],
+                           key_tail=status['key_tail'],
+                           fallback=status['fallback'],
+                           logged_in='username' in session,
+                           username=session.get('username', ''),
+                           open_registration=registration_is_open(),
+                           wechat_ready=wechat_login_ready())
+
+
+@app.route('/api/setup/test', methods=['POST'])
+def setup_test_connection():
+    """测试用户填的模型配置是否真的能用。"""
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get('base_url') or '').strip()
+    model = (data.get('model') or '').strip()
+    api_key = (data.get('api_key') or '').strip()
+
+    if not base_url or not model or not api_key:
+        return jsonify({'success': False, 'message': '地址、模型名称、API Key 都要填'})
+    if not base_url.startswith(('http://', 'https://')):
+        return jsonify({'success': False, 'message': '地址要以 http:// 或 https:// 开头'})
+
+    if api_key.startswith('****'):
+        # 用户没改密钥，沿用已保存的
+        saved = read_env_file().get('ARK_API_KEY', '')
+        if not saved:
+            return jsonify({'success': False, 'message': '请重新填写 API Key'})
+        api_key = saved
+
+    ok, message = test_ai_connection(base_url, model, api_key)
+    return jsonify({'success': ok, 'message': message})
+
+
+@app.route('/api/setup/save', methods=['POST'])
+def setup_save_config():
+    """保存配置并立即生效，不需要重启。"""
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get('base_url') or '').strip()
+    model = (data.get('model') or '').strip()
+    api_key = (data.get('api_key') or '').strip()
+    fallback = (data.get('fallback') or '').strip()
+
+    if not base_url or not model or not api_key:
+        return jsonify({'success': False, 'message': '地址、模型名称、API Key 都要填'})
+    if api_key.startswith('****'):
+        saved = read_env_file().get('ARK_API_KEY', '')
+        if not saved:
+            return jsonify({'success': False, 'message': '请重新填写 API Key'})
+        api_key = saved
+
+    status = apply_ai_config(base_url, model, api_key, fallback)
+    return jsonify({
+        'success': True,
+        'message': '配置已保存并生效',
+        'warnings': [],
+        'status': {'base_url': status['base_url'], 'model': status['model'],
+                   'key_tail': status['key_tail']},
+    })
+
+
+def wechat_login_ready():
+    """微信扫码登录需要微信开放平台网站应用的 AppID/Secret 与公网回调地址。"""
+    env = read_env_file()
+    return bool(env.get('WECHAT_APP_ID') and env.get('WECHAT_APP_SECRET')
+                and env.get('OAUTH_CALLBACK_BASE'))
+
+
+# ── 微信扫码登录（OAuth2）────────────────────────────────
+# 说明：微信扫码的整个流程都要由微信服务器回调到你的公网地址，
+# 所以只在自己电脑上跑（127.0.0.1）是跑不通的。
+# 这里的实现是完整的，配置好下面三项即可启用：
+#   WECHAT_APP_ID / WECHAT_APP_SECRET   微信开放平台「网站应用」的凭证
+#   OAUTH_CALLBACK_BASE                 公网可访问的地址，例如 https://your.domain
+
+WECHAT_AUTHORIZE = 'https://open.weixin.qq.com/connect/qrconnect'
+WECHAT_TOKEN_API = 'https://api.weixin.qq.com/sns/oauth2/access_token'
+WECHAT_USERINFO_API = 'https://api.weixin.qq.com/sns/userinfo'
+
+
+def _oauth_callback_url(provider):
+    base = read_env_file().get('OAUTH_CALLBACK_BASE', '').rstrip('/')
+    return f'{base}/oauth/{provider}/callback' if base else ''
+
+
+@app.route('/oauth/wechat/start')
+def oauth_wechat_start():
+    env = read_env_file()
+    app_id = env.get('WECHAT_APP_ID', '')
+    callback = _oauth_callback_url('wechat')
+    if not (app_id and callback):
+        return redirect(url_for('setup_wizard'))
+
+    state = secrets.token_urlsafe(16)
+    session['oauth_state'] = state
+    params = urllib.parse.urlencode({
+        'appid': app_id,
+        'redirect_uri': callback,
+        'response_type': 'code',
+        'scope': 'snsapi_login',
+        'state': state,
+    })
+    return redirect(f'{WECHAT_AUTHORIZE}?{params}#wechat_redirect')
+
+
+@app.route('/oauth/wechat/callback')
+def oauth_wechat_callback():
+    env = read_env_file()
+    code = request.args.get('code', '')
+    state = request.args.get('state', '')
+    if not code:
+        return redirect(url_for('setup_wizard'))
+    if not state or state != session.pop('oauth_state', None):
+        return '登录校验失败（state 不匹配），请重新发起扫码。', 400
+
+    token_params = urllib.parse.urlencode({
+        'appid': env.get('WECHAT_APP_ID', ''),
+        'secret': env.get('WECHAT_APP_SECRET', ''),
+        'code': code,
+        'grant_type': 'authorization_code',
+    })
+    try:
+        with urllib.request.urlopen(f'{WECHAT_TOKEN_API}?{token_params}', timeout=15) as resp:
+            token = json.loads(resp.read().decode('utf-8'))
+        if 'openid' not in token:
+            return f"微信授权失败：{token.get('errmsg', '未知错误')}", 400
+        info_params = urllib.parse.urlencode({
+            'access_token': token['access_token'],
+            'openid': token['openid'],
+            'lang': 'zh_CN',
+        })
+        with urllib.request.urlopen(f'{WECHAT_USERINFO_API}?{info_params}', timeout=15) as resp:
+            profile = json.loads(resp.read().decode('utf-8'))
+    except Exception as exc:
+        return f'与微信服务器通信失败：{type(exc).__name__}', 502
+
+    openid = token['openid']
+    account = f'wx_{openid[:16]}'
+    users = load_json(USERS_FILE)
+    if account not in users:
+        users[account] = {
+            'password': '',
+            'wechat_openid': openid,
+            'nickname': profile.get('nickname', ''),
+            'email': '',
+            'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'mode': 'explore',
+            'progress': {},
+            'completed_kps': [],
+            'completed_exercises': [],
+            'favorites': [],
+            'wrong_answers': [],
+            'notes': {},
+        }
+        save_json(USERS_FILE, users)
+
+    session['username'] = account
+    return redirect(url_for('dashboard'))
+
+
+def registration_is_open():
+    """白名单为空时视为不限制注册。
+
+    白名单本来是给老师控制课堂上谁能注册用的，但打包发出去以后
+    默认空表会把所有新用户挡在门外（注册和登录都会失败），
+    所以这里把"空"解释成"不限制"，填了名单才生效。
+    """
+    return len(_load_whitelist()) == 0
+
+
+def _account_allowed(username):
+    return registration_is_open() or is_whitelisted(username)
+
+
+EMAIL_RE = re.compile(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
+
+
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data.get('username', '').strip()
-    password = data.get('password', '').strip()
+    username = (data.get('username') or '').strip()
+    password = (data.get('password') or '').strip()
+    email = (data.get('email') or '').strip()
+
+    # 没填邮箱时，账号本身可以是邮箱
+    if not email and EMAIL_RE.match(username):
+        email = username
 
     if not username or not password:
-        return jsonify({'success': False, 'message': '用户名和密码不能为空'})
+        return jsonify({'success': False, 'message': '账号和密码不能为空'})
     if len(username) < 3:
-        return jsonify({'success': False, 'message': '用户名至少3个字符'})
+        return jsonify({'success': False, 'message': '账号至少 3 个字符'})
     if len(password) < 6:
-        return jsonify({'success': False, 'message': '密码至少6个字符'})
+        return jsonify({'success': False, 'message': '密码至少 6 个字符'})
+    if email and not EMAIL_RE.match(email):
+        return jsonify({'success': False, 'message': '邮箱格式不对，例如 123456@qq.com'})
 
-    # Whitelist check
-    if not is_whitelisted(username):
-        return jsonify({'success': False, 'message': '注册失败：该用户名不在白名单中，请联系管理员'})
+    if not _account_allowed(username):
+        return jsonify({'success': False, 'message': '注册失败：该账号不在白名单中，请联系管理员'})
 
     users = load_json(USERS_FILE)
     if username in users:
-        return jsonify({'success': False, 'message': '用户名已存在'})
+        return jsonify({'success': False, 'message': '该账号已注册，直接登录即可'})
+    if email and any(u.get('email') == email for u in users.values()):
+        return jsonify({'success': False, 'message': '该邮箱已注册，直接登录即可'})
 
     users[username] = {
         'password': hash_password(password),
+        'email': email,
         'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'mode': 'explore',
         'progress': {},
@@ -287,27 +498,33 @@ def register():
         'notes': {}
     }
     save_json(USERS_FILE, users)
-    return jsonify({'success': True, 'message': '注册成功，请登录'})
+    session['username'] = username
+    return jsonify({'success': True, 'message': '注册成功，已自动登录'})
 
 
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
-    username = data.get('username', '').strip()
-    password = data.get('password', '').strip()
+    username = (data.get('username') or '').strip()
+    password = (data.get('password') or '').strip()
 
     if not username or not password:
-        return jsonify({'success': False, 'message': '用户名和密码不能为空'})
+        return jsonify({'success': False, 'message': '账号和密码不能为空'})
 
     users = load_json(USERS_FILE)
+    # 允许用邮箱登录
     if username not in users:
-        return jsonify({'success': False, 'message': '用户不存在'})
+        hit = next((u for u, info in users.items() if info.get('email') == username), '')
+        if hit:
+            username = hit
+
+    if username not in users:
+        return jsonify({'success': False, 'message': '账号不存在，请先注册'})
 
     if users[username]['password'] != hash_password(password):
         return jsonify({'success': False, 'message': '密码错误'})
 
-    # Whitelist check
-    if not is_whitelisted(username):
+    if not _account_allowed(username):
         return jsonify({'success': False, 'message': '登录失败：账号未在白名单中或已过期，请联系管理员'})
 
     session['username'] = username
@@ -784,6 +1001,119 @@ AI_CONNECT_TIMEOUT = 4
 # Keep interactive tutoring bounded: one stalled relay should not make the
 # chat feel frozen, while the browser's 12s abort remains a final guard.
 AI_READ_TIMEOUT = 8
+
+# ── AI 配置的读取 / 校验 / 热更新 ─────────────────────────
+# 用户下载压缩包后要做的第一件事就是填自己的模型地址与密钥。
+# 这些值原先只在启动时从 .env 读一次，填完必须重启才生效——
+# 首次配置向导要求保存后立刻可用，所以这里做成可热更新。
+
+ENV_FILE = os.path.join(WRITE_ROOT, '.env')
+AI_CONFIG_KEYS = ('PYMASTER_AI_BASE_URL', 'PYMASTER_AI_MODEL', 'ARK_API_KEY')
+
+
+def read_env_file():
+    values = {}
+    if os.path.exists(ENV_FILE):
+        try:
+            with open(ENV_FILE, 'r', encoding='utf-8') as f:
+                for raw in f:
+                    line = raw.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        key, value = line.split('=', 1)
+                        values[key.strip()] = value.strip().strip('"\'')
+        except OSError:
+            pass
+    return values
+
+
+def ai_config_status():
+    """AI 是否配置完整；顺带返回脱敏后的回显信息。"""
+    env = read_env_file()
+    # 进程环境优先（容器/CI 场景常用环境变量注入）
+    base_url = os.environ.get('PYMASTER_AI_BASE_URL') or env.get('PYMASTER_AI_BASE_URL', '')
+    model = os.environ.get('PYMASTER_AI_MODEL') or env.get('PYMASTER_AI_MODEL', '')
+    key = os.environ.get('ARK_API_KEY') or env.get('ARK_API_KEY', '')
+    return {
+        'configured': bool(base_url and model and key),
+        'base_url': base_url,
+        'model': model,
+        'fallback': env.get('PYMASTER_AI_FALLBACK_MODELS', ''),
+        'key_tail': ('****' + key[-4:]) if len(key) >= 4 else '',
+    }
+
+
+def apply_ai_config(base_url, model, api_key, fallback=''):
+    """写入 .env 并让配置立即生效（不需要重启）。"""
+    global AI_BASE_URL, AI_API_KEY, AI_MODEL, ark
+
+    lines = []
+    if os.path.exists(ENV_FILE):
+        with open(ENV_FILE, 'r', encoding='utf-8') as f:
+            for raw in f:
+                line = raw.rstrip('\n')
+                key = line.split('=', 1)[0].strip() if '=' in line else ''
+                if key in AI_CONFIG_KEYS or key == 'PYMASTER_AI_FALLBACK_MODELS':
+                    continue
+                if line.strip():
+                    lines.append(line)
+    lines.insert(0, f'PYMASTER_AI_BASE_URL={base_url}')
+    lines.insert(1, f'PYMASTER_AI_MODEL={model}')
+    lines.insert(2, f'ARK_API_KEY={api_key}')
+    if fallback:
+        lines.insert(3, f'PYMASTER_AI_FALLBACK_MODELS={fallback}')
+
+    tmp = ENV_FILE + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lines) + '\n')
+    os.replace(tmp, ENV_FILE)
+
+    os.environ['PYMASTER_AI_BASE_URL'] = base_url
+    os.environ['PYMASTER_AI_MODEL'] = model
+    os.environ['ARK_API_KEY'] = api_key
+    if fallback:
+        os.environ['PYMASTER_AI_FALLBACK_MODELS'] = fallback
+
+    AI_BASE_URL = _normalize_ai_endpoint(base_url)
+    ark = ArkClient()
+    AI_API_KEY = ark.key
+    AI_MODEL = ark.models[0]
+    AI_CACHE.clear()
+    return ai_config_status()
+
+
+def test_ai_connection(base_url, model, api_key, timeout=20):
+    """拿用户填的配置真发一次最小请求，确认能用。"""
+    url = _normalize_ai_endpoint(base_url)
+    payload = json.dumps({
+        'model': model,
+        'messages': [{'role': 'user', 'content': '请只回复两个字：可用'}],
+        'max_tokens': 16,
+        'temperature': 0,
+    }).encode('utf-8')
+    request = urllib.request.Request(url, data=payload, headers={
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {api_key}',
+    })
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            result = json.loads(response.read().decode('utf-8'))
+        content = result['choices'][0]['message'].get('content', '')
+        return True, f'调用成功，模型回复：{content.strip()[:30]}'
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode('utf-8', 'ignore')[:160]
+        hints = {
+            401: 'API Key 不正确或已失效',
+            403: '没有该模型的权限，或 Key 被限制',
+            404: '模型名称或接口地址不对',
+            429: '请求过于频繁，或额度已用尽',
+        }
+        return False, f'{hints.get(exc.code, "接口返回错误")}（HTTP {exc.code}）{detail}'
+    except urllib.error.URLError as exc:
+        return False, f'连不上这个地址：{exc.reason}。请检查 Base URL 和网络。'
+    except (KeyError, IndexError, ValueError):
+        return False, '接口返回的格式不是 OpenAI 兼容格式，请确认 Base URL'
+    except Exception as exc:
+        return False, f'测试失败：{type(exc).__name__}: {str(exc)[:120]}'
 
 
 def _quick_python_answer(question):
