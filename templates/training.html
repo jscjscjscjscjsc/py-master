@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刷题中心 · PyMaster</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/music.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/lib/codemirror.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/theme/material-darker.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/training.css') }}">
+</head>
+<body class="workbench-page">
+
+<header class="wb-top">
+  <div class="wb-brand"><span class="spark">⚔️</span><span>刷题中心</span></div>
+  <div class="wb-tabs">
+    <button class="wb-tab active" data-mode="practice">练习模式</button>
+    <button class="wb-tab" data-mode="exam">实战模式</button>
+  </div>
+  <div class="wb-right">
+    <a class="wb-link" href="/coach">星辰教练</a>
+    <a class="wb-link" href="/progress">学习仪表盘</a>
+    <a class="wb-link" href="/dashboard">返回主页</a>
+    <span class="wb-link" id="whoami" style="cursor:default">👤 {{ username }}</span>
+  </div>
+</header>
+
+<div class="wb-layout">
+  <aside class="wb-side" id="wb-side"></aside>
+  <main>
+    <div id="wb-list" class="qlist"></div>
+    <div id="wb-detail"></div>
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='vendor/codemirror/lib/codemirror.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/mode/python/python.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/selection/active-line.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/edit/closebrackets.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/comment/comment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui_confirm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/md_lite.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cultivation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
+<script src="{{ url_for('static', filename='js/training.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Training.init();
+    Cultivation.mount();
+  });
+</script>
+</body>
+</html>

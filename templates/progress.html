@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习仪表盘 · PyMaster</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/music.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/training.css') }}">
+</head>
+<body class="workbench-page">
+
+<header class="wb-top">
+  <div class="wb-brand"><span class="spark">📊</span><span>学习仪表盘</span></div>
+  <div class="wb-right">
+    <a class="wb-link" href="/training">刷题中心</a>
+    <a class="wb-link" href="/coach">星辰教练</a>
+    <a class="wb-link" href="/dashboard">返回主页</a>
+    <span class="wb-link" style="cursor:default">👤 {{ username }}</span>
+  </div>
+</header>
+
+<div class="wb-layout wide">
+  <main id="dash-root">
+    <div class="empty-note">正在统计你的学习数据…</div>
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/ui_confirm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cultivation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
+<script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+</body>
+</html>

@@ -45,6 +45,12 @@ DEFAULT_IMAGE_MODEL = 'doubao-seedream-4-0-250828'
 
 # 一节讲解的目标规模：16 镜头 × 约 100 字 ≈ 300 秒
 # 实测 edge-tts 云希声线 +6% 语速下中文约 5.3 字/秒
+# 分镜脚本的输出预算。
+# 注意：deepseek-v4.1 这类推理模型会把预算先花在思考上——
+# 实测 8000 tokens 全部用于推理、正文一个字都没有，
+# 所以这里给足余量（该模型单次输出上限 38 万 token）。
+SCRIPT_MAX_TOKENS = 48000
+
 DEFAULT_SCENES = 16
 TARGET_SECONDS = 300
 CHARS_PER_SECOND = 5.3
@@ -75,6 +81,30 @@ VOICE_LABELS = {
     'zh-CN-XiaoxiaoNeural': '晓晓 · 温暖女声',
     'zh-CN-YunyangNeural': '云扬 · 沉稳旁白',
 }
+
+# ── 通用请求头 ────────────────────────────────────────────
+# 有些 OpenAI 兼容网关对请求有额外要求，不加就会莫名失败：
+#   · opencode.ai 前面挂着 Cloudflare，用默认的 Python-urllib UA 会被判定成
+#     机器人直接返回 403（error code 1010）；
+#   · OpenCode Go 还要求带一个会话标识 x-opencode-session，否则返回
+#     400 MissingSessionID，无法路由。
+# 这里统一构造，ArkText / 连接测试 / 评分接口共用一套。
+BROWSER_UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+              '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+
+
+def request_headers(url='', api_key=None):
+    headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': BROWSER_UA,
+        'Accept': 'application/json',
+    }
+    if api_key:
+        headers['Authorization'] = 'Bearer ' + api_key
+    if 'opencode.ai' in (url or ''):
+        headers['x-opencode-session'] = str(uuid.uuid4())
+    return headers
+
 
 _SCRIPT_SYSTEM = (
     '你是一位职业院校的 Python 与 AI 应用开发讲师，擅长把技术知识点讲成'
@@ -108,15 +138,18 @@ class ArkText:
         self.url = (base or _env('PYMASTER_AI_BASE_URL', ARK_BASE)).rstrip('/')
         if not self.url.endswith('/chat/completions'):
             self.url += '/chat/completions'
+        self.headers = request_headers(self.url)
+
 
     @property
     def available(self):
         return bool(self.api_key)
 
-    def complete(self, system, user, max_tokens=8000, temperature=0.6, timeout=240,
+    def complete(self, system, user, max_tokens=None, temperature=0.6, timeout=420,
                  attempts=4):
         if not self.api_key:
             raise RuntimeError('未配置 ARK_API_KEY，无法生成讲解稿。')
+        max_tokens = max_tokens or SCRIPT_MAX_TOKENS
         payload = {
             'model': self.model,
             'messages': [{'role': 'system', 'content': system},
@@ -294,7 +327,11 @@ class VoiceOver:
 
     @staticmethod
     def duration_of(path):
-        """读音频时长。Windows 上杀毒软件扫描新文件会短暂占用句柄，所以重试几次。"""
+        """读音频时长。Windows 上杀毒软件扫描新文件会短暂占用句柄，所以重试几次。
+
+        这个函数必须永不抛错：它只是用来算时长的，一旦抛出去会把整段口播判死，
+        而实际上音频已经合成好了。文件真的不在时退回按体积估算。
+        """
         from mutagen.mp3 import MP3
         for attempt in range(4):
             try:
@@ -305,7 +342,10 @@ class VoiceOver:
                 time.sleep(0.4 * (attempt + 1))
             except Exception:
                 break
-        return round(path.stat().st_size * 8 / 48000, 2)
+        try:
+            return round(path.stat().st_size * 8 / 48000, 2)
+        except OSError:
+            return 0.0
 
     @staticmethod
     async def _save(text, voice, rate, pitch, path):
@@ -352,7 +392,10 @@ class VoiceOver:
                                 break
                             except OSError:
                                 time.sleep(0.4)
-                        return path, self.duration_of(path)
+                        if path.exists() and path.stat().st_size > 1024:
+                            return path, self.duration_of(path)
+                        last_error = RuntimeError('临时文件替换失败')
+                        continue
                     last_error = RuntimeError('返回空音频')
                 except Exception as exc:
                     last_error = exc
@@ -440,9 +483,14 @@ def _legacy_image_prompt_note():
             '不要出现文字要求，不要和别的镜头重复。')
 
 
+# 模型对"每镜头写满 N 字"这类指令习惯性写超，实测按目标字数的 86% 下指令，
+# 落点才接近 5 分钟（否则普遍跑到 6.5 分钟）。
+SCRIPT_LEN_SCALE = 0.86
+
+
 def build_script_prompt(chapter_title, kp_title, kp_text, scenes=DEFAULT_SCENES,
                         want_image_prompt=False):
-    total_chars = int(TARGET_SECONDS * CHARS_PER_SECOND)
+    total_chars = int(TARGET_SECONDS * CHARS_PER_SECOND * SCRIPT_LEN_SCALE)
     lo, hi = total_chars // scenes - 4, total_chars // scenes + 6
     span = f'{lo * scenes}–{hi * scenes}'
     visual_note = '' if want_image_prompt else '\n' + _VISUAL_SPEC
@@ -556,7 +604,7 @@ def expand_short_scenes(client, chapter_title, kp_title, script, target_chars):
         return script, 0
     raw = client.complete(_EXPAND_SYSTEM,
                           _expand_prompt(chapter_title, kp_title, short, target_len),
-                          max_tokens=8000, temperature=0.5)
+                          max_tokens=SCRIPT_MAX_TOKENS, temperature=0.5)
     try:
         payload = _extract_json(raw)
     except ValueError:
@@ -660,7 +708,8 @@ def build_script(chapter_title, kp_title, kp_text, scenes=DEFAULT_SCENES, client
     client = client or ArkText()
     raw = client.complete(_SCRIPT_SYSTEM,
                           build_script_prompt(chapter_title, kp_title, kp_text, scenes,
-                                              want_image_prompt))
+                                              want_image_prompt),
+                          max_tokens=SCRIPT_MAX_TOKENS)
     data = _extract_json(raw)
     cleaned = []
     for idx, scene in enumerate(data.get('scenes') or [], start=1):
@@ -760,7 +809,7 @@ class NarrationBuilder:
                 path, duration = self.voice.synth(scene['narration'], voice=voice, rate=rate)
             except Exception as exc:
                 # 单镜头失败不中断整节：记录缺口，重跑时会因为音频缓存而只补这一段
-                self.on_log(f"    ⚠ 镜头 {scene['id']} 口播失败：{str(exc)[:90]}")
+                self.on_log(f"    ⚠ 镜头 {scene['id']} 口播失败：{str(exc)[:220]}")
                 scene['audio'] = ''
                 scene['audio_seconds'] = 0
                 return 0.0

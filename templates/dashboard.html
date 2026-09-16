@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/star_map.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/atlas.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/music.css') }}">
 </head>
 <body class="dashboard-page">
 
@@ -23,6 +25,9 @@
     <div class="nav-user">
       <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
       <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="/training" class="btn-playground-nav" style="margin-right:4px;">刷题中心</a>
+      <a href="/progress" class="btn-playground-nav" style="margin-right:4px;">学习仪表盘</a>
+      <a href="/coach" class="btn-playground-nav" style="margin-right:4px;">星辰教练</a>
       <a href="{{ url_for('playground') }}" class="btn-playground-nav" style="margin-right:4px;">
         练习场
       </a>
@@ -162,7 +167,8 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cultivation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
 <script src="{{ url_for('static', filename='js/star_map.js') }}"></script>
 <script>
 function goToChapter(id) {
@@ -183,5 +189,6 @@ fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
 <script src="{{ url_for('static', filename='vendor/three.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chapter_intro_3d.js') }}"></script>
 <script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
+<script>Cultivation.mount();</script>
 </body>
 </html>

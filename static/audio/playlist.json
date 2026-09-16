@@ -1,0 +1,50 @@
+[
+ {
+  "file": "lively-steps.mp3",
+  "title": "悠然时光",
+  "artist": "Kevin MacLeod",
+  "mood": "轻快 · 打开思路",
+  "license": "CC BY 4.0（Kevin MacLeod / incompetech.com）",
+  "source": "Life of Riley"
+ },
+ {
+  "file": "carefree.mp3",
+  "title": "无忧",
+  "artist": "Kevin MacLeod",
+  "mood": "明亮 · 心情上浮",
+  "license": "CC BY 4.0（Kevin MacLeod / incompetech.com）",
+  "source": "Carefree"
+ },
+ {
+  "file": "happy-alley.mp3",
+  "title": "快乐小巷",
+  "artist": "Kevin MacLeod",
+  "mood": "俏皮 · 短小的快乐",
+  "license": "CC BY 4.0（Kevin MacLeod / incompetech.com）",
+  "source": "Happy Alley"
+ },
+ {
+  "file": "warm-sunlight.mp3",
+  "title": "暖阳",
+  "artist": "Kevin MacLeod",
+  "mood": "温暖 · 适合长时间写代码",
+  "license": "CC BY 4.0（Kevin MacLeod / incompetech.com）",
+  "source": "Heartwarming"
+ },
+ {
+  "file": "calm-morning.mp3",
+  "title": "沉思",
+  "artist": "Kevin MacLeod",
+  "mood": "安静 · 进入心流",
+  "license": "CC BY 4.0（Kevin MacLeod / incompetech.com）",
+  "source": "Deliberate Thought"
+ },
+ {
+  "file": "wallpaper.mp3",
+  "title": "壁纸",
+  "artist": "Kevin MacLeod",
+  "mood": "极简 · 几乎感觉不到它",
+  "license": "CC BY 4.0（Kevin MacLeod / incompetech.com）",
+  "source": "Wallpaper"
+ }
+]

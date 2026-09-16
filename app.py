@@ -50,6 +50,8 @@ else:
 from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
 import narration_engine
+import training_engine as training
+import coach_engine as coach
 from pathlib import Path
 
 # 讲解产物的读写位置跟随 PyInstaller 的 BUNDLE/WRITE 约定：
@@ -1445,6 +1447,12 @@ def ask_jj_stream():
                         history = users[username].setdefault('jj_history', {}).setdefault(chapter_id, [])
                         history.append({'question': question, 'answer': answer, 'timestamp': datetime.now().isoformat()})
                         save_json(USERS_FILE, users)
+                # 练习里的答疑也沉淀到星辰教练，形成可回看的「答疑对话」
+                try:
+                    coach.record_exchange(username, question, answer,
+                                          chapter_id=chapter_id, source='exercise')
+                except Exception as exc:      # 会话写失败不能影响这次回答
+                    print(f'[coach] 记录练习答疑失败：{exc}')
             yield encode({'type': 'done', 'model': ark.active_model})
         except ArkError as exc:
             yield encode({'type': 'error', 'message': str(exc)})
@@ -2373,7 +2381,21 @@ def complete_kp():
         users[username]['progress'][chapter_id]['knowledge'] = users[username]['progress'][chapter_id].get('knowledge', 0) + 1
     save_json(USERS_FILE, users)
 
-    return jsonify({'success': True, 'key': key})
+    # 修为结算：完成知识点 + 整章通关额外奖励
+    settlement = _award_cultivation(username, 'kp', key, training.KP_POINTS, note='完成知识点')
+    courses = load_json(COURSES_FILE)
+    course = next((c for c in courses if str(c['id']) == chapter_id), None)
+    if course:
+        total_kps = len(course.get('knowledge_points', []))
+        keys = {f'{chapter_id}_{i}' for i in range(total_kps)}
+        if keys and keys.issubset(set(completed)):
+            chapter_bonus = _award_cultivation(username, 'chapter', chapter_id,
+                                               training.CHAPTER_POINTS, note='整章通关')
+            settlement['chapter'] = chapter_bonus
+            if chapter_bonus.get('awarded'):
+                settlement['points'] = settlement.get('awarded', 0) + chapter_bonus['awarded']
+
+    return jsonify({'success': True, 'key': key, **settlement})
 
 
 @app.route('/api/submit-answer', methods=['POST'])
@@ -3203,6 +3225,858 @@ def narration_job_status(job_id):
         return jsonify({'success': False, 'message': '任务不存在'}), 404
     job['success'] = True
     return jsonify(job)
+
+
+# ═══════════════════════════════════════════════════════════
+# 星辰教练 · 刷题中心 · 修为系统
+# ═══════════════════════════════════════════════════════════
+# 三个模块共用同一套「用户数据目录 + 原子写」的实现，都在 training_engine 里；
+# 教练会话单独一份文件（对话太长，混进 users.json 会让每次答题都要序列化几 MB 文本）。
+
+training.configure(WRITE_ROOT, DATA_DIR)
+coach.configure(WRITE_ROOT, DATA_DIR)
+
+
+def _who():
+    return session.get('username', 'guest')
+
+
+def _sse(event):
+    return 'data: ' + json.dumps(event, ensure_ascii=False) + '\n\n'
+
+
+def _stream(generator):
+    return Response(generator, mimetype='text/event-stream',
+                    headers={'Cache-Control': 'no-cache', 'X-Accel-Buffering': 'no'})
+
+
+def _award_cultivation(username, reason, ref, amount, note=''):
+    """加分并返回结算信息。游客不积分，避免污染数据。"""
+    if not username or username == 'guest':
+        return {'awarded': 0, 'profile': training.level_from_points(0)}
+    box = {}
+
+    def mutate(state):
+        awarded, before, after = training.award(state, reason, ref, amount, note)
+        box.update({'awarded': awarded, 'before': before, 'after': after})
+
+    training.mutate_state(username, mutate)
+    return {
+        'awarded': box.get('awarded', 0),
+        'profile': box.get('after') or training.level_from_points(0),
+        'level_up': bool(box.get('after') and box.get('before') and box['after']['level'] > box['before']['level']),
+    }
+
+
+def _profile(username):
+    if not username or username == 'guest':
+        return training.level_from_points(0)
+    state = training.load_state(username)
+    return training.level_from_points(state.get('points', 0))
+
+
+# ── 星辰教练：页面与接口 ────────────────────────────────────
+
+@app.route('/coach')
+def coach_page():
+    username = _who()
+    return render_template('coach.html', username=username,
+                          is_guest=username == 'guest',
+                          max_sessions=coach.MAX_SESSIONS)
+
+
+@app.route('/api/coach/sessions', methods=['GET'])
+def coach_sessions():
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': True, 'sessions': [], 'limit': coach.MAX_SESSIONS,
+                        'guest': True})
+    return jsonify({'success': True, 'sessions': coach.list_sessions(username),
+                    'limit': coach.MAX_SESSIONS})
+
+
+@app.route('/api/coach/sessions', methods=['POST'])
+def coach_create_session():
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '登录后对话才会保存，游客模式可以聊但记录不留。'}), 200
+    data = request.get_json(silent=True) or {}
+    created = coach.create_session(username, title=data.get('title'),
+                                   source='manual', first_message=data.get('title') or '')
+    if isinstance(created, dict) and created.get('error'):
+        return jsonify({'success': False, 'message': created.get('message', '会话数量已达上限'),
+                        'limit': coach.MAX_SESSIONS})
+    return jsonify({'success': True, 'session': created,
+                    'sessions': coach.list_sessions(username)})
+
+
+@app.route('/api/coach/sessions/<session_id>', methods=['GET'])
+def coach_get_session(session_id):
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '游客模式不保存对话'}), 200
+    session_data = coach.get_session(username, session_id)
+    if not session_data:
+        return jsonify({'success': False, 'message': '对话不存在或已被删除'}), 404
+    return jsonify({'success': True, 'session': session_data,
+                    'transcript': coach.transcript(session_data)})
+
+
+@app.route('/api/coach/sessions/<session_id>', methods=['DELETE'])
+def coach_delete_session(session_id):
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '游客模式没有可删除的对话'}), 200
+    deleted = coach.delete_session(username, session_id)
+    return jsonify({'success': deleted, 'sessions': coach.list_sessions(username),
+                    'message': '已删除' if deleted else '对话不存在'})
+
+
+@app.route('/api/coach/sessions/<session_id>/rename', methods=['POST'])
+def coach_rename_session(session_id):
+    username = _who()
+    data = request.get_json(silent=True) or {}
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '游客模式不保存对话'}), 200
+    ok = coach.rename_session(username, session_id, data.get('title', ''))
+    return jsonify({'success': ok, 'sessions': coach.list_sessions(username)})
+
+
+@app.route('/api/coach/sessions/<session_id>/transcript', methods=['GET'])
+def coach_transcript(session_id):
+    """一键复制用：返回一段纯文本 Markdown。"""
+    username = _who()
+    session_data = coach.get_session(username, session_id) if username != 'guest' else None
+    if not session_data:
+        return jsonify({'success': False, 'message': '对话不存在'}), 404
+    return jsonify({'success': True, 'text': coach.transcript(session_data),
+                    'title': session_data.get('title', '星辰教练对话')})
+
+
+@app.route('/api/coach/sessions/<session_id>/clear', methods=['POST'])
+def coach_clear_session(session_id):
+    """清空消息但保留对话本身（相当于「重开一轮」）。"""
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '游客模式不保存对话'}), 200
+    ok = coach.clear_messages(username, session_id)
+    return jsonify({'success': ok, 'session': coach.get_session(username, session_id),
+                    'sessions': coach.list_sessions(username)})
+
+
+@app.route('/api/coach/chat', methods=['POST'])
+def coach_chat():
+    """星辰教练的多轮对话（SSE 流式）。"""
+    data = request.get_json(silent=True) or {}
+    question = str(data.get('question', '')).strip()
+    if not question or len(question) > 6000:
+        return jsonify({'success': False, 'message': '问题不能为空，且不要超过 6000 字。'}), 400
+    username = _who()
+    session_id = str(data.get('session_id', '') or '')
+    chapter_id = str(data.get('chapter_id', '') or '')
+
+    if username != 'guest' and not check_daily_limit(username)[0]:
+        return jsonify({'success': False, 'message': '今日 AI 问答次数已用完，明天再来吧。'}), 429
+
+    # 没有开会话就先开一个（游客只聊不存）
+    if username != 'guest' and not session_id:
+        created = coach.create_session(username, source='manual', chapter_id=chapter_id,
+                                       first_message=question)
+        if isinstance(created, dict) and created.get('error'):
+            return jsonify({'success': False, 'message': created.get('message'),
+                            'limit': coach.MAX_SESSIONS}), 200
+        session_id = created['id']
+    elif username != 'guest':
+        if not coach.get_session(username, session_id, full=False):
+            return jsonify({'success': False, 'message': '对话不存在或已被删除'}), 404
+
+    history = []
+    if username != 'guest' and session_id:
+        saved = coach.get_session(username, session_id) or {}
+        history = [{'role': m['role'], 'content': m['content']}
+                   for m in saved.get('messages', []) if m.get('content')]
+        coach.append_message(username, session_id, 'user', question,
+                             {'chapter_id': chapter_id, 'source': 'coach'})
+    else:
+        for item in (data.get('history') or [])[-8:]:
+            role = str(item.get('role', ''))
+            content = str(item.get('content', ''))
+            if role in ('user', 'assistant') and content:
+                history.append({'role': role, 'content': content})
+
+    page_state = build_student_state(data, username)
+    rag = retrieve_course_context(question[:600], chapter_id)
+    parts = []
+    if page_state:
+        parts.append(page_state)
+    if rag:
+        parts.append('【本课程相关讲义（优先按这里讲过的解释，不要跑题）】\n' + rag)
+    parts.append('【学生提问】\n' + question)
+    messages = [{'role': 'system', 'content': coach.COACH_SYSTEM_PROMPT}]
+    messages.extend(history[-10:])
+    messages.append({'role': 'user', 'content': '\n\n'.join(parts)})
+
+    def generate():
+        yield _sse({'type': 'session', 'session_id': session_id})
+        yield _sse({'type': 'status', 'message': 'JJ老师正在想…'})
+        answer = ''
+        try:
+            for event in ark.events(messages, max_tokens=1200):
+                if event['type'] == 'delta':
+                    answer += event['text']
+                yield _sse(event)
+            if not answer:
+                raise ArkError('模型没有返回正文，请重试。')
+            if username != 'guest':
+                increment_daily_usage(username)
+                coach.append_message(username, session_id, 'assistant', answer,
+                                     {'chapter_id': chapter_id, 'source': 'coach'})
+            yield _sse({'type': 'done', 'model': ark.active_model,
+                        'title': coach.make_title(question)})
+        except ArkError as exc:
+            yield _sse({'type': 'error', 'message': str(exc)})
+
+    return _stream(generate())
+
+
+@app.route('/api/coach/record', methods=['POST'])
+def coach_record():
+    """把练习 / 刷题里的一次问答存进星辰教练（供前端在 AI 答疑结束后调用）。"""
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '游客模式不保存对话'}), 200
+    data = request.get_json(silent=True) or {}
+    result = coach.record_exchange(
+        username,
+        str(data.get('question', ''))[:4000],
+        str(data.get('answer', ''))[:20000],
+        chapter_id=str(data.get('chapter_id', '') or ''),
+        source=str(data.get('source', 'exercise') or 'exercise'),
+        meta={'question_id': data.get('question_id', ''), 'mode': data.get('mode', '')},
+    )
+    return jsonify({'success': bool(result.get('saved')), **result,
+                    'sessions': coach.list_sessions(username)})
+
+
+# ── 刷题中心：页面与接口 ────────────────────────────────────
+
+def _exam_of(state, exam_id):
+    for exam in state.get('exams', []):
+        if exam.get('id') == exam_id:
+            return exam
+    return None
+
+
+def _mark_exam_answer(state, exam_id, question_id, status, stars=0, passed=False, error=''):
+    """把一次作答写进卷子；所有题都落定后自动交卷并结算实战奖励。
+
+    判题与「跳过」两条路径共用这里。之前两边各写一遍，
+    跳过那条路忘了写卷子，表现就是「跳过的题在卷子里还是待作答，永远交不了卷」。
+    """
+    exam = _exam_of(state, exam_id)
+    if exam is None:
+        return None
+    answer = exam.setdefault('answers', {}).setdefault(question_id, {})
+    answer['status'] = status
+    answer['stars'] = max(0, int(stars or 0))
+    answer['passed'] = bool(passed)
+    if error:
+        answer['error'] = str(error)[:400]
+    elif status == 'done':
+        answer['error'] = ''
+
+    total = len(exam.get('questions', []))
+    settled = sum(1 for qid in exam.get('questions', [])
+                  if (exam['answers'].get(qid) or {}).get('status') in ('done', 'skipped', 'failed'))
+    if total and settled >= total and exam.get('status') != 'finished':
+        exam['status'] = 'finished'
+        exam['finished_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        star_sum = sum((exam['answers'].get(q) or {}).get('stars', 0) for q in exam['questions'])
+        exam['score'] = round(star_sum / (total * 3) * 100)
+        exam['stars_total'] = star_sum
+        training.award(state, 'exam', exam_id,
+                       training.EXAM_FINISH_BASE + training.EXAM_FINISH_PER_Q * total,
+                       note='完成实战组卷')
+    return exam
+
+
+@app.route('/training')
+def training_page():
+    username = _who()
+    return render_template('training.html', username=username,
+                          is_guest=username == 'guest')
+
+
+@app.route('/api/training/catalog')
+def training_catalog():
+    """题库目录：课程章节 + 算法专题，各带用户进度。"""
+    username = _who()
+    courses = load_json(COURSES_FILE)
+    state = training.load_state(username) if username != 'guest' else {}
+    attempts = (state.get('attempts') or {})
+    chapters = training.bank_chapters(courses)
+
+    catalog = []
+    for info in chapters:
+        items = training.filter_questions(chapters=[info['id']])
+        solved = sum(1 for q in items if attempts.get(q['id'], {}).get('solved'))
+        attempted = sum(1 for q in items if attempts.get(q['id'], {}).get('attempts'))
+        wrong = sum(1 for q in items if attempts.get(q['id'], {}).get('wrong'))
+        catalog.append({
+            **info,
+            'solved': solved,
+            'attempted': attempted,
+            'wrong': wrong,
+            'progress': round(solved / len(items) * 100) if items else 0,
+        })
+    by_track = {
+        'course': [c for c in catalog if c['track'] == 'course'],
+        'algorithm': [c for c in catalog if c['track'] == 'algorithm'],
+    }
+    return jsonify({'success': True, 'chapters': catalog, 'by_track': by_track,
+                    'total': len(training.load_bank())})
+
+
+@app.route('/api/training/questions')
+def training_questions():
+    """题目列表（不含答案，答案要按模式单独取）。"""
+    username = _who()
+    state = training.load_state(username) if username != 'guest' else {}
+    args = request.args
+    chapters = [c for c in (args.get('chapters') or '').replace('，', ',').split(',') if c.strip()]
+    try:
+        limit = min(300, max(1, int(args.get('limit', 200))))
+    except (TypeError, ValueError):
+        limit = 200
+    items = training.filter_questions(
+        chapters=chapters or None,
+        track=args.get('track') or None,
+        difficulty=int(args['difficulty']) if str(args.get('difficulty', '')).isdigit() else None,
+        keyword=(args.get('q') or '').strip() or None,
+        only=args.get('only') or None,
+        state=state,
+        limit=limit,
+    )
+    return jsonify({'success': True,
+                    'questions': [training.question_brief(q, state) for q in items],
+                    'count': len(items)})
+
+
+@app.route('/api/training/question/<question_id>')
+def training_question(question_id):
+    """取单题。实战模式在做卷过程中不下发答案，交卷后才解锁。
+
+    注意：只要这道题还躺在**任意一份未交卷的卷子**里，就一律锁答案。
+    早期实现只看 URL 上带没带 exam_id，学生把参数去掉就能拿到答案——
+    锁答案必须是「按题判定」，不能指望调用方老实传参。
+    """
+    username = _who()
+    state = training.load_state(username) if username != 'guest' else {}
+    question = training.bank_index().get(question_id)
+    if not question:
+        return jsonify({'success': False, 'message': '题目不存在'}), 404
+
+    reveal = True
+    blocked_reason = ''
+    for exam in (state.get('exams') or []):
+        # 只有「进行中」的卷子锁答案。已交卷（finished）与已作废（abandoned）
+        # 都要放行，否则一份被放弃的旧卷子会把题目永久锁住。
+        if exam.get('status') in ('finished', 'abandoned'):
+            continue
+        if question_id in (exam.get('questions') or []):
+            reveal = False
+            blocked_reason = '实战模式下交卷后才能看解析，先自己试试。'
+            break
+    detail = training.public_question(question, state, reveal=reveal)
+    detail['blocked_reason'] = blocked_reason
+    detail['draft'] = (state.get('drafts') or {}).get(question_id, [])
+    detail['record'] = (state.get('attempts') or {}).get(question_id, {})
+    return jsonify({'success': True, 'question': detail})
+
+
+@app.route('/api/training/run-cell', methods=['POST'])
+def training_run_cell():
+    """运行某一个代码块（Jupyter 那种独立运行）。"""
+    data = request.get_json(silent=True) or {}
+    cells = data.get('cells') or []
+    if not isinstance(cells, list) or not cells:
+        return jsonify({'success': False, 'error': '还没有代码可以运行。'})
+    if sum(len(str(c)) for c in cells) > 60000:
+        return jsonify({'success': False, 'error': '代码太长了（合计上限 60000 字符）。'})
+    result = training.run_cells(cells, active=data.get('active', 0),
+                                stdin_text=str(data.get('stdin', ''))[:4000], timeout=20)
+    return jsonify({'success': result.get('ok', False), **result})
+
+
+@app.route('/api/training/draft', methods=['POST'])
+def training_save_draft():
+    """把当前代码块存成草稿，换设备 / 刷新页面还能接着写。"""
+    username = _who()
+    data = request.get_json(silent=True) or {}
+    qid = str(data.get('question_id', ''))
+    cells = [str(c)[:20000] for c in (data.get('cells') or [])][:12]
+    if username == 'guest' or not qid or qid not in training.bank_index():
+        return jsonify({'success': False, 'message': '游客模式不保存草稿'}), 200
+
+    def mutate(state):
+        state.setdefault('drafts', {})[qid] = cells
+        return True
+    training.mutate_state(username, mutate)
+    return jsonify({'success': True, 'saved_at': datetime.now().strftime('%H:%M:%S')})
+
+
+@app.route('/api/training/judge', methods=['POST'])
+def training_judge():
+    """判题：跑断言，结算星级与积分。"""
+    username = _who()
+    data = request.get_json(silent=True) or {}
+    question = training.bank_index().get(str(data.get('question_id', '')))
+    if not question:
+        return jsonify({'success': False, 'error': '题目不存在'}), 404
+    cells = [str(c) for c in (data.get('cells') or [])]
+    if not cells or sum(len(c) for c in cells) > 60000:
+        return jsonify({'success': False, 'error': '还没有写代码，或代码过长（上限 60000 字符）。'})
+
+    exam_id = str(data.get('exam_id', '') or '')
+    used_ai = bool(data.get('used_ai'))
+    skipped = bool(data.get('skipped'))
+    result = training.judge(question, cells, stdin_text=str(data.get('stdin', '')),
+                            timeout=25)
+
+    settle = None
+    if username != 'guest':
+        box = {}
+
+        def mutate(state):
+            settle_result = training.record_attempt(
+                state, question, cells, result,
+                mode='exam' if exam_id else 'practice',
+                exam_id=exam_id, used_ai=used_ai, skipped=skipped)
+            box['settle'] = settle_result
+            state.setdefault('drafts', {})[question['id']] = cells
+            if exam_id:
+                _mark_exam_answer(
+                    state, exam_id, question['id'],
+                    'skipped' if skipped else ('done' if result.get('passed') else 'failed'),
+                    stars=settle_result['stars'], passed=bool(result.get('passed')),
+                    error=str(result.get('error', '')))
+            return True
+        training.mutate_state(username, mutate)
+        settle = box.get('settle')
+
+    return jsonify({'success': True, 'passed': bool(result.get('passed')),
+                    'error': result.get('error', ''), 'stdout': result.get('detail', ''),
+                    'figures': result.get('figures', []),
+                    'check_failed': result.get('check_failed', False),
+                    'settle': settle})
+
+
+@app.route('/api/training/exam', methods=['POST'])
+def training_create_exam():
+    """实战模式组卷。"""
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '实战组卷需要登录，这样成绩才能保存。'}), 200
+    data = request.get_json(silent=True) or {}
+    chapters = data.get('chapters') or []
+    try:
+        count = max(1, min(20, int(data.get('count', 5))))
+    except (TypeError, ValueError):
+        count = 5
+    difficulty = data.get('difficulty')
+    if str(difficulty) not in ('1', '2', '3'):
+        difficulty = None
+    track = data.get('track') if data.get('track') in ('course', 'algorithm') else None
+
+    created = {}
+
+    def mutate(state):
+        question_ids = training.build_exam(state, chapters=chapters, count=count,
+                                           difficulty=difficulty, track=track)
+        if not question_ids:
+            created['error'] = '这个范围内的题目不够，换个章节或减少题量试试。'
+            return False
+        # 同时只保留一份「进行中」的卷子：旧卷子自动作废。
+        # 否则旧的活跃卷子会一直把题目锁着，学生在练习模式里连解析都看不到。
+        for old in state.get('exams', []):
+            if old.get('status') == 'active':
+                old['status'] = 'abandoned'
+                old['finished_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        exam = {
+            'id': training.new_exam_id(),
+            'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'chapters': chapters, 'track': track or '',
+            'difficulty': int(difficulty) if difficulty else None,
+            'questions': question_ids, 'answers': {}, 'status': 'active',
+            'score': None, 'review': '',
+        }
+        state.setdefault('exams', []).insert(0, exam)
+        # 只留最近 20 份卷子，避免文件无限长
+        del state['exams'][20:]
+        state['active_exam'] = exam['id']
+        created['exam'] = exam
+        return True
+
+    training.mutate_state(username, mutate)
+    if created.get('error'):
+        return jsonify({'success': False, 'message': created['error']})
+    exam = created['exam']
+    state = training.load_state(username)
+    return jsonify({'success': True, 'exam': training.exam_summary(state, exam),
+                    'detail': training.exam_summary(state, exam)})
+
+
+@app.route('/api/training/exam/<exam_id>')
+def training_get_exam(exam_id):
+    username = _who()
+    state = training.load_state(username) if username != 'guest' else {}
+    exam = _exam_of(state, exam_id)
+    if not exam:
+        return jsonify({'success': False, 'message': '试卷不存在'}), 404
+    return jsonify({'success': True, 'exam': training.exam_summary(state, exam)})
+
+
+@app.route('/api/training/exam/<exam_id>/finish', methods=['POST'])
+def training_finish_exam(exam_id):
+    """提前交卷：没做的题按跳过处理。"""
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '需要登录'}), 200
+    box = {}
+
+    def mutate(state):
+        exam = None
+        for item in state.get('exams', []):
+            if item.get('id') == exam_id:
+                exam = item
+                break
+        if exam is None:
+            box['error'] = '试卷不存在'
+            return False
+        for qid in exam.get('questions', []):
+            answer = exam.setdefault('answers', {}).setdefault(qid, {})
+            if answer.get('status') not in ('done', 'skipped', 'failed'):
+                answer['status'] = 'skipped'
+                answer['stars'] = answer.get('stars', 0)
+        exam['status'] = 'finished'
+        exam['finished_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        total = len(exam.get('questions', []))
+        stars = sum((exam['answers'].get(q) or {}).get('stars', 0) for q in exam.get('questions', []))
+        exam['score'] = round(stars / (total * 3) * 100) if total else 0
+        exam['stars_total'] = stars
+        training.award(state, 'exam', exam_id,
+                       training.EXAM_FINISH_BASE + training.EXAM_FINISH_PER_Q * total,
+                       note='完成实战组卷（提前交卷）')
+        box['exam'] = exam
+        return True
+
+    training.mutate_state(username, mutate)
+    if box.get('error'):
+        return jsonify({'success': False, 'message': box['error']}), 404
+    state = training.load_state(username)
+    return jsonify({'success': True, 'exam': training.exam_summary(state, box['exam'])})
+
+
+@app.route('/api/training/exam/<exam_id>/review', methods=['POST'])
+def training_review_exam(exam_id):
+    """AI 批卷：逐题点评 + 薄弱点 + 下一步建议（SSE 流式）。"""
+    username = _who()
+    state = training.load_state(username) if username != 'guest' else {}
+    exam = _exam_of(state, exam_id)
+    if not exam:
+        return jsonify({'success': False, 'message': '试卷不存在'}), 404
+    if exam.get('status') != 'finished':
+        return jsonify({'success': False, 'message': '先交卷，再让 AI 批卷。'}), 200
+
+    index = training.bank_index()
+    lines = [f'这是一次实战组卷（共 {len(exam.get("questions", []))} 题），'
+             f'学生得分 {exam.get("score", 0)}（满分 100）。逐题情况如下：']
+    for qid in exam.get('questions', []):
+        question = index.get(qid)
+        if not question:
+            continue
+        answer = (exam.get('answers') or {}).get(qid, {})
+        status = {'done': '通过', 'skipped': '跳过', 'failed': '未通过'}.get(answer.get('status'), '未完成')
+        lines.append(
+            f'\n【{question["title"]}】（难度 {question.get("difficulty")}，{status}，'
+            f'星级 {answer.get("stars", 0)}/3）\n'
+            f'题目要求：{str(question.get("statement", ""))[:400]}\n'
+            f'学生代码：{(answer.get("code") or "(未提交)")[:600]}\n'
+            f'报错信息：{str(answer.get("error") or "无")[:300]}'
+        )
+    lines.append(
+        '\n请按这个结构点评（用 Markdown，控制在 700 字内）：\n'
+        '1. **整体表现**：一句话总结，语气鼓励但要指出问题。\n'
+        '2. **逐题点评**：每题的思路对在哪、错在哪，给出关键的那一行改动（不要贴完整答案）。\n'
+        '3. **薄弱知识点**：把错误归到 2–3 个具体知识点上。\n'
+        '4. **下一步练什么**：给出具体的练习建议（可以推荐题型或章节）。\n'
+        '5. 最后用一行「🤔 想一想：」提出一个能引发学生反思的问题。'
+    )
+
+    messages = [
+        {'role': 'system', 'content': coach.COACH_SYSTEM_PROMPT},
+        {'role': 'user', 'content': '\n'.join(lines)},
+    ]
+
+    def generate():
+        yield _sse({'type': 'status', 'message': 'JJ老师正在批卷…'})
+        answer = ''
+        try:
+            for event in ark.events(messages, max_tokens=1800):
+                if event['type'] == 'delta':
+                    answer += event['text']
+                yield _sse(event)
+            if not answer:
+                raise ArkError('模型没有返回正文，请重试。')
+            if username != 'guest':
+                def mutate(state_obj):
+                    for item in state_obj.get('exams', []):
+                        if item.get('id') == exam_id:
+                            item['review'] = answer
+                            return True
+                    return False
+                training.mutate_state(username, mutate)
+                coach.record_exchange(
+                    username,
+                    f'实战组卷批卷（{len(exam.get("questions", []))} 题，得分 {exam.get("score", 0)}）',
+                    answer,
+                    chapter_id=str((exam.get('chapters') or [''])[0]),
+                    source='exam', meta={'exam_id': exam_id})
+            yield _sse({'type': 'done', 'model': ark.active_model})
+        except ArkError as exc:
+            yield _sse({'type': 'error', 'message': str(exc)})
+
+    return _stream(generate())
+
+
+@app.route('/api/training/ai-help', methods=['POST'])
+def training_ai_help():
+    """单题求助：让 JJ老师讲思路（不直接给完整答案），对话会存进星辰教练。"""
+    username = _who()
+    data = request.get_json(silent=True) or {}
+    question = training.bank_index().get(str(data.get('question_id', '')))
+    title = question['title'] if question else str(data.get('title', '这道题'))
+    statement = str(data.get('statement') or (question or {}).get('statement', ''))[:2000]
+    code = str(data.get('code', ''))[:3000]
+    error = str(data.get('error', ''))[:800]
+    ask = str(data.get('ask', '')).strip() or '这道题我卡住了，帮我理一下思路。'
+    if username != 'guest' and not check_daily_limit(username)[0]:
+        return jsonify({'success': False, 'message': '今日 AI 问答次数已用完。'}), 429
+
+    messages = [{'role': 'system', 'content': coach.COACH_SYSTEM_PROMPT}]
+    messages.append({'role': 'user', 'content': (
+        f'我在做这道题：{title}\n题目要求：{statement}\n\n'
+        f'我写的代码：\n{code or "(还没写)"}\n\n'
+        f'报错/现象：{error or "运行没通过"}\n\n'
+        f'我的问题：{ask}\n\n'
+        '请先帮我定位问题在哪一步，再给提示（不要直接贴完整答案），最后提一个追问。'
+    )})
+
+    def generate():
+        yield _sse({'type': 'status', 'message': 'JJ老师在看你的代码…'})
+        answer = ''
+        try:
+            for event in ark.events(messages, max_tokens=1200):
+                if event['type'] == 'delta':
+                    answer += event['text']
+                yield _sse(event)
+            if not answer:
+                raise ArkError('模型没有返回正文，请重试。')
+            if username != 'guest':
+                increment_daily_usage(username)
+                saved = coach.record_exchange(
+                    username, f'【{title}】{ask}', answer,
+                    chapter_id=str((question or {}).get('chapter_id', '')),
+                    source='training',
+                    meta={'question_id': (question or {}).get('id', ''), 'code': code[:400]})
+                yield _sse({'type': 'saved', **saved})
+            yield _sse({'type': 'done', 'model': ark.active_model})
+        except ArkError as exc:
+            yield _sse({'type': 'error', 'message': str(exc)})
+
+    return _stream(generate())
+
+
+@app.route('/api/training/attempt', methods=['POST'])
+def training_attempt_log():
+    """单独补记一次作答（比如实战模式下「跳过」按钮）。"""
+    username = _who()
+    if username == 'guest':
+        return jsonify({'success': False, 'message': '需要登录'}), 200
+    data = request.get_json(silent=True) or {}
+    question = training.bank_index().get(str(data.get('question_id', '')))
+    if not question:
+        return jsonify({'success': False, 'message': '题目不存在'}), 404
+    settle = {}
+    exam_id = str(data.get('exam_id', '') or '')
+
+    def mutate(state):
+        settle.update(training.record_attempt(
+            state, question, [], {'passed': False},
+            mode='exam' if exam_id else 'practice',
+            exam_id=exam_id, skipped=True))
+        if exam_id:
+            _mark_exam_answer(state, exam_id, question['id'], 'skipped', stars=0)
+        return True
+    training.mutate_state(username, mutate)
+    return jsonify({'success': True, 'settle': settle})
+
+
+# ── 修为系统与学习仪表盘 ───────────────────────────────────
+
+@app.route('/progress')
+def progress_page():
+    username = _who()
+    return render_template('progress.html', username=username,
+                          is_guest=username == 'guest')
+
+
+@app.route('/api/cultivation/profile')
+def cultivation_profile():
+    username = _who()
+    state = training.load_state(username) if username != 'guest' else {}
+    profile = training.level_from_points(state.get('points', 0))
+    attempts = state.get('attempts') or {}
+    solved = sum(1 for item in attempts.values() if item.get('solved'))
+    profile.update({
+        'is_guest': username == 'guest',
+        'solved': solved,
+        'attempted': len(attempts),
+        'recent': list(reversed(state.get('log', [])))[:8],
+    })
+    return jsonify({'success': True, 'profile': profile})
+
+
+@app.route('/api/cultivation/award', methods=['POST'])
+def cultivation_award():
+    """给「看完讲解 / 看完漫画 / 完成章节」这类行为加分（同一目标只加一次）。"""
+    username = _who()
+    data = request.get_json(silent=True) or {}
+    reason = str(data.get('reason', ''))
+    ref = str(data.get('ref', ''))
+    table = {
+        'narration': (training.NARRATION_POINTS, '看完图文讲解'),
+        'comic': (training.COMIC_POINTS, '看完章节漫画'),
+        'chapter': (training.CHAPTER_POINTS, '完成整章知识点'),
+    }
+    if reason not in table or not ref:
+        return jsonify({'success': False, 'message': '未知的加分类型'}), 400
+    amount, note = table[reason]
+    result = _award_cultivation(username, reason, ref, amount, note)
+    return jsonify({'success': True, **result})
+
+
+@app.route('/api/progress/overview')
+def progress_overview():
+    """刷题仪表盘的全部数据：分章节进度 + 错题分类 + 刷题进度。"""
+    username = _who()
+    courses = load_json(COURSES_FILE)
+    users = load_json(USERS_FILE)
+    user = {} if username == 'guest' else users.get(username, {})
+    state = training.load_state(username) if username != 'guest' else {}
+    attempts = state.get('attempts') or {}
+    index = training.bank_index()
+
+    completed_kps = set(user.get('completed_kps', []))
+    course_wrong = user.get('wrong_answers', [])
+
+    chapters = []
+    total_q = total_solved = total_attempted = total_wrong = 0
+    total_stars = total_max_stars = 0
+
+    for info in training.bank_chapters(courses):
+        items = training.filter_questions(chapters=[info['id']])
+        solved = sum(1 for q in items if attempts.get(q['id'], {}).get('solved'))
+        attempted = sum(1 for q in items if attempts.get(q['id'], {}).get('attempts'))
+        wrong = sum(1 for q in items if attempts.get(q['id'], {}).get('wrong'))
+        stars = sum(attempts.get(q['id'], {}).get('best_stars', 0) for q in items)
+        wrong_ids = [q['id'] for q in items if attempts.get(q['id'], {}).get('wrong')]
+
+        if info['track'] == 'course':
+            course = next((c for c in courses if c['id'] == info['id']), None)
+            kp_total = len(course.get('knowledge_points', [])) if course else 0
+            kp_done = sum(1 for i in range(kp_total) if f"{info['id']}_{i}" in completed_kps)
+        else:
+            kp_total = kp_done = 0
+
+        entry = {
+            **info,
+            'kp_total': kp_total,
+            'kp_done': kp_done,
+            'kp_progress': round(kp_done / kp_total * 100) if kp_total else 0,
+            'q_total': len(items),
+            'q_attempted': attempted,
+            'q_solved': solved,
+            'q_wrong': wrong,
+            'q_progress': round(solved / len(items) * 100) if items else 0,
+            'stars': stars,
+            'max_stars': len(items) * 3,
+            'wrong_ids': wrong_ids[:30],
+            'learn_progress': round((kp_done + solved) / (kp_total + len(items)) * 100)
+                              if (kp_total + len(items)) else 0,
+        }
+        chapters.append(entry)
+        total_q += len(items)
+        total_solved += solved
+        total_attempted += attempted
+        total_wrong += wrong
+        total_stars += stars
+        total_max_stars += len(items) * 3
+
+    # 错题分类：刷题错题按章节归并，教材练习错题也按章节归并
+    wrong_groups = []
+    for entry in chapters:
+        items = []
+        for qid in entry['wrong_ids']:
+            question = index.get(qid)
+            if not question:
+                continue
+            record = attempts.get(qid, {})
+            items.append({
+                'question_id': qid,
+                'title': question['title'],
+                'difficulty': question.get('difficulty', 1),
+                'wrong': record.get('wrong', 0),
+                'last_error': str(record.get('last_error', ''))[:200],
+                'solved': bool(record.get('solved')),
+            })
+        if items:
+            wrong_groups.append({'chapter_id': entry['id'], 'title': entry['title'],
+                                 'track': entry['track'], 'items': items})
+
+    textbook_wrong = {}
+    for record in course_wrong:
+        cid = str(record.get('chapter_id', ''))
+        textbook_wrong.setdefault(cid, []).append({
+            'question': str(record.get('question', ''))[:200],
+            'user_answer': str(record.get('user_answer', ''))[:200],
+            'timestamp': record.get('timestamp', ''),
+        })
+
+    profile = training.level_from_points(state.get('points', 0))
+    return jsonify({
+        'success': True,
+        'profile': profile,
+        'totals': {
+            'chapters': len(chapters),
+            'questions': total_q,
+            'attempted': total_attempted,
+            'solved': total_solved,
+            'wrong': total_wrong,
+            'stars': total_stars,
+            'max_stars': total_max_stars,
+            'mastery': round(total_solved / total_q * 100) if total_q else 0,
+            'accuracy': round(total_solved / total_attempted * 100) if total_attempted else 0,
+            'exams': len(state.get('exams', [])),
+        },
+        'chapters': chapters,
+        'course_chapters': [c for c in chapters if c['track'] == 'course'],
+        'algo_chapters': [c for c in chapters if c['track'] == 'algorithm'],
+        'wrong_groups': wrong_groups,
+        'textbook_wrong': textbook_wrong,
+        'exams': [training.exam_summary(state, e) for e in (state.get('exams') or [])[:6]],
+        'recent_points': list(reversed(state.get('log', [])))[:12],
+    })
 
 
 # ── Admin Panel ────────────────────────────────────────────

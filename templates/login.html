@@ -6,7 +6,7 @@
 <title>PyMaster — 登录</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="auth-page">
+<body class="auth-page" data-no-music-dock>
 
 <div class="bg-grid"></div>
 <canvas id="particles-canvas"></canvas>
@@ -61,7 +61,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
+<script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
 <script>
 document.addEventListener('click', function _mu() {
   AmbientMusic.play();

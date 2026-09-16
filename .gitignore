@@ -23,9 +23,20 @@ data/comic_memory.json
 data/audio_cache/
 
 # Audio files
-static/audio/*.mp3
+# 旧的临时背景音乐不入库；但学习背景音乐是随包分发的资产（教室断网也要能播），
+# 所以 static/audio 下的曲目与播放清单必须提交。
 static/audio/*.mp4
 static/audio/*.xml
+!static/audio/*.mp3
+!static/audio/playlist.json
+!static/audio/CREDITS.md
+
+# 每个用户自己的刷题档案与教练会话（运行时数据，不进版本库）
+data/training/
+data/coach/
+
+# 背景音乐的原始下载缓存（33MB，可用 tools/fetch_music.py 重新抓）
+data/music_cache/
 
 # Secret key
 data/.secret_key

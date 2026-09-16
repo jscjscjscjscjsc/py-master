@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星辰教练 · PyMaster</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/coach.css') }}">
+</head>
+<body class="coach-page">
+
+<div class="coach-shell">
+  <!-- 左侧：会话列表 -->
+  <aside class="coach-side" id="coach-side">
+    <div class="coach-side-head">
+      <div class="coach-side-title">
+        <span class="spark">✦</span>
+        <span>星辰教练</span>
+        <a href="/dashboard" style="margin-left:auto;font-size:12px;color:var(--text-muted);text-decoration:none;">← 返回</a>
+      </div>
+      <button class="coach-new" id="coach-new" {% if is_guest %}disabled{% endif %}>＋ 新对话</button>
+      <div class="coach-limit" id="coach-limit"></div>
+    </div>
+    <div class="coach-sessions" id="coach-sessions"></div>
+  </aside>
+
+  <!-- 右侧：对话区 -->
+  <main class="coach-main">
+    <header class="coach-head">
+      <div class="who">
+        <div class="coach-avatar">JJ</div>
+        <div>
+          <div id="coach-title">新的对话</div>
+          <div class="sub">哲思引导式教学 · 每次回答都会反问你一个问题</div>
+        </div>
+      </div>
+      <div class="coach-head-actions">
+        <span class="compose-quota" id="coach-quota"></span>
+        <button class="coach-tool" id="coach-copy" title="把整段对话复制成 Markdown">⧉ 复制对话</button>
+        <button class="coach-tool" id="coach-rename">✎ 重命名</button>
+        <button class="coach-tool" id="coach-clear">🧹 清空</button>
+        <button class="coach-tool" id="coach-delete">🗑 删除</button>
+        <button class="coach-tool" id="coach-menu" style="display:none">☰</button>
+      </div>
+    </header>
+
+    <div class="coach-thread" id="coach-thread">
+      <div class="thread-inner" id="thread-inner"></div>
+    </div>
+
+    <div class="coach-compose">
+      {% if is_guest %}
+      <div class="guest-banner">
+        当前是游客模式：可以随便聊，但对话不会保存。
+        <a href="/login">登录 / 注册</a> 后即可保存最多 {{ max_sessions }} 个对话。
+      </div>
+      {% endif %}
+      <div class="compose-box">
+        <textarea id="coach-input" rows="1"
+          placeholder="问 JJ老师任何 Python / AI 的问题…（Enter 发送，Shift+Enter 换行）"></textarea>
+        <div class="compose-foot">
+          <span class="compose-hint">JJ老师会先讲清楚，再抛给你一个问题 🤔</span>
+          <span class="compose-quota" id="coach-quota2"></span>
+          <button class="compose-send" id="coach-send">发送</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="coach-toast" id="coach-toast"></div>
+
+<script src="{{ url_for('static', filename='js/cultivation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui_confirm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/md_lite.js') }}"></script>
+<script src="{{ url_for('static', filename='js/coach.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Coach.init({ isGuest: {{ 'true' if is_guest else 'false' }}, limit: {{ max_sessions }} });
+    if (window.Cultivation) Cultivation.mount({ compact: true });
+    if (window.PyMusic) PyMusic.init();
+    const menu = document.getElementById('coach-menu');
+    if (menu && window.matchMedia('(max-width: 860px)').matches) menu.style.display = 'inline-block';
+  });
+</script>
+</body>
+</html>
