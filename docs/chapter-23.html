@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -108,7 +109,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 0, "23.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a `/api/students` \u7684\u8def\u5f84\u4f8b\u5b50\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eCREATE\uff08\u65b0\u5efa\uff09\u2192 POST    /api/students\nREAD\uff08\u67e5\u8be2\uff09  \u2192 GET     /api/students\uff08\u5217\u8868\uff09/ /api/students/3\uff08\u5355\u4e2a\uff09\nUPDATE\uff08\u66f4\u65b0\uff09\u2192 PUT     /api/students/3\nDELETE\uff08\u5220\u9664\uff09\u2192 DELETE  /api/students/3\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 0, "23.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a /api/students \u7684\u8def\u5f84\u4f8b\u5b50\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a `/api/students` \u7684\u8def\u5f84\u4f8b\u5b50\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a \u003ccode class=\"md-inline\"\u003e/api/students\u003c/code\u003e \u7684\u8def\u5f84\u4f8b\u5b50\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a /api/students \u7684\u8def\u5f84\u4f8b\u5b50\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eCREATE\uff08\u65b0\u5efa\uff09\u2192 POST    /api/students\nREAD\uff08\u67e5\u8be2\uff09  \u2192 GET     /api/students\uff08\u5217\u8868\uff09/ /api/students/3\uff08\u5355\u4e2a\uff09\nUPDATE\uff08\u66f4\u65b0\uff09\u2192 PUT     /api/students/3\nDELETE\uff08\u5220\u9664\uff09\u2192 DELETE  /api/students/3\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -123,6 +124,37 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a `/api/students` \u7684\u8def\u5f84\u4f8b\u5b50\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：写出 CRUD 四个操作对应的 HTTP 方法，各配一个 <code class="md-inline">/api/students</code> 的路径例子。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 0, 0, "\u7b2c 1 \u9898\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a /api/students \u7684\u8def\u5f84\u4f8b\u5b50\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a /api/students \u7684\u8def\u5f84\u4f8b\u5b50\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u5199\u51fa CRUD \u56db\u4e2a\u64cd\u4f5c\u5bf9\u5e94\u7684 HTTP \u65b9\u6cd5\uff0c\u5404\u914d\u4e00\u4e2a `/api/students` \u7684\u8def\u5f84\u4f8b\u5b50\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">CREATE（新建）→ POST    /api/students
+READ（查询）  → GET     /api/students（列表）/ /api/students/3（单个）
+UPDATE（更新）→ PUT     /api/students/3
+DELETE（删除）→ DELETE  /api/students/3</pre></div></div>
+              
             </div>
             
           </div>
@@ -214,7 +246,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 1, "23.1 HTTP \u57fa\u7840\uff08\u6df1\u5316\uff09", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e200\uff1a\u6210\u529f\u2014\u2014\u67e5\u8be2\u5b66\u751f\u5217\u8868\u8fd4\u56de\u6b63\u5e38\n201\uff1a\u521b\u5efa\u6210\u529f\u2014\u2014POST \u6dfb\u52a0\u5b66\u751f\u6210\u529f\n400\uff1a\u8bf7\u6c42\u53c2\u6570\u9519\u8bef\u2014\u2014\u65b0\u5efa\u5b66\u751f\u6ca1\u4f20\u59d3\u540d\n404\uff1a\u8d44\u6e90\u4e0d\u5b58\u5728\u2014\u2014GET /api/students/999 \u6ca1\u6709\u8fd9\u4e2a\u5b66\u751f\n500\uff1a\u670d\u52a1\u5668\u9519\u8bef\u2014\u2014\u540e\u7aef\u4ee3\u7801\u5f02\u5e38\uff08\u6570\u636e\u5e93\u8fde\u4e0d\u4e0a\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 1, "23.1 HTTP \u57fa\u7840\uff08\u6df1\u5316\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e200\uff1a\u6210\u529f\u2014\u2014\u67e5\u8be2\u5b66\u751f\u5217\u8868\u8fd4\u56de\u6b63\u5e38\n201\uff1a\u521b\u5efa\u6210\u529f\u2014\u2014POST \u6dfb\u52a0\u5b66\u751f\u6210\u529f\n400\uff1a\u8bf7\u6c42\u53c2\u6570\u9519\u8bef\u2014\u2014\u65b0\u5efa\u5b66\u751f\u6ca1\u4f20\u59d3\u540d\n404\uff1a\u8d44\u6e90\u4e0d\u5b58\u5728\u2014\u2014GET /api/students/999 \u6ca1\u6709\u8fd9\u4e2a\u5b66\u751f\n500\uff1a\u670d\u52a1\u5668\u9519\u8bef\u2014\u2014\u540e\u7aef\u4ee3\u7801\u5f02\u5e38\uff08\u6570\u636e\u5e93\u8fde\u4e0d\u4e0a\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -229,6 +261,38 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：解释 200、201、400、404、500 分别代表什么，并各写一个触发场景。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(23, 1, 0, "\u7b2c 2 \u9898\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca 200\u3001201\u3001400\u3001404\u3001500 \u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff0c\u5e76\u5404\u5199\u4e00\u4e2a\u89e6\u53d1\u573a\u666f\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">200：成功——查询学生列表返回正常
+201：创建成功——POST 添加学生成功
+400：请求参数错误——新建学生没传姓名
+404：资源不存在——GET /api/students/999 没有这个学生
+500：服务器错误——后端代码异常（数据库连不上）</pre></div></div>
+              
             </div>
             
           </div>
@@ -322,7 +386,7 @@ DELETE /api/students/3     → 删除 id=3 的学生</pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 2, "23.2 RESTful API \u8bbe\u8ba1", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eWHERE price \u0026gt; 10\u003c/code\u003e \u7b5b\u9009\u51fa 25\u300112\u300199 \u4e09\u884c\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 SQL \u521b\u5efa `products` \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"sql\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003esql\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-sql\"\u003eCREATE TABLE products (\n    id INTEGER PRIMARY KEY,\n    name TEXT NOT NULL,\n    price REAL\n);\n\nINSERT INTO products (name, price) VALUES (\u0026#x27;\u6c34\u676f\u0026#x27;, 25);\nINSERT INTO products (name, price) VALUES (\u0026#x27;\u7b14\u8bb0\u672c\u0026#x27;, 12);\nINSERT INTO products (name, price) VALUES (\u0026#x27;\u952e\u76d8\u0026#x27;, 99);\n\nSELECT * FROM products WHERE price \u0026gt; 10;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 2, "23.2 RESTful API \u8bbe\u8ba1", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 SQL \u521b\u5efa products \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eWHERE price \u0026gt; 10\u003c/code\u003e \u7b5b\u9009\u51fa 25\u300112\u300199 \u4e09\u884c\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 SQL \u521b\u5efa `products` \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 SQL \u521b\u5efa \u003ccode class=\"md-inline\"\u003eproducts\u003c/code\u003e \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 SQL \u521b\u5efa products \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"sql\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003esql\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-sql\"\u003eCREATE TABLE products (\n    id INTEGER PRIMARY KEY,\n    name TEXT NOT NULL,\n    price REAL\n);\n\nINSERT INTO products (name, price) VALUES (\u0026#x27;\u6c34\u676f\u0026#x27;, 25);\nINSERT INTO products (name, price) VALUES (\u0026#x27;\u7b14\u8bb0\u672c\u0026#x27;, 12);\nINSERT INTO products (name, price) VALUES (\u0026#x27;\u952e\u76d8\u0026#x27;, 99);\n\nSELECT * FROM products WHERE price \u0026gt; 10;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -337,6 +401,47 @@ DELETE /api/students/3     → 删除 id=3 的学生</pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 3 \u9898**\uff1a\u7528 SQL \u521b\u5efa `products` \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：用 SQL 创建 <code class="md-inline">products</code> 表（id、name、price），插入两条数据，查询价格大于 10 的商品。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 2, 0, "\u7b2c 3 \u9898\uff1a\u7528 SQL \u521b\u5efa products \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 SQL \u521b\u5efa products \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u7528 SQL \u521b\u5efa `products` \u8868\uff08id\u3001name\u3001price\uff09\uff0c\u63d2\u5165\u4e24\u6761\u6570\u636e\uff0c\u67e5\u8be2\u4ef7\u683c\u5927\u4e8e 10 \u7684\u5546\u54c1\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="sql"><div class="md-codebar"><span class="md-codelang">sql</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-sql">CREATE TABLE products (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    price REAL
+);
+
+INSERT INTO products (name, price) VALUES (&#x27;水杯&#x27;, 25);
+INSERT INTO products (name, price) VALUES (&#x27;笔记本&#x27;, 12);
+INSERT INTO products (name, price) VALUES (&#x27;键盘&#x27;, 99);
+
+SELECT * FROM products WHERE price &gt; 10;</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">WHERE price &gt; 10</code> 筛选出 25、12、99 三行。</p></div>
+              
             </div>
             
           </div>
@@ -505,7 +610,7 @@ students = Student.query.filter(Student.score &gt;= 90).all()</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 3, "23.3 \u6570\u636e\u5e93\u57fa\u7840\uff1aSQLite", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport sqlite3\n\nwith sqlite3.connect(\u0026quot;shop.db\u0026quot;) as conn:\n    conn.execute(\u0026quot;\u0026quot;\u0026quot;\n        CREATE TABLE IF NOT EXISTS products (\n            id INTEGER PRIMARY KEY,\n            name TEXT NOT NULL,\n            price REAL\n        )\n    \u0026quot;\u0026quot;\u0026quot;)\n    conn.execute(\u0026quot;INSERT INTO products (name, price) VALUES (?, ?)\u0026quot;, (\u0026quot;\u6c34\u676f\u0026quot;, 25))\n    conn.execute(\u0026quot;INSERT INTO products (name, price) VALUES (?, ?)\u0026quot;, (\u0026quot;\u7b14\u8bb0\u672c\u0026quot;, 12))\n\n    rows = conn.execute(\u0026quot;SELECT * FROM products WHERE price \u0026gt; 10\u0026quot;).fetchall()\n    print(rows)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[(1, \u0026#x27;\u6c34\u676f\u0026#x27;, 25.0), (2, \u0026#x27;\u7b14\u8bb0\u672c\u0026#x27;, 12.0)]\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u6ce8\u91ca\u8981\u70b9\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003e?\u003c/code\u003e \u5360\u4f4d\u7b26\u8ba9\u7528\u6237\u8f93\u5165\u88ab\u5f53\u4f5c\"\u6570\u636e\"\u800c\u975e\"SQL \u6307\u4ee4\"\uff0c\u9632\u6b62 SQL \u6ce8\u5165\uff08\u5982\u8f93\u5165 \u003ccode class=\"md-inline\"\u003e\u0027; DROP TABLE products; --\u003c/code\u003e \u4f1a\u88ab\u5f53\u4f5c\u6587\u672c\u5b58\u8fdb\u53bb\uff0c\u4e0d\u4f1a\u6267\u884c\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 3, "23.3 \u6570\u636e\u5e93\u57fa\u7840\uff1aSQLite", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport sqlite3\n\nwith sqlite3.connect(\u0026quot;shop.db\u0026quot;) as conn:\n    conn.execute(\u0026quot;\u0026quot;\u0026quot;\n        CREATE TABLE IF NOT EXISTS products (\n            id INTEGER PRIMARY KEY,\n            name TEXT NOT NULL,\n            price REAL\n        )\n    \u0026quot;\u0026quot;\u0026quot;)\n    conn.execute(\u0026quot;INSERT INTO products (name, price) VALUES (?, ?)\u0026quot;, (\u0026quot;\u6c34\u676f\u0026quot;, 25))\n    conn.execute(\u0026quot;INSERT INTO products (name, price) VALUES (?, ?)\u0026quot;, (\u0026quot;\u7b14\u8bb0\u672c\u0026quot;, 12))\n\n    rows = conn.execute(\u0026quot;SELECT * FROM products WHERE price \u0026gt; 10\u0026quot;).fetchall()\n    print(rows)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[(1, \u0026#x27;\u6c34\u676f\u0026#x27;, 25.0), (2, \u0026#x27;\u7b14\u8bb0\u672c\u0026#x27;, 12.0)]\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u6ce8\u91ca\u8981\u70b9\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003e?\u003c/code\u003e \u5360\u4f4d\u7b26\u8ba9\u7528\u6237\u8f93\u5165\u88ab\u5f53\u4f5c\"\u6570\u636e\"\u800c\u975e\"SQL \u6307\u4ee4\"\uff0c\u9632\u6b62 SQL \u6ce8\u5165\uff08\u5982\u8f93\u5165 \u003ccode class=\"md-inline\"\u003e\u0027; DROP TABLE products; --\u003c/code\u003e \u4f1a\u88ab\u5f53\u4f5c\u6587\u672c\u5b58\u8fdb\u53bb\uff0c\u4e0d\u4f1a\u6267\u884c\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -520,6 +625,51 @@ students = Student.query.filter(Student.score &gt;= 90).all()</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 4 \u9898**\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：用 Python sqlite3 实现上面 products 表的建表、插入、查询，并在代码注释里说明"为什么用 ? 占位符"。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(23, 3, 0, "\u7b2c 4 \u9898\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u7528 Python sqlite3 \u5b9e\u73b0\u4e0a\u9762 products \u8868\u7684\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\uff0c\u5e76\u5728\u4ee3\u7801\u6ce8\u91ca\u91cc\u8bf4\u660e\"\u4e3a\u4ec0\u4e48\u7528 ? \u5360\u4f4d\u7b26\"\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import sqlite3
+
+with sqlite3.connect(&quot;shop.db&quot;) as conn:
+    conn.execute(&quot;&quot;&quot;
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            price REAL
+        )
+    &quot;&quot;&quot;)
+    conn.execute(&quot;INSERT INTO products (name, price) VALUES (?, ?)&quot;, (&quot;水杯&quot;, 25))
+    conn.execute(&quot;INSERT INTO products (name, price) VALUES (?, ?)&quot;, (&quot;笔记本&quot;, 12))
+
+    rows = conn.execute(&quot;SELECT * FROM products WHERE price &gt; 10&quot;).fetchall()
+    print(rows)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[(1, &#x27;水杯&#x27;, 25.0), (2, &#x27;笔记本&#x27;, 12.0)]</pre></div>
+<p><strong>注释要点</strong>：<code class="md-inline">?</code> 占位符让用户输入被当作"数据"而非"SQL 指令"，防止 SQL 注入（如输入 <code class="md-inline">'; DROP TABLE products; --</code> 会被当作文本存进去，不会执行）。</p></div>
+              
             </div>
             
           </div>
@@ -671,7 +821,7 @@ print(handle_request(&quot;GET&quot;, &quot;/api/tasks&quot;))</code></pre></div
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 4, "23.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e API \u6a21\u62df\uff08\u4e0d\u5f15\u5165\u6846\u67b6\uff09", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eREST \u8d44\u6e90\u547d\u540d + \u7edf\u4e00\u54cd\u5e94 + \u72b6\u6001\u7801\u8bed\u4e49\uff0c\u4e09\u8981\u7d20\u9f50\u5168\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eGET    /api/students          \u2192 \u5b66\u751f\u5217\u8868\n       \u54cd\u5e94: {\u0026quot;code\u0026quot;: 0, \u0026quot;data\u0026quot;: [{\u0026quot;id\u0026quot;:1, \u0026quot;name\u0026quot;:\u0026quot;\u5f20\u4e09\u0026quot;, \u0026quot;score\u0026quot;:88}]}\nPOST   /api/students          \u2192 \u65b0\u5efa\uff08\u8bf7\u6c42\u4f53: name, score\uff09\n       \u6210\u529f: 201 {\u0026quot;code\u0026quot;:0, \u0026quot;message\u0026quot;:\u0026quot;ok\u0026quot;}\n       \u53c2\u6570\u9519: 400 {\u0026quot;code\u0026quot;:400, \u0026quot;message\u0026quot;:\u0026quot;\u59d3\u540d\u4e0d\u80fd\u4e3a\u7a7a\u0026quot;}\nGET    /api/students/{id}     \u2192 \u5355\u4e2a\u5b66\u751f\n       \u4e0d\u5b58\u5728: 404 {\u0026quot;code\u0026quot;:404, \u0026quot;message\u0026quot;:\u0026quot;\u5b66\u751f\u4e0d\u5b58\u5728\u0026quot;}\nDELETE /api/students/{id}     \u2192 \u5220\u9664\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 4, "23.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e API \u6a21\u62df\uff08\u4e0d\u5f15\u5165\u6846\u67b6\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eREST \u8d44\u6e90\u547d\u540d + \u7edf\u4e00\u54cd\u5e94 + \u72b6\u6001\u7801\u8bed\u4e49\uff0c\u4e09\u8981\u7d20\u9f50\u5168\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eGET    /api/students          \u2192 \u5b66\u751f\u5217\u8868\n       \u54cd\u5e94: {\u0026quot;code\u0026quot;: 0, \u0026quot;data\u0026quot;: [{\u0026quot;id\u0026quot;:1, \u0026quot;name\u0026quot;:\u0026quot;\u5f20\u4e09\u0026quot;, \u0026quot;score\u0026quot;:88}]}\nPOST   /api/students          \u2192 \u65b0\u5efa\uff08\u8bf7\u6c42\u4f53: name, score\uff09\n       \u6210\u529f: 201 {\u0026quot;code\u0026quot;:0, \u0026quot;message\u0026quot;:\u0026quot;ok\u0026quot;}\n       \u53c2\u6570\u9519: 400 {\u0026quot;code\u0026quot;:400, \u0026quot;message\u0026quot;:\u0026quot;\u59d3\u540d\u4e0d\u80fd\u4e3a\u7a7a\u0026quot;}\nGET    /api/students/{id}     \u2192 \u5355\u4e2a\u5b66\u751f\n       \u4e0d\u5b58\u5728: 404 {\u0026quot;code\u0026quot;:404, \u0026quot;message\u0026quot;:\u0026quot;\u5b66\u751f\u4e0d\u5b58\u5728\u0026quot;}\nDELETE /api/students/{id}     \u2192 \u5220\u9664\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -686,6 +836,44 @@ print(handle_request(&quot;GET&quot;, &quot;/api/tasks&quot;))</code></pre></div
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 5 \u9898**\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：为"学生成绩 API"设计 REST 接口（至少 4 个：列表/新建/详情/删除），写成接口文档格式（方法 + 路径 + 返回示例）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 4, 0, "\u7b2c 5 \u9898\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u4e3a\"\u5b66\u751f\u6210\u7ee9 API\"\u8bbe\u8ba1 REST \u63a5\u53e3\uff08\u81f3\u5c11 4 \u4e2a\uff1a\u5217\u8868/\u65b0\u5efa/\u8be6\u60c5/\u5220\u9664\uff09\uff0c\u5199\u6210\u63a5\u53e3\u6587\u6863\u683c\u5f0f\uff08\u65b9\u6cd5 + \u8def\u5f84 + \u8fd4\u56de\u793a\u4f8b\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">GET    /api/students          → 学生列表
+       响应: {&quot;code&quot;: 0, &quot;data&quot;: [{&quot;id&quot;:1, &quot;name&quot;:&quot;张三&quot;, &quot;score&quot;:88}]}
+POST   /api/students          → 新建（请求体: name, score）
+       成功: 201 {&quot;code&quot;:0, &quot;message&quot;:&quot;ok&quot;}
+       参数错: 400 {&quot;code&quot;:400, &quot;message&quot;:&quot;姓名不能为空&quot;}
+GET    /api/students/{id}     → 单个学生
+       不存在: 404 {&quot;code&quot;:404, &quot;message&quot;:&quot;学生不存在&quot;}
+DELETE /api/students/{id}     → 删除</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>REST 资源命名 + 统一响应 + 状态码语义，三要素齐全。</p></div>
+              
             </div>
             
           </div>
@@ -804,7 +992,7 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 5, "23.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eUPDATE ... SET done = 1 WHERE id = ?\u003c/code\u003e \u66f4\u65b0\u6307\u5b9a\u884c\uff1b\u8def\u5f84\u89e3\u6790\u53d6\u6700\u540e\u4e00\u4e2a \u003ccode class=\"md-inline\"\u003e/\u003c/code\u003e \u540e\u7684 id\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u5728 23.4 \u6848\u4f8b\u57fa\u7840\u4e0a\u52a0\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef update_task_done(task_id):\n    \u0026quot;\u0026quot;\u0026quot;\u6570\u636e\u5c42\uff1a\u628a\u4efb\u52a1\u6807\u8bb0\u4e3a\u5df2\u5b8c\u6210\u0026quot;\u0026quot;\u0026quot;\n    with sqlite3.connect(DB) as conn:\n        conn.execute(\u0026quot;UPDATE tasks SET done = 1 WHERE id = ?\u0026quot;, (task_id,))\n    return {\u0026quot;code\u0026quot;: 0, \u0026quot;message\u0026quot;: \u0026quot;ok\u0026quot;}\n\n# \u8def\u7531\u91cc\u52a0\uff1a\nif method == \u0026quot;PUT\u0026quot; and path.startswith(\u0026quot;/api/tasks/\u0026quot;):\n    task_id = int(path.split(\u0026quot;/\u0026quot;)[-1])\n    return update_task_done(task_id)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 5, "23.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eUPDATE ... SET done = 1 WHERE id = ?\u003c/code\u003e \u66f4\u65b0\u6307\u5b9a\u884c\uff1b\u8def\u5f84\u89e3\u6790\u53d6\u6700\u540e\u4e00\u4e2a \u003ccode class=\"md-inline\"\u003e/\u003c/code\u003e \u540e\u7684 id\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u5728 23.4 \u6848\u4f8b\u57fa\u7840\u4e0a\u52a0\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef update_task_done(task_id):\n    \u0026quot;\u0026quot;\u0026quot;\u6570\u636e\u5c42\uff1a\u628a\u4efb\u52a1\u6807\u8bb0\u4e3a\u5df2\u5b8c\u6210\u0026quot;\u0026quot;\u0026quot;\n    with sqlite3.connect(DB) as conn:\n        conn.execute(\u0026quot;UPDATE tasks SET done = 1 WHERE id = ?\u0026quot;, (task_id,))\n    return {\u0026quot;code\u0026quot;: 0, \u0026quot;message\u0026quot;: \u0026quot;ok\u0026quot;}\n\n# \u8def\u7531\u91cc\u52a0\uff1a\nif method == \u0026quot;PUT\u0026quot; and path.startswith(\u0026quot;/api/tasks/\u0026quot;):\n    task_id = int(path.split(\u0026quot;/\u0026quot;)[-1])\n    return update_task_done(task_id)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -817,8 +1005,49 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 6 \u9898**\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 6 \u9898**\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：运行第 23.4 的待办 API 模拟代码，然后扩展：增加"更新任务为已完成"接口（PUT /api/tasks/1），用 SQL UPDATE 实现。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 8 题后，把 AI 生成的 API 文档发给 AI 复审："请检查 RESTful 命名、状态码语义、响应格式是否统一。"记录你采纳/否决的理由。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 5, 0, "\u7b2c 6 \u9898\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u8fd0\u884c\u7b2c 23.4 \u7684\u5f85\u529e API \u6a21\u62df\u4ee3\u7801\uff0c\u7136\u540e\u6269\u5c55\uff1a\u589e\u52a0\"\u66f4\u65b0\u4efb\u52a1\u4e3a\u5df2\u5b8c\u6210\"\u63a5\u53e3\uff08PUT /api/tasks/1\uff09\uff0c\u7528 SQL UPDATE \u5b9e\u73b0\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 API \u6587\u6863\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 RESTful \u547d\u540d\u3001\u72b6\u6001\u7801\u8bed\u4e49\u3001\u54cd\u5e94\u683c\u5f0f\u662f\u5426\u7edf\u4e00\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（在 23.4 案例基础上加）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def update_task_done(task_id):
+    &quot;&quot;&quot;数据层：把任务标记为已完成&quot;&quot;&quot;
+    with sqlite3.connect(DB) as conn:
+        conn.execute(&quot;UPDATE tasks SET done = 1 WHERE id = ?&quot;, (task_id,))
+    return {&quot;code&quot;: 0, &quot;message&quot;: &quot;ok&quot;}
+
+# 路由里加：
+if method == &quot;PUT&quot; and path.startswith(&quot;/api/tasks/&quot;):
+    task_id = int(path.split(&quot;/&quot;)[-1])
+    return update_task_done(task_id)</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">UPDATE ... SET done = 1 WHERE id = ?</code> 更新指定行；路径解析取最后一个 <code class="md-inline">/</code> 后的 id。</p></div>
+              
             </div>
             
           </div>
@@ -925,7 +1154,7 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 6, "23.6 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eSUM/COUNT/MAX/MIN\u003c/code\u003e \u56db\u4e2a\u805a\u5408\u51fd\u6570\u4e00\u6b21\u67e5\u8be2\u641e\u5b9a\u7edf\u8ba1\u2014\u2014\u003cstrong\u003e\u6570\u636e\u5e93\u66ff\u4f60\u505a\u8ba1\u7b97\uff0c\u6bd4\u8bfb JSON \u6587\u4ef6\u904d\u5386\u9ad8\u6548\u003c/strong\u003e\u3002\u529f\u80fd\u4e0e v3 \u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\uff0c\u6570\u636e\u5c42\u4ece JSON \u6362\u6210 SQLite\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6838\u5fc3\u6539\u9020\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport sqlite3\n\nDB = \u0026quot;scores.db\u0026quot;\n\ndef init_db():\n    with sqlite3.connect(DB) as conn:\n        conn.execute(\u0026quot;\u0026quot;\u0026quot;\n            CREATE TABLE IF NOT EXISTS scores (\n                id INTEGER PRIMARY KEY,\n                score INTEGER NOT NULL\n            )\n        \u0026quot;\u0026quot;\u0026quot;)\n\ndef insert_scores(scores):\n    with sqlite3.connect(DB) as conn:\n        for s in scores:\n            conn.execute(\u0026quot;INSERT INTO scores (score) VALUES (?)\u0026quot;, (s,))\n\ndef calc_stats():\n    with sqlite3.connect(DB) as conn:\n        total, count = conn.execute(\u0026quot;SELECT SUM(score), COUNT(*) FROM scores\u0026quot;).fetchone()\n        best = conn.execute(\u0026quot;SELECT MAX(score) FROM scores\u0026quot;).fetchone()[0]\n        worst = conn.execute(\u0026quot;SELECT MIN(score) FROM scores\u0026quot;).fetchone()[0]\n    return {\u0026quot;total\u0026quot;: total, \u0026quot;avg\u0026quot;: total / count, \u0026quot;best\u0026quot;: best, \u0026quot;worst\u0026quot;: worst}\n\ninit_db()\ninsert_scores([88, 92, 76, 99, 61])\nprint(calc_stats())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{\u0026#x27;total\u0026#x27;: 416, \u0026#x27;avg\u0026#x27;: 83.2, \u0026#x27;best\u0026#x27;: 99, \u0026#x27;worst\u0026#x27;: 61}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 6, "23.6 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eSUM/COUNT/MAX/MIN\u003c/code\u003e \u56db\u4e2a\u805a\u5408\u51fd\u6570\u4e00\u6b21\u67e5\u8be2\u641e\u5b9a\u7edf\u8ba1\u2014\u2014\u003cstrong\u003e\u6570\u636e\u5e93\u66ff\u4f60\u505a\u8ba1\u7b97\uff0c\u6bd4\u8bfb JSON \u6587\u4ef6\u904d\u5386\u9ad8\u6548\u003c/strong\u003e\u3002\u529f\u80fd\u4e0e v3 \u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\uff0c\u6570\u636e\u5c42\u4ece JSON \u6362\u6210 SQLite\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6838\u5fc3\u6539\u9020\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport sqlite3\n\nDB = \u0026quot;scores.db\u0026quot;\n\ndef init_db():\n    with sqlite3.connect(DB) as conn:\n        conn.execute(\u0026quot;\u0026quot;\u0026quot;\n            CREATE TABLE IF NOT EXISTS scores (\n                id INTEGER PRIMARY KEY,\n                score INTEGER NOT NULL\n            )\n        \u0026quot;\u0026quot;\u0026quot;)\n\ndef insert_scores(scores):\n    with sqlite3.connect(DB) as conn:\n        for s in scores:\n            conn.execute(\u0026quot;INSERT INTO scores (score) VALUES (?)\u0026quot;, (s,))\n\ndef calc_stats():\n    with sqlite3.connect(DB) as conn:\n        total, count = conn.execute(\u0026quot;SELECT SUM(score), COUNT(*) FROM scores\u0026quot;).fetchone()\n        best = conn.execute(\u0026quot;SELECT MAX(score) FROM scores\u0026quot;).fetchone()[0]\n        worst = conn.execute(\u0026quot;SELECT MIN(score) FROM scores\u0026quot;).fetchone()[0]\n    return {\u0026quot;total\u0026quot;: total, \u0026quot;avg\u0026quot;: total / count, \u0026quot;best\u0026quot;: best, \u0026quot;worst\u0026quot;: worst}\n\ninit_db()\ninsert_scores([88, 92, 76, 99, 61])\nprint(calc_stats())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{\u0026#x27;total\u0026#x27;: 416, \u0026#x27;avg\u0026#x27;: 83.2, \u0026#x27;best\u0026#x27;: 99, \u0026#x27;worst\u0026#x27;: 61}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -940,6 +1169,66 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 7 \u9898**\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 7 题</strong>：改造第 14 章"成绩系统 v3"：把数据从 JSON 文件换成 SQLite（建表、插入、统计查询），保持功能一致（读→算→写报告）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 6, 0, "\u7b2c 7 \u9898\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 7 \u9898**\uff1a\u6539\u9020\u7b2c 14 \u7ae0\"\u6210\u7ee9\u7cfb\u7edf v3\"\uff1a\u628a\u6570\u636e\u4ece JSON \u6587\u4ef6\u6362\u6210 SQLite\uff08\u5efa\u8868\u3001\u63d2\u5165\u3001\u7edf\u8ba1\u67e5\u8be2\uff09\uff0c\u4fdd\u6301\u529f\u80fd\u4e00\u81f4\uff08\u8bfb\u2192\u7b97\u2192\u5199\u62a5\u544a\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（核心改造）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import sqlite3
+
+DB = &quot;scores.db&quot;
+
+def init_db():
+    with sqlite3.connect(DB) as conn:
+        conn.execute(&quot;&quot;&quot;
+            CREATE TABLE IF NOT EXISTS scores (
+                id INTEGER PRIMARY KEY,
+                score INTEGER NOT NULL
+            )
+        &quot;&quot;&quot;)
+
+def insert_scores(scores):
+    with sqlite3.connect(DB) as conn:
+        for s in scores:
+            conn.execute(&quot;INSERT INTO scores (score) VALUES (?)&quot;, (s,))
+
+def calc_stats():
+    with sqlite3.connect(DB) as conn:
+        total, count = conn.execute(&quot;SELECT SUM(score), COUNT(*) FROM scores&quot;).fetchone()
+        best = conn.execute(&quot;SELECT MAX(score) FROM scores&quot;).fetchone()[0]
+        worst = conn.execute(&quot;SELECT MIN(score) FROM scores&quot;).fetchone()[0]
+    return {&quot;total&quot;: total, &quot;avg&quot;: total / count, &quot;best&quot;: best, &quot;worst&quot;: worst}
+
+init_db()
+insert_scores([88, 92, 76, 99, 61])
+print(calc_stats())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">{&#x27;total&#x27;: 416, &#x27;avg&#x27;: 83.2, &#x27;best&#x27;: 99, &#x27;worst&#x27;: 61}</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">SUM/COUNT/MAX/MIN</code> 四个聚合函数一次查询搞定统计——<strong>数据库替你做计算，比读 JSON 文件遍历高效</strong>。功能与 v3 一致（读→算→写报告），数据层从 JSON 换成 SQLite。</p></div>
+              
             </div>
             
           </div>
@@ -1024,7 +1313,7 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 7, "23.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eRESTful \u68c0\u67e5\uff08\u65e0\u52a8\u4f5c\u547d\u540d\uff09+ \u72b6\u6001\u7801\u8865\u5168 + \u54cd\u5e94\u7edf\u4e00\u2014\u2014L3 Review \u4e09\u6b65\u5230\u4f4d\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1aGET/POST/PUT/DELETE /api/books \u57fa\u672c\u5408\u7406\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. AI \u7528 /api/get_books \u7684\u5730\u65b9\u6539\u6210 /api/books\uff08RESTful\uff09\uff1b\n2. \u8865\u5145 404 \u573a\u666f\uff08\u5220\u9664\u4e0d\u5b58\u5728\u7684\u4e66\u5e94\u8fd4\u56de 404 \u800c\u4e0d\u662f 200\uff09\uff1b\n3. \u54cd\u5e94\u683c\u5f0f\u7edf\u4e00\u6210 code/message/data\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0\u0026quot;\u501f\u9605\u8bb0\u5f55\u0026quot;\u63a5\u53e3\u2014\u2014\u672c\u8bfe\u7a0b\u8303\u56f4\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(23, 7, "23.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eRESTful \u68c0\u67e5\uff08\u65e0\u52a8\u4f5c\u547d\u540d\uff09+ \u72b6\u6001\u7801\u8865\u5168 + \u54cd\u5e94\u7edf\u4e00\u2014\u2014L3 Review \u4e09\u6b65\u5230\u4f4d\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1aGET/POST/PUT/DELETE /api/books \u57fa\u672c\u5408\u7406\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. AI \u7528 /api/get_books \u7684\u5730\u65b9\u6539\u6210 /api/books\uff08RESTful\uff09\uff1b\n2. \u8865\u5145 404 \u573a\u666f\uff08\u5220\u9664\u4e0d\u5b58\u5728\u7684\u4e66\u5e94\u8fd4\u56de 404 \u800c\u4e0d\u662f 200\uff09\uff1b\n3. \u54cd\u5e94\u683c\u5f0f\u7edf\u4e00\u6210 code/message/data\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0\u0026quot;\u501f\u9605\u8bb0\u5f55\u0026quot;\u63a5\u53e3\u2014\u2014\u672c\u8bfe\u7a0b\u8303\u56f4\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1039,6 +1328,42 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(23, '0', "**\u7b2c 8 \u9898**\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 8 题</strong>：按 23.6 L3 流程：让 AI 生成"图书管理 API"设计文档，Review 后修改（检查 RESTful、状态码、响应格式），记录修改理由。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 7, 0, "\u7b2c 8 \u9898\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 8 \u9898**\uff1a\u6309 23.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u56fe\u4e66\u7ba1\u7406 API\"\u8bbe\u8ba1\u6587\u6863\uff0cReview \u540e\u4fee\u6539\uff08\u68c0\u67e5 RESTful\u3001\u72b6\u6001\u7801\u3001\u54cd\u5e94\u683c\u5f0f\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（Review 记录示例）：</p>
+<div class="md-figure"><pre class="md-diagram">AI 生成：GET/POST/PUT/DELETE /api/books 基本合理。
+我的修改：
+1. AI 用 /api/get_books 的地方改成 /api/books（RESTful）；
+2. 补充 404 场景（删除不存在的书应返回 404 而不是 200）；
+3. 响应格式统一成 code/message/data。
+否决：AI 建议加&quot;借阅记录&quot;接口——本课程范围不需要（YAGNI）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>RESTful 检查（无动作命名）+ 状态码补全 + 响应统一——L3 Review 三步到位。</p></div>
+              
             </div>
             
           </div>
@@ -1371,9 +1696,9 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "\u540e\u7aef\u57fa\u7840\uff1aHTTP\u3001REST \u4e0e\u6570\u636e\u5e93";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1395,13 +1720,13 @@ conn.execute(f&quot;SELECT * FROM students WHERE name = &#x27;{name}&#x27;&quot;
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

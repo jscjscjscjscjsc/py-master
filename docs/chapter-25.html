@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -110,7 +111,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 0, "25.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u6ce8\u610f CDN \u7684 \u003ccode class=\"md-inline\"\u003e\u0026lt;script\u0026gt;\u003c/code\u003e \u8981\u5728 Vue \u5e94\u7528\u4ee3\u7801\u003cstrong\u003e\u4e4b\u524d\u003c/strong\u003e\u5f15\u5165\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a `{{ message }}`\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;div id=\u0026quot;app\u0026quot;\u0026gt;\n    \u0026lt;h1\u0026gt;{{ message }}\u0026lt;/h1\u0026gt;\n\u0026lt;/div\u0026gt;\n\u0026lt;script src=\u0026quot;https://unpkg.com/vue@3/dist/vue.global.js\u0026quot;\u0026gt;\u0026lt;/script\u0026gt;\n\u0026lt;script\u0026gt;\n    const { createApp } = Vue;\n    createApp({\n        data() { return { message: \u0026quot;\u6211\u7684\u7b2c\u4e00\u4e2a Vue\u0026quot; }; },\n    }).mount(\u0026quot;#app\u0026quot;);\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 0, "25.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a {{ message }}\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u6ce8\u610f CDN \u7684 \u003ccode class=\"md-inline\"\u003e\u0026lt;script\u0026gt;\u003c/code\u003e \u8981\u5728 Vue \u5e94\u7528\u4ee3\u7801\u003cstrong\u003e\u4e4b\u524d\u003c/strong\u003e\u5f15\u5165\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a `{{ message }}`\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a \u003ccode class=\"md-inline\"\u003e{{ message }}\u003c/code\u003e\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a {{ message }}\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;div id=\u0026quot;app\u0026quot;\u0026gt;\n    \u0026lt;h1\u0026gt;{{ message }}\u0026lt;/h1\u0026gt;\n\u0026lt;/div\u0026gt;\n\u0026lt;script src=\u0026quot;https://unpkg.com/vue@3/dist/vue.global.js\u0026quot;\u0026gt;\u0026lt;/script\u0026gt;\n\u0026lt;script\u0026gt;\n    const { createApp } = Vue;\n    createApp({\n        data() { return { message: \u0026quot;\u6211\u7684\u7b2c\u4e00\u4e2a Vue\u0026quot; }; },\n    }).mount(\u0026quot;#app\u0026quot;);\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -125,6 +126,46 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 1 \u9898**\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a `{{ message }}`\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：用 CDN 创建一个 Vue 应用，显示 <code class="md-inline">{{ message }}</code>（"我的第一个 Vue"）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 0, 0, "\u7b2c 1 \u9898\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a {{ message }}\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a {{ message }}\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u7528 CDN \u521b\u5efa\u4e00\u4e2a Vue \u5e94\u7528\uff0c\u663e\u793a `{{ message }}`\uff08\"\u6211\u7684\u7b2c\u4e00\u4e2a Vue\"\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;div id=&quot;app&quot;&gt;
+    &lt;h1&gt;{{ message }}&lt;/h1&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://unpkg.com/vue@3/dist/vue.global.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    const { createApp } = Vue;
+    createApp({
+        data() { return { message: &quot;我的第一个 Vue&quot; }; },
+    }).mount(&quot;#app&quot;);
+&lt;/script&gt;</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>注意 CDN 的 <code class="md-inline">&lt;script&gt;</code> 要在 Vue 应用代码<strong>之前</strong>引入。</p></div>
+              
             </div>
             
           </div>
@@ -213,7 +254,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 1, "25.1 \u4e3a\u4ec0\u4e48\u9700\u8981\u524d\u7aef\u6846\u67b6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003edata\u003c/code\u003e \u91cc\u653e\u5bf9\u8c61\uff0c\u6a21\u677f\u91cc\u7528 \u003ccode class=\"md-inline\"\u003estudent.name\u003c/code\u003e \u8bbf\u95ee\uff08JS \u5bf9\u8c61\u8bbf\u95ee\u65b9\u5f0f\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a `{{ }}` \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;div id=\u0026quot;app\u0026quot;\u0026gt;\n    \u0026lt;p\u0026gt;{{ student.name }}\uff0c{{ student.age }} \u5c81\u0026lt;/p\u0026gt;\n\u0026lt;/div\u0026gt;\n\u0026lt;script\u0026gt;\n    const { createApp } = Vue;\n    createApp({\n        data() { return { student: { name: \u0026quot;\u5f20\u4e09\u0026quot;, age: 19 } }; },\n    }).mount(\u0026quot;#app\u0026quot;);\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 1, "25.1 \u4e3a\u4ec0\u4e48\u9700\u8981\u524d\u7aef\u6846\u67b6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a {{ }} \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003edata\u003c/code\u003e \u91cc\u653e\u5bf9\u8c61\uff0c\u6a21\u677f\u91cc\u7528 \u003ccode class=\"md-inline\"\u003estudent.name\u003c/code\u003e \u8bbf\u95ee\uff08JS \u5bf9\u8c61\u8bbf\u95ee\u65b9\u5f0f\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a `{{ }}` \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a \u003ccode class=\"md-inline\"\u003e{{ }}\u003c/code\u003e \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a {{ }} \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;div id=\u0026quot;app\u0026quot;\u0026gt;\n    \u0026lt;p\u0026gt;{{ student.name }}\uff0c{{ student.age }} \u5c81\u0026lt;/p\u0026gt;\n\u0026lt;/div\u0026gt;\n\u0026lt;script\u0026gt;\n    const { createApp } = Vue;\n    createApp({\n        data() { return { student: { name: \u0026quot;\u5f20\u4e09\u0026quot;, age: 19 } }; },\n    }).mount(\u0026quot;#app\u0026quot;);\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -228,6 +269,45 @@ list.appendChild(li);
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 2 \u9898**\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a `{{ }}` \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：数据里放一个学生对象（name/age），页面用两个 <code class="md-inline">{{ }}</code> 显示姓名和年龄。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 1, 0, "\u7b2c 2 \u9898\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a {{ }} \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a {{ }} \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u6570\u636e\u91cc\u653e\u4e00\u4e2a\u5b66\u751f\u5bf9\u8c61\uff08name/age\uff09\uff0c\u9875\u9762\u7528\u4e24\u4e2a `{{ }}` \u663e\u793a\u59d3\u540d\u548c\u5e74\u9f84\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;div id=&quot;app&quot;&gt;
+    &lt;p&gt;{{ student.name }}，{{ student.age }} 岁&lt;/p&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    const { createApp } = Vue;
+    createApp({
+        data() { return { student: { name: &quot;张三&quot;, age: 19 } }; },
+    }).mount(&quot;#app&quot;);
+&lt;/script&gt;</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">data</code> 里放对象，模板里用 <code class="md-inline">student.name</code> 访问（JS 对象访问方式）。</p></div>
+              
             </div>
             
           </div>
@@ -370,7 +450,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 2, "25.2 Vue 3 CDN \u8d77\u6b65", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e:key=\"s.id\"\u003c/code\u003e \u5fc5\u5199\u2014\u2014Vue \u9760\u5b83\u9ad8\u6548\u8ffd\u8e2a\u5217\u8868\u9879\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 `v-for` \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;ul\u0026gt;\n    \u0026lt;li v-for=\u0026quot;s in students\u0026quot; :key=\u0026quot;s.id\u0026quot;\u0026gt;{{ s.name }}\uff1a{{ s.score }}\u0026lt;/li\u0026gt;\n\u0026lt;/ul\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"js\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ejs\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-js\"\u003edata() {\n    return {\n        students: [\n            { id: 1, name: \u0026quot;\u5f20\u4e09\u0026quot;, score: 88 },\n            { id: 2, name: \u0026quot;\u674e\u56db\u0026quot;, score: 95 },\n            { id: 3, name: \u0026quot;\u738b\u4e94\u0026quot;, score: 76 },\n        ],\n    };\n}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 2, "25.2 Vue 3 CDN \u8d77\u6b65", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 v-for \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e:key=\"s.id\"\u003c/code\u003e \u5fc5\u5199\u2014\u2014Vue \u9760\u5b83\u9ad8\u6548\u8ffd\u8e2a\u5217\u8868\u9879\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 `v-for` \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 \u003ccode class=\"md-inline\"\u003ev-for\u003c/code\u003e \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 v-for \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;ul\u0026gt;\n    \u0026lt;li v-for=\u0026quot;s in students\u0026quot; :key=\u0026quot;s.id\u0026quot;\u0026gt;{{ s.name }}\uff1a{{ s.score }}\u0026lt;/li\u0026gt;\n\u0026lt;/ul\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"js\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ejs\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-js\"\u003edata() {\n    return {\n        students: [\n            { id: 1, name: \u0026quot;\u5f20\u4e09\u0026quot;, score: 88 },\n            { id: 2, name: \u0026quot;\u674e\u56db\u0026quot;, score: 95 },\n            { id: 3, name: \u0026quot;\u738b\u4e94\u0026quot;, score: 76 },\n        ],\n    };\n}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -385,6 +465,48 @@ list.appendChild(li);
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 3 \u9898**\uff1a\u7528 `v-for` \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：用 <code class="md-inline">v-for</code> 渲染一个 3 个学生的列表（name + score）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 2, 0, "\u7b2c 3 \u9898\uff1a\u7528 v-for \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 v-for \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u7528 `v-for` \u6e32\u67d3\u4e00\u4e2a 3 \u4e2a\u5b66\u751f\u7684\u5217\u8868\uff08name + score\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;ul&gt;
+    &lt;li v-for=&quot;s in students&quot; :key=&quot;s.id&quot;&gt;{{ s.name }}：{{ s.score }}&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+<div class="md-codeblock" data-lang="js"><div class="md-codebar"><span class="md-codelang">js</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-js">data() {
+    return {
+        students: [
+            { id: 1, name: &quot;张三&quot;, score: 88 },
+            { id: 2, name: &quot;李四&quot;, score: 95 },
+            { id: 3, name: &quot;王五&quot;, score: 76 },
+        ],
+    };
+}</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">:key="s.id"</code> 必写——Vue 靠它高效追踪列表项。</p></div>
+              
             </div>
             
           </div>
@@ -534,7 +656,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 3, "25.3 \u56db\u4e2a\u6838\u5fc3\u6307\u4ee4", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ev-if\u003c/code\u003e / \u003ccode class=\"md-inline\"\u003ev-else\u003c/code\u003e \u4e0e Python if/else \u540c\u601d\u8def\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 `v-if/v-else` \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;p v-if=\u0026quot;score \u0026gt;= 60\u0026quot;\u0026gt;\u53ca\u683c\u0026lt;/p\u0026gt;\n\u0026lt;p v-else\u0026gt;\u4e0d\u53ca\u683c\u0026lt;/p\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 3, "25.3 \u56db\u4e2a\u6838\u5fc3\u6307\u4ee4", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528 v-if/v-else \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ev-if\u003c/code\u003e / \u003ccode class=\"md-inline\"\u003ev-else\u003c/code\u003e \u4e0e Python if/else \u540c\u601d\u8def\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 `v-if/v-else` \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528 \u003ccode class=\"md-inline\"\u003ev-if/v-else\u003c/code\u003e \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528 v-if/v-else \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;p v-if=\u0026quot;score \u0026gt;= 60\u0026quot;\u0026gt;\u53ca\u683c\u0026lt;/p\u0026gt;\n\u0026lt;p v-else\u0026gt;\u4e0d\u53ca\u683c\u0026lt;/p\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -549,6 +671,38 @@ list.appendChild(li);
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 4 \u9898**\uff1a\u7528 `v-if/v-else` \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：用 <code class="md-inline">v-if/v-else</code> 显示"及格/不及格"（score ≥ 60 判断）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 3, 0, "\u7b2c 4 \u9898\uff1a\u7528 v-if/v-else \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528 v-if/v-else \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u7528 `v-if/v-else` \u663e\u793a\"\u53ca\u683c/\u4e0d\u53ca\u683c\"\uff08score \u2265 60 \u5224\u65ad\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;p v-if=&quot;score &gt;= 60&quot;&gt;及格&lt;/p&gt;
+&lt;p v-else&gt;不及格&lt;/p&gt;</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">v-if</code> / <code class="md-inline">v-else</code> 与 Python if/else 同思路。</p></div>
+              
             </div>
             
           </div>
@@ -651,7 +805,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 4, "25.4 \u7ec4\u4ef6\u5316\u601d\u60f3", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e@click=\"count++\"\u003c/code\u003e \u76f4\u63a5\u5199\u8868\u8fbe\u5f0f\u2014\u2014\u003cstrong\u003e\u6539\u6570\u636e\uff0c\u9875\u9762\u81ea\u52a8\u66f4\u65b0\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 `@click` \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;p\u0026gt;\u70b9\u51fb\u4e86 {{ count }} \u6b21\u0026lt;/p\u0026gt;\n\u0026lt;button @click=\u0026quot;count++\u0026quot;\u0026gt;\u70b9\u6211\u0026lt;/button\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"js\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ejs\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-js\"\u003edata() { return { count: 0 }; }\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 4, "25.4 \u7ec4\u4ef6\u5316\u601d\u60f3", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7528 @click \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e@click=\"count++\"\u003c/code\u003e \u76f4\u63a5\u5199\u8868\u8fbe\u5f0f\u2014\u2014\u003cstrong\u003e\u6539\u6570\u636e\uff0c\u9875\u9762\u81ea\u52a8\u66f4\u65b0\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 `@click` \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u7528 \u003ccode class=\"md-inline\"\u003e@click\u003c/code\u003e \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u7528 @click \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;p\u0026gt;\u70b9\u51fb\u4e86 {{ count }} \u6b21\u0026lt;/p\u0026gt;\n\u0026lt;button @click=\u0026quot;count++\u0026quot;\u0026gt;\u70b9\u6211\u0026lt;/button\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"js\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ejs\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-js\"\u003edata() { return { count: 0 }; }\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -666,6 +820,39 @@ list.appendChild(li);
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 5 \u9898**\uff1a\u7528 `@click` \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：用 <code class="md-inline">@click</code> 做一个计数器（点击 +1）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 4, 0, "\u7b2c 5 \u9898\uff1a\u7528 @click \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7528 @click \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u7528 `@click` \u505a\u4e00\u4e2a\u8ba1\u6570\u5668\uff08\u70b9\u51fb +1\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;p&gt;点击了 {{ count }} 次&lt;/p&gt;
+&lt;button @click=&quot;count++&quot;&gt;点我&lt;/button&gt;</code></pre></div>
+<div class="md-codeblock" data-lang="js"><div class="md-codebar"><span class="md-codelang">js</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-js">data() { return { count: 0 }; }</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">@click="count++"</code> 直接写表达式——<strong>改数据，页面自动更新</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -796,7 +983,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 5, "25.5 \u7efc\u5408\u6848\u4f8b\uff1aVue + FastAPI \u524d\u540e\u7aef\u8054\u8c03", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ev-model\u003c/code\u003e \u53cc\u5411\u540c\u6b65\u2014\u2014\u8f93\u5165\u5373\u66f4\u65b0\uff0c\u66f4\u65b0\u5373\u663e\u793a\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7528 `v-model` \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;input v-model=\u0026quot;keyword\u0026quot; placeholder=\u0026quot;\u8f93\u5165\u5173\u952e\u8bcd\u0026quot;\u0026gt;\n\u0026lt;p\u0026gt;\u4f60\u8f93\u5165\u7684\u662f\uff1a{{ keyword }}\u0026lt;/p\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"js\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ejs\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-js\"\u003edata() { return { keyword: \u0026quot;\u0026quot; }; }\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 5, "25.5 \u7efc\u5408\u6848\u4f8b\uff1aVue + FastAPI \u524d\u540e\u7aef\u8054\u8c03", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u7528 v-model \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fet\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ev-model\u003c/code\u003e \u53cc\u5411\u540c\u6b65\u2014\u2014\u8f93\u5165\u5373\u66f4\u65b0\uff0c\u66f4\u65b0\u5373\u663e\u793a\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7528 `v-model` \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u7528 \u003ccode class=\"md-inline\"\u003ev-model\u003c/code\u003e \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u7528 v-model \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;input v-model=\u0026quot;keyword\u0026quot; placeholder=\u0026quot;\u8f93\u5165\u5173\u952e\u8bcd\u0026quot;\u0026gt;\n\u0026lt;p\u0026gt;\u4f60\u8f93\u5165\u7684\u662f\uff1a{{ keyword }}\u0026lt;/p\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"js\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ejs\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-js\"\u003edata() { return { keyword: \u0026quot;\u0026quot; }; }\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -809,8 +996,42 @@ list.appendChild(li);
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 6 \u9898**\uff1a\u7528 `v-model` \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 6 \u9898**\uff1a\u7528 `v-model` \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：用 <code class="md-inline">v-model</code> 做一个输入框，实时显示"你输入的是：xxx"。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 8 题后，把你 Review 修改过的 Vue 页面发给 AI 复审："请检查 v-for 的 key、fetch 错误处理、字段与后端一致性。"记录你采纳/否决的理由。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 5, 0, "\u7b2c 6 \u9898\uff1a\u7528 v-model \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u7528 v-model \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fet\u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u7528 `v-model` \u505a\u4e00\u4e2a\u8f93\u5165\u6846\uff0c\u5b9e\u65f6\u663e\u793a\"\u4f60\u8f93\u5165\u7684\u662f\uff1axxx\"\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60 Review \u4fee\u6539\u8fc7\u7684 Vue \u9875\u9762\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 v-for \u7684 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e0e\u540e\u7aef\u4e00\u81f4\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;input v-model=&quot;keyword&quot; placeholder=&quot;输入关键词&quot;&gt;
+&lt;p&gt;你输入的是：{{ keyword }}&lt;/p&gt;</code></pre></div>
+<div class="md-codeblock" data-lang="js"><div class="md-codebar"><span class="md-codelang">js</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-js">data() { return { keyword: &quot;&quot; }; }</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">v-model</code> 双向同步——输入即更新，更新即显示。</p></div>
+              
             </div>
             
           </div>
@@ -908,7 +1129,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 6, "25.6 \u4e86\u89e3\uff1aVite \u4e0e\u5de5\u7a0b\u5316", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u8054\u8c03\u6210\u529f\u7684\u6807\u5fd7 = Network \u9762\u677f 200/201 + \u9875\u9762\u6570\u636e\u53d8\u5316\u3002\u4efb\u4f55\u4e00\u6b65\u4e0d\u5bf9\uff0c\u6309\"4xx \u67e5\u524d\u7aef\u30015xx \u67e5\u540e\u7aef\"\u6392\u67e5\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6838\u5bf9\u6e05\u5355\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u25a1 FastAPI \u542f\u52a8\uff08uvicorn main:app --reload\uff09\uff0cCORS \u5df2\u5f00\uff1b\n\u25a1 \u524d\u7aef\u9875\u9762\u6253\u5f00\uff0cNetwork \u9762\u677f GET /api/tasks \u8fd4\u56de 200 + JSON\uff1b\n\u25a1 \u8f93\u5165\u5185\u5bb9\u70b9\u0026quot;\u6dfb\u52a0\u0026quot;\uff0cNetwork \u9762\u677f POST /api/tasks \u8fd4\u56de 201\uff1b\n\u25a1 \u5217\u8868\u81ea\u52a8\u51fa\u73b0\u65b0\u4efb\u52a1\uff08Vue \u54cd\u5e94\u5f0f\u66f4\u65b0\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 6, "25.6 \u4e86\u89e3\uff1aVite \u4e0e\u5de5\u7a0b\u5316", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u8054\u8c03\u6210\u529f\u7684\u6807\u5fd7 = Network \u9762\u677f 200/201 + \u9875\u9762\u6570\u636e\u53d8\u5316\u3002\u4efb\u4f55\u4e00\u6b65\u4e0d\u5bf9\uff0c\u6309\"4xx \u67e5\u524d\u7aef\u30015xx \u67e5\u540e\u7aef\"\u6392\u67e5\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6838\u5bf9\u6e05\u5355\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u25a1 FastAPI \u542f\u52a8\uff08uvicorn main:app --reload\uff09\uff0cCORS \u5df2\u5f00\uff1b\n\u25a1 \u524d\u7aef\u9875\u9762\u6253\u5f00\uff0cNetwork \u9762\u677f GET /api/tasks \u8fd4\u56de 200 + JSON\uff1b\n\u25a1 \u8f93\u5165\u5185\u5bb9\u70b9\u0026quot;\u6dfb\u52a0\u0026quot;\uff0cNetwork \u9762\u677f POST /api/tasks \u8fd4\u56de 201\uff1b\n\u25a1 \u5217\u8868\u81ea\u52a8\u51fa\u73b0\u65b0\u4efb\u52a1\uff08Vue \u54cd\u5e94\u5f0f\u66f4\u65b0\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -923,6 +1144,40 @@ list.appendChild(li);
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 7 题</strong>：完成第 25.5 的待办清单页面与你的 FastAPI 接口联调（确保 CORS 已开），实现"加载列表 + 添加任务"，并截图记录 Network 面板的请求状态。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 6, 0, "\u7b2c 7 \u9898\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002", "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 7 \u9898**\uff1a\u5b8c\u6210\u7b2c 25.5 \u7684\u5f85\u529e\u6e05\u5355\u9875\u9762\u4e0e\u4f60\u7684 FastAPI \u63a5\u53e3\u8054\u8c03\uff08\u786e\u4fdd CORS \u5df2\u5f00\uff09\uff0c\u5b9e\u73b0\"\u52a0\u8f7d\u5217\u8868 + \u6dfb\u52a0\u4efb\u52a1\"\uff0c\u5e76\u622a\u56fe\u8bb0\u5f55 Network \u9762\u677f\u7684\u8bf7\u6c42\u72b6\u6001\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（核对清单）：</p>
+<div class="md-figure"><pre class="md-diagram">□ FastAPI 启动（uvicorn main:app --reload），CORS 已开；
+□ 前端页面打开，Network 面板 GET /api/tasks 返回 200 + JSON；
+□ 输入内容点&quot;添加&quot;，Network 面板 POST /api/tasks 返回 201；
+□ 列表自动出现新任务（Vue 响应式更新）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>联调成功的标志 = Network 面板 200/201 + 页面数据变化。任何一步不对，按"4xx 查前端、5xx 查后端"排查。</p></div>
+              
             </div>
             
           </div>
@@ -1013,7 +1268,7 @@ list.appendChild(li);
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 7, "25.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eL3 Review \u4e94\u6b65\uff08\u8bfb\u61c2/\u8fd0\u884c/\u9a8c\u8bc1/\u4fee\u6539/\u5426\u51b3\u7406\u7531\uff09\u9f50\u5168\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1av-for \u6e32\u67d3 + fetch \u8c03 /api/students\uff0c\u57fa\u672c\u53ef\u7528\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. \u8865\u4e86 :key=\u0026quot;s.id\u0026quot;\uff08AI \u6f0f\u4e86\uff0cVue \u4f1a\u8b66\u544a\uff09\uff1b\n2. \u8865\u4e86 fetch \u5931\u8d25\u63d0\u793a\uff08\u540e\u7aef\u6ca1\u542f\u52a8\u65f6\u663e\u793a\u0026quot;\u52a0\u8f7d\u5931\u8d25\u0026quot;\uff09\uff1b\n3. \u5b57\u6bb5\u540d\u4e0e\u540e\u7aef\u5bf9\u9f50\uff08\u540e\u7aef\u8fd4\u56de {id,name,score}\uff09\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0\u641c\u7d22\u6846\u2014\u2014\u672c\u7ec3\u4e60\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(25, 7, "25.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eL3 Review \u4e94\u6b65\uff08\u8bfb\u61c2/\u8fd0\u884c/\u9a8c\u8bc1/\u4fee\u6539/\u5426\u51b3\u7406\u7531\uff09\u9f50\u5168\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1av-for \u6e32\u67d3 + fetch \u8c03 /api/students\uff0c\u57fa\u672c\u53ef\u7528\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. \u8865\u4e86 :key=\u0026quot;s.id\u0026quot;\uff08AI \u6f0f\u4e86\uff0cVue \u4f1a\u8b66\u544a\uff09\uff1b\n2. \u8865\u4e86 fetch \u5931\u8d25\u63d0\u793a\uff08\u540e\u7aef\u6ca1\u542f\u52a8\u65f6\u663e\u793a\u0026quot;\u52a0\u8f7d\u5931\u8d25\u0026quot;\uff09\uff1b\n3. \u5b57\u6bb5\u540d\u4e0e\u540e\u7aef\u5bf9\u9f50\uff08\u540e\u7aef\u8fd4\u56de {id,name,score}\uff09\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0\u641c\u7d22\u6846\u2014\u2014\u672c\u7ec3\u4e60\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1028,6 +1283,42 @@ list.appendChild(li);
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(25, '0', "**\u7b2c 8 \u9898**\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 8 题</strong>：按 25.8 L3 流程：让 AI 生成"学生列表页面"，你 Review（检查 key、fetch 错误处理、字段一致性）并修改后联调，记录修改理由。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 7, 0, "\u7b2c 8 \u9898\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 8 \u9898**\uff1a\u6309 25.8 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5b66\u751f\u5217\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5 key\u3001fetch \u9519\u8bef\u5904\u7406\u3001\u5b57\u6bb5\u4e00\u81f4\u6027\uff09\u5e76\u4fee\u6539\u540e\u8054\u8c03\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（Review 记录示例）：</p>
+<div class="md-figure"><pre class="md-diagram">AI 生成：v-for 渲染 + fetch 调 /api/students，基本可用。
+我的修改：
+1. 补了 :key=&quot;s.id&quot;（AI 漏了，Vue 会警告）；
+2. 补了 fetch 失败提示（后端没启动时显示&quot;加载失败&quot;）；
+3. 字段名与后端对齐（后端返回 {id,name,score}）。
+否决：AI 建议加搜索框——本练习不需要（YAGNI）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>L3 Review 五步（读懂/运行/验证/修改/否决理由）齐全。</p></div>
+              
             </div>
             
           </div>
@@ -1564,9 +1855,9 @@ list.appendChild(li);
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "Vue \u5165\u95e8";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1588,13 +1879,13 @@ list.appendChild(li);
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

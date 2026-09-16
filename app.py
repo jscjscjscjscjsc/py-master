@@ -630,9 +630,14 @@ def run_code():
         proc = subprocess.run(
             ['python', '-X', 'utf8', tmp_path],
             capture_output=True,
-            timeout=10,
+            # 超时放宽到 20 秒：导入 pandas/matplotlib 在忙的机器上会明显变慢
+            timeout=20,
             cwd=os.path.dirname(tmp_path),
-            env={**os.environ, 'PYTHONIOENCODING': 'utf-8', 'PYTHONUTF8': '1'}
+            env={**os.environ,
+                 'PYTHONIOENCODING': 'utf-8', 'PYTHONUTF8': '1',
+                 # 必须指定无界面后端：默认后端会去初始化 GUI，
+                 # 在服务端子进程里会直接阻塞到超时（第 26 章绘图题全军覆没就是这么来的）
+                 'MPLBACKEND': 'Agg'}
         )
         elapsed = round(time.time() - start, 2)
 
@@ -659,7 +664,7 @@ def run_code():
         return jsonify({
             'success': False,
             'output': '',
-            'error': '⏱ 代码执行超时（10秒限制）\n可能原因：死循环、阻塞操作或计算量过大',
+            'error': '⏱ 代码执行超时（20秒限制）\n可能原因：死循环、阻塞操作或计算量过大',
             'exit_code': -1,
             'elapsed': '10s+'
         })
@@ -2424,6 +2429,73 @@ def _run_narration_job(job_id, chapter_id, kp_index, scenes, with_images):
                 job['status'] = 'error'
                 job['message'] = f'{type(exc).__name__}: {exc}'
                 job['finished_at'] = time.time()
+
+
+# ── 教材原题的文字作答批改 ─────────────────────────────────
+# 教材练习题大量是"用自己的话说出/解释/列举"这类主观题，
+# 不适合丢进代码编辑器，所以单独给一条文字作答 + AI 对照参考答案批改的通道。
+
+ANSWER_SCORE_PROMPT = """你是职业院校的 Python 与 AI 应用开发课程助教，正在批改学生的书面作答。
+你会拿到【题目】【参考答案】【解析】【学生作答】四部分。
+
+批改要求：
+1. 以参考答案为基准判断对错，但不要要求学生逐字一致——意思对、关键点齐就是好答案。
+2. 学生答对关键点就给高分；漏掉关键点要指出漏了什么；出现事实性错误要明确指出。
+3. 如果学生提交的是代码，按"代码是否能实现题目要求"来评，不要纠结风格。
+4. 评分尺度：准确且完整 85-100；方向对但有遗漏 60-84；明显错误或答非所问 0-59。
+5. 语气像老师，直接指出问题，不要空泛地夸奖。
+
+只输出 JSON，不要输出其他内容：
+{"score": 0-100 的整数, "feedback": "一句话总评，40 字以内",
+ "strengths": "答得好的地方，30 字以内，没有就留空",
+ "weaknesses": "需要补充或纠正的地方，50 字以内"}"""
+
+
+@app.route('/api/score-answer', methods=['POST'])
+def score_answer():
+    """批改教材原题的文字作答。"""
+    data = request.get_json(silent=True) or {}
+    question = (data.get('question') or '').strip()[:3000]
+    answer = (data.get('answer') or '').strip()[:4000]
+    reference = (data.get('reference') or '').strip()[:3000]
+    explanation = (data.get('explanation') or '').strip()[:2000]
+
+    if not answer:
+        return jsonify({'success': False, 'message': '作答内容为空'})
+    if len(answer) < 4:
+        return jsonify({'success': False, 'message': '作答太短，请再写详细一点'})
+
+    # 游客也允许批改，但登录用户受每日额度限制，避免被刷
+    username = session.get('username', 'guest')
+    if username != 'guest':
+        allowed, used, limit = check_daily_limit(username)
+        if not allowed:
+            return jsonify({'success': False, 'message': '今日 AI 批改次数已用完，明天再来'})
+
+    user_message = (f'【题目】\n{question}\n\n【参考答案】\n{reference or "（教材未提供）"}\n\n'
+                    f'【解析】\n{explanation or "（无）"}\n\n【学生作答】\n{answer}')
+
+    reply, error = _call_deepseek(ANSWER_SCORE_PROMPT, user_message, max_tokens=600)
+    if error:
+        return jsonify({'success': False, 'message': f'AI 批改暂不可用：{error}'})
+
+    if username != 'guest':
+        increment_daily_usage(username)
+
+    try:
+        match = re.search(r'\{.*\}', reply, re.DOTALL)
+        result = json.loads(match.group() if match else reply)
+    except Exception as exc:
+        print(f'[文字批改] JSON 解析失败: {exc} - raw: {reply[:200]}')
+        return jsonify({'success': False, 'message': 'AI 返回格式异常，请重试'})
+
+    return jsonify({
+        'success': True,
+        'score': max(0, min(100, int(result.get('score', 60)))),
+        'feedback': result.get('feedback', ''),
+        'strengths': result.get('strengths', ''),
+        'weaknesses': result.get('weaknesses', ''),
+    })
 
 
 @app.route('/api/narration/<int:chapter_id>/<int:kp_index>')

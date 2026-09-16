@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -110,7 +111,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 0, "26.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0c`df.head()` \u67e5\u770b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport pandas as pd\n\ndata = [\n    [\u0026quot;\u6ce1\u9762\u0026quot;, 196],\n    [\u0026quot;\u77ff\u6cc9\u6c34\u0026quot;, 232],\n    [\u0026quot;\u996e\u6599\u0026quot;, 163],\n]\ndf = pd.DataFrame(data, columns=[\u0026quot;\u5546\u54c1\u0026quot;, \u0026quot;\u9500\u91cf\u0026quot;])\nprint(df.head())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e    \u5546\u54c1   \u9500\u91cf\n0   \u6ce1\u9762  196\n1  \u77ff\u6cc9\u6c34  232\n2   \u996e\u6599  163\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 0, "26.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0cdf.head() \u67e5\u770b\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0c`df.head()` \u67e5\u770b\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0c\u003ccode class=\"md-inline\"\u003edf.head()\u003c/code\u003e \u67e5\u770b\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0cdf.head() \u67e5\u770b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport pandas as pd\n\ndata = [\n    [\u0026quot;\u6ce1\u9762\u0026quot;, 196],\n    [\u0026quot;\u77ff\u6cc9\u6c34\u0026quot;, 232],\n    [\u0026quot;\u996e\u6599\u0026quot;, 163],\n]\ndf = pd.DataFrame(data, columns=[\u0026quot;\u5546\u54c1\u0026quot;, \u0026quot;\u9500\u91cf\u0026quot;])\nprint(df.head())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e    \u5546\u54c1   \u9500\u91cf\n0   \u6ce1\u9762  196\n1  \u77ff\u6cc9\u6c34  232\n2   \u996e\u6599  163\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -125,6 +126,47 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0c`df.head()` \u67e5\u770b\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：安装 pandas + matplotlib，用示例数据创建 DataFrame（商品/销量），<code class="md-inline">df.head()</code> 查看。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(26, 0, 0, "\u7b2c 1 \u9898\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0cdf.head() \u67e5\u770b\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0cdf.head() \u67e5\u770b\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 pandas + matplotlib\uff0c\u7528\u793a\u4f8b\u6570\u636e\u521b\u5efa DataFrame\uff08\u5546\u54c1/\u9500\u91cf\uff09\uff0c`df.head()` \u67e5\u770b\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import pandas as pd
+
+data = [
+    [&quot;泡面&quot;, 196],
+    [&quot;矿泉水&quot;, 232],
+    [&quot;饮料&quot;, 163],
+]
+df = pd.DataFrame(data, columns=[&quot;商品&quot;, &quot;销量&quot;])
+print(df.head())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">    商品   销量
+0   泡面  196
+1  矿泉水  232
+2   饮料  163</pre></div></div>
+              
             </div>
             
           </div>
@@ -272,7 +314,7 @@ result2 = arr * 2                     # 向量化</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 1, "26.1 pandas\uff1a\u8868\u683c\u6570\u636e\u5904\u7406\u7684\"Excel \u7248 Python\"", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 `groupby` \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eprint(df.groupby(\u0026quot;\u5546\u54c1\u0026quot;)[\u0026quot;\u9500\u91cf\u0026quot;].sum())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5546\u54c1\n\u77ff\u6cc9\u6c34    232\n\u996e\u6599     163\n\u6ce1\u9762     196\nName: \u9500\u91cf, dtype: int64\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 1, "26.1 pandas\uff1a\u8868\u683c\u6570\u636e\u5904\u7406\u7684\"Excel \u7248 Python\"", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 groupby \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 `groupby` \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 \u003ccode class=\"md-inline\"\u003egroupby\u003c/code\u003e \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 groupby \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eprint(df.groupby(\u0026quot;\u5546\u54c1\u0026quot;)[\u0026quot;\u9500\u91cf\u0026quot;].sum())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5546\u54c1\n\u77ff\u6cc9\u6c34    232\n\u996e\u6599     163\n\u6ce1\u9762     196\nName: \u9500\u91cf, dtype: int64\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -287,6 +329,40 @@ result2 = arr * 2                     # 向量化</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 2 \u9898**\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 `groupby` \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：对上面的 DataFrame 用 <code class="md-inline">groupby</code> 按商品分组求和，输出结果。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(26, 1, 0, "\u7b2c 2 \u9898\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 groupby \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 groupby \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u5bf9\u4e0a\u9762\u7684 DataFrame \u7528 `groupby` \u6309\u5546\u54c1\u5206\u7ec4\u6c42\u548c\uff0c\u8f93\u51fa\u7ed3\u679c\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(df.groupby(&quot;商品&quot;)[&quot;销量&quot;].sum())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">商品
+矿泉水    232
+饮料     163
+泡面     196
+Name: 销量, dtype: int64</pre></div></div>
+              
             </div>
             
           </div>
@@ -400,7 +476,7 @@ plt.show()</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 2, "26.2 matplotlib\uff1a\u6570\u636e\u53ef\u89c6\u5316", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003esavefig\u003c/code\u003e \u4fdd\u5b58\u56fe\u7247\uff1b\u003ccode class=\"md-inline\"\u003eplt.show()\u003c/code\u003e \u624d\u4f1a\u5f39\u51fa\u7a97\u53e3\uff08PyCharm \u53ef\u7528\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a `trend.png`\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport matplotlib.pyplot as plt\n\nplt.plot([1, 2, 3, 4], [10, 25, 18, 30], marker=\u0026quot;o\u0026quot;)\nplt.title(\u0026quot;\u8d8b\u52bf\u56fe\u0026quot;)\nplt.savefig(\u0026quot;trend.png\u0026quot;, dpi=100)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 2, "26.2 matplotlib\uff1a\u6570\u636e\u53ef\u89c6\u5316", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a trend.png\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003esavefig\u003c/code\u003e \u4fdd\u5b58\u56fe\u7247\uff1b\u003ccode class=\"md-inline\"\u003eplt.show()\u003c/code\u003e \u624d\u4f1a\u5f39\u51fa\u7a97\u53e3\uff08PyCharm \u53ef\u7528\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a `trend.png`\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a \u003ccode class=\"md-inline\"\u003etrend.png\u003c/code\u003e\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a trend.png\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport matplotlib.pyplot as plt\n\nplt.plot([1, 2, 3, 4], [10, 25, 18, 30], marker=\u0026quot;o\u0026quot;)\nplt.title(\u0026quot;\u8d8b\u52bf\u56fe\u0026quot;)\nplt.savefig(\u0026quot;trend.png\u0026quot;, dpi=100)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -415,6 +491,41 @@ plt.show()</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 3 \u9898**\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a `trend.png`\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：用 matplotlib 画一个 4 个点的折线图，保存为 <code class="md-inline">trend.png</code>。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(26, 2, 0, "\u7b2c 3 \u9898\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a trend.png\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a trend.png\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u7528 matplotlib \u753b\u4e00\u4e2a 4 \u4e2a\u70b9\u7684\u6298\u7ebf\u56fe\uff0c\u4fdd\u5b58\u4e3a `trend.png`\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import matplotlib.pyplot as plt
+
+plt.plot([1, 2, 3, 4], [10, 25, 18, 30], marker=&quot;o&quot;)
+plt.title(&quot;趋势图&quot;)
+plt.savefig(&quot;trend.png&quot;, dpi=100)</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">savefig</code> 保存图片；<code class="md-inline">plt.show()</code> 才会弹出窗口（PyCharm 可用）。</p></div>
+              
             </div>
             
           </div>
@@ -589,7 +700,7 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 3, "26.3 \u722c\u866b\u4e0e\u81ea\u52a8\u5316\uff08\u4e86\u89e3\uff09", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003epd.read_csv\u003c/code\u003e \u4e00\u884c\u8bfb\u5165\uff08\u7b2c 9 \u7ae0\u624b\u5199 CSV \u8bfb\u53d6\u7684\u5e93\u7248\uff09\uff1b\u003ccode class=\"md-inline\"\u003edf[\"score\"].mean()\u003c/code\u003e \u6c42\u5e73\u5747\u503c\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 `pd.read_csv` \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport pandas as pd\n\ndf = pd.read_csv(\u0026quot;clean.csv\u0026quot;)\nprint(df.columns)\nprint(df.head(3))\nprint(\u0026quot;\u5e73\u5747\u5206\uff1a\u0026quot;, df[\u0026quot;score\u0026quot;].mean())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 3, "26.3 \u722c\u866b\u4e0e\u81ea\u52a8\u5316\uff08\u4e86\u89e3\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 pd.read_csv \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003epd.read_csv\u003c/code\u003e \u4e00\u884c\u8bfb\u5165\uff08\u7b2c 9 \u7ae0\u624b\u5199 CSV \u8bfb\u53d6\u7684\u5e93\u7248\uff09\uff1b\u003ccode class=\"md-inline\"\u003edf[\"score\"].mean()\u003c/code\u003e \u6c42\u5e73\u5747\u503c\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 `pd.read_csv` \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 \u003ccode class=\"md-inline\"\u003epd.read_csv\u003c/code\u003e \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 pd.read_csv \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport pandas as pd\n\ndf = pd.read_csv(\u0026quot;clean.csv\u0026quot;)\nprint(df.columns)\nprint(df.head(3))\nprint(\u0026quot;\u5e73\u5747\u5206\uff1a\u0026quot;, df[\u0026quot;score\u0026quot;].mean())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -604,6 +715,42 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 4 \u9898**\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 `pd.read_csv` \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：把第 9 章的数据清洗结果（clean.csv）用 <code class="md-inline">pd.read_csv</code> 读入，输出列名、前 3 行、销量平均值。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(26, 3, 0, "\u7b2c 4 \u9898\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 pd.read_csv \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 pd.read_csv \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u628a\u7b2c 9 \u7ae0\u7684\u6570\u636e\u6e05\u6d17\u7ed3\u679c\uff08clean.csv\uff09\u7528 `pd.read_csv` \u8bfb\u5165\uff0c\u8f93\u51fa\u5217\u540d\u3001\u524d 3 \u884c\u3001\u9500\u91cf\u5e73\u5747\u503c\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv(&quot;clean.csv&quot;)
+print(df.columns)
+print(df.head(3))
+print(&quot;平均分：&quot;, df[&quot;score&quot;].mean())</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">pd.read_csv</code> 一行读入（第 9 章手写 CSV 读取的库版）；<code class="md-inline">df["score"].mean()</code> 求平均值。</p></div>
+              
             </div>
             
           </div>
@@ -704,7 +851,7 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 4, "26.4 \u6846\u67b6\u9009\u578b\u603b\u7ed3\uff1a\u4e09\u6761\u7ebf\u4e00\u5f20\u8868", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003etotal.plot(kind=\"bar\")\u003c/code\u003e \u662f pandas \u7684\u5feb\u6377\u753b\u56fe\uff1b\u003cstrong\u003e\u4e2d\u6587\u5b57\u4f53\u914d\u7f6e\uff08SimHei\uff09\u5fc5\u5199\u003c/strong\u003e\uff0c\u5426\u5219\u6807\u9898\u53d8\u65b9\u5757\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a `bar.png`\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\u0026quot;clean.csv\u0026quot;)\ntotal = df.groupby(\u0026quot;name\u0026quot;)[\u0026quot;score\u0026quot;].sum()\n\nplt.rcParams[\u0026quot;font.sans-serif\u0026quot;] = [\u0026quot;SimHei\u0026quot;]      # \u4e2d\u6587\u5b57\u4f53\ntotal.plot(kind=\u0026quot;bar\u0026quot;)\nplt.title(\u0026quot;\u5404\u5b66\u751f\u603b\u5206\u0026quot;)\nplt.savefig(\u0026quot;bar.png\u0026quot;, dpi=100)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 4, "26.4 \u6846\u67b6\u9009\u578b\u603b\u7ed3\uff1a\u4e09\u6761\u7ebf\u4e00\u5f20\u8868", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a bar.png\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003etotal.plot(kind=\"bar\")\u003c/code\u003e \u662f pandas \u7684\u5feb\u6377\u753b\u56fe\uff1b\u003cstrong\u003e\u4e2d\u6587\u5b57\u4f53\u914d\u7f6e\uff08SimHei\uff09\u5fc5\u5199\u003c/strong\u003e\uff0c\u5426\u5219\u6807\u9898\u53d8\u65b9\u5757\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a `bar.png`\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a \u003ccode class=\"md-inline\"\u003ebar.png\u003c/code\u003e\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a bar.png\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport matplotlib.pyplot as plt\nimport pandas as pd\n\ndf = pd.read_csv(\u0026quot;clean.csv\u0026quot;)\ntotal = df.groupby(\u0026quot;name\u0026quot;)[\u0026quot;score\u0026quot;].sum()\n\nplt.rcParams[\u0026quot;font.sans-serif\u0026quot;] = [\u0026quot;SimHei\u0026quot;]      # \u4e2d\u6587\u5b57\u4f53\ntotal.plot(kind=\u0026quot;bar\u0026quot;)\nplt.title(\u0026quot;\u5404\u5b66\u751f\u603b\u5206\u0026quot;)\nplt.savefig(\u0026quot;bar.png\u0026quot;, dpi=100)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -717,8 +864,49 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 5 \u9898**\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a `bar.png`\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 5 \u9898**\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a `bar.png`\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：用 matplotlib 画柱状图：各商品总销量对比，保存为 <code class="md-inline">bar.png</code>。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 6 题后，把 AI 生成的脚本发给 AI 复审："请检查列名引用、中文字体、汇总逻辑。"并用手工核对汇总数字，记录核对结果。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(26, 4, 0, "\u7b2c 5 \u9898\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a bar.png\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a bar.png\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u2026\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u7528 matplotlib \u753b\u67f1\u72b6\u56fe\uff1a\u5404\u5546\u54c1\u603b\u9500\u91cf\u5bf9\u6bd4\uff0c\u4fdd\u5b58\u4e3a `bar.png`\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u811a\u672c\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u5217\u540d\u5f15\u7528\u3001\u4e2d\u6587\u5b57\u4f53\u3001\u6c47\u603b\u903b\u8f91\u3002\"\u5e76\u7528\u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u6838\u5bf9\u7ed3\u679c\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import matplotlib.pyplot as plt
+import pandas as pd
+
+df = pd.read_csv(&quot;clean.csv&quot;)
+total = df.groupby(&quot;name&quot;)[&quot;score&quot;].sum()
+
+plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;]      # 中文字体
+total.plot(kind=&quot;bar&quot;)
+plt.title(&quot;各学生总分&quot;)
+plt.savefig(&quot;bar.png&quot;, dpi=100)</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">total.plot(kind="bar")</code> 是 pandas 的快捷画图；<strong>中文字体配置（SimHei）必写</strong>，否则标题变方块。</p></div>
+              
             </div>
             
           </div>
@@ -804,7 +992,7 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 5, "26.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eL3 Review \u56db\u6b65\uff08\u8bfb\u61c2/\u8fd0\u884c/\u9a8c\u8bc1/\u4fee\u6539\uff09+ \u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\u2014\u2014\u003cstrong\u003eAI \u751f\u6210\u7684\u4ee3\u7801\u4e5f\u8981\u7528\u4e8b\u5b9e\uff08\u6570\u636e\uff09\u9a8c\u8bc1\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1aread_csv + groupby + bar \u56fe\uff0c\u7ed3\u6784\u5408\u7406\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. \u8865\u4e0a plt.rcParams \u4e2d\u6587\u5b57\u4f53\uff08AI \u6ca1\u5199\uff0c\u4e2d\u6587\u6807\u9898\u4e71\u7801\uff09\uff1b\n2. \u6c47\u603b\u6570\u5b57\u4e0e\u624b\u5de5\u8ba1\u7b97\u6838\u5bf9\u4e00\u81f4\uff08\u6ce1\u9762 366 / \u77ff\u6cc9\u6c34 547\uff09\uff1b\n3. \u56fe\u8868\u52a0\u4e86\u6807\u7b7e\u548c\u4fdd\u5b58\u8def\u5f84\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0 matplotlib \u6837\u5f0f\u7f8e\u5316\u2014\u2014\u672c\u7ec3\u4e60\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(26, 5, "26.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eL3 Review \u56db\u6b65\uff08\u8bfb\u61c2/\u8fd0\u884c/\u9a8c\u8bc1/\u4fee\u6539\uff09+ \u624b\u5de5\u6838\u5bf9\u6c47\u603b\u6570\u5b57\u2014\u2014\u003cstrong\u003eAI \u751f\u6210\u7684\u4ee3\u7801\u4e5f\u8981\u7528\u4e8b\u5b9e\uff08\u6570\u636e\uff09\u9a8c\u8bc1\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1aread_csv + groupby + bar \u56fe\uff0c\u7ed3\u6784\u5408\u7406\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. \u8865\u4e0a plt.rcParams \u4e2d\u6587\u5b57\u4f53\uff08AI \u6ca1\u5199\uff0c\u4e2d\u6587\u6807\u9898\u4e71\u7801\uff09\uff1b\n2. \u6c47\u603b\u6570\u5b57\u4e0e\u624b\u5de5\u8ba1\u7b97\u6838\u5bf9\u4e00\u81f4\uff08\u6ce1\u9762 366 / \u77ff\u6cc9\u6c34 547\uff09\uff1b\n3. \u56fe\u8868\u52a0\u4e86\u6807\u7b7e\u548c\u4fdd\u5b58\u8def\u5f84\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0 matplotlib \u6837\u5f0f\u7f8e\u5316\u2014\u2014\u672c\u7ec3\u4e60\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -819,6 +1007,42 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(26, '0', "**\u7b2c 6 \u9898**\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：按 26.6 L3 流程：让 AI 生成"销售数据汇总 + 柱状图"脚本，Review 后跑通（含中文字体处理），用你的真实数据验证汇总数字，记录修改理由。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(26, 5, 0, "\u7b2c 6 \u9898\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u6309 26.6 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u9500\u552e\u6570\u636e\u6c47\u603b + \u67f1\u72b6\u56fe\"\u811a\u672c\uff0cReview \u540e\u8dd1\u901a\uff08\u542b\u4e2d\u6587\u5b57\u4f53\u5904\u7406\uff09\uff0c\u7528\u4f60\u7684\u771f\u5b9e\u6570\u636e\u9a8c\u8bc1\u6c47\u603b\u6570\u5b57\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（Review 记录示例）：</p>
+<div class="md-figure"><pre class="md-diagram">AI 生成：read_csv + groupby + bar 图，结构合理。
+我的修改：
+1. 补上 plt.rcParams 中文字体（AI 没写，中文标题乱码）；
+2. 汇总数字与手工计算核对一致（泡面 366 / 矿泉水 547）；
+3. 图表加了标签和保存路径。
+否决：AI 建议加 matplotlib 样式美化——本练习不需要（YAGNI）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>L3 Review 四步（读懂/运行/验证/修改）+ 手工核对汇总数字——<strong>AI 生成的代码也要用事实（数据）验证</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -1347,9 +1571,9 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "\u6570\u636e\u5206\u6790\u4e0e\u81ea\u52a8\u5316\u6846\u67b6\uff08\u4e86\u89e3\uff09";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1371,13 +1595,13 @@ print([li.text for li in soup.select(&quot;#menu li&quot;)])</code></pre></div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

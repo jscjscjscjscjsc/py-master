@@ -196,6 +196,56 @@ def parse_answers(path):
     return result
 
 
+_CODE_BLOCK_RE = re.compile(r'```(?:python|py)?\s*\n.+?```', re.S)
+_CONCEPTUAL_RE = re.compile(
+    r'解释|说明|什么(是|区别)|为什么|列举|描述|对比|分析|谈谈|总结|口述|用自己的话说')
+
+
+def _has_code_block(text):
+    """参考答案里有没有可直接运行的 Python 代码块。"""
+    return bool(_CODE_BLOCK_RE.search(text or ''))
+
+
+def _looks_conceptual(question_md):
+    """题干是否在问概念而不是在要求写代码。"""
+    plain = re.sub(r'`[^`]*`', '', question_md or '')
+    return bool(_CONCEPTUAL_RE.search(plain))
+
+
+def _plain_text(md_text):
+    """把题干压成纯文本，给代码编辑器当题目说明用。
+
+    编辑器里是 textContent，Markdown 符号（** 反引号）会原样显示出来，
+    所以这里先剥掉标记，只留可读文字。
+    """
+    text = re.sub(r'```.*?```', ' ', md_text or '', flags=re.S)
+    text = re.sub(r'`([^`]*)`', r'\1', text)
+    text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)
+    text = re.sub(r'(?<!\*)\*([^*]+)\*(?!\*)', r'\1', text)
+    text = re.sub(r'^\s*[-*+]\s+', '', text, flags=re.M)
+    text = re.sub(r'^#{1,6}\s*', '', text, flags=re.M)
+    text = re.sub(r'[ \t]+', ' ', text)
+    return re.sub(r'\n{2,}', '\n', text).strip()
+
+
+def build_code_starter(question_md, reference):
+    """给学生一个"题目已在编辑器里"的开场，而不是一片空白。
+
+    只放题目要点做注释，不泄露参考答案的写法。
+    """
+    plain = re.sub(r'\s+', ' ', _plain_text(question_md)).strip()
+    if len(plain) > 160:
+        plain = plain[:160] + '…'
+    lines = [f'# 题目：{plain}' if plain else '# 请在下面编写你的代码']
+    skeleton = re.search(r'```(?:python|py)?\s*\n(.*?)```', question_md or '', re.S)
+    if skeleton:
+        lines.append('# 题目给出的代码骨架：')
+        lines.extend('#   ' + line for line in skeleton.group(1).rstrip().split('\n'))
+    lines.append('')
+    lines.append('')
+    return '\n'.join(lines)
+
+
 def parse_mindmap(chapter_title, sections):
     """用小节标题树生成默认思维导图（mind-elixir 的 Markdown 语法）。"""
     lines = [f'# {chapter_title}']
@@ -245,14 +295,24 @@ def parse_chapter(path, chapter_id):
     payload = []
     for ex in exercises:
         ref = answers.get(ex['no'], {})
-        question = f'**第 {ex["no"]} 题**' + (f'（{ex["tag"]}）' if ex['tag'] else '') + '：' + ex['title']
+        question_md = (f'**第 {ex["no"]} 题**' + (f'（{ex["tag"]}）' if ex['tag'] else '')
+                       + '：' + ex['title'])
+        if ex.get('body'):
+            question_md += '\n\n' + ex['body']
+        question_html = md_to_html(question_md, 3)
+        reference = ref.get('answer', '')
         payload.append({
             'type': 'open',
             'difficulty': ex['difficulty'],
             'no': ex['no'],
-            'question': question,
+            'question': question_md,
+            'question_html': question_html,
+            'question_plain': _plain_text(question_md),
             'body': ex.get('body', ''),
-            'reference': ref.get('answer', ''),
+            # 学生打开编辑器时先看到的是任务说明，而不是一片空白
+            'code_starter': build_code_starter(question_md, reference),
+            'expects': 'text' if (not _has_code_block(reference) and _looks_conceptual(question_md)) else 'code',
+            'reference': reference,
             'explanation': ref.get('explain', ''),
         })
 

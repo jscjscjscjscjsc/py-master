@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -108,7 +109,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 0, "18.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e*\u003c/code\u003e \u6807\u8bb0\u5f53\u524d\u5206\u652f\uff1b\u003ccode class=\"md-inline\"\u003e(feature-hello)\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003e(HEAD -\u0026gt; master)\u003c/code\u003e \u663e\u793a\u4e24\u4e2a\u5206\u652f\u6307\u9488\u5404\u81ea\u6307\u5411\u7684\u63d0\u4ea4\u2014\u2014\u003cstrong\u003e\u5206\u652f\u5c31\u662f\u6307\u9488\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f `feature-hello`\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 `git log --oneline --graph` \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit checkout -b feature-hello        # \u521b\u5efa\u5e76\u5207\u6362\n# \u4fee\u6539\u4ee3\u7801\u540e\ngit add .\ngit commit -m \u0026quot;feat: \u4fee\u6539 hello \u63d0\u793a\u0026quot;\ngit checkout master\ngit log --oneline --graph --all      # \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u793a\u610f\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e* 0546afe (feature-hello) feat: \u4fee\u6539 hello \u63d0\u793a\n* e9d9c0b (HEAD -\u0026gt; master) feat: \u6dfb\u52a0\u6210\u7ee9\u5224\u65ad\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 0, "18.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f feature-hello\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 git log --oneline --graph \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e*\u003c/code\u003e \u6807\u8bb0\u5f53\u524d\u5206\u652f\uff1b\u003ccode class=\"md-inline\"\u003e(feature-hello)\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003e(HEAD -\u0026gt; master)\u003c/code\u003e \u663e\u793a\u4e24\u4e2a\u5206\u652f\u6307\u9488\u5404\u81ea\u6307\u5411\u7684\u63d0\u4ea4\u2014\u2014\u003cstrong\u003e\u5206\u652f\u5c31\u662f\u6307\u9488\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f `feature-hello`\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 `git log --oneline --graph` \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f \u003ccode class=\"md-inline\"\u003efeature-hello\u003c/code\u003e\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 \u003ccode class=\"md-inline\"\u003egit log --oneline --graph\u003c/code\u003e \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f feature-hello\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 git log --oneline --graph \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit checkout -b feature-hello        # \u521b\u5efa\u5e76\u5207\u6362\n# \u4fee\u6539\u4ee3\u7801\u540e\ngit add .\ngit commit -m \u0026quot;feat: \u4fee\u6539 hello \u63d0\u793a\u0026quot;\ngit checkout master\ngit log --oneline --graph --all      # \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u793a\u610f\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e* 0546afe (feature-hello) feat: \u4fee\u6539 hello \u63d0\u793a\n* e9d9c0b (HEAD -\u0026gt; master) feat: \u6dfb\u52a0\u6210\u7ee9\u5224\u65ad\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -123,6 +124,45 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 1 \u9898**\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f `feature-hello`\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 `git log --oneline --graph` \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：在练习仓库里创建一个分支 <code class="md-inline">feature-hello</code>，切换到它，修改一行代码并提交；然后切回 master 用 <code class="md-inline">git log --oneline --graph</code> 查看两条分支的指向。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(18, 0, 0, "\u7b2c 1 \u9898\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f feature-hello\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 git log --oneline --graph \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f feature-hello\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 git log --oneline --graph \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u5728\u7ec3\u4e60\u4ed3\u5e93\u91cc\u521b\u5efa\u4e00\u4e2a\u5206\u652f `feature-hello`\uff0c\u5207\u6362\u5230\u5b83\uff0c\u4fee\u6539\u4e00\u884c\u4ee3\u7801\u5e76\u63d0\u4ea4\uff1b\u7136\u540e\u5207\u56de master \u7528 `git log --oneline --graph` \u67e5\u770b\u4e24\u6761\u5206\u652f\u7684\u6307\u5411\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（操作步骤）：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git checkout -b feature-hello        # 创建并切换
+# 修改代码后
+git add .
+git commit -m &quot;feat: 修改 hello 提示&quot;
+git checkout master
+git log --oneline --graph --all      # 查看两条分支的指向</code></pre></div>
+<p><strong>运行结果示意</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">* 0546afe (feature-hello) feat: 修改 hello 提示
+* e9d9c0b (HEAD -&gt; master) feat: 添加成绩判断</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">*</code> 标记当前分支；<code class="md-inline">(feature-hello)</code> 和 <code class="md-inline">(HEAD -&gt; master)</code> 显示两个分支指针各自指向的提交——<strong>分支就是指针</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -230,7 +270,7 @@ index e4b8121..5c447fa 100644
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 1, "18.1 \u56de\u987e\u4e0e\u6df1\u5316", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e-\u003c/code\u003e \u662f\u65e7\u7248\u672c\u5185\u5bb9\uff0c\u003ccode class=\"md-inline\"\u003e+\u003c/code\u003e \u662f\u65b0\u7248\u672c\u5185\u5bb9\uff1b\u003ccode class=\"md-inline\"\u003e@@\u003c/code\u003e \u6807\u660e\u4f4d\u7f6e\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca `git diff` \u8f93\u51fa\u4e2d `-score = 85` \u548c `+score = 90` \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e-score = 85\u003c/code\u003e\uff1a\u5220\u9664\u7684\u884c\uff08\u6539\u52a8\u524d\u662f 85\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e+score = 90\u003c/code\u003e\uff1a\u65b0\u589e\u7684\u884c\uff08\u6539\u52a8\u540e\u662f 90\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u4e24\u8005\u7ec4\u5408\u8868\u793a\"\u8fd9\u4e00\u884c\u4ece 85 \u6539\u6210\u4e86 90\"\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 1, "18.1 \u56de\u987e\u4e0e\u6df1\u5316", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u89e3\u91ca git diff \u8f93\u51fa\u4e2d -score = 85 \u548c +score = 90 \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e-\u003c/code\u003e \u662f\u65e7\u7248\u672c\u5185\u5bb9\uff0c\u003ccode class=\"md-inline\"\u003e+\u003c/code\u003e \u662f\u65b0\u7248\u672c\u5185\u5bb9\uff1b\u003ccode class=\"md-inline\"\u003e@@\u003c/code\u003e \u6807\u660e\u4f4d\u7f6e\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca `git diff` \u8f93\u51fa\u4e2d `-score = 85` \u548c `+score = 90` \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u89e3\u91ca \u003ccode class=\"md-inline\"\u003egit diff\u003c/code\u003e \u8f93\u51fa\u4e2d \u003ccode class=\"md-inline\"\u003e-score = 85\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003e+score = 90\u003c/code\u003e \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u89e3\u91ca git diff \u8f93\u51fa\u4e2d -score = 85 \u548c +score = 90 \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e-score = 85\u003c/code\u003e\uff1a\u5220\u9664\u7684\u884c\uff08\u6539\u52a8\u524d\u662f 85\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e+score = 90\u003c/code\u003e\uff1a\u65b0\u589e\u7684\u884c\uff08\u6539\u52a8\u540e\u662f 90\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u4e24\u8005\u7ec4\u5408\u8868\u793a\"\u8fd9\u4e00\u884c\u4ece 85 \u6539\u6210\u4e86 90\"\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -245,6 +285,37 @@ index e4b8121..5c447fa 100644
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca `git diff` \u8f93\u51fa\u4e2d `-score = 85` \u548c `+score = 90` \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：解释 <code class="md-inline">git diff</code> 输出中 <code class="md-inline">-score = 85</code> 和 <code class="md-inline">+score = 90</code> 分别表示什么。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(18, 1, 0, "\u7b2c 2 \u9898\uff1a\u89e3\u91ca git diff \u8f93\u51fa\u4e2d -score = 85 \u548c +score = 90 \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u89e3\u91ca git diff \u8f93\u51fa\u4e2d -score = 85 \u548c +score = 90 \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u89e3\u91ca `git diff` \u8f93\u51fa\u4e2d `-score = 85` \u548c `+score = 90` \u5206\u522b\u8868\u793a\u4ec0\u4e48\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<ul><li><code class="md-inline">-score = 85</code>：删除的行（改动前是 85）；</li><li><code class="md-inline">+score = 90</code>：新增的行（改动后是 90）；</li><li>两者组合表示"这一行从 85 改成了 90"。</li></ul></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">-</code> 是旧版本内容，<code class="md-inline">+</code> 是新版本内容；<code class="md-inline">@@</code> 标明位置。</p></div>
+              
             </div>
             
           </div>
@@ -369,7 +440,7 @@ Fast-forward
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 2, "18.2 \u5206\u652f\uff1a\u5e76\u884c\u5f00\u53d1\u7684\u8f68\u9053", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u8bf4\u51fa `restore`\u3001`reset --hard`\u3001`revert` \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003egit restore \u6587\u4ef6\u003c/code\u003e\uff1a\u53ea\u64a4\u9500\u003cstrong\u003e\u5de5\u4f5c\u533a\u003c/strong\u003e\u7684\u6539\u52a8\uff08\u56de\u5230\u6682\u5b58\u533a/\u4e0a\u6b21\u63d0\u4ea4\u72b6\u6001\uff09\uff0c\u4e0d\u78b0\u5386\u53f2\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003egit reset --hard\u003c/code\u003e\uff1a\u56de\u9000\u003cstrong\u003e\u672c\u5730\u5206\u652f\u6307\u9488\u003c/strong\u003e\uff0c\u540c\u65f6\u4e22\u5f03\u5de5\u4f5c\u533a\u548c\u6682\u5b58\u533a\u6539\u52a8\uff08\u5371\u9669\uff0c\u53ef\u80fd\u4e22\u6570\u636e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003egit revert \u63d0\u4ea4\u53f7\u003c/code\u003e\uff1a\u751f\u6210\u4e00\u4e2a\u003cstrong\u003e\u53cd\u5411\u63d0\u4ea4\u003c/strong\u003e\u62b5\u6d88\u67d0\u6b21\u63d0\u4ea4\uff0c\u5386\u53f2\u5b8c\u6574\u4fdd\u7559\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u5df2\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\uff1a\u7528 \u003ccode class=\"md-inline\"\u003erevert\u003c/code\u003e\u003c/strong\u003e\u2014\u2014reset \u4f1a\u6539\u5199\u5386\u53f2\uff0c\u5bfc\u81f4\u961f\u53cb\u4ed3\u5e93\u4e0e\u8fdc\u7a0b\u4e0d\u4e00\u81f4\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 2, "18.2 \u5206\u652f\uff1a\u5e76\u884c\u5f00\u53d1\u7684\u8f68\u9053", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u8bf4\u51fa restore\u3001reset --hard\u3001revert \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u8bf4\u51fa `restore`\u3001`reset --hard`\u3001`revert` \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u8bf4\u51fa \u003ccode class=\"md-inline\"\u003erestore\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003ereset --hard\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003erevert\u003c/code\u003e \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u8bf4\u51fa restore\u3001reset --hard\u3001revert \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003egit restore \u6587\u4ef6\u003c/code\u003e\uff1a\u53ea\u64a4\u9500\u003cstrong\u003e\u5de5\u4f5c\u533a\u003c/strong\u003e\u7684\u6539\u52a8\uff08\u56de\u5230\u6682\u5b58\u533a/\u4e0a\u6b21\u63d0\u4ea4\u72b6\u6001\uff09\uff0c\u4e0d\u78b0\u5386\u53f2\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003egit reset --hard\u003c/code\u003e\uff1a\u56de\u9000\u003cstrong\u003e\u672c\u5730\u5206\u652f\u6307\u9488\u003c/strong\u003e\uff0c\u540c\u65f6\u4e22\u5f03\u5de5\u4f5c\u533a\u548c\u6682\u5b58\u533a\u6539\u52a8\uff08\u5371\u9669\uff0c\u53ef\u80fd\u4e22\u6570\u636e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003egit revert \u63d0\u4ea4\u53f7\u003c/code\u003e\uff1a\u751f\u6210\u4e00\u4e2a\u003cstrong\u003e\u53cd\u5411\u63d0\u4ea4\u003c/strong\u003e\u62b5\u6d88\u67d0\u6b21\u63d0\u4ea4\uff0c\u5386\u53f2\u5b8c\u6574\u4fdd\u7559\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u5df2\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\uff1a\u7528 \u003ccode class=\"md-inline\"\u003erevert\u003c/code\u003e\u003c/strong\u003e\u2014\u2014reset \u4f1a\u6539\u5199\u5386\u53f2\uff0c\u5bfc\u81f4\u961f\u53cb\u4ed3\u5e93\u4e0e\u8fdc\u7a0b\u4e0d\u4e00\u81f4\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -384,6 +455,34 @@ Fast-forward
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 3 \u9898**\uff1a\u8bf4\u51fa `restore`\u3001`reset --hard`\u3001`revert` \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：说出 <code class="md-inline">restore</code>、<code class="md-inline">reset --hard</code>、<code class="md-inline">revert</code> 三者的区别，并说明"已经推送到远程的提交"应该用哪个。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(18, 2, 0, "\u7b2c 3 \u9898\uff1a\u8bf4\u51fa restore\u3001reset --hard\u3001revert \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u8bf4\u51fa restore\u3001reset --hard\u3001revert \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u8bf4\u51fa `restore`\u3001`reset --hard`\u3001`revert` \u4e09\u8005\u7684\u533a\u522b\uff0c\u5e76\u8bf4\u660e\"\u5df2\u7ecf\u63a8\u9001\u5230\u8fdc\u7a0b\u7684\u63d0\u4ea4\"\u5e94\u8be5\u7528\u54ea\u4e2a\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<ul><li><code class="md-inline">git restore 文件</code>：只撤销<strong>工作区</strong>的改动（回到暂存区/上次提交状态），不碰历史；</li><li><code class="md-inline">git reset --hard</code>：回退<strong>本地分支指针</strong>，同时丢弃工作区和暂存区改动（危险，可能丢数据）；</li><li><code class="md-inline">git revert 提交号</code>：生成一个<strong>反向提交</strong>抵消某次提交，历史完整保留；</li><li><strong>已推送到远程的提交：用 <code class="md-inline">revert</code></strong>——reset 会改写历史，导致队友仓库与远程不一致。</li></ul></div>
+              
             </div>
             
           </div>
@@ -521,7 +620,7 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 3, "18.3 \u51b2\u7a81\uff1a\u4e24\u4eba\u6539\u540c\u4e00\u5904", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u51b2\u7a81\u6807\u8bb0 = \u4e0a\u4e0b\u6587 + \u53cc\u65b9\u7248\u672c\uff1b\u89e3\u51b3 = \u4eba\u7684\u5224\u65ad + \u5220\u6807\u8bb0 + add + commit\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 `app.py` \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c + \u51b2\u7a81\u6807\u8bb0\u8bb0\u5f55\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit checkout -b feature-a\n# \u4fee\u6539 app.py \u540c\u4e00\u884c \u2192 \u63d0\u4ea4\ngit checkout master\n# \u4fee\u6539 app.py \u540c\u4e00\u884c\uff08\u4e0d\u540c\u5185\u5bb9\uff09\u2192 \u63d0\u4ea4\ngit merge feature-a\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u51b2\u7a81\u6587\u4ef6\u5185\u5bb9\uff08\u8bb0\u5f55\u5728\u6ce8\u91ca\u91cc\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003e\u0026lt;\u0026lt;\u0026lt;\u0026lt;\u0026lt;\u0026lt;\u0026lt; HEAD\n    print(\u0026#x27;\u5b66\u751fB\u7684\u7248\u672c\u0026#x27;)\n=======\n    print(\u0026#x27;\u5b66\u751fA\u7684\u7248\u672c\u0026#x27;)\n\u0026gt;\u0026gt;\u0026gt;\u0026gt;\u0026gt;\u0026gt;\u0026gt; feature-a\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u89e3\u51b3\u003c/strong\u003e\uff1a\u4fdd\u7559\u6b63\u786e\u5185\u5bb9\u3001\u5220\u9664\u4e09\u884c\u6807\u8bb0\uff0c\u7136\u540e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit add app.py\ngit commit -m \u0026quot;merge: \u89e3\u51b3\u63d0\u793a\u8bed\u51b2\u7a81\u0026quot;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 3, "18.3 \u51b2\u7a81\uff1a\u4e24\u4eba\u6539\u540c\u4e00\u5904", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 app.py \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u51b2\u7a81\u6807\u8bb0 = \u4e0a\u4e0b\u6587 + \u53cc\u65b9\u7248\u672c\uff1b\u89e3\u51b3 = \u4eba\u7684\u5224\u65ad + \u5220\u6807\u8bb0 + add + commit\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 `app.py` \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 \u003ccode class=\"md-inline\"\u003eapp.py\u003c/code\u003e \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 app.py \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c + \u51b2\u7a81\u6807\u8bb0\u8bb0\u5f55\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit checkout -b feature-a\n# \u4fee\u6539 app.py \u540c\u4e00\u884c \u2192 \u63d0\u4ea4\ngit checkout master\n# \u4fee\u6539 app.py \u540c\u4e00\u884c\uff08\u4e0d\u540c\u5185\u5bb9\uff09\u2192 \u63d0\u4ea4\ngit merge feature-a\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u51b2\u7a81\u6587\u4ef6\u5185\u5bb9\uff08\u8bb0\u5f55\u5728\u6ce8\u91ca\u91cc\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003e\u0026lt;\u0026lt;\u0026lt;\u0026lt;\u0026lt;\u0026lt;\u0026lt; HEAD\n    print(\u0026#x27;\u5b66\u751fB\u7684\u7248\u672c\u0026#x27;)\n=======\n    print(\u0026#x27;\u5b66\u751fA\u7684\u7248\u672c\u0026#x27;)\n\u0026gt;\u0026gt;\u0026gt;\u0026gt;\u0026gt;\u0026gt;\u0026gt; feature-a\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u89e3\u51b3\u003c/strong\u003e\uff1a\u4fdd\u7559\u6b63\u786e\u5185\u5bb9\u3001\u5220\u9664\u4e09\u884c\u6807\u8bb0\uff0c\u7136\u540e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit add app.py\ngit commit -m \u0026quot;merge: \u89e3\u51b3\u63d0\u793a\u8bed\u51b2\u7a81\u0026quot;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -536,6 +635,50 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 4 \u9898**\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 `app.py` \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：在 master 和 feature 分支上各改 <code class="md-inline">app.py</code> 的同一行并提交，然后合并制造冲突；把冲突标记的完整内容复制到注释里，再解决冲突并提交。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(18, 3, 0, "\u7b2c 4 \u9898\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 app.py \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 app.py \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u5728 master \u548c feature \u5206\u652f\u4e0a\u5404\u6539 `app.py` \u7684\u540c\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u5408\u5e76\u5236\u9020\u51b2\u7a81\uff1b\u628a\u51b2\u7a81\u6807\u8bb0\u7684\u5b8c\u6574\u5185\u5bb9\u590d\u5236\u5230\u6ce8\u91ca\u91cc\uff0c\u518d\u89e3\u51b3\u51b2\u7a81\u5e76\u63d0\u4ea4\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（操作 + 冲突标记记录）：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git checkout -b feature-a
+# 修改 app.py 同一行 → 提交
+git checkout master
+# 修改 app.py 同一行（不同内容）→ 提交
+git merge feature-a</code></pre></div>
+<p><strong>冲突文件内容（记录在注释里）</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+    print(&#x27;学生B的版本&#x27;)
+=======
+    print(&#x27;学生A的版本&#x27;)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-a</code></pre></div>
+<p><strong>解决</strong>：保留正确内容、删除三行标记，然后：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git add app.py
+git commit -m &quot;merge: 解决提示语冲突&quot;</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>冲突标记 = 上下文 + 双方版本；解决 = 人的判断 + 删标记 + add + commit。</p></div>
+              
             </div>
             
           </div>
@@ -634,7 +777,7 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 4, "18.4 \u5de5\u4f5c\u574a\uff1a\u4e24\u4eba\u4e00\u7ec4\u5236\u9020\u5e76\u89e3\u51b3\u51b2\u7a81", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u5224\u65ad\u6807\u51c6\u5c31\u4e00\u6761\u2014\u2014\u003cstrong\u003e\u5f53\u524d\u5206\u652f\u5728\u88ab\u5408\u5e76\u671f\u95f4\u6709\u6ca1\u6709\u4ea7\u751f\u65b0\u63d0\u4ea4\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u003cstrong\u003efast-forward\u003c/strong\u003e\uff1a\u5f53\u524d\u5206\u652f\u6ca1\u6709\u65b0\u63d0\u4ea4\uff08\u6307\u5411\u88ab\u5408\u5e76\u5206\u652f\u7684\u7956\u5148\uff09\uff0c\u5408\u5e76 = \u6307\u9488\u76f4\u63a5\u524d\u79fb\u5230\u5bf9\u65b9\u2014\u2014\u7ebf\u6027\u5386\u53f2\uff0c\u65e0\u5408\u5e76\u63d0\u4ea4\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u4e09\u65b9\u5408\u5e76\u003c/strong\u003e\uff1a\u4e24\u4e2a\u5206\u652f\u90fd\u5404\u81ea\u6709\u65b0\u63d0\u4ea4\uff0cGit \u7528\"\u5171\u540c\u7956\u5148 + \u4e24\u8fb9\"\u4e09\u65b9\u6bd4\u8f83\u751f\u6210\u003cstrong\u003e\u5408\u5e76\u63d0\u4ea4\u003c/strong\u003e\u2014\u2014\u5386\u53f2\u51fa\u73b0\u5206\u53c9\u518d\u6c47\u5408\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 4, "18.4 \u5de5\u4f5c\u574a\uff1a\u4e24\u4eba\u4e00\u7ec4\u5236\u9020\u5e76\u89e3\u51b3\u51b2\u7a81", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u5224\u65ad\u6807\u51c6\u5c31\u4e00\u6761\u2014\u2014\u003cstrong\u003e\u5f53\u524d\u5206\u652f\u5728\u88ab\u5408\u5e76\u671f\u95f4\u6709\u6ca1\u6709\u4ea7\u751f\u65b0\u63d0\u4ea4\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u003cstrong\u003efast-forward\u003c/strong\u003e\uff1a\u5f53\u524d\u5206\u652f\u6ca1\u6709\u65b0\u63d0\u4ea4\uff08\u6307\u5411\u88ab\u5408\u5e76\u5206\u652f\u7684\u7956\u5148\uff09\uff0c\u5408\u5e76 = \u6307\u9488\u76f4\u63a5\u524d\u79fb\u5230\u5bf9\u65b9\u2014\u2014\u7ebf\u6027\u5386\u53f2\uff0c\u65e0\u5408\u5e76\u63d0\u4ea4\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u4e09\u65b9\u5408\u5e76\u003c/strong\u003e\uff1a\u4e24\u4e2a\u5206\u652f\u90fd\u5404\u81ea\u6709\u65b0\u63d0\u4ea4\uff0cGit \u7528\"\u5171\u540c\u7956\u5148 + \u4e24\u8fb9\"\u4e09\u65b9\u6bd4\u8f83\u751f\u6210\u003cstrong\u003e\u5408\u5e76\u63d0\u4ea4\u003c/strong\u003e\u2014\u2014\u5386\u53f2\u51fa\u73b0\u5206\u53c9\u518d\u6c47\u5408\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -649,6 +792,37 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 5 \u9898**\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：解释 fast-forward 合并和三方合并的区别（各自什么时候发生）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(18, 4, 0, "\u7b2c 5 \u9898\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u89e3\u91ca fast-forward \u5408\u5e76\u548c\u4e09\u65b9\u5408\u5e76\u7684\u533a\u522b\uff08\u5404\u81ea\u4ec0\u4e48\u65f6\u5019\u53d1\u751f\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<ul><li><strong>fast-forward</strong>：当前分支没有新提交（指向被合并分支的祖先），合并 = 指针直接前移到对方——线性历史，无合并提交；</li><li><strong>三方合并</strong>：两个分支都各自有新提交，Git 用"共同祖先 + 两边"三方比较生成<strong>合并提交</strong>——历史出现分叉再汇合。</li></ul></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>判断标准就一条——<strong>当前分支在被合并期间有没有产生新提交</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -733,7 +907,7 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 5, "18.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08Git \u7c7b\uff09", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003estash\u003c/code\u003e = \"\u4e34\u65f6\u5bc4\u5b58\u67dc\"\u3002\u003ccode class=\"md-inline\"\u003epop\u003c/code\u003e \u53d6\u56de\u5e76\u5220\u9664\u5bc4\u5b58\u8bb0\u5f55\uff1b\u003ccode class=\"md-inline\"\u003estash list\u003c/code\u003e \u67e5\u770b\u5bc4\u5b58\u7684\u6e05\u5355\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7ec3\u4e60 `git stash`\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0c`git stash` \u540e\u518d `git stash pop`\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u8fc7\u7a0b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003e# \u6539\u4e86\u4e00\u4e2a\u6587\u4ef6\uff0c\u672a\u63d0\u4ea4\ngit stash              # \u6539\u52a8\u88ab\u0026quot;\u5b58\u8d77\u6765\u0026quot;\uff0c\u5de5\u4f5c\u533a\u56de\u5230\u5e72\u51c0\u72b6\u6001\n# \u53ef\u4ee5\u5b89\u5168\u5730\u5207\u5206\u652f\u3001\u505a\u522b\u7684\u4e8b\ngit checkout \u5176\u4ed6\u5206\u652f\n...\ngit checkout \u539f\u5206\u652f\ngit stash pop          # \u53d6\u51fa\u4e4b\u524d\u5b58\u7684\u6539\u52a8\uff0c\u6062\u590d\u5230\u5de5\u4f5c\u533a\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 5, "18.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08Git \u7c7b\uff09", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u7ec3\u4e60 git stash\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0cgit stash \u540e\u518d git stash pop\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003estash\u003c/code\u003e = \"\u4e34\u65f6\u5bc4\u5b58\u67dc\"\u3002\u003ccode class=\"md-inline\"\u003epop\u003c/code\u003e \u53d6\u56de\u5e76\u5220\u9664\u5bc4\u5b58\u8bb0\u5f55\uff1b\u003ccode class=\"md-inline\"\u003estash list\u003c/code\u003e \u67e5\u770b\u5bc4\u5b58\u7684\u6e05\u5355\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7ec3\u4e60 `git stash`\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0c`git stash` \u540e\u518d `git stash pop`\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u7ec3\u4e60 \u003ccode class=\"md-inline\"\u003egit stash\u003c/code\u003e\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0c\u003ccode class=\"md-inline\"\u003egit stash\u003c/code\u003e \u540e\u518d \u003ccode class=\"md-inline\"\u003egit stash pop\u003c/code\u003e\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u7ec3\u4e60 git stash\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0cgit stash \u540e\u518d git stash pop\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u8fc7\u7a0b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003e# \u6539\u4e86\u4e00\u4e2a\u6587\u4ef6\uff0c\u672a\u63d0\u4ea4\ngit stash              # \u6539\u52a8\u88ab\u0026quot;\u5b58\u8d77\u6765\u0026quot;\uff0c\u5de5\u4f5c\u533a\u56de\u5230\u5e72\u51c0\u72b6\u6001\n# \u53ef\u4ee5\u5b89\u5168\u5730\u5207\u5206\u652f\u3001\u505a\u522b\u7684\u4e8b\ngit checkout \u5176\u4ed6\u5206\u652f\n...\ngit checkout \u539f\u5206\u652f\ngit stash pop          # \u53d6\u51fa\u4e4b\u524d\u5b58\u7684\u6539\u52a8\uff0c\u6062\u590d\u5230\u5de5\u4f5c\u533a\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -746,8 +920,46 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 6 \u9898**\uff1a\u7ec3\u4e60 `git stash`\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0c`git stash` \u540e\u518d `git stash pop`\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 6 \u9898**\uff1a\u7ec3\u4e60 `git stash`\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0c`git stash` \u540e\u518d `git stash pop`\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：练习 <code class="md-inline">git stash</code>：改一个文件但不提交，<code class="md-inline">git stash</code> 后再 <code class="md-inline">git stash pop</code>，说明中间发生了什么。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 7 题后，把你写的 pytest 用例发给 AI："请审查我的测试是否覆盖了边界（空字符串、大小写、重复字符），并说明每个用例验证的风险。"记录你采纳/否决的理由。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(18, 5, 0, "\u7b2c 6 \u9898\uff1a\u7ec3\u4e60 git stash\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0cgit stash \u540e\u518d git stash pop\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u7ec3\u4e60 git stash\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0cgit stash \u540e\u518d git stash pop\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u2026\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u7ec3\u4e60 `git stash`\uff1a\u6539\u4e00\u4e2a\u6587\u4ef6\u4f46\u4e0d\u63d0\u4ea4\uff0c`git stash` \u540e\u518d `git stash pop`\uff0c\u8bf4\u660e\u4e2d\u95f4\u53d1\u751f\u4e86\u4ec0\u4e48\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u540e\uff0c\u628a\u4f60\u5199\u7684 pytest \u7528\u4f8b\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u7684\u6d4b\u8bd5\u662f\u5426\u8986\u76d6\u4e86\u8fb9\u754c\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u91cd\u590d\u5b57\u7b26\uff09\uff0c\u5e76\u8bf4\u660e\u6bcf\u4e2a\u7528\u4f8b\u9a8c\u8bc1\u7684\u98ce\u9669\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（操作过程）：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell"># 改了一个文件，未提交
+git stash              # 改动被&quot;存起来&quot;，工作区回到干净状态
+# 可以安全地切分支、做别的事
+git checkout 其他分支
+...
+git checkout 原分支
+git stash pop          # 取出之前存的改动，恢复到工作区</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">stash</code> = "临时寄存柜"。<code class="md-inline">pop</code> 取回并删除寄存记录；<code class="md-inline">stash list</code> 查看寄存的清单。</p></div>
+              
             </div>
             
           </div>
@@ -833,7 +1045,7 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 6, "18.6 Vibe Coding\uff1aL3 \u89e3\u9501\u4eea\u5f0f", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eL3 \u7684\u5173\u952e\u4e0d\u662f\"AI \u5199\u4e86\u4ee3\u7801\"\uff0c\u800c\u662f\"\u003cstrong\u003e\u4f60\u9a8c\u8bc1\u4e86\u4ee3\u7801\u003c/strong\u003e\"\u2014\u2014\u6d4b\u8bd5\u5c31\u662f\u4f60\u7684\u9a8c\u6536\u6807\u51c6\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 `count_chars(text)` \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u793a\u4f8b\u6d41\u7a0b\uff09\uff1a\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eAI \u751f\u6210\u7684\u4ee3\u7801\u003c/strong\u003e\uff08\u8ba9\u5b66\u751f\u9010\u884c\u786e\u8ba4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef count_chars(text):\n    counter = {}\n    for ch in text.lower():\n        if ch in counter:\n            counter[ch] += 1\n        else:\n            counter[ch] = 1\n    return counter\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u5b66\u751f\u5199\u7684 pytest \u8fb9\u754c\u7528\u4f8b\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom calc import count_chars\n\ndef test_normal():\n    assert count_chars(\u0026quot;hello\u0026quot;) == {\u0026quot;h\u0026quot;: 1, \u0026quot;e\u0026quot;: 1, \u0026quot;l\u0026quot;: 2, \u0026quot;o\u0026quot;: 1}\n\ndef test_empty():\n    assert count_chars(\u0026quot;\u0026quot;) == {}\n\ndef test_case_insensitive():\n    result = count_chars(\u0026quot;Aa\u0026quot;)\n    assert result == {\u0026quot;a\u0026quot;: 2}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003eReview \u8bb0\u5f55\uff08Prompt \u65e5\u5fd7\u793a\u4f8b\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\u4e86 count_chars\uff1b\u6211\u9010\u884c\u7406\u89e3\u540e\u5199\u4e86 3 \u4e2a\u6d4b\u8bd5\uff1b\n\u6d4b\u8bd5\u5168\u90e8\u901a\u8fc7\u3002\u6211\u8ba9 AI \u89e3\u91ca\u0026quot;\u4e3a\u4ec0\u4e48\u7528 lower() \u653e\u5728\u5faa\u73af\u524d\u0026quot;\uff0c\n\u786e\u8ba4\u5927\u5c0f\u5199\u5f52\u4e00\u5316\u53ea\u505a\u4e00\u6b21\u3002\u4fee\u6539\u7406\u7531\uff1a\u65e0\uff08\u4ee3\u7801\u6ee1\u8db3\u9700\u6c42\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 6, "18.6 Vibe Coding\uff1aL3 \u89e3\u9501\u4eea\u5f0f", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 count_chars(text) \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eL3 \u7684\u5173\u952e\u4e0d\u662f\"AI \u5199\u4e86\u4ee3\u7801\"\uff0c\u800c\u662f\"\u003cstrong\u003e\u4f60\u9a8c\u8bc1\u4e86\u4ee3\u7801\u003c/strong\u003e\"\u2014\u2014\u6d4b\u8bd5\u5c31\u662f\u4f60\u7684\u9a8c\u6536\u6807\u51c6\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 `count_chars(text)` \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 \u003ccode class=\"md-inline\"\u003ecount_chars(text)\u003c/code\u003e \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 count_chars(text) \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u793a\u4f8b\u6d41\u7a0b\uff09\uff1a\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eAI \u751f\u6210\u7684\u4ee3\u7801\u003c/strong\u003e\uff08\u8ba9\u5b66\u751f\u9010\u884c\u786e\u8ba4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef count_chars(text):\n    counter = {}\n    for ch in text.lower():\n        if ch in counter:\n            counter[ch] += 1\n        else:\n            counter[ch] = 1\n    return counter\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u5b66\u751f\u5199\u7684 pytest \u8fb9\u754c\u7528\u4f8b\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom calc import count_chars\n\ndef test_normal():\n    assert count_chars(\u0026quot;hello\u0026quot;) == {\u0026quot;h\u0026quot;: 1, \u0026quot;e\u0026quot;: 1, \u0026quot;l\u0026quot;: 2, \u0026quot;o\u0026quot;: 1}\n\ndef test_empty():\n    assert count_chars(\u0026quot;\u0026quot;) == {}\n\ndef test_case_insensitive():\n    result = count_chars(\u0026quot;Aa\u0026quot;)\n    assert result == {\u0026quot;a\u0026quot;: 2}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003eReview \u8bb0\u5f55\uff08Prompt \u65e5\u5fd7\u793a\u4f8b\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\u4e86 count_chars\uff1b\u6211\u9010\u884c\u7406\u89e3\u540e\u5199\u4e86 3 \u4e2a\u6d4b\u8bd5\uff1b\n\u6d4b\u8bd5\u5168\u90e8\u901a\u8fc7\u3002\u6211\u8ba9 AI \u89e3\u91ca\u0026quot;\u4e3a\u4ec0\u4e48\u7528 lower() \u653e\u5728\u5faa\u73af\u524d\u0026quot;\uff0c\n\u786e\u8ba4\u5927\u5c0f\u5199\u5f52\u4e00\u5316\u53ea\u505a\u4e00\u6b21\u3002\u4fee\u6539\u7406\u7531\uff1a\u65e0\uff08\u4ee3\u7801\u6ee1\u8db3\u9700\u6c42\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -848,6 +1060,61 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 7 \u9898**\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 `count_chars(text)` \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 7 题</strong>：按 18.6 的 L3 流程：让 AI 生成 <code class="md-inline">count_chars(text)</code> 函数，你用 pytest 写边界用例验证（空字符串、大小写、中文），记录 Review 过程和修改理由。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(18, 6, 0, "\u7b2c 7 \u9898\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 count_chars(text) \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002", "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 count_chars(text) \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 7 \u9898**\uff1a\u6309 18.6 \u7684 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 `count_chars(text)` \u51fd\u6570\uff0c\u4f60\u7528 pytest \u5199\u8fb9\u754c\u7528\u4f8b\u9a8c\u8bc1\uff08\u7a7a\u5b57\u7b26\u4e32\u3001\u5927\u5c0f\u5199\u3001\u4e2d\u6587\uff09\uff0c\u8bb0\u5f55 Review \u8fc7\u7a0b\u548c\u4fee\u6539\u7406\u7531\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（示例流程）：</p>
+<p><strong>AI 生成的代码</strong>（让学生逐行确认）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def count_chars(text):
+    counter = {}
+    for ch in text.lower():
+        if ch in counter:
+            counter[ch] += 1
+        else:
+            counter[ch] = 1
+    return counter</code></pre></div>
+<p><strong>学生写的 pytest 边界用例</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from calc import count_chars
+
+def test_normal():
+    assert count_chars(&quot;hello&quot;) == {&quot;h&quot;: 1, &quot;e&quot;: 1, &quot;l&quot;: 2, &quot;o&quot;: 1}
+
+def test_empty():
+    assert count_chars(&quot;&quot;) == {}
+
+def test_case_insensitive():
+    result = count_chars(&quot;Aa&quot;)
+    assert result == {&quot;a&quot;: 2}</code></pre></div>
+<p><strong>Review 记录（Prompt 日志示例）</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">AI 生成了 count_chars；我逐行理解后写了 3 个测试；
+测试全部通过。我让 AI 解释&quot;为什么用 lower() 放在循环前&quot;，
+确认大小写归一化只做一次。修改理由：无（代码满足需求）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>L3 的关键不是"AI 写了代码"，而是"<strong>你验证了代码</strong>"——测试就是你的验收标准。</p></div>
+              
             </div>
             
           </div>
@@ -935,7 +1202,7 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 7, "18.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u901f\u67e5\u8868\u7684\u610f\u4e49\u4e0d\u5728\"\u80cc\u547d\u4ee4\"\uff0c\u800c\u5728\"\u9700\u8981\u65f6 10 \u79d2\u627e\u5230\u6b63\u786e\u547d\u4ee4\"\u2014\u2014\u8fd9\u662f\u5de5\u7a0b\u6548\u7387\u7684\u4e00\u90e8\u5206\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u793a\u4f8b\uff0c\u226515 \u6761\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"markdown\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003emarkdown\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-markdown\"\u003e# Git \u547d\u4ee4\u901f\u67e5\u8868\n\n## \u57fa\u7840\n- `git init`\uff1a\u521d\u59cb\u5316\u4ed3\u5e93\n- `git status`\uff1a\u67e5\u770b\u72b6\u6001\n- `git add \u6587\u4ef6`\uff1a\u52a0\u5165\u6682\u5b58\u533a\n- `git commit -m \u0026quot;\u8bf4\u660e\u0026quot;`\uff1a\u63d0\u4ea4\n- `git log --oneline`\uff1a\u67e5\u770b\u63d0\u4ea4\u5386\u53f2\n\n## \u5206\u652f\n- `git branch \u540d\u5b57`\uff1a\u521b\u5efa\u5206\u652f\n- `git checkout \u540d\u5b57` / `git switch \u540d\u5b57`\uff1a\u5207\u6362\u5206\u652f\n- `git checkout -b \u540d\u5b57`\uff1a\u521b\u5efa\u5e76\u5207\u6362\n- `git merge \u5206\u652f`\uff1a\u5408\u5e76\u5206\u652f\n- `git log --oneline --graph --all`\uff1a\u67e5\u770b\u5206\u652f\u62d3\u6251\n\n## \u64a4\u9500\n- `git restore \u6587\u4ef6`\uff1a\u6062\u590d\u5de5\u4f5c\u533a\n- `git reset --hard \u63d0\u4ea4`\uff1a\u56de\u9000\u672c\u5730\u6307\u9488\uff08\u5371\u9669\uff09\n- `git revert \u63d0\u4ea4`\uff1a\u53cd\u5411\u63d0\u4ea4\uff08\u534f\u4f5c\u5b89\u5168\uff09\n- `git stash` / `git stash pop`\uff1a\u6682\u5b58/\u53d6\u56de\u6539\u52a8\n\n## \u8fdc\u7a0b\n- `git remote add origin \u5730\u5740`\uff1a\u5173\u8054\u8fdc\u7a0b\n- `git push -u origin main`\uff1a\u9996\u6b21\u63a8\u9001\n- `git pull`\uff1a\u62c9\u53d6\u5e76\u5408\u5e76\n- `git clone \u5730\u5740`\uff1a\u514b\u9686\u4ed3\u5e93\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(18, 7, "18.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u901f\u67e5\u8868\u7684\u610f\u4e49\u4e0d\u5728\"\u80cc\u547d\u4ee4\"\uff0c\u800c\u5728\"\u9700\u8981\u65f6 10 \u79d2\u627e\u5230\u6b63\u786e\u547d\u4ee4\"\u2014\u2014\u8fd9\u662f\u5de5\u7a0b\u6548\u7387\u7684\u4e00\u90e8\u5206\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u793a\u4f8b\uff0c\u226515 \u6761\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"markdown\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003emarkdown\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-markdown\"\u003e# Git \u547d\u4ee4\u901f\u67e5\u8868\n\n## \u57fa\u7840\n- `git init`\uff1a\u521d\u59cb\u5316\u4ed3\u5e93\n- `git status`\uff1a\u67e5\u770b\u72b6\u6001\n- `git add \u6587\u4ef6`\uff1a\u52a0\u5165\u6682\u5b58\u533a\n- `git commit -m \u0026quot;\u8bf4\u660e\u0026quot;`\uff1a\u63d0\u4ea4\n- `git log --oneline`\uff1a\u67e5\u770b\u63d0\u4ea4\u5386\u53f2\n\n## \u5206\u652f\n- `git branch \u540d\u5b57`\uff1a\u521b\u5efa\u5206\u652f\n- `git checkout \u540d\u5b57` / `git switch \u540d\u5b57`\uff1a\u5207\u6362\u5206\u652f\n- `git checkout -b \u540d\u5b57`\uff1a\u521b\u5efa\u5e76\u5207\u6362\n- `git merge \u5206\u652f`\uff1a\u5408\u5e76\u5206\u652f\n- `git log --oneline --graph --all`\uff1a\u67e5\u770b\u5206\u652f\u62d3\u6251\n\n## \u64a4\u9500\n- `git restore \u6587\u4ef6`\uff1a\u6062\u590d\u5de5\u4f5c\u533a\n- `git reset --hard \u63d0\u4ea4`\uff1a\u56de\u9000\u672c\u5730\u6307\u9488\uff08\u5371\u9669\uff09\n- `git revert \u63d0\u4ea4`\uff1a\u53cd\u5411\u63d0\u4ea4\uff08\u534f\u4f5c\u5b89\u5168\uff09\n- `git stash` / `git stash pop`\uff1a\u6682\u5b58/\u53d6\u56de\u6539\u52a8\n\n## \u8fdc\u7a0b\n- `git remote add origin \u5730\u5740`\uff1a\u5173\u8054\u8fdc\u7a0b\n- `git push -u origin main`\uff1a\u9996\u6b21\u63a8\u9001\n- `git pull`\uff1a\u62c9\u53d6\u5e76\u5408\u5e76\n- `git clone \u5730\u5740`\uff1a\u514b\u9686\u4ed3\u5e93\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -950,6 +1217,63 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(18, '0', "**\u7b2c 8 \u9898**\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 8 题</strong>：制作自己的"Git 命令速查表"（markdown 文件）：至少 15 个命令，每个一行"命令 + 一句话用途"，按"基础/分支/撤销/远程"分类；提交到仓库。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(18, 7, 0, "\u7b2c 8 \u9898\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002", "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 8 \u9898**\uff1a\u5236\u4f5c\u81ea\u5df1\u7684\"Git \u547d\u4ee4\u901f\u67e5\u8868\"\uff08markdown \u6587\u4ef6\uff09\uff1a\u81f3\u5c11 15 \u4e2a\u547d\u4ee4\uff0c\u6bcf\u4e2a\u4e00\u884c\"\u547d\u4ee4 + \u4e00\u53e5\u8bdd\u7528\u9014\"\uff0c\u6309\"\u57fa\u7840/\u5206\u652f/\u64a4\u9500/\u8fdc\u7a0b\"\u5206\u7c7b\uff1b\u63d0\u4ea4\u5230\u4ed3\u5e93\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（示例，≥15 条）：</p>
+<div class="md-codeblock" data-lang="markdown"><div class="md-codebar"><span class="md-codelang">markdown</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-markdown"># Git 命令速查表
+
+## 基础
+- `git init`：初始化仓库
+- `git status`：查看状态
+- `git add 文件`：加入暂存区
+- `git commit -m &quot;说明&quot;`：提交
+- `git log --oneline`：查看提交历史
+
+## 分支
+- `git branch 名字`：创建分支
+- `git checkout 名字` / `git switch 名字`：切换分支
+- `git checkout -b 名字`：创建并切换
+- `git merge 分支`：合并分支
+- `git log --oneline --graph --all`：查看分支拓扑
+
+## 撤销
+- `git restore 文件`：恢复工作区
+- `git reset --hard 提交`：回退本地指针（危险）
+- `git revert 提交`：反向提交（协作安全）
+- `git stash` / `git stash pop`：暂存/取回改动
+
+## 远程
+- `git remote add origin 地址`：关联远程
+- `git push -u origin main`：首次推送
+- `git pull`：拉取并合并
+- `git clone 地址`：克隆仓库</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>速查表的意义不在"背命令"，而在"需要时 10 秒找到正确命令"——这是工程效率的一部分。</p></div>
+              
             </div>
             
           </div>
@@ -1284,9 +1608,9 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "Git \u8fdb\u9636\uff1a\u5206\u652f\u3001\u5408\u5e76\u4e0e\u51b2\u7a81";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1308,13 +1632,13 @@ git commit -m &quot;merge: 解决成绩提示语冲突&quot;</code></pre></div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

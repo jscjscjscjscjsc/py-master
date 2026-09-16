@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -108,7 +109,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 0, "19.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u63a8\u9001\u6210\u529f\u540e\u5237\u65b0 Gitee \u9875\u9762\uff0c\u4ee3\u7801\u3001README\u3001\u63d0\u4ea4\u5386\u53f2\u90fd\u80fd\u770b\u5230\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 `python_work`\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit remote add origin git@gitee.com:\u7528\u6237\u540d/python_work.git\ngit branch -M main\ngit push -u origin main\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u9996\u6b21\u63a8\u9001\u8f93\u51fa\uff08\u524d 5 \u884c\u793a\u4f8b\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eEnumerating objects: 25, done.\nCounting objects: 100% (25/25), done.\nDelta compression using up to 8 threads\nCompressing objects: 100% (20/20), done.\nWriting objects: 100% (25/25), 2.0 KiB | 2.0 MiB/s, done.\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 0, "19.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 python_work\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u63a8\u9001\u6210\u529f\u540e\u5237\u65b0 Gitee \u9875\u9762\uff0c\u4ee3\u7801\u3001README\u3001\u63d0\u4ea4\u5386\u53f2\u90fd\u80fd\u770b\u5230\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 `python_work`\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 \u003ccode class=\"md-inline\"\u003epython_work\u003c/code\u003e\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 python_work\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit remote add origin git@gitee.com:\u7528\u6237\u540d/python_work.git\ngit branch -M main\ngit push -u origin main\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u9996\u6b21\u63a8\u9001\u8f93\u51fa\uff08\u524d 5 \u884c\u793a\u4f8b\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eEnumerating objects: 25, done.\nCounting objects: 100% (25/25), done.\nDelta compression using up to 8 threads\nCompressing objects: 100% (20/20), done.\nWriting objects: 100% (25/25), 2.0 KiB | 2.0 MiB/s, done.\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -123,6 +124,45 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 1 \u9898**\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 `python_work`\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：在 Gitee 创建仓库 <code class="md-inline">python_work</code>，把 Day 8 综合训练项目推送上去；把仓库地址和"第一次 push 的输出前 5 行"截图/文字记录到作业注释里。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(19, 0, 0, "\u7b2c 1 \u9898\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 python_work\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 python_work\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 `python_work`\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（操作步骤）：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git remote add origin git@gitee.com:用户名/python_work.git
+git branch -M main
+git push -u origin main</code></pre></div>
+<p><strong>首次推送输出（前 5 行示例）</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">Enumerating objects: 25, done.
+Counting objects: 100% (25/25), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (20/20), done.
+Writing objects: 100% (25/25), 2.0 KiB | 2.0 MiB/s, done.</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>推送成功后刷新 Gitee 页面，代码、README、提交历史都能看到。</p></div>
+              
             </div>
             
           </div>
@@ -203,7 +243,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 1, "19.1 \u8fdc\u7a0b\u4ed3\u5e93\u6982\u5ff5", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u9879\u76ee\u662f\u4ec0\u4e48 + \u80fd\u505a\u4ec0\u4e48 + \u600e\u4e48\u8dd1 + \u8c01\u5199\u7684\u2014\u2014\u56db\u8981\u7d20\u9f50\u4e86\u5c31\u5408\u683c\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff0810 \u884c\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"markdown\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003emarkdown\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-markdown\"\u003e# \u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7cfb\u7edf\n\n\u4e00\u4e2a\u547d\u4ee4\u884c\u7248\u7684\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u5de5\u5177\uff08Day 8 \u7efc\u5408\u8bad\u7ec3\uff09\u3002\n\n## \u529f\u80fd\n- \u6dfb\u52a0\u5b66\u751f\uff08\u59d3\u540d\u3001\u5e74\u9f84\u3001\u6210\u7ee9\uff09\n- \u67e5\u770b\u5b66\u751f\u5217\u8868\n- \u6309\u59d3\u540d\u67e5\u627e/\u5220\u9664\n\n## \u8fd0\u884c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003epython main.py\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"code\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ecode\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-code\"\u003e\n## \u4f5c\u8005\n\u5f20\u4e09\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 1, "19.1 \u8fdc\u7a0b\u4ed3\u5e93\u6982\u5ff5", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u9879\u76ee\u662f\u4ec0\u4e48 + \u80fd\u505a\u4ec0\u4e48 + \u600e\u4e48\u8dd1 + \u8c01\u5199\u7684\u2014\u2014\u56db\u8981\u7d20\u9f50\u4e86\u5c31\u5408\u683c\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff0810 \u884c\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"markdown\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003emarkdown\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-markdown\"\u003e# \u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7cfb\u7edf\n\n\u4e00\u4e2a\u547d\u4ee4\u884c\u7248\u7684\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u5de5\u5177\uff08Day 8 \u7efc\u5408\u8bad\u7ec3\uff09\u3002\n\n## \u529f\u80fd\n- \u6dfb\u52a0\u5b66\u751f\uff08\u59d3\u540d\u3001\u5e74\u9f84\u3001\u6210\u7ee9\uff09\n- \u67e5\u770b\u5b66\u751f\u5217\u8868\n- \u6309\u59d3\u540d\u67e5\u627e/\u5220\u9664\n\n## \u8fd0\u884c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003epython main.py\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"code\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ecode\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-code\"\u003e\n## \u4f5c\u8005\n\u5f20\u4e09\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -218,6 +258,50 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 2 \u9898**\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：写一个 10 行的 README.md（项目名、简介、功能列表、运行方式、作者），推送后刷新页面确认渲染。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(19, 1, 0, "\u7b2c 2 \u9898\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（10 行示例）：</p>
+<div class="md-codeblock" data-lang="markdown"><div class="md-codebar"><span class="md-codelang">markdown</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-markdown"># 学生成绩管理系统
+
+一个命令行版的学生成绩管理工具（Day 8 综合训练）。
+
+## 功能
+- 添加学生（姓名、年龄、成绩）
+- 查看学生列表
+- 按姓名查找/删除
+
+## 运行</code></pre></div>
+<p>python main.py</p>
+<div class="md-codeblock" data-lang="code"><div class="md-codebar"><span class="md-codelang">code</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-code">
+## 作者
+张三</code></pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>项目是什么 + 能做什么 + 怎么跑 + 谁写的——四要素齐了就合格。</p></div>
+              
             </div>
             
           </div>
@@ -323,7 +407,7 @@ hint: not have locally.</pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 2, "19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u53ea\u60f3\u770b\u770b\u8fdc\u7a0b\u6709\u4ec0\u4e48 \u2192 fetch\uff1b\u60f3\u540c\u6b65\u5230\u672c\u5730 \u2192 pull\u3002pull \u662f\u65e5\u5e38\u7528\u6cd5\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u89e3\u91ca `git pull` \u548c `git fetch` \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003egit fetch\u003c/code\u003e \u53ea\u003cstrong\u003e\u4e0b\u8f7d\u003c/strong\u003e\u8fdc\u7a0b\u7684\u63d0\u4ea4\u5230\u672c\u5730\uff08\u4e0d\u52a8\u4f60\u7684\u5de5\u4f5c\u533a\uff09\uff1b\u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e = \u003ccode class=\"md-inline\"\u003efetch\u003c/code\u003e + \u003ccode class=\"md-inline\"\u003emerge\u003c/code\u003e\uff08\u4e0b\u8f7d\u540e\u003cstrong\u003e\u5408\u5e76\u8fdb\u5f53\u524d\u5206\u652f\u003c/strong\u003e\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 2, "19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u89e3\u91ca git pull \u548c git fetch \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u53ea\u60f3\u770b\u770b\u8fdc\u7a0b\u6709\u4ec0\u4e48 \u2192 fetch\uff1b\u60f3\u540c\u6b65\u5230\u672c\u5730 \u2192 pull\u3002pull \u662f\u65e5\u5e38\u7528\u6cd5\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u89e3\u91ca `git pull` \u548c `git fetch` \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u89e3\u91ca \u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003egit fetch\u003c/code\u003e \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u89e3\u91ca git pull \u548c git fetch \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003egit fetch\u003c/code\u003e \u53ea\u003cstrong\u003e\u4e0b\u8f7d\u003c/strong\u003e\u8fdc\u7a0b\u7684\u63d0\u4ea4\u5230\u672c\u5730\uff08\u4e0d\u52a8\u4f60\u7684\u5de5\u4f5c\u533a\uff09\uff1b\u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e = \u003ccode class=\"md-inline\"\u003efetch\u003c/code\u003e + \u003ccode class=\"md-inline\"\u003emerge\u003c/code\u003e\uff08\u4e0b\u8f7d\u540e\u003cstrong\u003e\u5408\u5e76\u8fdb\u5f53\u524d\u5206\u652f\u003c/strong\u003e\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -338,6 +422,36 @@ hint: not have locally.</pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 3 \u9898**\uff1a\u89e3\u91ca `git pull` \u548c `git fetch` \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：解释 <code class="md-inline">git pull</code> 和 <code class="md-inline">git fetch</code> 的区别（提示：pull = fetch + 什么？）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(19, 2, 0, "\u7b2c 3 \u9898\uff1a\u89e3\u91ca git pull \u548c git fetch \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u89e3\u91ca git pull \u548c git fetch \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u89e3\u91ca `git pull` \u548c `git fetch` \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：<code class="md-inline">git fetch</code> 只<strong>下载</strong>远程的提交到本地（不动你的工作区）；<code class="md-inline">git pull</code> = <code class="md-inline">fetch</code> + <code class="md-inline">merge</code>（下载后<strong>合并进当前分支</strong>）。</p></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>只想看看远程有什么 → fetch；想同步到本地 → pull。pull 是日常用法。</p></div>
+              
             </div>
             
           </div>
@@ -457,7 +571,7 @@ Thumbs.db</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 3, "19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a`git status` \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"gitignore\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003egitignore\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-gitignore\"\u003evenv/\n__pycache__/\n*.py[cod]\n.env\n*.key\n.idea/\n.vscode/\n.DS_Store\nThumbs.db\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u9a8c\u8bc1\u65b9\u6cd5\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003egit status\u003c/code\u003e \u4e2d\u4e0d\u518d\u51fa\u73b0 venv\u3001__pycache__ \u7b49\u76ee\u5f55\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1a\u5982\u679c\u4e4b\u524d\u5df2\u63d0\u4ea4\u8fc7\uff0c\u9700\u8981 \u003ccode class=\"md-inline\"\u003egit rm -r --cached venv\u003c/code\u003e \u624d\u80fd\u4ece\u8ddf\u8e2a\u4e2d\u79fb\u9664\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 3, "19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1agit status \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a`git status` \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a\u003ccode class=\"md-inline\"\u003egit status\u003c/code\u003e \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1agit status \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"gitignore\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003egitignore\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-gitignore\"\u003evenv/\n__pycache__/\n*.py[cod]\n.env\n*.key\n.idea/\n.vscode/\n.DS_Store\nThumbs.db\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u9a8c\u8bc1\u65b9\u6cd5\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003egit status\u003c/code\u003e \u4e2d\u4e0d\u518d\u51fa\u73b0 venv\u3001__pycache__ \u7b49\u76ee\u5f55\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1a\u5982\u679c\u4e4b\u524d\u5df2\u63d0\u4ea4\u8fc7\uff0c\u9700\u8981 \u003ccode class=\"md-inline\"\u003egit rm -r --cached venv\u003c/code\u003e \u624d\u80fd\u4ece\u8ddf\u8e2a\u4e2d\u79fb\u9664\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -472,6 +586,43 @@ Thumbs.db</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 4 \u9898**\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a`git status` \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：为你的项目编写完整的 .gitignore（至少覆盖 venv、__pycache__、.env、IDE 配置），验证：<code class="md-inline">git status</code> 里不再出现这些目录。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(19, 3, 0, "\u7b2c 4 \u9898\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1agit status \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1agit status \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a`git status` \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="gitignore"><div class="md-codebar"><span class="md-codelang">gitignore</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-gitignore">venv/
+__pycache__/
+*.py[cod]
+.env
+*.key
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db</code></pre></div>
+<p><strong>验证方法</strong>：<code class="md-inline">git status</code> 中不再出现 venv、__pycache__ 等目录。<strong>注意</strong>：如果之前已提交过，需要 <code class="md-inline">git rm -r --cached venv</code> 才能从跟踪中移除。</p></div>
+              
             </div>
             
           </div>
@@ -581,7 +732,7 @@ Thumbs.db</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 4, "19.4 Gitee \u534f\u4f5c\u529f\u80fd", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7f51\u9875\u4e0a\u7684\u63d0\u4ea4\u88ab\u62c9\u53d6\u5e76\u5408\u5e76\u5230\u672c\u5730\u2014\u2014\u003cstrong\u003e\u8fdc\u7a0b\u548c\u672c\u5730\u53cc\u5411\u540c\u6b65\u003c/strong\u003e\u3002\u4e4b\u540e\u672c\u5730\u518d push \u5c31\u4e0d\u4f1a\u88ab\u62d2\u7edd\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u5728 Gitee \u7f51\u9875\u4e0a\u6253\u5f00 README.md \u2192 \u7f16\u8f91 \u2192 \u52a0\u4e00\u884c \u2192 \u63d0\u4ea4\uff1b\u003c/li\u003e\u003cli\u003e\u672c\u5730\u6267\u884c \u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u8fd0\u884c\u7ed3\u679c\u7c7b\u4f3c\uff1a\u003c/li\u003e\u003c/ol\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eremote: ...\nUpdating a1b2c3d..e4f5g6h\nFast-forward\n README.md | 1 +\n 1 file changed, 1 insertion(+)\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 4, "19.4 Gitee \u534f\u4f5c\u529f\u80fd", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 git pull\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .git\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u7f51\u9875\u4e0a\u7684\u63d0\u4ea4\u88ab\u62c9\u53d6\u5e76\u5408\u5e76\u5230\u672c\u5730\u2014\u2014\u003cstrong\u003e\u8fdc\u7a0b\u548c\u672c\u5730\u53cc\u5411\u540c\u6b65\u003c/strong\u003e\u3002\u4e4b\u540e\u672c\u5730\u518d push \u5c31\u4e0d\u4f1a\u88ab\u62d2\u7edd\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 \u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 git pull\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u5728 Gitee \u7f51\u9875\u4e0a\u6253\u5f00 README.md \u2192 \u7f16\u8f91 \u2192 \u52a0\u4e00\u884c \u2192 \u63d0\u4ea4\uff1b\u003c/li\u003e\u003cli\u003e\u672c\u5730\u6267\u884c \u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u8fd0\u884c\u7ed3\u679c\u7c7b\u4f3c\uff1a\u003c/li\u003e\u003c/ol\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eremote: ...\nUpdating a1b2c3d..e4f5g6h\nFast-forward\n README.md | 1 +\n 1 file changed, 1 insertion(+)\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -594,8 +745,45 @@ Thumbs.db</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：模拟"先拉后推"：在 Gitee 网页上直接编辑 README 加一行并提交，然后本地 <code class="md-inline">git pull</code>，观察输出并记录。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 6 题后，把 AI 生成的 README 和 .gitignore 发给 AI 复审："请检查 .gitignore 是否遗漏了常见风险项（密钥、缓存、虚拟环境）。"记录你补充的条目。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(19, 4, 0, "\u7b2c 5 \u9898\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 git pull\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 git pull\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .git\u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（操作步骤）：</p>
+<ol><li>在 Gitee 网页上打开 README.md → 编辑 → 加一行 → 提交；</li><li>本地执行 <code class="md-inline">git pull</code>；</li><li>运行结果类似：</li></ol>
+<div class="md-figure"><pre class="md-diagram">remote: ...
+Updating a1b2c3d..e4f5g6h
+Fast-forward
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>网页上的提交被拉取并合并到本地——<strong>远程和本地双向同步</strong>。之后本地再 push 就不会被拒绝。</p></div>
+              
             </div>
             
           </div>
@@ -667,7 +855,7 @@ Thumbs.db</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 5, "19.5 \u5de5\u4f5c\u574a\uff1a\u628a Day 8 \u9879\u76ee\u63a8\u9001\u5230 Gitee", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eL3 \u7684\"Review\"\u4e0d\u662f\u8d70\u5f62\u5f0f\u2014\u2014\u003cstrong\u003e\u81f3\u5c11\u6539 2 \u5904\u3001\u786e\u8ba4 1 \u6761\u7ea2\u7ebf\u003c/strong\u003e\uff0c\u624d\u7b97\u771f\u7684\u5ba1\u8fc7\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\u7684\u5185\u5bb9\uff1a\n- README\uff1a\u7ed3\u6784\u5b8c\u6574\uff0c\u4f46\u0026quot;\u4f7f\u7528\u793a\u4f8b\u0026quot;\u91cc\u5199\u7684\u662f\u901a\u7528\u5360\u4f4d\u7b26\uff1b\n- .gitignore\uff1a\u8986\u76d6\u4e86 venv/__pycache__/.env/IDE\uff0c\u7b26\u5408\u9884\u671f\u3002\n\n\u6211\u7684\u4fee\u6539\uff1a\n1. README \u4f5c\u8005\u4fe1\u606f\u6539\u6210\u6211\u7684\u771f\u5b9e\u4fe1\u606f\uff1b\n2. \u4f7f\u7528\u793a\u4f8b\u6539\u6210\u6211\u9879\u76ee\u7684\u771f\u5b9e\u547d\u4ee4\uff08python main.py\uff09\uff1b\n3. .gitignore \u8ffd\u52a0\u4e86 data/tmp/\uff08\u6211\u7684\u9879\u76ee\u751f\u6210\u7684\u4e34\u65f6\u76ee\u5f55\uff09\uff1b\n4. \u786e\u8ba4 .env \u5728\u6e05\u5355\u91cc\uff08\u7ea2\u7ebf\uff09\u3002\n\n\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\uff1a\u5360\u4f4d\u7b26\u5fc5\u987b\u66ff\u6362\u6210\u771f\u5b9e\u4fe1\u606f\uff08\u91c7\u7eb3\uff09\uff1b\nAI \u5efa\u8bae\u7684\u67d0\u4e2a\u65e0\u5173\u76ee\u5f55\u6ca1\u6709\u52a0\uff08\u5426\u51b3\uff0c\u7406\u7531\uff1a\u9879\u76ee\u4e0d\u9700\u8981\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 5, "19.5 \u5de5\u4f5c\u574a\uff1a\u628a Day 8 \u9879\u76ee\u63a8\u9001\u5230 Gitee", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003eL3 \u7684\"Review\"\u4e0d\u662f\u8d70\u5f62\u5f0f\u2014\u2014\u003cstrong\u003e\u81f3\u5c11\u6539 2 \u5904\u3001\u786e\u8ba4 1 \u6761\u7ea2\u7ebf\u003c/strong\u003e\uff0c\u624d\u7b97\u771f\u7684\u5ba1\u8fc7\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\u7684\u5185\u5bb9\uff1a\n- README\uff1a\u7ed3\u6784\u5b8c\u6574\uff0c\u4f46\u0026quot;\u4f7f\u7528\u793a\u4f8b\u0026quot;\u91cc\u5199\u7684\u662f\u901a\u7528\u5360\u4f4d\u7b26\uff1b\n- .gitignore\uff1a\u8986\u76d6\u4e86 venv/__pycache__/.env/IDE\uff0c\u7b26\u5408\u9884\u671f\u3002\n\n\u6211\u7684\u4fee\u6539\uff1a\n1. README \u4f5c\u8005\u4fe1\u606f\u6539\u6210\u6211\u7684\u771f\u5b9e\u4fe1\u606f\uff1b\n2. \u4f7f\u7528\u793a\u4f8b\u6539\u6210\u6211\u9879\u76ee\u7684\u771f\u5b9e\u547d\u4ee4\uff08python main.py\uff09\uff1b\n3. .gitignore \u8ffd\u52a0\u4e86 data/tmp/\uff08\u6211\u7684\u9879\u76ee\u751f\u6210\u7684\u4e34\u65f6\u76ee\u5f55\uff09\uff1b\n4. \u786e\u8ba4 .env \u5728\u6e05\u5355\u91cc\uff08\u7ea2\u7ebf\uff09\u3002\n\n\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\uff1a\u5360\u4f4d\u7b26\u5fc5\u987b\u66ff\u6362\u6210\u771f\u5b9e\u4fe1\u606f\uff08\u91c7\u7eb3\uff09\uff1b\nAI \u5efa\u8bae\u7684\u67d0\u4e2a\u65e0\u5173\u76ee\u5f55\u6ca1\u6709\u52a0\uff08\u5426\u51b3\uff0c\u7406\u7531\uff1a\u9879\u76ee\u4e0d\u9700\u8981\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -682,6 +870,48 @@ Thumbs.db</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 6 \u9898**\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：按 19.7 L3 流程：让 AI 生成 README 和 .gitignore，Review 并修改后使用；写清"AI 生成的内容里我改了哪几处、为什么改"。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(19, 5, 0, "\u7b2c 6 \u9898\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（Review 记录示例）：</p>
+<div class="md-figure"><pre class="md-diagram">AI 生成的内容：
+- README：结构完整，但&quot;使用示例&quot;里写的是通用占位符；
+- .gitignore：覆盖了 venv/__pycache__/.env/IDE，符合预期。
+
+我的修改：
+1. README 作者信息改成我的真实信息；
+2. 使用示例改成我项目的真实命令（python main.py）；
+3. .gitignore 追加了 data/tmp/（我的项目生成的临时目录）；
+4. 确认 .env 在清单里（红线）。
+
+采纳/否决理由：占位符必须替换成真实信息（采纳）；
+AI 建议的某个无关目录没有加（否决，理由：项目不需要）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>L3 的"Review"不是走形式——<strong>至少改 2 处、确认 1 条红线</strong>，才算真的审过。</p></div>
+              
             </div>
             
           </div>
@@ -1305,9 +1535,9 @@ Thumbs.db</code></pre></div>
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "Gitee \u5e73\u53f0\u4e0e\u8fdc\u7a0b\u534f\u4f5c";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1329,13 +1559,13 @@ Thumbs.db</code></pre></div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

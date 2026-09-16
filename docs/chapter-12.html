@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -111,7 +112,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 0, "12.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e[\u8868\u8fbe\u5f0f for \u53d8\u91cf in \u5e8f\u5217 if \u6761\u4ef6]\u003c/code\u003e\u2014\u2014\u5148\u8fc7\u6ee4\uff08if\uff09\u518d\u53d8\u6362\uff08\u8868\u8fbe\u5f0f\uff09\u3002\u7b2c\u4e09\u4e2a\uff1a4\u00b3=64\u30015\u00b3=125\u30016\u00b3=216\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a`nums = [1, 2, 3, 4, 5, 6]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [1, 2, 3, 4, 5, 6]\n\nprint([x ** 2 for x in nums])\nprint([x for x in nums if x % 2 == 0])\nprint([x ** 3 for x in nums if x \u0026gt; 3])\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[1, 4, 9, 16, 25, 36]\n[2, 4, 6]\n[64, 125, 216]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 0, "12.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1anums = [1, 2, 3, 4, 5, 6]\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e[\u8868\u8fbe\u5f0f for \u53d8\u91cf in \u5e8f\u5217 if \u6761\u4ef6]\u003c/code\u003e\u2014\u2014\u5148\u8fc7\u6ee4\uff08if\uff09\u518d\u53d8\u6362\uff08\u8868\u8fbe\u5f0f\uff09\u3002\u7b2c\u4e09\u4e2a\uff1a4\u00b3=64\u30015\u00b3=125\u30016\u00b3=216\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a`nums = [1, 2, 3, 4, 5, 6]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003enums = [1, 2, 3, 4, 5, 6]\u003c/code\u003e\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1anums = [1, 2, 3, 4, 5, 6]\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [1, 2, 3, 4, 5, 6]\n\nprint([x ** 2 for x in nums])\nprint([x for x in nums if x % 2 == 0])\nprint([x ** 3 for x in nums if x \u0026gt; 3])\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[1, 4, 9, 16, 25, 36]\n[2, 4, 6]\n[64, 125, 216]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -126,6 +127,45 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 1 \u9898**\uff1a`nums = [1, 2, 3, 4, 5, 6]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：<code class="md-inline">nums = [1, 2, 3, 4, 5, 6]</code>，用列表推导式生成：① 每个数的平方；② 所有偶数；③ 大于 3 的数的立方。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 0, 0, "\u7b2c 1 \u9898\uff1anums = [1, 2, 3, 4, 5, 6]\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1anums = [1, 2, 3, 4, 5, 6]\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a`nums = [1, 2, 3, 4, 5, 6]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3, 4, 5, 6]
+
+print([x ** 2 for x in nums])
+print([x for x in nums if x % 2 == 0])
+print([x ** 3 for x in nums if x &gt; 3])</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[1, 4, 9, 16, 25, 36]
+[2, 4, 6]
+[64, 125, 216]</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">[表达式 for 变量 in 序列 if 条件]</code>——先过滤（if）再变换（表达式）。第三个：4³=64、5³=125、6³=216。</p></div>
+              
             </div>
             
           </div>
@@ -249,7 +289,7 @@ print(sum(x * x for x in range(5)))</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 1, "12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e{\u952e: \u503c for ...}\u003c/code\u003e\uff1b\u003ccode class=\"md-inline\"\u003erange(len(names))\u003c/code\u003e \u540c\u65f6\u62ff\u5230\u4e24\u4e2a\u5217\u8868\u7684\u5bf9\u5e94\u5143\u7d20\uff08\u7b2c 3 \u7ae0\u6309\u7d22\u5f15\u904d\u5386\u7684\u8fdb\u9636\u5e94\u7528\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a`names = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]`\uff0c`scores = [88, 95, 76]`\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 `{\"\u5f20\u4e09\": 88, ...}` \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enames = [\u0026quot;\u5f20\u4e09\u0026quot;, \u0026quot;\u674e\u56db\u0026quot;, \u0026quot;\u738b\u4e94\u0026quot;]\nscores = [88, 95, 76]\n\nresult = {names[i]: scores[i] for i in range(len(names))}\nprint(result)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{\u0026#x27;\u5f20\u4e09\u0026#x27;: 88, \u0026#x27;\u674e\u56db\u0026#x27;: 95, \u0026#x27;\u738b\u4e94\u0026#x27;: 76}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 1, "12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1anames = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]\uff0cscores = [88, 95, 76]\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 {\"\u5f20\u4e09\": 88, ...} \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e{\u952e: \u503c for ...}\u003c/code\u003e\uff1b\u003ccode class=\"md-inline\"\u003erange(len(names))\u003c/code\u003e \u540c\u65f6\u62ff\u5230\u4e24\u4e2a\u5217\u8868\u7684\u5bf9\u5e94\u5143\u7d20\uff08\u7b2c 3 \u7ae0\u6309\u7d22\u5f15\u904d\u5386\u7684\u8fdb\u9636\u5e94\u7528\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a`names = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]`\uff0c`scores = [88, 95, 76]`\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 `{\"\u5f20\u4e09\": 88, ...}` \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003enames = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]\u003c/code\u003e\uff0c\u003ccode class=\"md-inline\"\u003escores = [88, 95, 76]\u003c/code\u003e\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 \u003ccode class=\"md-inline\"\u003e{\"\u5f20\u4e09\": 88, ...}\u003c/code\u003e \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1anames = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]\uff0cscores = [88, 95, 76]\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 {\"\u5f20\u4e09\": 88, ...} \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enames = [\u0026quot;\u5f20\u4e09\u0026quot;, \u0026quot;\u674e\u56db\u0026quot;, \u0026quot;\u738b\u4e94\u0026quot;]\nscores = [88, 95, 76]\n\nresult = {names[i]: scores[i] for i in range(len(names))}\nprint(result)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{\u0026#x27;\u5f20\u4e09\u0026#x27;: 88, \u0026#x27;\u674e\u56db\u0026#x27;: 95, \u0026#x27;\u738b\u4e94\u0026#x27;: 76}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -264,6 +304,43 @@ print(sum(x * x for x in range(5)))</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 2 \u9898**\uff1a`names = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]`\uff0c`scores = [88, 95, 76]`\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 `{\"\u5f20\u4e09\": 88, ...}` \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：<code class="md-inline">names = ["张三", "李四", "王五"]</code>，<code class="md-inline">scores = [88, 95, 76]</code>，用字典推导式生成 <code class="md-inline">{"张三": 88, ...}</code> 的字典并输出。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 1, 0, "\u7b2c 2 \u9898\uff1anames = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]\uff0cscores = [88, 95, 76]\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 {\"\u5f20\u4e09\": 88, ...} \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1anames = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]\uff0cscores = [88, 95, 76]\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 {\"\u5f20\u4e09\": 88, ...} \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a`names = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]`\uff0c`scores = [88, 95, 76]`\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 `{\"\u5f20\u4e09\": 88, ...}` \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">names = [&quot;张三&quot;, &quot;李四&quot;, &quot;王五&quot;]
+scores = [88, 95, 76]
+
+result = {names[i]: scores[i] for i in range(len(names))}
+print(result)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">{&#x27;张三&#x27;: 88, &#x27;李四&#x27;: 95, &#x27;王五&#x27;: 76}</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">{键: 值 for ...}</code>；<code class="md-inline">range(len(names))</code> 同时拿到两个列表的对应元素（第 3 章按索引遍历的进阶应用）。</p></div>
+              
             </div>
             
           </div>
@@ -391,7 +468,7 @@ print(next(it))</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 2, "12.2 \u8fed\u4ee3\u5668\u534f\u8bae", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e1\u00b2+2\u00b2+...+10\u00b2 = 385\u003c/code\u003e\u3002\u003ccode class=\"md-inline\"\u003esum(\u751f\u6210\u5668\u8868\u8fbe\u5f0f)\u003c/code\u003e \u4e0d\u521b\u5efa\u4e2d\u95f4\u5217\u8868\uff0c\u4e00\u6b65\u5230\u4f4d\uff08\u53ef\u81ea\u884c\u9a8c\u8bc1\u5faa\u73af\u7d2f\u52a0\u7ed3\u679c\u4e00\u81f4\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 `1\u00b2 + 2\u00b2 + ... + 10\u00b2` \u7684\u548c\uff08\u63d0\u793a\uff1a`sum(x * x for x in ...)`\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etotal = sum(x * x for x in range(1, 11))\nprint(total)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e385\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 2, "12.2 \u8fed\u4ee3\u5668\u534f\u8bae", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 1\u00b2 + 2\u00b2 + ... + 10\u00b2 \u7684\u548c\uff08\u63d0\u793a\uff1asum(x * x for x in ...)\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e1\u00b2+2\u00b2+...+10\u00b2 = 385\u003c/code\u003e\u3002\u003ccode class=\"md-inline\"\u003esum(\u751f\u6210\u5668\u8868\u8fbe\u5f0f)\u003c/code\u003e \u4e0d\u521b\u5efa\u4e2d\u95f4\u5217\u8868\uff0c\u4e00\u6b65\u5230\u4f4d\uff08\u53ef\u81ea\u884c\u9a8c\u8bc1\u5faa\u73af\u7d2f\u52a0\u7ed3\u679c\u4e00\u81f4\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 `1\u00b2 + 2\u00b2 + ... + 10\u00b2` \u7684\u548c\uff08\u63d0\u793a\uff1a`sum(x * x for x in ...)`\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 \u003ccode class=\"md-inline\"\u003e1\u00b2 + 2\u00b2 + ... + 10\u00b2\u003c/code\u003e \u7684\u548c\uff08\u63d0\u793a\uff1a\u003ccode class=\"md-inline\"\u003esum(x * x for x in ...)\u003c/code\u003e\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 1\u00b2 + 2\u00b2 + ... + 10\u00b2 \u7684\u548c\uff08\u63d0\u793a\uff1asum(x * x for x in ...)\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etotal = sum(x * x for x in range(1, 11))\nprint(total)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e385\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -406,6 +483,40 @@ print(next(it))</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 3 \u9898**\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 `1\u00b2 + 2\u00b2 + ... + 10\u00b2` \u7684\u548c\uff08\u63d0\u793a\uff1a`sum(x * x for x in ...)`\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：用生成器表达式计算 <code class="md-inline">1² + 2² + ... + 10²</code> 的和（提示：<code class="md-inline">sum(x * x for x in ...)</code>）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 2, 0, "\u7b2c 3 \u9898\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 1\u00b2 + 2\u00b2 + ... + 10\u00b2 \u7684\u548c\uff08\u63d0\u793a\uff1asum(x * x for x in ...)\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 1\u00b2 + 2\u00b2 + ... + 10\u00b2 \u7684\u548c\uff08\u63d0\u793a\uff1asum(x * x for x in ...)\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 `1\u00b2 + 2\u00b2 + ... + 10\u00b2` \u7684\u548c\uff08\u63d0\u793a\uff1a`sum(x * x for x in ...)`\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">total = sum(x * x for x in range(1, 11))
+print(total)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">385</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">1²+2²+...+10² = 385</code>。<code class="md-inline">sum(生成器表达式)</code> 不创建中间列表，一步到位（可自行验证循环累加结果一致）。</p></div>
+              
             </div>
             
           </div>
@@ -561,7 +672,7 @@ for error_line in read_errors(&quot;app.log&quot;):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 3, "12.3 \u751f\u6210\u5668\uff1a\u60f0\u6027\u6c42\u503c", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u751f\u6210\u5668\u4e09\u8981\u7d20\uff1a\u521d\u59cb\u5316\uff08current=start\uff09\u3001\u6761\u4ef6\uff08current \u0026lt; end\uff09\u3001\u66f4\u65b0\uff08current += 1\uff09\u3002\u003cstrong\u003eyield \u6bcf\u6b21\u4ea4\u51fa\u4e00\u4e2a\u503c\u5e76\u6682\u505c\uff0cnext \u65f6\u4ece\u6682\u505c\u5904\u7ee7\u7eed\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a `range2(start, end)` \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef range2(start, end):\n    current = start\n    while current \u0026lt; end:\n        yield current\n        current += 1\n\nfor i in range2(3, 7):\n    print(i, end=\u0026quot; \u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e3 4 5 6\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 3, "12.3 \u751f\u6210\u5668\uff1a\u60f0\u6027\u6c42\u503c", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a range2(start, end) \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u751f\u6210\u5668\u4e09\u8981\u7d20\uff1a\u521d\u59cb\u5316\uff08current=start\uff09\u3001\u6761\u4ef6\uff08current \u0026lt; end\uff09\u3001\u66f4\u65b0\uff08current += 1\uff09\u3002\u003cstrong\u003eyield \u6bcf\u6b21\u4ea4\u51fa\u4e00\u4e2a\u503c\u5e76\u6682\u505c\uff0cnext \u65f6\u4ece\u6682\u505c\u5904\u7ee7\u7eed\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a `range2(start, end)` \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a \u003ccode class=\"md-inline\"\u003erange2(start, end)\u003c/code\u003e \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a range2(start, end) \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef range2(start, end):\n    current = start\n    while current \u0026lt; end:\n        yield current\n        current += 1\n\nfor i in range2(3, 7):\n    print(i, end=\u0026quot; \u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e3 4 5 6\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -576,6 +687,46 @@ for error_line in read_errors(&quot;app.log&quot;):
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a `range2(start, end)` \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：写一个 <code class="md-inline">range2(start, end)</code> 生成器函数（用 yield 自己实现类似 range 的效果），遍历输出 start 到 end-1。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 3, 0, "\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a range2(start, end) \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a range2(start, end) \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a `range2(start, end)` \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def range2(start, end):
+    current = start
+    while current &lt; end:
+        yield current
+        current += 1
+
+for i in range2(3, 7):
+    print(i, end=&quot; &quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3 4 5 6</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>生成器三要素：初始化（current=start）、条件（current &lt; end）、更新（current += 1）。<strong>yield 每次交出一个值并暂停，next 时从暂停处继续</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -828,7 +979,7 @@ print(view_profile({&quot;name&quot;: &quot;张三&quot;, &quot;logged_in&quot;:
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 4, "12.4 \u88c5\u9970\u5668\uff1a\u7ed9\u51fd\u6570\"\u52a0\u88c5\u5907\"", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u8c03\u7528\u539f\u51fd\u6570 \u2192 \u5bf9\u8fd4\u56de\u503c \u003ccode class=\"md-inline\"\u003e.upper()\u003c/code\u003e \u2192 \u52a0 \u003ccode class=\"md-inline\"\u003e\"!\"\u003c/code\u003e\u3002\u003cstrong\u003e\u4e24\u5c42\u7ed3\u6784\u003c/strong\u003e\uff08\u88c5\u9970\u5668\u65e0\u53c2\u6570\u65f6\u4e24\u5c42\u5c31\u591f\uff09\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 `@` \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef uppercase(func):\n    def wrapper():\n        return func().upper() + \u0026quot;!\u0026quot;\n    return wrapper\n\n@uppercase\ndef greet():\n    return \u0026quot;hello\u0026quot;\n\n@uppercase\ndef cheer():\n    return \u0026quot;go\u0026quot;\n\nprint(greet())\nprint(cheer())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eHELLO!\nGO!\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 4, "12.4 \u88c5\u9970\u5668\uff1a\u7ed9\u51fd\u6570\"\u52a0\u88c5\u5907\"", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 @ \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u8c03\u7528\u539f\u51fd\u6570 \u2192 \u5bf9\u8fd4\u56de\u503c \u003ccode class=\"md-inline\"\u003e.upper()\u003c/code\u003e \u2192 \u52a0 \u003ccode class=\"md-inline\"\u003e\"!\"\u003c/code\u003e\u3002\u003cstrong\u003e\u4e24\u5c42\u7ed3\u6784\u003c/strong\u003e\uff08\u88c5\u9970\u5668\u65e0\u53c2\u6570\u65f6\u4e24\u5c42\u5c31\u591f\uff09\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 `@` \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 \u003ccode class=\"md-inline\"\u003e@\u003c/code\u003e \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 @ \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef uppercase(func):\n    def wrapper():\n        return func().upper() + \u0026quot;!\u0026quot;\n    return wrapper\n\n@uppercase\ndef greet():\n    return \u0026quot;hello\u0026quot;\n\n@uppercase\ndef cheer():\n    return \u0026quot;go\u0026quot;\n\nprint(greet())\nprint(cheer())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eHELLO!\nGO!\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -843,6 +994,54 @@ print(view_profile({&quot;name&quot;: &quot;张三&quot;, &quot;logged_in&quot;:
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 `@` \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：写一个"大写装饰器"：装饰任何"无参函数"，把它的返回值转成大写并加"！"。用 <code class="md-inline">@</code> 语法装饰两个函数并验证。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 4, 0, "\u7b2c 5 \u9898\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 @ \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 @ \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 `@` \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def uppercase(func):
+    def wrapper():
+        return func().upper() + &quot;!&quot;
+    return wrapper
+
+@uppercase
+def greet():
+    return &quot;hello&quot;
+
+@uppercase
+def cheer():
+    return &quot;go&quot;
+
+print(greet())
+print(cheer())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">HELLO!
+GO!</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">wrapper</code> 调用原函数 → 对返回值 <code class="md-inline">.upper()</code> → 加 <code class="md-inline">"!"</code>。<strong>两层结构</strong>（装饰器无参数时两层就够）。</p></div>
+              
             </div>
             
           </div>
@@ -995,7 +1194,7 @@ with tag(&quot;div&quot;):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 5, "12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u4e0d\u52a0 \u003ccode class=\"md-inline\"\u003e@wraps\u003c/code\u003e \u65f6 \u003ccode class=\"md-inline\"\u003egreet.__name__\u003c/code\u003e \u4f1a\u53d8\u6210 \u003ccode class=\"md-inline\"\u003e\"wrapper\"\u003c/code\u003e\u2014\u2014\u8c03\u8bd5\u3001\u6587\u6863\u3001\u65e5\u5fd7\u5168\u90e8\u6df7\u4e71\u3002\u003ccode class=\"md-inline\"\u003e@wraps(func)\u003c/code\u003e \u628a\u539f\u51fd\u6570\u7684\u5143\u4fe1\u606f\u590d\u5236\u7ed9\u5305\u88c5\u51fd\u6570\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom functools import wraps\n\ndef uppercase(func):\n    @wraps(func)\n    def wrapper():\n        return func().upper() + \u0026quot;!\u0026quot;\n    return wrapper\n\n@uppercase\ndef greet():\n    return \u0026quot;hello\u0026quot;\n\nprint(greet())\nprint(greet.__name__)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eHELLO!\ngreet\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 5, "12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u5199\u4e00\u4e2a uppercase \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 functools.wraps\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e \u51fd\u6570.__name__ \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c \u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u4e0d\u52a0 \u003ccode class=\"md-inline\"\u003e@wraps\u003c/code\u003e \u65f6 \u003ccode class=\"md-inline\"\u003egreet.__name__\u003c/code\u003e \u4f1a\u53d8\u6210 \u003ccode class=\"md-inline\"\u003e\"wrapper\"\u003c/code\u003e\u2014\u2014\u8c03\u8bd5\u3001\u6587\u6863\u3001\u65e5\u5fd7\u5168\u90e8\u6df7\u4e71\u3002\u003ccode class=\"md-inline\"\u003e@wraps(func)\u003c/code\u003e \u628a\u539f\u51fd\u6570\u7684\u5143\u4fe1\u606f\u590d\u5236\u7ed9\u5305\u88c5\u51fd\u6570\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a \u003ccode class=\"md-inline\"\u003euppercase\u003c/code\u003e \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 \u003ccode class=\"md-inline\"\u003efunctools.wraps\u003c/code\u003e\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e \u003ccode class=\"md-inline\"\u003e\u51fd\u6570.__name__\u003c/code\u003e \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u5199\u4e00\u4e2a uppercase \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 functools.wraps\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e \u51fd\u6570.__name__ \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom functools import wraps\n\ndef uppercase(func):\n    @wraps(func)\n    def wrapper():\n        return func().upper() + \u0026quot;!\u0026quot;\n    return wrapper\n\n@uppercase\ndef greet():\n    return \u0026quot;hello\u0026quot;\n\nprint(greet())\nprint(greet.__name__)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eHELLO!\ngreet\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1008,8 +1207,56 @@ with tag(&quot;div&quot;):
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：写一个 <code class="md-inline">uppercase</code> 装饰器（同第 5 题），这次要求用 <code class="md-inline">functools.wraps</code>，并验证装饰后 <code class="md-inline">函数.__name__</code> 还是原函数名。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L2）&lt;/strong&gt;：完成第 7 题 @retry 和第 8 题自定义 with 后，各选一个让 AI 审查，重点问"@retry 三层结构分别收什么？__exit__ 返回 False 的作用？"记录结论。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 5, 0, "\u7b2c 6 \u9898\uff1a\u5199\u4e00\u4e2a uppercase \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 functools.wraps\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e \u51fd\u6570.__name__ \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u5199\u4e00\u4e2a uppercase \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 functools.wraps\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e \u51fd\u6570.__name__ \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c \u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from functools import wraps
+
+def uppercase(func):
+    @wraps(func)
+    def wrapper():
+        return func().upper() + &quot;!&quot;
+    return wrapper
+
+@uppercase
+def greet():
+    return &quot;hello&quot;
+
+print(greet())
+print(greet.__name__)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">HELLO!
+greet</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>不加 <code class="md-inline">@wraps</code> 时 <code class="md-inline">greet.__name__</code> 会变成 <code class="md-inline">"wrapper"</code>——调试、文档、日志全部混乱。<code class="md-inline">@wraps(func)</code> 把原函数的元信息复制给包装函数。</p></div>
+              
             </div>
             
           </div>
@@ -1143,7 +1390,7 @@ print(merged)</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 6, "12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u003cstrong\u003e\u4e09\u5c42\u7ed3\u6784\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003eretry(times)\u003c/code\u003e \u6536\u88c5\u9970\u5668\u53c2\u6570 \u2192 \u003ccode class=\"md-inline\"\u003edecorator(func)\u003c/code\u003e \u6536\u51fd\u6570 \u2192 \u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u5e72\u6d3b\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e \u6355\u83b7\u5f02\u5e38\uff0c\u5931\u8d25\u5c31\u7ee7\u7eed\u4e0b\u4e00\u8f6e\uff1b\u003cstrong\u003e\u6700\u540e\u4e00\u6b21\u5931\u8d25 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u539f\u6837\u629b\u51fa\u003c/strong\u003e\uff08\u4e0d\u80fd\u65e0\u9650\u541e\u9519\u8bef\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ereturn func(...)\u003c/code\u003e \u6210\u529f\u65f6\u7acb\u5373\u8fd4\u56de\u2014\u2014\u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u7684 return \u8ba9\u8fd4\u56de\u503c\u900f\u4f20\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b9e\u73b0 `@retry(times=3)` \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport random\n\ndef retry(times=3):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for attempt in range(1, times + 1):\n                try:\n                    return func(*args, **kwargs)\n                except Exception as e:\n                    print(f\u0026quot;\u7b2c {attempt} \u6b21\u5931\u8d25\uff1a{e}\u0026quot;)\n                    if attempt == times:\n                        raise\n        return wrapper\n    return decorator\n\n\n@retry(times=3)\ndef unstable():\n    if random.random() \u0026lt; 0.6:\n        raise ConnectionError(\u0026quot;\u7f51\u7edc\u6ce2\u52a8\u0026quot;)\n    return \u0026quot;\u6210\u529f\u0026quot;\n\nprint(unstable())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u968f\u673a\uff0c\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u7b2c 1 \u6b21\u5931\u8d25\uff1a\u7f51\u7edc\u6ce2\u52a8\n\u7b2c 2 \u6b21\u5931\u8d25\uff1a\u7f51\u7edc\u6ce2\u52a8\n\u6210\u529f\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 6, "12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b9e\u73b0 @retry(times=3) \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cul\u003e\u003cli\u003e\u003cstrong\u003e\u4e09\u5c42\u7ed3\u6784\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003eretry(times)\u003c/code\u003e \u6536\u88c5\u9970\u5668\u53c2\u6570 \u2192 \u003ccode class=\"md-inline\"\u003edecorator(func)\u003c/code\u003e \u6536\u51fd\u6570 \u2192 \u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u5e72\u6d3b\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e \u6355\u83b7\u5f02\u5e38\uff0c\u5931\u8d25\u5c31\u7ee7\u7eed\u4e0b\u4e00\u8f6e\uff1b\u003cstrong\u003e\u6700\u540e\u4e00\u6b21\u5931\u8d25 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u539f\u6837\u629b\u51fa\u003c/strong\u003e\uff08\u4e0d\u80fd\u65e0\u9650\u541e\u9519\u8bef\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ereturn func(...)\u003c/code\u003e \u6210\u529f\u65f6\u7acb\u5373\u8fd4\u56de\u2014\u2014\u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u7684 return \u8ba9\u8fd4\u56de\u503c\u900f\u4f20\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b9e\u73b0 `@retry(times=3)` \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e@retry(times=3)\u003c/code\u003e \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b9e\u73b0 @retry(times=3) \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport random\n\ndef retry(times=3):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for attempt in range(1, times + 1):\n                try:\n                    return func(*args, **kwargs)\n                except Exception as e:\n                    print(f\u0026quot;\u7b2c {attempt} \u6b21\u5931\u8d25\uff1a{e}\u0026quot;)\n                    if attempt == times:\n                        raise\n        return wrapper\n    return decorator\n\n\n@retry(times=3)\ndef unstable():\n    if random.random() \u0026lt; 0.6:\n        raise ConnectionError(\u0026quot;\u7f51\u7edc\u6ce2\u52a8\u0026quot;)\n    return \u0026quot;\u6210\u529f\u0026quot;\n\nprint(unstable())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u968f\u673a\uff0c\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u7b2c 1 \u6b21\u5931\u8d25\uff1a\u7f51\u7edc\u6ce2\u52a8\n\u7b2c 2 \u6b21\u5931\u8d25\uff1a\u7f51\u7edc\u6ce2\u52a8\n\u6210\u529f\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1158,6 +1405,63 @@ print(merged)</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 7 \u9898**\uff1a\u5b9e\u73b0 `@retry(times=3)` \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 7 题</strong>：实现 <code class="md-inline">@retry(times=3)</code> 装饰器：被装饰的函数抛出异常时最多重试 3 次，每次失败打印"第 X 次失败"，3 次都失败则把最后一次异常抛给调用者。用"前 2 次必失败、第 3 次成功"的测试函数验证。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 6, 0, "\u7b2c 7 \u9898\uff1a\u5b9e\u73b0 @retry(times=3) \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002", "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b9e\u73b0 @retry(times=3) \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 7 \u9898**\uff1a\u5b9e\u73b0 `@retry(times=3)` \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import random
+
+def retry(times=3):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, times + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f&quot;第 {attempt} 次失败：{e}&quot;)
+                    if attempt == times:
+                        raise
+        return wrapper
+    return decorator
+
+
+@retry(times=3)
+def unstable():
+    if random.random() &lt; 0.6:
+        raise ConnectionError(&quot;网络波动&quot;)
+    return &quot;成功&quot;
+
+print(unstable())</code></pre></div>
+<p><strong>运行结果</strong>（随机，示例）：</p>
+<div class="md-figure"><pre class="md-diagram">第 1 次失败：网络波动
+第 2 次失败：网络波动
+成功</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><ul><li><strong>三层结构</strong>：<code class="md-inline">retry(times)</code> 收装饰器参数 → <code class="md-inline">decorator(func)</code> 收函数 → <code class="md-inline">wrapper</code> 干活；</li><li><code class="md-inline">try/except</code> 捕获异常，失败就继续下一轮；<strong>最后一次失败 <code class="md-inline">raise</code> 原样抛出</strong>（不能无限吞错误）；</li><li><code class="md-inline">return func(...)</code> 成功时立即返回——<code class="md-inline">wrapper</code> 的 return 让返回值透传。</li></ul></div>
+              
             </div>
             
           </div>
@@ -1290,7 +1594,7 @@ print(unstable_api())</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 7, "12.7 \u7efc\u5408\u6848\u4f8b\uff1a@retry \u91cd\u8bd5\u88c5\u9970\u5668", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e__enter__\u003c/code\u003e \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff08\u003ccode class=\"md-inline\"\u003eas f\u003c/code\u003e \u62ff\u5230\u5b83\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5757\u5185 \u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e \u540e\uff0c\u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u003cstrong\u003e\u4f9d\u7136\u6267\u884c\u003c/strong\u003e\uff08\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff0c\u6587\u4ef6\u88ab\u6b63\u786e\u5173\u95ed\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u8868\u793a\"\u6211\u4e0d\u5904\u7406\u8fd9\u4e2a\u5f02\u5e38\uff0c\u8ba9\u5b83\u7ee7\u7eed\u5411\u4e0a\u4f20\u64ad\"\u2014\u2014\u6240\u4ee5 Traceback \u4ecd\u7136\u51fa\u73b0\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u8fd9\u5c31\u662f with \u7684\u610f\u4e49\uff1a\u65e0\u8bba\u6210\u8d25\uff0c\u6e05\u7406\u5fc5\u8fbe\u003c/strong\u003e\u3002\u5982\u679c \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u8fd4\u56de True\uff0c\u5f02\u5e38\u4f1a\u88ab\"\u541e\u6389\"\uff08\u4e0d\u63a8\u8350\uff09\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass OpenFile:\n    def __init__(self, path, mode):\n        self.path = path\n        self.mode = mode\n\n    def __enter__(self):\n        self.file = open(self.path, self.mode, encoding=\u0026quot;utf-8\u0026quot;)\n        print(\u0026quot;\u6587\u4ef6\u5df2\u6253\u5f00\u0026quot;)\n        return self.file\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        self.file.close()\n        print(\u0026quot;\u6587\u4ef6\u5df2\u5173\u95ed\u0026quot;)\n        return False\n\n\nwith OpenFile(\u0026quot;demo.txt\u0026quot;, \u0026quot;w\u0026quot;) as f:\n    f.write(\u0026quot;\u4f60\u597d\uff0cwith\uff01\u0026quot;)\n    raise ValueError(\u0026quot;\u6545\u610f\u51fa\u9519\u0026quot;)      # \u89c2\u5bdf\uff1a\u5f02\u5e38\u53d1\u751f\u65f6 __exit__ \u4ecd\u6267\u884c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6587\u4ef6\u5df2\u6253\u5f00\n\u6587\u4ef6\u5df2\u5173\u95ed\nTraceback (most recent call last):\n  ...\nValueError: \u6545\u610f\u51fa\u9519\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 7, "12.7 \u7efc\u5408\u6848\u4f8b\uff1a@retry \u91cd\u8bd5\u88c5\u9970\u5668", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 with\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b OpenFile(path, mode)\uff0c\u7528 __enter__ \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c__exit__ \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 with OpenFile(...) \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e__enter__\u003c/code\u003e \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff08\u003ccode class=\"md-inline\"\u003eas f\u003c/code\u003e \u62ff\u5230\u5b83\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5757\u5185 \u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e \u540e\uff0c\u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u003cstrong\u003e\u4f9d\u7136\u6267\u884c\u003c/strong\u003e\uff08\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff0c\u6587\u4ef6\u88ab\u6b63\u786e\u5173\u95ed\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u8868\u793a\"\u6211\u4e0d\u5904\u7406\u8fd9\u4e2a\u5f02\u5e38\uff0c\u8ba9\u5b83\u7ee7\u7eed\u5411\u4e0a\u4f20\u64ad\"\u2014\u2014\u6240\u4ee5 Traceback \u4ecd\u7136\u51fa\u73b0\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u8fd9\u5c31\u662f with \u7684\u610f\u4e49\uff1a\u65e0\u8bba\u6210\u8d25\uff0c\u6e05\u7406\u5fc5\u8fbe\u003c/strong\u003e\u3002\u5982\u679c \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u8fd4\u56de True\uff0c\u5f02\u5e38\u4f1a\u88ab\"\u541e\u6389\"\uff08\u4e0d\u63a8\u8350\uff09\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003ewith\u003c/code\u003e\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b \u003ccode class=\"md-inline\"\u003eOpenFile(path, mode)\u003c/code\u003e\uff0c\u7528 \u003ccode class=\"md-inline\"\u003e__enter__\u003c/code\u003e \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c\u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 \u003ccode class=\"md-inline\"\u003ewith OpenFile(...)\u003c/code\u003e \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 8 \u9898\u7684 \u0026lt;code class=\"md-inline\"\u0026gt;__exit__\u0026lt;/code\u0026gt; \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u0026lt;code class=\"md-inline\"\u0026gt;return False\u0026lt;/code\u0026gt; \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 with\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b OpenFile(path, mode)\uff0c\u7528 __enter__ \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c__exit__ \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 with OpenFile(...) \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass OpenFile:\n    def __init__(self, path, mode):\n        self.path = path\n        self.mode = mode\n\n    def __enter__(self):\n        self.file = open(self.path, self.mode, encoding=\u0026quot;utf-8\u0026quot;)\n        print(\u0026quot;\u6587\u4ef6\u5df2\u6253\u5f00\u0026quot;)\n        return self.file\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        self.file.close()\n        print(\u0026quot;\u6587\u4ef6\u5df2\u5173\u95ed\u0026quot;)\n        return False\n\n\nwith OpenFile(\u0026quot;demo.txt\u0026quot;, \u0026quot;w\u0026quot;) as f:\n    f.write(\u0026quot;\u4f60\u597d\uff0cwith\uff01\u0026quot;)\n    raise ValueError(\u0026quot;\u6545\u610f\u51fa\u9519\u0026quot;)      # \u89c2\u5bdf\uff1a\u5f02\u5e38\u53d1\u751f\u65f6 __exit__ \u4ecd\u6267\u884c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6587\u4ef6\u5df2\u6253\u5f00\n\u6587\u4ef6\u5df2\u5173\u95ed\nTraceback (most recent call last):\n  ...\nValueError: \u6545\u610f\u51fa\u9519\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1303,8 +1607,64 @@ print(unstable_api())</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 8 题</strong>：实现自定义 <code class="md-inline">with</code>（上下文管理器）：类 <code class="md-inline">OpenFile(path, mode)</code>，用 <code class="md-inline">__enter__</code> 打开文件并返回文件对象，<code class="md-inline">__exit__</code> 关闭文件并打印"文件已关闭"；用 <code class="md-inline">with OpenFile(...)</code> 写入一行文字，验证自动关闭（可尝试在 with 块里 raise 一个异常，观察 __exit__ 仍执行）。</p>
+<p>&lt;p&gt;提交后，在 Prompt 日志中回答：&lt;/p&gt; &lt;ol&gt;&lt;li&gt;第 7 题的装饰器是几层结构？每一层分别收什么？&lt;/li&gt;&lt;li&gt;第 8 题的 &lt;code class="md-inline"&gt;__exit__&lt;/code&gt; 你观察到异常发生时还执行吗？&lt;code class="md-inline"&gt;return False&lt;/code&gt; 的作用是什么？&lt;/li&gt;&lt;/ol&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(12, 7, 0, "\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 with\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b OpenFile(path, mode)\uff0c\u7528 __enter__ \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c__exit__ \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 with OpenFile(...) \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 with\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b OpenFile(path, mode)\uff0c\u7528 __enter__ \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c__exit__ \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 with OpenFile(...) \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __\u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class OpenFile:
+    def __init__(self, path, mode):
+        self.path = path
+        self.mode = mode
+
+    def __enter__(self):
+        self.file = open(self.path, self.mode, encoding=&quot;utf-8&quot;)
+        print(&quot;文件已打开&quot;)
+        return self.file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.file.close()
+        print(&quot;文件已关闭&quot;)
+        return False
+
+
+with OpenFile(&quot;demo.txt&quot;, &quot;w&quot;) as f:
+    f.write(&quot;你好，with！&quot;)
+    raise ValueError(&quot;故意出错&quot;)      # 观察：异常发生时 __exit__ 仍执行</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">文件已打开
+文件已关闭
+Traceback (most recent call last):
+  ...
+ValueError: 故意出错</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><ul><li><code class="md-inline">__enter__</code> 打开文件并返回文件对象（<code class="md-inline">as f</code> 拿到它）；</li><li>块内 <code class="md-inline">raise ValueError</code> 后，<code class="md-inline">__exit__</code> <strong>依然执行</strong>（打印"文件已关闭"，文件被正确关闭）；</li><li><code class="md-inline">return False</code> 表示"我不处理这个异常，让它继续向上传播"——所以 Traceback 仍然出现；</li><li><strong>这就是 with 的意义：无论成败，清理必达</strong>。如果 <code class="md-inline">__exit__</code> 返回 True，异常会被"吞掉"（不推荐）。</li></ul></div>
+              
             </div>
             
           </div>
@@ -2023,9 +2383,9 @@ def hello():
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "\u9ad8\u7ea7\u7279\u6027\uff1a\u63a8\u5bfc\u5f0f\u3001\u8fed\u4ee3\u5668\u3001\u751f\u6210\u5668\u3001\u88c5\u9970\u5668";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -2047,13 +2407,13 @@ def hello():
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

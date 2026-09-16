@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -110,7 +111,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 0, "21.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u8981\u70b9\u003c/strong\u003e\uff1a\u4ee3\u7801\u7ec4\u7ec7\u662f\"\u5355\u4e2a\u7a0b\u5e8f\u5185\u90e8\u600e\u4e48\u62c6\u51fd\u6570/\u7c7b/\u6a21\u5757\"\uff1b\u67b6\u6784\u662f\"\u6574\u4e2a\u7cfb\u7edf\u5206\u54ea\u4e9b\u90e8\u5206\u3001\u5404\u90e8\u5206\u804c\u8d23\u3001\u90e8\u5206\u4e4b\u95f4\u600e\u4e48\u901a\u4fe1\"\u3002\u003cstrong\u003e\u67b6\u6784 = \u7cfb\u7edf\u7ea7\u522b\u7684\u7ec4\u7ec7\uff0c\u4ee3\u7801\u7ec4\u7ec7 = \u6a21\u5757\u7ea7\u522b\u7684\u7ec4\u7ec7\u003c/strong\u003e\uff08\u7b2c 16 \u7ae0\u5206\u5c42\u662f\u67b6\u6784\u7684\u96cf\u5f62\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 0, "21.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u8981\u70b9\u003c/strong\u003e\uff1a\u4ee3\u7801\u7ec4\u7ec7\u662f\"\u5355\u4e2a\u7a0b\u5e8f\u5185\u90e8\u600e\u4e48\u62c6\u51fd\u6570/\u7c7b/\u6a21\u5757\"\uff1b\u67b6\u6784\u662f\"\u6574\u4e2a\u7cfb\u7edf\u5206\u54ea\u4e9b\u90e8\u5206\u3001\u5404\u90e8\u5206\u804c\u8d23\u3001\u90e8\u5206\u4e4b\u95f4\u600e\u4e48\u901a\u4fe1\"\u3002\u003cstrong\u003e\u67b6\u6784 = \u7cfb\u7edf\u7ea7\u522b\u7684\u7ec4\u7ec7\uff0c\u4ee3\u7801\u7ec4\u7ec7 = \u6a21\u5757\u7ea7\u522b\u7684\u7ec4\u7ec7\u003c/strong\u003e\uff08\u7b2c 16 \u7ae0\u5206\u5c42\u662f\u67b6\u6784\u7684\u96cf\u5f62\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -125,6 +126,33 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 1 \u9898**\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：用自己的话解释"架构"和"代码组织"的区别。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(21, 0, 0, "\u7b2c 1 \u9898\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u7528\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\"\u67b6\u6784\"\u548c\"\u4ee3\u7801\u7ec4\u7ec7\"\u7684\u533a\u522b\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案要点</strong>：代码组织是"单个程序内部怎么拆函数/类/模块"；架构是"整个系统分哪些部分、各部分职责、部分之间怎么通信"。<strong>架构 = 系统级别的组织，代码组织 = 模块级别的组织</strong>（第 16 章分层是架构的雏形）。</p></div>
+              
             </div>
             
           </div>
@@ -228,7 +256,7 @@ def main():
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 1, "21.1 \u67b6\u6784\u662f\u4ec0\u4e48", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7528\u81ea\u5df1\u7684\u51fd\u6570\u540d\u4e3e\u4f8b\u5373\u53ef\uff0c\u91cd\u70b9\u662f\"\u6bcf\u5c42\u804c\u8d23\u6e05\u6670\u3001\u65b9\u5411\u4ece\u4e0a\u5230\u4e0b\"\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8868\u73b0\u5c42\uff1amain() \u7684\u83dc\u5355\u5faa\u73af\u3001print/input\n\u4e1a\u52a1\u903b\u8f91\u5c42\uff1acalc_stats()\u3001\u6821\u9a8c\u51fd\u6570\n\u6570\u636e\u8bbf\u95ee\u5c42\uff1aload_students()\u3001save_students()\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 1, "21.1 \u67b6\u6784\u662f\u4ec0\u4e48", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u7528\u81ea\u5df1\u7684\u51fd\u6570\u540d\u4e3e\u4f8b\u5373\u53ef\uff0c\u91cd\u70b9\u662f\"\u6bcf\u5c42\u804c\u8d23\u6e05\u6670\u3001\u65b9\u5411\u4ece\u4e0a\u5230\u4e0b\"\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8868\u73b0\u5c42\uff1amain() \u7684\u83dc\u5355\u5faa\u73af\u3001print/input\n\u4e1a\u52a1\u903b\u8f91\u5c42\uff1acalc_stats()\u3001\u6821\u9a8c\u51fd\u6570\n\u6570\u636e\u8bbf\u95ee\u5c42\uff1aload_students()\u3001save_students()\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -243,6 +271,39 @@ def main():
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 2 \u9898**\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：画出三层架构图（表现/逻辑/数据），并给每一层写一个你写过的函数名作为例子。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(21, 1, 0, "\u7b2c 2 \u9898\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u753b\u51fa\u4e09\u5c42\u67b6\u6784\u56fe\uff08\u8868\u73b0/\u903b\u8f91/\u6570\u636e\uff09\uff0c\u5e76\u7ed9\u6bcf\u4e00\u5c42\u5199\u4e00\u4e2a\u4f60\u5199\u8fc7\u7684\u51fd\u6570\u540d\u4f5c\u4e3a\u4f8b\u5b50\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">表现层：main() 的菜单循环、print/input
+业务逻辑层：calc_stats()、校验函数
+数据访问层：load_students()、save_students()</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>用自己的函数名举例即可，重点是"每层职责清晰、方向从上到下"。</p></div>
+              
             </div>
             
           </div>
@@ -367,7 +428,7 @@ def handle_submit(name, score):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 2, "21.2 MVC \u6a21\u5f0f", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1aModel = \u6570\u636e + \u4e1a\u52a1\u89c4\u5219\uff1bView = \u7528\u6237\u754c\u9762\uff1bController = \u63a5\u6536\u64cd\u4f5c\u3001\u8c03\u5ea6 Model \u548c View\u3002\u5178\u578b\u6d41\u7a0b\uff1a\u7528\u6237\u64cd\u4f5c \u2192 Controller \u2192 Model \u2192 View \u2192 \u5c55\u793a\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 2, "21.2 MVC \u6a21\u5f0f", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/bl\u2026\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1aModel = \u6570\u636e + \u4e1a\u52a1\u89c4\u5219\uff1bView = \u7528\u6237\u754c\u9762\uff1bController = \u63a5\u6536\u64cd\u4f5c\u3001\u8c03\u5ea6 Model \u548c View\u3002\u5178\u578b\u6d41\u7a0b\uff1a\u7528\u6237\u64cd\u4f5c \u2192 Controller \u2192 Model \u2192 View \u2192 \u5c55\u793a\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -380,8 +441,36 @@ def handle_submit(name, score):
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 3 \u9898**\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 3 \u9898**\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：MVC 的三个字母分别代表什么？各管什么？</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 4 题后，把你程序的分层代码发给 AI："请确认表现层/逻辑层/数据层职责是否清晰，指出串层的地方。"一句话记录结论。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(21, 2, 0, "\u7b2c 3 \u9898\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/bl\u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1aMVC \u7684\u4e09\u4e2a\u5b57\u6bcd\u5206\u522b\u4ee3\u8868\u4ec0\u4e48\uff1f\u5404\u7ba1\u4ec0\u4e48\uff1f\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 4 \u9898\u540e\uff0c\u628a\u4f60\u7a0b\u5e8f\u7684\u5206\u5c42\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u786e\u8ba4\u8868\u73b0\u5c42/\u903b\u8f91\u5c42/\u6570\u636e\u5c42\u804c\u8d23\u662f\u5426\u6e05\u6670\uff0c\u6307\u51fa\u4e32\u5c42\u7684\u5730\u65b9\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：Model = 数据 + 业务规则；View = 用户界面；Controller = 接收操作、调度 Model 和 View。典型流程：用户操作 → Controller → Model → View → 展示。</p></div>
+              
             </div>
             
           </div>
@@ -492,7 +581,7 @@ def handle_submit(name, score):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 3, "21.3 \u5355\u4f53 vs \u524d\u540e\u7aef\u5206\u79bb", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff0850 \u5b57\u5185\uff09\uff1a\u6570\u636e\u5b58\u53d6\u53ea\u5728\u6570\u636e\u5c42\uff0c\u6362\u6570\u636e\u5e93\u53ea\u6539\u6570\u636e\u5c42\u5185\u90e8\u5b9e\u73b0\uff1b\u903b\u8f91\u5c42\u548c\u8868\u73b0\u5c42\u901a\u8fc7\u63a5\u53e3\u8c03\u7528\uff0c\u611f\u77e5\u4e0d\u5230\u53d8\u5316\uff0c\u003cstrong\u003e\u4e00\u884c\u4e0d\u7528\u52a8\u003c/strong\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 3, "21.3 \u5355\u4f53 vs \u524d\u540e\u7aef\u5206\u79bb", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff0850 \u5b57\u5185\uff09\uff1a\u6570\u636e\u5b58\u53d6\u53ea\u5728\u6570\u636e\u5c42\uff0c\u6362\u6570\u636e\u5e93\u53ea\u6539\u6570\u636e\u5c42\u5185\u90e8\u5b9e\u73b0\uff1b\u903b\u8f91\u5c42\u548c\u8868\u73b0\u5c42\u901a\u8fc7\u63a5\u53e3\u8c03\u7528\uff0c\u611f\u77e5\u4e0d\u5230\u53d8\u5316\uff0c\u003cstrong\u003e\u4e00\u884c\u4e0d\u7528\u52a8\u003c/strong\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -507,6 +596,33 @@ def handle_submit(name, score):
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 4 \u9898**\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：用"换数据库"场景说明分层为什么能"隔离变化"（50 字以内）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(21, 3, 0, "\u7b2c 4 \u9898\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u7528\"\u6362\u6570\u636e\u5e93\"\u573a\u666f\u8bf4\u660e\u5206\u5c42\u4e3a\u4ec0\u4e48\u80fd\"\u9694\u79bb\u53d8\u5316\"\uff0850 \u5b57\u4ee5\u5185\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（50 字内）：数据存取只在数据层，换数据库只改数据层内部实现；逻辑层和表现层通过接口调用，感知不到变化，<strong>一行不用动</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -592,7 +708,7 @@ def handle_submit(name, score):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 4, "21.4 \u67b6\u6784\u56fe\u8868\u8fbe\uff1a\u628a\u7ed3\u6784\u753b\u51fa\u6765", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5355\u4f53\u4f18\u70b9\uff1a\u90e8\u7f72\u7b80\u5355\u3001\u5c0f\u9879\u76ee\u5f00\u53d1\u5feb\u3001\u65e0\u8de8\u57df\u95ee\u9898\uff1b\n\u5206\u79bb\u4f18\u70b9\uff1a\u524d\u540e\u7aef\u5e76\u884c\u5f00\u53d1\u3001\u540e\u7aef API \u53ef\u88ab\u591a\u7aef\u590d\u7528\u3001\u804c\u8d23\u6e05\u6670\uff1b\n\u6700\u7ec8\u9879\u76ee\u9009\u5206\u79bb\uff1a\u56e0\u4e3a\u8981\u5b66 FastAPI\uff08\u540e\u7aef\uff09+ Vue\uff08\u524d\u7aef\uff09\u4e24\u6761\u6280\u80fd\u7ebf\uff0c\n\u4e5f\u662f\u5f53\u524d Web \u884c\u4e1a\u7684\u4e3b\u6d41\u67b6\u6784\uff0c\u5c31\u4e1a\u5bf9\u53e3\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 4, "21.4 \u67b6\u6784\u56fe\u8868\u8fbe\uff1a\u628a\u7ed3\u6784\u753b\u51fa\u6765", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5355\u4f53\u4f18\u70b9\uff1a\u90e8\u7f72\u7b80\u5355\u3001\u5c0f\u9879\u76ee\u5f00\u53d1\u5feb\u3001\u65e0\u8de8\u57df\u95ee\u9898\uff1b\n\u5206\u79bb\u4f18\u70b9\uff1a\u524d\u540e\u7aef\u5e76\u884c\u5f00\u53d1\u3001\u540e\u7aef API \u53ef\u88ab\u591a\u7aef\u590d\u7528\u3001\u804c\u8d23\u6e05\u6670\uff1b\n\u6700\u7ec8\u9879\u76ee\u9009\u5206\u79bb\uff1a\u56e0\u4e3a\u8981\u5b66 FastAPI\uff08\u540e\u7aef\uff09+ Vue\uff08\u524d\u7aef\uff09\u4e24\u6761\u6280\u80fd\u7ebf\uff0c\n\u4e5f\u662f\u5f53\u524d Web \u884c\u4e1a\u7684\u4e3b\u6d41\u67b6\u6784\uff0c\u5c31\u4e1a\u5bf9\u53e3\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -607,6 +723,37 @@ def handle_submit(name, score):
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 5 \u9898**\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：对比单体与前后端分离，写出各两条优点，并说明本课程最终项目为什么选分离。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(21, 4, 0, "\u7b2c 5 \u9898\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u5bf9\u6bd4\u5355\u4f53\u4e0e\u524d\u540e\u7aef\u5206\u79bb\uff0c\u5199\u51fa\u5404\u4e24\u6761\u4f18\u70b9\uff0c\u5e76\u8bf4\u660e\u672c\u8bfe\u7a0b\u6700\u7ec8\u9879\u76ee\u4e3a\u4ec0\u4e48\u9009\u5206\u79bb\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">单体优点：部署简单、小项目开发快、无跨域问题；
+分离优点：前后端并行开发、后端 API 可被多端复用、职责清晰；
+最终项目选分离：因为要学 FastAPI（后端）+ Vue（前端）两条技能线，
+也是当前 Web 行业的主流架构，就业对口。</pre></div></div>
+              
             </div>
             
           </div>
@@ -691,7 +838,7 @@ def handle_submit(name, score):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 5, "21.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u67b6\u6784\u7c7b\uff09", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u67b6\u6784\u56fe + \u8bc4\u5ba1\u8bb0\u5f55\u9f50\u5168\u5373\u5408\u683c\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6587\u5b57\u7248\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4e2a\u4eba\u535a\u5ba2\u7cfb\u7edf\uff08\u524d\u540e\u7aef\u5206\u79bb\uff09\n\u251c\u2500\u2500 \u524d\u7aef\uff08\u6d4f\u89c8\u5668\uff09\n\u2502   \u251c\u2500\u2500 HTML/CSS\uff1a\u9875\u9762\u7ed3\u6784\u4e0e\u6837\u5f0f\n\u2502   \u251c\u2500\u2500 Vue\uff1a\u6587\u7ae0\u5217\u8868\u3001\u8be6\u60c5\u6e32\u67d3\n\u2502   \u2514\u2500\u2500 fetch\uff1a\u8c03\u7528 /api/articles\n\u251c\u2500\u2500 \u540e\u7aef\uff08FastAPI\uff09\n\u2502   \u251c\u2500\u2500 \u8def\u7531\uff1aGET /api/articles\uff08\u5217\u8868\uff09/ GET /api/articles/{id}\uff08\u8be6\u60c5\uff09\n\u2502   \u251c\u2500\u2500 \u903b\u8f91\uff1a\u6587\u7ae0\u6821\u9a8c\u3001\u8bbf\u95ee\u91cf\u7edf\u8ba1\n\u2502   \u2514\u2500\u2500 \u6570\u636e\uff1aSQLite\uff08articles \u8868\uff09\n\u2514\u2500\u2500 \u6570\u636e\u5e93\n    \u2514\u2500\u2500 articles\uff08id, title, content, created_at, views\uff09\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003eAI \u8bc4\u5ba1\u8bb0\u5f55\u003c/strong\u003e\uff08\u793a\u4f8b\uff09\uff1aAI \u5efa\u8bae\u8865\u5145\"404 \u5904\u7406\"\uff08\u6587\u7ae0\u4e0d\u5b58\u5728\u65f6\u8fd4\u56de 404 \u800c\u975e\u7a7a\u6570\u636e\uff09\u2014\u2014\u91c7\u7eb3\uff1bAI \u5efa\u8bae\u589e\u52a0\u7528\u6237\u767b\u5f55\u7cfb\u7edf\u2014\u2014\u5426\u51b3\uff08\u672c\u8bfe\u7a0b\u8303\u56f4\u4e0d\u9700\u8981\uff0cYAGNI\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(21, 5, "21.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u67b6\u6784\u7c7b\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u67b6\u6784\u56fe + \u8bc4\u5ba1\u8bb0\u5f55\u9f50\u5168\u5373\u5408\u683c\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6587\u5b57\u7248\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4e2a\u4eba\u535a\u5ba2\u7cfb\u7edf\uff08\u524d\u540e\u7aef\u5206\u79bb\uff09\n\u251c\u2500\u2500 \u524d\u7aef\uff08\u6d4f\u89c8\u5668\uff09\n\u2502   \u251c\u2500\u2500 HTML/CSS\uff1a\u9875\u9762\u7ed3\u6784\u4e0e\u6837\u5f0f\n\u2502   \u251c\u2500\u2500 Vue\uff1a\u6587\u7ae0\u5217\u8868\u3001\u8be6\u60c5\u6e32\u67d3\n\u2502   \u2514\u2500\u2500 fetch\uff1a\u8c03\u7528 /api/articles\n\u251c\u2500\u2500 \u540e\u7aef\uff08FastAPI\uff09\n\u2502   \u251c\u2500\u2500 \u8def\u7531\uff1aGET /api/articles\uff08\u5217\u8868\uff09/ GET /api/articles/{id}\uff08\u8be6\u60c5\uff09\n\u2502   \u251c\u2500\u2500 \u903b\u8f91\uff1a\u6587\u7ae0\u6821\u9a8c\u3001\u8bbf\u95ee\u91cf\u7edf\u8ba1\n\u2502   \u2514\u2500\u2500 \u6570\u636e\uff1aSQLite\uff08articles \u8868\uff09\n\u2514\u2500\u2500 \u6570\u636e\u5e93\n    \u2514\u2500\u2500 articles\uff08id, title, content, created_at, views\uff09\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003eAI \u8bc4\u5ba1\u8bb0\u5f55\u003c/strong\u003e\uff08\u793a\u4f8b\uff09\uff1aAI \u5efa\u8bae\u8865\u5145\"404 \u5904\u7406\"\uff08\u6587\u7ae0\u4e0d\u5b58\u5728\u65f6\u8fd4\u56de 404 \u800c\u975e\u7a7a\u6570\u636e\uff09\u2014\u2014\u91c7\u7eb3\uff1bAI \u5efa\u8bae\u589e\u52a0\u7528\u6237\u767b\u5f55\u7cfb\u7edf\u2014\u2014\u5426\u51b3\uff08\u672c\u8bfe\u7a0b\u8303\u56f4\u4e0d\u9700\u8981\uff0cYAGNI\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -706,6 +853,48 @@ def handle_submit(name, score):
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(21, '0', "**\u7b2c 6 \u9898**\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：为"个人博客网站"画一张架构图（前后端分离 + 三层 + 数据库），文字版即可；再按 21.6 流程让 AI 评审，记录采纳/否决理由。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(21, 5, 0, "\u7b2c 6 \u9898\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u4e3a\"\u4e2a\u4eba\u535a\u5ba2\u7f51\u7ad9\"\u753b\u4e00\u5f20\u67b6\u6784\u56fe\uff08\u524d\u540e\u7aef\u5206\u79bb + \u4e09\u5c42 + \u6570\u636e\u5e93\uff09\uff0c\u6587\u5b57\u7248\u5373\u53ef\uff1b\u518d\u6309 21.6 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（文字版）：</p>
+<div class="md-figure"><pre class="md-diagram">个人博客系统（前后端分离）
+├── 前端（浏览器）
+│   ├── HTML/CSS：页面结构与样式
+│   ├── Vue：文章列表、详情渲染
+│   └── fetch：调用 /api/articles
+├── 后端（FastAPI）
+│   ├── 路由：GET /api/articles（列表）/ GET /api/articles/{id}（详情）
+│   ├── 逻辑：文章校验、访问量统计
+│   └── 数据：SQLite（articles 表）
+└── 数据库
+    └── articles（id, title, content, created_at, views）</pre></div>
+<p><strong>AI 评审记录</strong>（示例）：AI 建议补充"404 处理"（文章不存在时返回 404 而非空数据）——采纳；AI 建议增加用户登录系统——否决（本课程范围不需要，YAGNI）。</p></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>架构图 + 评审记录齐全即合格。</p></div>
+              
             </div>
             
           </div>
@@ -1207,9 +1396,9 @@ def handle_submit(name, score):
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "\u8f6f\u4ef6\u67b6\u6784\u57fa\u7840";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1231,13 +1420,13 @@ def handle_submit(name, score):
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

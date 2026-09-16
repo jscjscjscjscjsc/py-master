@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chapter_intro_3d.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/star_map.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/lib/codemirror.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/theme/material-darker.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/addon/lint/lint.min.css') }}">
 {% if chapter.id == 8 %}<link rel="stylesheet" href="{{ url_for('static', filename='css/func_cg_intro.css') }}">{% endif %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/atlas.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/narration.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/md_content.css') }}">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="{{ url_for('static', filename='js/narration_player.js') }}"></script>
@@ -175,6 +176,41 @@
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
               <div class="answer-text">{{ ex.explanation }}</div>
+            </div>
+            {% else %}
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content">{{ ex.question_html | safe }}</div>
+            <div class="ex-actions ex-actions-wrap">
+              {% if ex.expects == 'text' %}
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx({{ chapter.id }}, {{ kp_loop_idx }}, {{ loop.index0 }}, {{ ex.question_plain|default(ex.question)|tojson }}, {{ ex.code_starter|default("")|tojson }})'>
+                💻 用代码作答
+              </button>
+              {% else %}
+              <button class="btn-code-ex" onclick='openCodeEx({{ chapter.id }}, {{ kp_loop_idx }}, {{ loop.index0 }}, {{ ex.question_plain|default(ex.question)|tojson }}, {{ ex.code_starter|default("")|tojson }})'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              {% endif %}
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise({{ ex.question|tojson }})">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content">{{ (ex.reference or '（教材未提供参考答案）') | safe }}</div>
+              {% if ex.explanation %}
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content">{{ ex.explanation | safe }}</div>
+              {% endif %}
             </div>
             {% endif %}
           </div>
@@ -421,9 +457,9 @@
   const CHAPTER_WRONG = {{ chapter_wrong | tojson }};
   const CHAPTER_TITLE = {{ chapter.title | tojson }};
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="{{ url_for('static', filename='vendor/d3/d3.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/markmap/markmap-view.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/markmap/markmap-lib.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mind-elixir.css') }}">
 <script src="{{ url_for('static', filename='js/mind-elixir.js') }}"></script>
 
@@ -445,13 +481,13 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/lib/codemirror.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/mode/python/python.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/selection/active-line.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/edit/closebrackets.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/comment/comment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/lint/lint.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/codemirror/addon/lint/json-lint.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ambient_music.js') }}"></script>
 <script src="{{ url_for('static', filename='js/star_map.js') }}"></script>

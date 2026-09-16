@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -114,7 +115,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 0, "29.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eLangChain\uff1aPython \u6846\u67b6\uff0c\u7f16\u6392 LLM \u5e94\u7528\uff08\u94fe/\u5de5\u5177/\u8bb0\u5fc6/RAG\uff09\uff0c\u751f\u6001\u6700\u5927\uff1b\nOpenAI Agents SDK\uff1aPython \u6846\u67b6\uff0c\u8f7b\u91cf\u667a\u80fd\u4f53\uff0c\u5b98\u65b9\u7ef4\u62a4\uff0c\u8d34\u8fd1 API\uff1b\nAutoGen\uff1aPython \u6846\u67b6\uff0c\u591a\u667a\u80fd\u4f53\u5bf9\u8bdd\u534f\u4f5c\uff1b\nCrewAI\uff1aPython \u6846\u67b6\uff0c\u0026quot;\u89d2\u8272\u626e\u6f14\u0026quot;\u56e2\u961f\uff08\u7814\u7a76\u5458+\u5199\u624b\u7ec4\u6210 crew\uff09\uff1b\nDify\uff1a\u4f4e\u4ee3\u7801\u5e73\u53f0\uff0c\u53ef\u89c6\u5316\u7f16\u6392 + API \u53d1\u5e03\uff0c\u53ef\u81ea\u90e8\u7f72\uff1b\n\u6263\u5b50\uff08Coze\uff09\uff1a\u4f4e\u4ee3\u7801\u5e73\u53f0\uff0c\u5feb\u901f\u642d\u5efa Bot \u53d1\u5e03\u5230\u5404\u5e73\u53f0\uff0c\u4e2d\u6587\u751f\u6001\u597d\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 0, "29.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eLangChain\uff1aPython \u6846\u67b6\uff0c\u7f16\u6392 LLM \u5e94\u7528\uff08\u94fe/\u5de5\u5177/\u8bb0\u5fc6/RAG\uff09\uff0c\u751f\u6001\u6700\u5927\uff1b\nOpenAI Agents SDK\uff1aPython \u6846\u67b6\uff0c\u8f7b\u91cf\u667a\u80fd\u4f53\uff0c\u5b98\u65b9\u7ef4\u62a4\uff0c\u8d34\u8fd1 API\uff1b\nAutoGen\uff1aPython \u6846\u67b6\uff0c\u591a\u667a\u80fd\u4f53\u5bf9\u8bdd\u534f\u4f5c\uff1b\nCrewAI\uff1aPython \u6846\u67b6\uff0c\u0026quot;\u89d2\u8272\u626e\u6f14\u0026quot;\u56e2\u961f\uff08\u7814\u7a76\u5458+\u5199\u624b\u7ec4\u6210 crew\uff09\uff1b\nDify\uff1a\u4f4e\u4ee3\u7801\u5e73\u53f0\uff0c\u53ef\u89c6\u5316\u7f16\u6392 + API \u53d1\u5e03\uff0c\u53ef\u81ea\u90e8\u7f72\uff1b\n\u6263\u5b50\uff08Coze\uff09\uff1a\u4f4e\u4ee3\u7801\u5e73\u53f0\uff0c\u5feb\u901f\u642d\u5efa Bot \u53d1\u5e03\u5230\u5404\u5e73\u53f0\uff0c\u4e2d\u6587\u751f\u6001\u597d\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -129,6 +130,39 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(29, '0', "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：写出 6 个框架/平台的"类型 + 一句话定位"（LangChain / Agents SDK / AutoGen / CrewAI / Dify / 扣子）。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(29, 0, 0, "\u7b2c 1 \u9898\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u5199\u51fa 6 \u4e2a\u6846\u67b6/\u5e73\u53f0\u7684\"\u7c7b\u578b + \u4e00\u53e5\u8bdd\u5b9a\u4f4d\"\uff08LangChain / Agents SDK / AutoGen / CrewAI / Dify / \u6263\u5b50\uff09\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">LangChain：Python 框架，编排 LLM 应用（链/工具/记忆/RAG），生态最大；
+OpenAI Agents SDK：Python 框架，轻量智能体，官方维护，贴近 API；
+AutoGen：Python 框架，多智能体对话协作；
+CrewAI：Python 框架，&quot;角色扮演&quot;团队（研究员+写手组成 crew）；
+Dify：低代码平台，可视化编排 + API 发布，可自部署；
+扣子（Coze）：低代码平台，快速搭建 Bot 发布到各平台，中文生态好。</pre></div></div>
+              
             </div>
             
           </div>
@@ -232,7 +266,7 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 1, "29.1 \u6846\u67b6\u5bf9\u6bd4\u8868", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u6846\u67b6\u628a\u7b2c 28 \u7ae0\u7684\"\u8bf7\u6c42 \u2192 \u5224\u65ad tool_calls \u2192 \u6267\u884c\u5de5\u5177 \u2192 \u7ed3\u679c\u56de\u4f20 \u2192 \u518d\u8bf7\u6c42\"\u5faa\u73af\u5de5\u7a0b\u5316\uff0c\u5e76\u63d0\u4f9b\u5de5\u5177\u6ce8\u518c\u3001\u8bb0\u5fc6\u7ba1\u7406\u3001\u91cd\u8bd5\u3001\u65e5\u5fd7\u3001\u591a\u667a\u80fd\u4f53\u8c03\u5ea6\u7b49\u6807\u51c6\u96f6\u4ef6\u2014\u2014\u003cstrong\u003e\u4f60\u624b\u5199\u8fc7\u5b83\u7684\u6838\u5fc3\u003c/strong\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 1, "29.1 \u6846\u67b6\u5bf9\u6bd4\u8868", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/\u2026\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u6846\u67b6\u628a\u7b2c 28 \u7ae0\u7684\"\u8bf7\u6c42 \u2192 \u5224\u65ad tool_calls \u2192 \u6267\u884c\u5de5\u5177 \u2192 \u7ed3\u679c\u56de\u4f20 \u2192 \u518d\u8bf7\u6c42\"\u5faa\u73af\u5de5\u7a0b\u5316\uff0c\u5e76\u63d0\u4f9b\u5de5\u5177\u6ce8\u518c\u3001\u8bb0\u5fc6\u7ba1\u7406\u3001\u91cd\u8bd5\u3001\u65e5\u5fd7\u3001\u591a\u667a\u80fd\u4f53\u8c03\u5ea6\u7b49\u6807\u51c6\u96f6\u4ef6\u2014\u2014\u003cstrong\u003e\u4f60\u624b\u5199\u8fc7\u5b83\u7684\u6838\u5fc3\u003c/strong\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -245,8 +279,36 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(29, '0', "**\u7b2c 2 \u9898**\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(29, '0', "**\u7b2c 2 \u9898**\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：用一句话解释"框架 = 第 28 章工具调用循环的工程化"。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L3）&lt;/strong&gt;：完成第 3 题选型后，把你的选择发给 AI："请验证我的选型是否合理，并说明理由。"记录它给出而你没考虑到的点。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(29, 1, 0, "\u7b2c 2 \u9898\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/\u2026\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u7528\u4e00\u53e5\u8bdd\u89e3\u91ca\"\u6846\u67b6 = \u7b2c 28 \u7ae0\u5de5\u5177\u8c03\u7528\u5faa\u73af\u7684\u5de5\u7a0b\u5316\"\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 3 \u9898\u9009\u578b\u540e\uff0c\u628a\u4f60\u7684\u9009\u62e9\u53d1\u7ed9 AI\uff1a\"\u8bf7\u9a8c\u8bc1\u6211\u7684\u9009\u578b\u662f\u5426\u5408\u7406\uff0c\u5e76\u8bf4\u660e\u7406\u7531\u3002\"\u8bb0\u5f55\u5b83\u7ed9\u51fa\u800c\u4f60\u6ca1\u8003\u8651\u5230\u7684\u70b9\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：框架把第 28 章的"请求 → 判断 tool_calls → 执行工具 → 结果回传 → 再请求"循环工程化，并提供工具注册、记忆管理、重试、日志、多智能体调度等标准零件——<strong>你手写过它的核心</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -356,7 +418,7 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 2, "29.2 \u9009\u578b\u903b\u8f91", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u9009\u578b\u4e94\u95ee\uff08\u4ee3\u7801\u6df1\u5ea6/\u5b9a\u5236/\u90e8\u7f72/\u4e2d\u6587\u751f\u6001/\u56e2\u961f\uff09\u5728\u4e09\u4e2a\u573a\u666f\u91cc\u7684\u5e94\u7528\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u2460 \u5feb\u901f\u6f14\u793a Bot \u2192 Dify / \u6263\u5b50\uff08\u62d6\u62fd\u5373\u53ef\uff0c\u4e0d\u5199\u4ee3\u7801\uff0c\u6700\u5feb\uff09\uff1b\n\u2461 \u6df1\u5ea6\u96c6\u6210 FastAPI \u9879\u76ee \u2192 OpenAI Agents SDK \u6216 LangChain\uff08\u4ee3\u7801\u6846\u67b6\uff0c\u53ef\u5d4c\u5165\u540e\u7aef\uff09\uff1b\n\u2462 \u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u96be\u9898 \u2192 AutoGen\uff08\u591a\u667a\u80fd\u4f53\u5bf9\u8bdd\uff09\u6216 CrewAI\uff08\u89d2\u8272\u56e2\u961f\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 2, "29.2 \u9009\u578b\u903b\u8f91", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u9009\u578b\u4e94\u95ee\uff08\u4ee3\u7801\u6df1\u5ea6/\u5b9a\u5236/\u90e8\u7f72/\u4e2d\u6587\u751f\u6001/\u56e2\u961f\uff09\u5728\u4e09\u4e2a\u573a\u666f\u91cc\u7684\u5e94\u7528\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u2460 \u5feb\u901f\u6f14\u793a Bot \u2192 Dify / \u6263\u5b50\uff08\u62d6\u62fd\u5373\u53ef\uff0c\u4e0d\u5199\u4ee3\u7801\uff0c\u6700\u5feb\uff09\uff1b\n\u2461 \u6df1\u5ea6\u96c6\u6210 FastAPI \u9879\u76ee \u2192 OpenAI Agents SDK \u6216 LangChain\uff08\u4ee3\u7801\u6846\u67b6\uff0c\u53ef\u5d4c\u5165\u540e\u7aef\uff09\uff1b\n\u2462 \u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u96be\u9898 \u2192 AutoGen\uff08\u591a\u667a\u80fd\u4f53\u5bf9\u8bdd\uff09\u6216 CrewAI\uff08\u89d2\u8272\u56e2\u961f\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -371,6 +433,39 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(29, '0', "**\u7b2c 3 \u9898**\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：场景选型：① 想快速做个演示 Bot 给老师看；② 想把智能体深度集成到自己的 FastAPI 项目里；③ 想模拟"两个 AI 讨论解决一个难题"。分别选什么？为什么？</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(29, 2, 0, "\u7b2c 3 \u9898\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u573a\u666f\u9009\u578b\uff1a\u2460 \u60f3\u5feb\u901f\u505a\u4e2a\u6f14\u793a Bot \u7ed9\u8001\u5e08\u770b\uff1b\u2461 \u60f3\u628a\u667a\u80fd\u4f53\u6df1\u5ea6\u96c6\u6210\u5230\u81ea\u5df1\u7684 FastAPI \u9879\u76ee\u91cc\uff1b\u2462 \u60f3\u6a21\u62df\"\u4e24\u4e2a AI \u8ba8\u8bba\u89e3\u51b3\u4e00\u4e2a\u96be\u9898\"\u3002\u5206\u522b\u9009\u4ec0\u4e48\uff1f\u4e3a\u4ec0\u4e48\uff1f")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">① 快速演示 Bot → Dify / 扣子（拖拽即可，不写代码，最快）；
+② 深度集成 FastAPI 项目 → OpenAI Agents SDK 或 LangChain（代码框架，可嵌入后端）；
+③ 两个 AI 讨论解决难题 → AutoGen（多智能体对话）或 CrewAI（角色团队）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>选型五问（代码深度/定制/部署/中文生态/团队）在三个场景里的应用。</p></div>
+              
             </div>
             
           </div>
@@ -443,7 +538,7 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 3, "29.3 \u672c\u8bfe\u7a0b\u7684\u7acb\u573a", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u8c03\u7814\u7a3f\u56db\u8981\u7d20\uff08\u662f\u4ec0\u4e48/hello world/\u9002\u5408\u8c01/\u5224\u65ad\uff09+ \u81f3\u5c11 1 \u5904\u4fe1\u606f\u6838\u5b9e\u2014\u2014\u5b8c\u6210\"AI \u8f85\u52a9\u8c03\u7814 + \u4eba\u5de5\u9a8c\u8bc1\"\u95ed\u73af\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u5206\u4eab\u7a3f\u9aa8\u67b6\uff0c\u4ee5 LangChain \u4e3a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u3010LangChain \u662f\u4ec0\u4e48\u3011Python \u7684 LLM \u5e94\u7528\u7f16\u6392\u6846\u67b6\uff1a\u628a\u0026quot;\u8c03\u6a21\u578b + \u63a5\u5de5\u5177 + \u7ba1\u8bb0\u5fc6 + \u68c0\u7d22\u0026quot;\u7ec4\u5408\u6210\u94fe\uff1b\n\u3010Hello World\u3011\u4e00\u6761\u94fe\uff1aprompt \u2192 \u8c03 DeepSeek \u2192 \u8f93\u51fa\uff08\u51e0\u884c\u4ee3\u7801\u5b8c\u6210\uff09\uff1b\n\u3010\u9002\u5408\u8c01\u3011\u60f3\u7528\u4ee3\u7801\u6784\u5efa\u667a\u80fd\u4f53/RAG \u5e94\u7528\u7684\u5f00\u53d1\u8005\uff1b\u4e0d\u9002\u5408\uff1a\u53ea\u60f3\u62d6\u62fd\u7684\u4eba\uff1b\n\u3010\u6211\u7684\u5224\u65ad\u3011\u672c\u8bfe\u7a0b\u5148\u638c\u63e1\u7b2c 28 \u7ae0\u539f\u7406\uff0c\u5c31\u4e1a\u540e\u518d\u5b66 LangChain \u4f1a\u975e\u5e38\u5feb\u3002\n\u3010\u6838\u5b9e\u8bb0\u5f55\u3011AI \u8bf4\u0026quot;LangChain \u6700\u65b0\u7248\u672c 0.3\u0026quot;\u2014\u2014\u6211\u6253\u5f00\u5b98\u65b9\u6587\u6863\u6838\u5bf9\uff0c\u786e\u8ba4\u4e3a X \u7248\u672c\uff08\u4ee5\u5b9e\u9645\u4e3a\u51c6\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(29, 3, "29.3 \u672c\u8bfe\u7a0b\u7684\u7acb\u573a", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u8c03\u7814\u7a3f\u56db\u8981\u7d20\uff08\u662f\u4ec0\u4e48/hello world/\u9002\u5408\u8c01/\u5224\u65ad\uff09+ \u81f3\u5c11 1 \u5904\u4fe1\u606f\u6838\u5b9e\u2014\u2014\u5b8c\u6210\"AI \u8f85\u52a9\u8c03\u7814 + \u4eba\u5de5\u9a8c\u8bc1\"\u95ed\u73af\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u5206\u4eab\u7a3f\u9aa8\u67b6\uff0c\u4ee5 LangChain \u4e3a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u3010LangChain \u662f\u4ec0\u4e48\u3011Python \u7684 LLM \u5e94\u7528\u7f16\u6392\u6846\u67b6\uff1a\u628a\u0026quot;\u8c03\u6a21\u578b + \u63a5\u5de5\u5177 + \u7ba1\u8bb0\u5fc6 + \u68c0\u7d22\u0026quot;\u7ec4\u5408\u6210\u94fe\uff1b\n\u3010Hello World\u3011\u4e00\u6761\u94fe\uff1aprompt \u2192 \u8c03 DeepSeek \u2192 \u8f93\u51fa\uff08\u51e0\u884c\u4ee3\u7801\u5b8c\u6210\uff09\uff1b\n\u3010\u9002\u5408\u8c01\u3011\u60f3\u7528\u4ee3\u7801\u6784\u5efa\u667a\u80fd\u4f53/RAG \u5e94\u7528\u7684\u5f00\u53d1\u8005\uff1b\u4e0d\u9002\u5408\uff1a\u53ea\u60f3\u62d6\u62fd\u7684\u4eba\uff1b\n\u3010\u6211\u7684\u5224\u65ad\u3011\u672c\u8bfe\u7a0b\u5148\u638c\u63e1\u7b2c 28 \u7ae0\u539f\u7406\uff0c\u5c31\u4e1a\u540e\u518d\u5b66 LangChain \u4f1a\u975e\u5e38\u5feb\u3002\n\u3010\u6838\u5b9e\u8bb0\u5f55\u3011AI \u8bf4\u0026quot;LangChain \u6700\u65b0\u7248\u672c 0.3\u0026quot;\u2014\u2014\u6211\u6253\u5f00\u5b98\u65b9\u6587\u6863\u6838\u5bf9\uff0c\u786e\u8ba4\u4e3a X \u7248\u672c\uff08\u4ee5\u5b9e\u9645\u4e3a\u51c6\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -458,6 +553,41 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(29, '0', "**\u7b2c 4 \u9898**\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>（调研题）：完成 29.4 的小组调研任务，输出 3 分钟分享稿；按 29.5 流程用 AI 辅助调研并至少核实 1 处信息。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(29, 3, 0, "\u7b2c 4 \u9898\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff08\u8c03\u7814\u9898\uff09\uff1a\u5b8c\u6210 29.4 \u7684\u5c0f\u7ec4\u8c03\u7814\u4efb\u52a1\uff0c\u8f93\u51fa 3 \u5206\u949f\u5206\u4eab\u7a3f\uff1b\u6309 29.5 \u6d41\u7a0b\u7528 AI \u8f85\u52a9\u8c03\u7814\u5e76\u81f3\u5c11\u6838\u5b9e 1 \u5904\u4fe1\u606f\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>（分享稿骨架，以 LangChain 为例）：</p>
+<div class="md-figure"><pre class="md-diagram">【LangChain 是什么】Python 的 LLM 应用编排框架：把&quot;调模型 + 接工具 + 管记忆 + 检索&quot;组合成链；
+【Hello World】一条链：prompt → 调 DeepSeek → 输出（几行代码完成）；
+【适合谁】想用代码构建智能体/RAG 应用的开发者；不适合：只想拖拽的人；
+【我的判断】本课程先掌握第 28 章原理，就业后再学 LangChain 会非常快。
+【核实记录】AI 说&quot;LangChain 最新版本 0.3&quot;——我打开官方文档核对，确认为 X 版本（以实际为准）。</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>调研稿四要素（是什么/hello world/适合谁/判断）+ 至少 1 处信息核实——完成"AI 辅助调研 + 人工验证"闭环。</p></div>
+              
             </div>
             
           </div>
@@ -1018,9 +1148,9 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "\u4e3b\u6d41\u667a\u80fd\u4f53\u6846\u67b6\u5168\u666f";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -1042,13 +1172,13 @@ print(executor.invoke({&quot;input&quot;: &quot;我的待办有什么？&quot;})
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

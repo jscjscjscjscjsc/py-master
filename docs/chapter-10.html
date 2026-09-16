@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
@@ -110,7 +111,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 0, "10.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e__init__\u003c/code\u003e \u521d\u59cb\u5316\u5c5e\u6027\uff0c\u5b9e\u4f8b\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003eintroduce\u003c/code\u003e \u901a\u8fc7 \u003ccode class=\"md-inline\"\u003eself\u003c/code\u003e \u8bfb\u53d6\u5c5e\u6027\u3002\u4e24\u4e2a\u5bf9\u8c61\u5c5e\u6027\u4e92\u4e0d\u5f71\u54cd\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Person` \u7c7b\uff08`name`\u3001`age`\uff09\uff0c\u63d0\u4f9b `introduce()` \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def introduce(self):\n        return f\u0026quot;\u6211\u53eb{self.name}\uff0c\u4eca\u5e74{self.age}\u5c81\u0026quot;\n\np1 = Person(\u0026quot;\u5f20\u4e09\u0026quot;, 19)\np2 = Person(\u0026quot;\u674e\u56db\u0026quot;, 20)\nprint(p1.introduce())\nprint(p2.introduce())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6211\u53eb\u5f20\u4e09\uff0c\u4eca\u5e7419\u5c81\n\u6211\u53eb\u674e\u56db\uff0c\u4eca\u5e7420\u5c81\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 0, "10.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Person \u7c7b\uff08name\u3001age\uff09\uff0c\u63d0\u4f9b introduce() \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e__init__\u003c/code\u003e \u521d\u59cb\u5316\u5c5e\u6027\uff0c\u5b9e\u4f8b\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003eintroduce\u003c/code\u003e \u901a\u8fc7 \u003ccode class=\"md-inline\"\u003eself\u003c/code\u003e \u8bfb\u53d6\u5c5e\u6027\u3002\u4e24\u4e2a\u5bf9\u8c61\u5c5e\u6027\u4e92\u4e0d\u5f71\u54cd\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Person` \u7c7b\uff08`name`\u3001`age`\uff09\uff0c\u63d0\u4f9b `introduce()` \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003ePerson\u003c/code\u003e \u7c7b\uff08\u003ccode class=\"md-inline\"\u003ename\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eage\u003c/code\u003e\uff09\uff0c\u63d0\u4f9b \u003ccode class=\"md-inline\"\u003eintroduce()\u003c/code\u003e \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Person \u7c7b\uff08name\u3001age\uff09\uff0c\u63d0\u4f9b introduce() \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def introduce(self):\n        return f\u0026quot;\u6211\u53eb{self.name}\uff0c\u4eca\u5e74{self.age}\u5c81\u0026quot;\n\np1 = Person(\u0026quot;\u5f20\u4e09\u0026quot;, 19)\np2 = Person(\u0026quot;\u674e\u56db\u0026quot;, 20)\nprint(p1.introduce())\nprint(p2.introduce())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6211\u53eb\u5f20\u4e09\uff0c\u4eca\u5e7419\u5c81\n\u6211\u53eb\u674e\u56db\uff0c\u4eca\u5e7420\u5c81\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -125,6 +126,51 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Person` \u7c7b\uff08`name`\u3001`age`\uff09\uff0c\u63d0\u4f9b `introduce()` \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 1 题</strong>：定义 <code class="md-inline">Person</code> 类（<code class="md-inline">name</code>、<code class="md-inline">age</code>），提供 <code class="md-inline">introduce()</code> 方法返回"我叫X，今年X岁"；创建两个对象并输出。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 0, 0, "\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Person \u7c7b\uff08name\u3001age\uff09\uff0c\u63d0\u4f9b introduce() \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002", "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Person \u7c7b\uff08name\u3001age\uff09\uff0c\u63d0\u4f9b introduce() \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Person` \u7c7b\uff08`name`\u3001`age`\uff09\uff0c\u63d0\u4f9b `introduce()` \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def introduce(self):
+        return f&quot;我叫{self.name}，今年{self.age}岁&quot;
+
+p1 = Person(&quot;张三&quot;, 19)
+p2 = Person(&quot;李四&quot;, 20)
+print(p1.introduce())
+print(p2.introduce())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">我叫张三，今年19岁
+我叫李四，今年20岁</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">__init__</code> 初始化属性，实例方法 <code class="md-inline">introduce</code> 通过 <code class="md-inline">self</code> 读取属性。两个对象属性互不影响。</p></div>
+              
             </div>
             
           </div>
@@ -201,7 +247,7 @@
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 1, "10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u5468\u957f\u516c\u5f0f \u003ccode class=\"md-inline\"\u003e(\u5bbd+\u9ad8)\u00d72\u003c/code\u003e\uff0c\u6ce8\u610f\u62ec\u53f7\uff08\u7b2c 2 \u7ae0\u4f18\u5148\u7ea7\u8003\u70b9\u53c8\u51fa\u73b0\u4e86\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Rectangle` \u7c7b\uff08`width`\u3001`height`\uff09\uff0c\u63d0\u4f9b `area()` \u548c `perimeter()` \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Rectangle:\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n\n    def area(self):\n        return self.width * self.height\n\n    def perimeter(self):\n        return (self.width + self.height) * 2\n\nr1 = Rectangle(3, 4)\nr2 = Rectangle(5, 2)\nprint(r1.area(), r1.perimeter())\nprint(r2.area(), r2.perimeter())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e12 14\n10 14\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 1, "10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Rectangle \u7c7b\uff08width\u3001height\uff09\uff0c\u63d0\u4f9b area() \u548c perimeter() \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u5468\u957f\u516c\u5f0f \u003ccode class=\"md-inline\"\u003e(\u5bbd+\u9ad8)\u00d72\u003c/code\u003e\uff0c\u6ce8\u610f\u62ec\u53f7\uff08\u7b2c 2 \u7ae0\u4f18\u5148\u7ea7\u8003\u70b9\u53c8\u51fa\u73b0\u4e86\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Rectangle` \u7c7b\uff08`width`\u3001`height`\uff09\uff0c\u63d0\u4f9b `area()` \u548c `perimeter()` \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eRectangle\u003c/code\u003e \u7c7b\uff08\u003ccode class=\"md-inline\"\u003ewidth\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eheight\u003c/code\u003e\uff09\uff0c\u63d0\u4f9b \u003ccode class=\"md-inline\"\u003earea()\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eperimeter()\u003c/code\u003e \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Rectangle \u7c7b\uff08width\u3001height\uff09\uff0c\u63d0\u4f9b area() \u548c perimeter() \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Rectangle:\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n\n    def area(self):\n        return self.width * self.height\n\n    def perimeter(self):\n        return (self.width + self.height) * 2\n\nr1 = Rectangle(3, 4)\nr2 = Rectangle(5, 2)\nprint(r1.area(), r1.perimeter())\nprint(r2.area(), r2.perimeter())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e12 14\n10 14\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -216,6 +262,54 @@
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Rectangle` \u7c7b\uff08`width`\u3001`height`\uff09\uff0c\u63d0\u4f9b `area()` \u548c `perimeter()` \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 2 题</strong>：定义 <code class="md-inline">Rectangle</code> 类（<code class="md-inline">width</code>、<code class="md-inline">height</code>），提供 <code class="md-inline">area()</code> 和 <code class="md-inline">perimeter()</code> 方法；创建两个长方形对象验证。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 1, 0, "\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Rectangle \u7c7b\uff08width\u3001height\uff09\uff0c\u63d0\u4f9b area() \u548c perimeter() \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002", "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Rectangle \u7c7b\uff08width\u3001height\uff09\uff0c\u63d0\u4f9b area() \u548c perimeter() \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Rectangle` \u7c7b\uff08`width`\u3001`height`\uff09\uff0c\u63d0\u4f9b `area()` \u548c `perimeter()` \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return (self.width + self.height) * 2
+
+r1 = Rectangle(3, 4)
+r2 = Rectangle(5, 2)
+print(r1.area(), r1.perimeter())
+print(r2.area(), r2.perimeter())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">12 14
+10 14</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>周长公式 <code class="md-inline">(宽+高)×2</code>，注意括号（第 2 章优先级考点又出现了）。</p></div>
+              
             </div>
             
           </div>
@@ -339,7 +433,7 @@ print(s1.name)</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 2, "10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u662f\u7c7b\u53d8\u91cf\uff08\u6240\u6709\u5bf9\u8c61\u5171\u4eab\uff09\uff1b\u003ccode class=\"md-inline\"\u003eCounter.count += 1\u003c/code\u003e \u5fc5\u987b\u901a\u8fc7\u003cstrong\u003e\u7c7b\u540d\u003c/strong\u003e\u4fee\u6539\uff0c\u4e0d\u80fd\u5199 \u003ccode class=\"md-inline\"\u003eself.count += 1\u003c/code\u003e\uff08\u90a3\u4f1a\u521b\u5efa\u5b9e\u4f8b\u53d8\u91cf\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `Counter` \u7c7b\uff0c\u7c7b\u53d8\u91cf `count`\uff0c`__init__` \u91cc `Counter.count += 1`\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa `Counter.count` \u5e94\u4e3a 3\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Counter:\n    count = 0\n\n    def __init__(self):\n        Counter.count += 1\n\nCounter()\nCounter()\nCounter()\nprint(Counter.count)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e3\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 2, "10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u5b9a\u4e49 Counter \u7c7b\uff0c\u7c7b\u53d8\u91cf count\uff0c__init__ \u91cc Counter.count += 1\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa Counter.count \u5e94\u4e3a 3\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u662f\u7c7b\u53d8\u91cf\uff08\u6240\u6709\u5bf9\u8c61\u5171\u4eab\uff09\uff1b\u003ccode class=\"md-inline\"\u003eCounter.count += 1\u003c/code\u003e \u5fc5\u987b\u901a\u8fc7\u003cstrong\u003e\u7c7b\u540d\u003c/strong\u003e\u4fee\u6539\uff0c\u4e0d\u80fd\u5199 \u003ccode class=\"md-inline\"\u003eself.count += 1\u003c/code\u003e\uff08\u90a3\u4f1a\u521b\u5efa\u5b9e\u4f8b\u53d8\u91cf\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `Counter` \u7c7b\uff0c\u7c7b\u53d8\u91cf `count`\uff0c`__init__` \u91cc `Counter.count += 1`\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa `Counter.count` \u5e94\u4e3a 3\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eCounter\u003c/code\u003e \u7c7b\uff0c\u7c7b\u53d8\u91cf \u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e\uff0c\u003ccode class=\"md-inline\"\u003e__init__\u003c/code\u003e \u91cc \u003ccode class=\"md-inline\"\u003eCounter.count += 1\u003c/code\u003e\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa \u003ccode class=\"md-inline\"\u003eCounter.count\u003c/code\u003e \u5e94\u4e3a 3\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u5b9a\u4e49 Counter \u7c7b\uff0c\u7c7b\u53d8\u91cf count\uff0c__init__ \u91cc Counter.count += 1\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa Counter.count \u5e94\u4e3a 3\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Counter:\n    count = 0\n\n    def __init__(self):\n        Counter.count += 1\n\nCounter()\nCounter()\nCounter()\nprint(Counter.count)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e3\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -354,6 +448,48 @@ print(s1.name)</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `Counter` \u7c7b\uff0c\u7c7b\u53d8\u91cf `count`\uff0c`__init__` \u91cc `Counter.count += 1`\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa `Counter.count` \u5e94\u4e3a 3\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 3 题</strong>：定义 <code class="md-inline">Counter</code> 类，类变量 <code class="md-inline">count</code>，<code class="md-inline">__init__</code> 里 <code class="md-inline">Counter.count += 1</code>；创建 3 个对象后输出 <code class="md-inline">Counter.count</code> 应为 3。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 2, 0, "\u7b2c 3 \u9898\uff1a\u5b9a\u4e49 Counter \u7c7b\uff0c\u7c7b\u53d8\u91cf count\uff0c__init__ \u91cc Counter.count += 1\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa Counter.count \u5e94\u4e3a 3\u3002", "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u5b9a\u4e49 Counter \u7c7b\uff0c\u7c7b\u53d8\u91cf count\uff0c__init__ \u91cc Counter.count += 1\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa Counter.count \u5e94\u4e3a 3\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `Counter` \u7c7b\uff0c\u7c7b\u53d8\u91cf `count`\uff0c`__init__` \u91cc `Counter.count += 1`\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa `Counter.count` \u5e94\u4e3a 3\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Counter:
+    count = 0
+
+    def __init__(self):
+        Counter.count += 1
+
+Counter()
+Counter()
+Counter()
+print(Counter.count)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">count</code> 是类变量（所有对象共享）；<code class="md-inline">Counter.count += 1</code> 必须通过<strong>类名</strong>修改，不能写 <code class="md-inline">self.count += 1</code>（那会创建实例变量）。</p></div>
+              
             </div>
             
           </div>
@@ -497,7 +633,7 @@ print(s1.introduce())</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 3, "10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e__balance\u003c/code\u003e \u79c1\u6709\uff0c\u5916\u90e8\u53ea\u80fd\u901a\u8fc7\u65b9\u6cd5\u5b58\u53d6\uff1b\u003ccode class=\"md-inline\"\u003ewithdraw\u003c/code\u003e \u5148\u5224\u65ad\u4f59\u989d\u591f\u4e0d\u591f\uff0c\u4e0d\u591f\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\u2014\u2014\u003cstrong\u003e\u4e1a\u52a1\u89c4\u5219\u5c01\u88c5\u5728\u65b9\u6cd5\u91cc\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5b9a\u4e49 `BankAccount` \u7c7b\uff1a\u79c1\u6709 `__balance`\uff1b\u65b9\u6cd5 `deposit(amount)`\uff08\u5b58\u94b1\uff09\u3001`withdraw(amount)`\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001`get_balance()`\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def deposit(self, amount):\n        self.__balance += amount\n        return self.__balance\n\n    def withdraw(self, amount):\n        if amount \u0026gt; self.__balance:\n            return False\n        self.__balance -= amount\n        return self.__balance\n\n    def get_balance(self):\n        return self.__balance\n\nacct = BankAccount(1000)\nprint(acct.deposit(500))        # 1500\nprint(acct.withdraw(2000))      # False\uff08\u4f59\u989d\u4e0d\u8db3\uff09\nprint(acct.withdraw(300))       # 1200\nprint(acct.get_balance())       # 1200\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e1500\nFalse\n1200\n1200\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 3, "10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5b9a\u4e49 BankAccount \u7c7b\uff1a\u79c1\u6709 __balance\uff1b\u65b9\u6cd5 deposit(amount)\uff08\u5b58\u94b1\uff09\u3001withdraw(amount)\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001get_balance()\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e__balance\u003c/code\u003e \u79c1\u6709\uff0c\u5916\u90e8\u53ea\u80fd\u901a\u8fc7\u65b9\u6cd5\u5b58\u53d6\uff1b\u003ccode class=\"md-inline\"\u003ewithdraw\u003c/code\u003e \u5148\u5224\u65ad\u4f59\u989d\u591f\u4e0d\u591f\uff0c\u4e0d\u591f\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\u2014\u2014\u003cstrong\u003e\u4e1a\u52a1\u89c4\u5219\u5c01\u88c5\u5728\u65b9\u6cd5\u91cc\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5b9a\u4e49 `BankAccount` \u7c7b\uff1a\u79c1\u6709 `__balance`\uff1b\u65b9\u6cd5 `deposit(amount)`\uff08\u5b58\u94b1\uff09\u3001`withdraw(amount)`\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001`get_balance()`\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eBankAccount\u003c/code\u003e \u7c7b\uff1a\u79c1\u6709 \u003ccode class=\"md-inline\"\u003e__balance\u003c/code\u003e\uff1b\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003edeposit(amount)\u003c/code\u003e\uff08\u5b58\u94b1\uff09\u3001\u003ccode class=\"md-inline\"\u003ewithdraw(amount)\u003c/code\u003e\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001\u003ccode class=\"md-inline\"\u003eget_balance()\u003c/code\u003e\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u5b9a\u4e49 BankAccount \u7c7b\uff1a\u79c1\u6709 __balance\uff1b\u65b9\u6cd5 deposit(amount)\uff08\u5b58\u94b1\uff09\u3001withdraw(amount)\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001get_balance()\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def deposit(self, amount):\n        self.__balance += amount\n        return self.__balance\n\n    def withdraw(self, amount):\n        if amount \u0026gt; self.__balance:\n            return False\n        self.__balance -= amount\n        return self.__balance\n\n    def get_balance(self):\n        return self.__balance\n\nacct = BankAccount(1000)\nprint(acct.deposit(500))        # 1500\nprint(acct.withdraw(2000))      # False\uff08\u4f59\u989d\u4e0d\u8db3\uff09\nprint(acct.withdraw(300))       # 1200\nprint(acct.get_balance())       # 1200\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e1500\nFalse\n1200\n1200\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -512,6 +648,63 @@ print(s1.introduce())</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 4 \u9898**\uff1a\u5b9a\u4e49 `BankAccount` \u7c7b\uff1a\u79c1\u6709 `__balance`\uff1b\u65b9\u6cd5 `deposit(amount)`\uff08\u5b58\u94b1\uff09\u3001`withdraw(amount)`\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001`get_balance()`\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 4 题</strong>：定义 <code class="md-inline">BankAccount</code> 类：私有 <code class="md-inline">__balance</code>；方法 <code class="md-inline">deposit(amount)</code>（存钱）、<code class="md-inline">withdraw(amount)</code>（取钱，余额不足返回 False 且不扣款）、<code class="md-inline">get_balance()</code>；测试存取流程。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 3, 0, "\u7b2c 4 \u9898\uff1a\u5b9a\u4e49 BankAccount \u7c7b\uff1a\u79c1\u6709 __balance\uff1b\u65b9\u6cd5 deposit(amount)\uff08\u5b58\u94b1\uff09\u3001withdraw(amount)\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001get_balance()\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002", "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5b9a\u4e49 BankAccount \u7c7b\uff1a\u79c1\u6709 __balance\uff1b\u65b9\u6cd5 deposit(amount)\uff08\u5b58\u94b1\uff09\u3001withdraw(amount)\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001get_balance()\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 4 \u9898**\uff1a\u5b9a\u4e49 `BankAccount` \u7c7b\uff1a\u79c1\u6709 `__balance`\uff1b\u65b9\u6cd5 `deposit(amount)`\uff08\u5b58\u94b1\uff09\u3001`withdraw(amount)`\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001`get_balance()`\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def deposit(self, amount):
+        self.__balance += amount
+        return self.__balance
+
+    def withdraw(self, amount):
+        if amount &gt; self.__balance:
+            return False
+        self.__balance -= amount
+        return self.__balance
+
+    def get_balance(self):
+        return self.__balance
+
+acct = BankAccount(1000)
+print(acct.deposit(500))        # 1500
+print(acct.withdraw(2000))      # False（余额不足）
+print(acct.withdraw(300))       # 1200
+print(acct.get_balance())       # 1200</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1500
+False
+1200
+1200</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">__balance</code> 私有，外部只能通过方法存取；<code class="md-inline">withdraw</code> 先判断余额够不够，不够返回 False 且不扣款——<strong>业务规则封装在方法里</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -641,7 +834,7 @@ Util.instance_method()     # 不传对象，报错</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 4, "10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eprint(p)\u003c/code\u003e \u81ea\u52a8\u8c03\u7528 \u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e\u3002\u6ca1\u6709\u5b83\uff0c\u8f93\u51fa\u7684\u662f \u003ccode class=\"md-inline\"\u003e\u0026lt;__main__.Person object at 0x...\u0026gt;\u003c/code\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7ed9\u7b2c 1 \u9898\u7684 `Person` \u52a0 `__str__`\uff0c\u4f7f `print(person)` \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def __str__(self):\n        return f\u0026quot;{self.name}\uff08{self.age}\u5c81\uff09\u0026quot;\n\np = Person(\u0026quot;\u5f20\u4e09\u0026quot;, 19)\nprint(p)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff0819\u5c81\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 4, "10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7ed9\u7b2c 1 \u9898\u7684 Person \u52a0 __str__\uff0c\u4f7f print(person) \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eprint(p)\u003c/code\u003e \u81ea\u52a8\u8c03\u7528 \u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e\u3002\u6ca1\u6709\u5b83\uff0c\u8f93\u51fa\u7684\u662f \u003ccode class=\"md-inline\"\u003e\u0026lt;__main__.Person object at 0x...\u0026gt;\u003c/code\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7ed9\u7b2c 1 \u9898\u7684 `Person` \u52a0 `__str__`\uff0c\u4f7f `print(person)` \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u7ed9\u7b2c 1 \u9898\u7684 \u003ccode class=\"md-inline\"\u003ePerson\u003c/code\u003e \u52a0 \u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e\uff0c\u4f7f \u003ccode class=\"md-inline\"\u003eprint(person)\u003c/code\u003e \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u7ed9\u7b2c 1 \u9898\u7684 Person \u52a0 __str__\uff0c\u4f7f print(person) \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def __str__(self):\n        return f\u0026quot;{self.name}\uff08{self.age}\u5c81\uff09\u0026quot;\n\np = Person(\u0026quot;\u5f20\u4e09\u0026quot;, 19)\nprint(p)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff0819\u5c81\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -656,6 +849,48 @@ Util.instance_method()     # 不传对象，报错</code></pre></div>
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 5 \u9898**\uff1a\u7ed9\u7b2c 1 \u9898\u7684 `Person` \u52a0 `__str__`\uff0c\u4f7f `print(person)` \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 5 题</strong>：给第 1 题的 <code class="md-inline">Person</code> 加 <code class="md-inline">__str__</code>，使 <code class="md-inline">print(person)</code> 输出"张三（19岁）"。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 4, 0, "\u7b2c 5 \u9898\uff1a\u7ed9\u7b2c 1 \u9898\u7684 Person \u52a0 __str__\uff0c\u4f7f print(person) \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002", "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7ed9\u7b2c 1 \u9898\u7684 Person \u52a0 __str__\uff0c\u4f7f print(person) \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 5 \u9898**\uff1a\u7ed9\u7b2c 1 \u9898\u7684 `Person` \u52a0 `__str__`\uff0c\u4f7f `print(person)` \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f&quot;{self.name}（{self.age}岁）&quot;
+
+p = Person(&quot;张三&quot;, 19)
+print(p)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">张三（19岁）</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p><code class="md-inline">print(p)</code> 自动调用 <code class="md-inline">__str__</code>。没有它，输出的是 <code class="md-inline">&lt;__main__.Person object at 0x...&gt;</code>。</p></div>
+              
             </div>
             
           </div>
@@ -831,7 +1066,7 @@ h.age = 20</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 5, "10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u9ed8\u8ba4 \u003ccode class=\"md-inline\"\u003e==\u003c/code\u003e \u6bd4\u8f83\u5185\u5b58\u5730\u5740\uff1b\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e \u540e\u6309\u5185\u5bb9\u6bd4\u8f83\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1a\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e \u540e\uff0c\u5bf9\u8c61\u4f1a\u53d8\u5f97\"\u4e0d\u53ef\u54c8\u5e0c\"\uff08\u9664\u975e\u540c\u65f6\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__hash__\u003c/code\u003e\uff09\u2014\u2014\u9762\u8bd5\u6df1\u5751\uff0c\u672c\u8bfe\u7a0b\u5148\u8bb0\u7ed3\u8bba\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n\np1 = Point(1, 2)\np2 = Point(1, 2)\np3 = Point(3, 4)\nprint(p1 == p2)\nprint(p1 == p3)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eTrue\nFalse\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 5, "10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u5b9a\u4e49 Point \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 __eq__\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 p1 == p2 \u4e3a True\u3001p1 == p3 \u4e3a False\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u9ed8\u8ba4 \u003ccode class=\"md-inline\"\u003e==\u003c/code\u003e \u6bd4\u8f83\u5185\u5b58\u5730\u5740\uff1b\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e \u540e\u6309\u5185\u5bb9\u6bd4\u8f83\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1a\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e \u540e\uff0c\u5bf9\u8c61\u4f1a\u53d8\u5f97\"\u4e0d\u53ef\u54c8\u5e0c\"\uff08\u9664\u975e\u540c\u65f6\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__hash__\u003c/code\u003e\uff09\u2014\u2014\u9762\u8bd5\u6df1\u5751\uff0c\u672c\u8bfe\u7a0b\u5148\u8bb0\u7ed3\u8bba\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003ePoint\u003c/code\u003e \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 \u003ccode class=\"md-inline\"\u003ep1 == p2\u003c/code\u003e \u4e3a True\u3001\u003ccode class=\"md-inline\"\u003ep1 == p3\u003c/code\u003e \u4e3a False\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u5b9a\u4e49 Point \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 __eq__\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 p1 == p2 \u4e3a True\u3001p1 == p3 \u4e3a False\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n\np1 = Point(1, 2)\np2 = Point(1, 2)\np3 = Point(3, 4)\nprint(p1 == p2)\nprint(p1 == p3)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eTrue\nFalse\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -844,8 +1079,55 @@ h.age = 20</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 6 题</strong>：定义 <code class="md-inline">Point</code> 类（x、y），实现 <code class="md-inline">__eq__</code>（坐标相同即相等）；创建三个点验证 <code class="md-inline">p1 == p2</code> 为 True、<code class="md-inline">p1 == p3</code> 为 False。</p>
+<p>&lt;blockquote class="md-quote"&gt;&lt;p&gt;&lt;strong&gt;Vibe 变式（L2）&lt;/strong&gt;：完成第 7 题学生成绩管理类后，把你的类发给 AI 审查，重点问"私有属性该不该加？scores 直接暴露有什么风险？"记录结论。&lt;/p&gt;&lt;/blockquote&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 5, 0, "\u7b2c 6 \u9898\uff1a\u5b9a\u4e49 Point \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 __eq__\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 p1 == p2 \u4e3a True\u3001p1 == p3 \u4e3a False\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u5b9a\u4e49 Point \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 __eq__\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 p1 == p2 \u4e3a True\u3001p1 == p3 \u4e3a False\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u2026\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+p1 = Point(1, 2)
+p2 = Point(1, 2)
+p3 = Point(3, 4)
+print(p1 == p2)
+print(p1 == p3)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True
+False</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>默认 <code class="md-inline">==</code> 比较内存地址；实现 <code class="md-inline">__eq__</code> 后按内容比较。<strong>注意</strong>：实现 <code class="md-inline">__eq__</code> 后，对象会变得"不可哈希"（除非同时实现 <code class="md-inline">__hash__</code>）——面试深坑，本课程先记结论。</p></div>
+              
             </div>
             
           </div>
@@ -971,7 +1253,7 @@ print(c2.total)       # 3（c2 没有实例 total，读到类变量）</code></p
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 6, "10.6 \u7c7b\u53d8\u91cf\u4e0e\u5b9e\u4f8b\u53d8\u91cf", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u6570\u636e\uff08scores\uff09\u4e0e\u884c\u4e3a\uff08\u52a0\u6210\u7ee9\u3001\u7b97\u5e73\u5747\u3001\u53d6\u6700\u9ad8\u3001\u683c\u5f0f\u5316\u663e\u793a\uff09\u5168\u90e8\u5c01\u88c5\u5728\u7c7b\u91cc\uff1b\u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e \u590d\u7528 \u003ccode class=\"md-inline\"\u003eget_avg\u003c/code\u003e/\u003ccode class=\"md-inline\"\u003eget_best\u003c/code\u003e\u2014\u2014\u003cstrong\u003e\u65b9\u6cd5\u4e4b\u95f4\u4e92\u76f8\u8c03\u7528\u662f\u7c7b\u7684\u5e38\u6001\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a`Student`\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 `add_score`\u3001`get_avg`\u3001`get_best`\u3001`__str__`\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Student:\n    def __init__(self, name):\n        self.name = name\n        self.scores = []\n\n    def add_score(self, score):\n        self.scores.append(score)\n\n    def get_avg(self):\n        if not self.scores:\n            return 0\n        return sum(self.scores) / len(self.scores)\n\n    def get_best(self):\n        return max(self.scores)\n\n    def __str__(self):\n        return f\u0026quot;{self.name}\uff1a\u5e73\u5747 {self.get_avg():.1f}\uff0c\u6700\u9ad8 {self.get_best()}\u0026quot;\n\ns1 = Student(\u0026quot;\u5f20\u4e09\u0026quot;)\ns1.add_score(88); s1.add_score(92); s1.add_score(76)\ns2 = Student(\u0026quot;\u674e\u56db\u0026quot;)\ns2.add_score(95); s2.add_score(89); s2.add_score(91)\n\nprint(s1)\nprint(s2)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff1a\u5e73\u5747 85.3\uff0c\u6700\u9ad8 92\n\u674e\u56db\uff1a\u5e73\u5747 91.7\uff0c\u6700\u9ad8 95\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 6, "10.6 \u7c7b\u53d8\u91cf\u4e0e\u5b9e\u4f8b\u53d8\u91cf", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1aStudent\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 add_score\u3001get_avg\u3001get_best\u3001__str__\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u6570\u636e\uff08scores\uff09\u4e0e\u884c\u4e3a\uff08\u52a0\u6210\u7ee9\u3001\u7b97\u5e73\u5747\u3001\u53d6\u6700\u9ad8\u3001\u683c\u5f0f\u5316\u663e\u793a\uff09\u5168\u90e8\u5c01\u88c5\u5728\u7c7b\u91cc\uff1b\u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e \u590d\u7528 \u003ccode class=\"md-inline\"\u003eget_avg\u003c/code\u003e/\u003ccode class=\"md-inline\"\u003eget_best\u003c/code\u003e\u2014\u2014\u003cstrong\u003e\u65b9\u6cd5\u4e4b\u95f4\u4e92\u76f8\u8c03\u7528\u662f\u7c7b\u7684\u5e38\u6001\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a`Student`\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 `add_score`\u3001`get_avg`\u3001`get_best`\u3001`__str__`\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a\u003ccode class=\"md-inline\"\u003eStudent\u003c/code\u003e\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003eadd_score\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eget_avg\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eget_best\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1aStudent\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 add_score\u3001get_avg\u3001get_best\u3001__str__\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Student:\n    def __init__(self, name):\n        self.name = name\n        self.scores = []\n\n    def add_score(self, score):\n        self.scores.append(score)\n\n    def get_avg(self):\n        if not self.scores:\n            return 0\n        return sum(self.scores) / len(self.scores)\n\n    def get_best(self):\n        return max(self.scores)\n\n    def __str__(self):\n        return f\u0026quot;{self.name}\uff1a\u5e73\u5747 {self.get_avg():.1f}\uff0c\u6700\u9ad8 {self.get_best()}\u0026quot;\n\ns1 = Student(\u0026quot;\u5f20\u4e09\u0026quot;)\ns1.add_score(88); s1.add_score(92); s1.add_score(76)\ns2 = Student(\u0026quot;\u674e\u56db\u0026quot;)\ns2.add_score(95); s2.add_score(89); s2.add_score(91)\n\nprint(s1)\nprint(s2)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff1a\u5e73\u5747 85.3\uff0c\u6700\u9ad8 92\n\u674e\u56db\uff1a\u5e73\u5747 91.7\uff0c\u6700\u9ad8 95\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -986,6 +1268,65 @@ print(c2.total)       # 3（c2 没有实例 total，读到类变量）</code></p
               <div class="kp-ex-tools">
                 <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 7 \u9898**\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a`Student`\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 `add_score`\u3001`get_avg`\u3001`get_best`\u3001`__str__`\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 7 题</strong>：学生成绩管理类：<code class="md-inline">Student</code>（name、scores 列表），方法 <code class="md-inline">add_score</code>、<code class="md-inline">get_avg</code>、<code class="md-inline">get_best</code>、<code class="md-inline">__str__</code>；创建两个学生，各加三门成绩，输出各自的平均分和最高分。</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(10, 6, 0, "\u7b2c 7 \u9898\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1aStudent\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 add_score\u3001get_avg\u3001get_best\u3001__str__\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002", "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1aStudent\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 add_score\u3001get_avg\u3001get_best\u3001__str__\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002\n\n")'>
+                💻 写代码作答
+              </button>
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 7 \u9898**\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a`Student`\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 `add_score`\u3001`get_avg`\u3001`get_best`\u3001`__str__`\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    def __init__(self, name):
+        self.name = name
+        self.scores = []
+
+    def add_score(self, score):
+        self.scores.append(score)
+
+    def get_avg(self):
+        if not self.scores:
+            return 0
+        return sum(self.scores) / len(self.scores)
+
+    def get_best(self):
+        return max(self.scores)
+
+    def __str__(self):
+        return f&quot;{self.name}：平均 {self.get_avg():.1f}，最高 {self.get_best()}&quot;
+
+s1 = Student(&quot;张三&quot;)
+s1.add_score(88); s1.add_score(92); s1.add_score(76)
+s2 = Student(&quot;李四&quot;)
+s2.add_score(95); s2.add_score(89); s2.add_score(91)
+
+print(s1)
+print(s2)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">张三：平均 85.3，最高 92
+李四：平均 91.7，最高 95</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>数据（scores）与行为（加成绩、算平均、取最高、格式化显示）全部封装在类里；<code class="md-inline">__str__</code> 复用 <code class="md-inline">get_avg</code>/<code class="md-inline">get_best</code>——<strong>方法之间互相调用是类的常态</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -1195,7 +1536,7 @@ False
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 7, "10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7c7b\u65b9\u6cd5\u8d1f\u8d23\"\u53d1\u73b0\u95ee\u9898\"\uff08\u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e\uff09\uff0c\u4e3b\u6d41\u7a0b\u8d1f\u8d23\"\u5904\u7406\u95ee\u9898\"\uff08\u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e\uff09\u2014\u2014\u804c\u8d23\u5206\u79bb\uff08\u7b2c 9 \u7ae0\uff09\uff1b\u975e\u6cd5\u64cd\u4f5c\u88ab\u62d2\u7edd\u540e\u4f59\u989d\u4e0d\u53d8\uff0c\u003cstrong\u003e\u4e1a\u52a1\u89c4\u5219\u5f97\u5230\u5f3a\u5236\u6267\u884c\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def deposit(self, amount):\n        if amount \u0026lt;= 0:\n            raise ValueError(f\u0026quot;\u5b58\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 {amount}\u0026quot;)\n        self.__balance += amount\n        return self.__balance\n\n    def withdraw(self, amount):\n        if amount \u0026lt;= 0:\n            raise ValueError(f\u0026quot;\u53d6\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 {amount}\u0026quot;)\n        if amount \u0026gt; self.__balance:\n            return False\n        self.__balance -= amount\n        return self.__balance\n\n    def get_balance(self):\n        return self.__balance\n\nacct = BankAccount(1000)\ntry:\n    acct.deposit(-100)\nexcept ValueError as e:\n    print(\u0026quot;\u64cd\u4f5c\u88ab\u62d2\u7edd\uff1a\u0026quot;, e)\n\nprint(acct.get_balance())   # \u4f59\u989d\u6ca1\u53d8\uff0c\u8fd8\u662f 1000\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u64cd\u4f5c\u88ab\u62d2\u7edd\uff1a \u5b58\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 -100\n1000\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 7, "10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 BankAccount \u57fa\u7840\u4e0a\uff0cdeposit \u548c withdraw \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 raise ValueError\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 try/except \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002 \u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e \u003col\u003e\u003cli\u003e\u7b2c 8 \u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u7c7b\u65b9\u6cd5\u8d1f\u8d23\"\u53d1\u73b0\u95ee\u9898\"\uff08\u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e\uff09\uff0c\u4e3b\u6d41\u7a0b\u8d1f\u8d23\"\u5904\u7406\u95ee\u9898\"\uff08\u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e\uff09\u2014\u2014\u804c\u8d23\u5206\u79bb\uff08\u7b2c 9 \u7ae0\uff09\uff1b\u975e\u6cd5\u64cd\u4f5c\u88ab\u62d2\u7edd\u540e\u4f59\u989d\u4e0d\u53d8\uff0c\u003cstrong\u003e\u4e1a\u52a1\u89c4\u5219\u5f97\u5230\u5f3a\u5236\u6267\u884c\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 \u003ccode class=\"md-inline\"\u003eBankAccount\u003c/code\u003e \u57fa\u7840\u4e0a\uff0c\u003ccode class=\"md-inline\"\u003edeposit\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003ewithdraw\u003c/code\u003e \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 \u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 \u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 8 \u9898\u7684 \u0026lt;code class=\"md-inline\"\u0026gt;raise\u0026lt;/code\u0026gt; \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 BankAccount \u57fa\u7840\u4e0a\uff0cdeposit \u548c withdraw \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 raise ValueError\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 try/except \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def deposit(self, amount):\n        if amount \u0026lt;= 0:\n            raise ValueError(f\u0026quot;\u5b58\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 {amount}\u0026quot;)\n        self.__balance += amount\n        return self.__balance\n\n    def withdraw(self, amount):\n        if amount \u0026lt;= 0:\n            raise ValueError(f\u0026quot;\u53d6\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 {amount}\u0026quot;)\n        if amount \u0026gt; self.__balance:\n            return False\n        self.__balance -= amount\n        return self.__balance\n\n    def get_balance(self):\n        return self.__balance\n\nacct = BankAccount(1000)\ntry:\n    acct.deposit(-100)\nexcept ValueError as e:\n    print(\u0026quot;\u64cd\u4f5c\u88ab\u62d2\u7edd\uff1a\u0026quot;, e)\n\nprint(acct.get_balance())   # \u4f59\u989d\u6ca1\u53d8\uff0c\u8fd8\u662f 1000\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u64cd\u4f5c\u88ab\u62d2\u7edd\uff1a \u5b58\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 -100\n1000\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1208,8 +1549,70 @@ False
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e")" title="收藏">☆</button>
               </div>
+            </div>
+            
+            <!-- 教材原题：既能写代码作答，也能文字作答 -->
+            <div class="ex-question md-content"><p><strong>第 8 题</strong>：银行账户安全版：在 <code class="md-inline">BankAccount</code> 基础上，<code class="md-inline">deposit</code> 和 <code class="md-inline">withdraw</code> 的金额为负数或 0 时 <code class="md-inline">raise ValueError</code>（业务校验，第 9 章学的）；主流程用 <code class="md-inline">try/except</code> 捕获非法操作并提示。</p>
+<p>&lt;p&gt;提交后，在 Prompt 日志中回答：&lt;/p&gt; &lt;ol&gt;&lt;li&gt;第 8 题的 &lt;code class="md-inline"&gt;raise&lt;/code&gt; 用在了哪里？为什么"发现问题"和"处理问题"要分开？&lt;/li&gt;&lt;li&gt;你让 AI 评审自己的代码了吗？它提了哪条建议？你采纳/否决了哪个，为什么？&lt;/li&gt;&lt;/ol&gt;</p></div>
+            <div class="ex-actions ex-actions-wrap">
+              
+              <button class="btn-submit" onclick="toggleTextAnswer(this)">✍️ 文字作答</button>
+              <button class="btn-code-ex" onclick='openCodeEx(10, 7, 0, "\u7b2c 8 \u9898\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 BankAccount \u57fa\u7840\u4e0a\uff0cdeposit \u548c withdraw \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 raise ValueError\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 try/except \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 BankAccount \u57fa\u7840\u4e0a\uff0cdeposit \u548c withdraw \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 raise ValueError\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 try/except \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002 \u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e \u003col\u003e\u003cli\u003e\u7b2c 8 \u2026\n\n")'>
+                💻 用代码作答
+              </button>
+              
+              <button class="btn-show-answer" onclick="showExAnswer(this)">查看参考答案</button>
+              <button class="btn-jj small" onclick="askJJAboutExercise("**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e")">请教 AI 助教</button>
+            </div>
+
+            <div class="ex-text-answer" style="display:none;">
+              <textarea class="ex-text-input" placeholder="用自己的话作答，或贴出你的代码与运行结果。提交后 AI 会对照参考答案批改。"></textarea>
+              <div class="ex-actions" style="margin-top:10px;">
+                <button class="btn-submit" onclick="submitTextAnswer(this)">提交给 AI 批改</button>
+              </div>
+              <div class="ex-ai-result" style="display:none;"></div>
+            </div>
+
+            <div class="ex-answer" style="display:none;">
+              <div class="answer-label">📝 参考答案</div>
+              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def deposit(self, amount):
+        if amount &lt;= 0:
+            raise ValueError(f&quot;存款金额必须大于 0，收到 {amount}&quot;)
+        self.__balance += amount
+        return self.__balance
+
+    def withdraw(self, amount):
+        if amount &lt;= 0:
+            raise ValueError(f&quot;取款金额必须大于 0，收到 {amount}&quot;)
+        if amount &gt; self.__balance:
+            return False
+        self.__balance -= amount
+        return self.__balance
+
+    def get_balance(self):
+        return self.__balance
+
+acct = BankAccount(1000)
+try:
+    acct.deposit(-100)
+except ValueError as e:
+    print(&quot;操作被拒绝：&quot;, e)
+
+print(acct.get_balance())   # 余额没变，还是 1000</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">操作被拒绝： 存款金额必须大于 0，收到 -100
+1000</pre></div></div>
+              
+              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
+              <div class="answer-text md-content"><p>类方法负责"发现问题"（<code class="md-inline">raise ValueError</code>），主流程负责"处理问题"（<code class="md-inline">try/except</code>）——职责分离（第 9 章）；非法操作被拒绝后余额不变，<strong>业务规则得到强制执行</strong>。</p></div>
+              
             </div>
             
           </div>
@@ -2097,9 +2500,9 @@ print(a.__money)</code></pre></div>
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "\u9762\u5411\u5bf9\u8c61\uff08\u4e0a\uff09\uff1a\u7c7b\u4e0e\u5c01\u88c5";
 </script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
 <link rel="stylesheet" href="static/css/mind-elixir.css">
 <script src="static/js/mind-elixir.js"></script>
 
@@ -2121,13 +2524,13 @@ print(a.__money)</code></pre></div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
 <script src="static/js/ambient_music.js"></script>
 <script src="static/js/star_map.js"></script>

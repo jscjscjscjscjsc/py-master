@@ -222,16 +222,92 @@ function showExAnswer(btn) {
   const card = btn.closest('.kp-exercise');
   const answerDiv = card.querySelector('.ex-answer');
   const optionsDiv = card.querySelector('.ex-options');
-  const correctIdx = parseInt(optionsDiv.dataset.correct);
 
-  if (card.dataset.exSubmitted !== 'true') {
-    card.querySelectorAll('.ex-option').forEach((opt, i) => {
-      opt.style.pointerEvents = 'none';
-      if (i === correctIdx) opt.classList.add('correct');
-    });
+  // 选择题才需要顺带标出正确选项。教材原题（open 型）没有选项，
+  // 这里以前直接读 dataset 会抛错，表现为"查看参考答案"点了没反应。
+  if (optionsDiv) {
+    const correctIdx = parseInt(optionsDiv.dataset.correct, 10);
+    if (card.dataset.exSubmitted !== 'true') {
+      card.querySelectorAll('.ex-option').forEach((opt, i) => {
+        opt.style.pointerEvents = 'none';
+        if (i === correctIdx) opt.classList.add('correct');
+      });
+    }
   }
-  answerDiv.style.display = answerDiv.style.display === 'none' ? 'block' : 'none';
-  btn.textContent = answerDiv.style.display === 'block' ? '收起解析' : '查看解析';
+  const opening = answerDiv.style.display === 'none';
+  answerDiv.style.display = opening ? 'block' : 'none';
+  btn.textContent = opening ? '收起参考答案' : '查看参考答案';
+}
+
+/* ── 教材原题的"文字作答"与 AI 批改 ────────────────────────
+   题干、参考答案、解析都从 DOM 读取，不往 onclick 属性里塞长文本：
+   参考答案动辄上千字，塞进属性既臃肿又容易被引号截断。 */
+
+function toggleTextAnswer(btn) {
+  const card = btn.closest('.kp-exercise');
+  const box = card.querySelector('.ex-text-answer');
+  if (!box) return;
+  const opening = box.style.display === 'none';
+  box.style.display = opening ? 'block' : 'none';
+  btn.textContent = opening ? '收起作答区' : '✍️ 文字作答';
+  if (opening) {
+    const input = box.querySelector('.ex-text-input');
+    if (input) input.focus();
+  }
+}
+
+async function submitTextAnswer(btn) {
+  const card = btn.closest('.kp-exercise');
+  const box = card.querySelector('.ex-text-answer');
+  const input = box.querySelector('.ex-text-input');
+  const result = box.querySelector('.ex-ai-result');
+  const answer = (input.value || '').trim();
+
+  if (answer.length < 4) {
+    showToast('先写下你的作答再提交', 'error');
+    return;
+  }
+
+  const questionEl = card.querySelector('.ex-question');
+  const question = questionEl ? questionEl.innerText : '';
+  const answerNodes = card.querySelectorAll('.ex-answer .answer-text');
+  const reference = answerNodes[0] ? answerNodes[0].innerText : '';
+  const explanation = answerNodes[1] ? answerNodes[1].innerText : '';
+
+  btn.disabled = true;
+  btn.textContent = 'AI 批改中…';
+  result.style.display = 'block';
+  result.innerHTML = '<div class="ex-ai-pending">正在对照参考答案批改，请稍候…</div>';
+
+  try {
+    const res = await fetch('/api/score-answer', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, answer, reference, explanation })
+    });
+    const data = await res.json();
+    if (!data.success) {
+      result.innerHTML = '<div class="ex-ai-pending">批改失败：' +
+        escapeHtml(data.message || '请稍后重试') + '</div>';
+      return;
+    }
+    const score = Math.max(0, Math.min(100, data.score || 0));
+    const tone = score >= 85 ? 'good' : (score >= 60 ? 'ok' : 'bad');
+    result.innerHTML =
+      '<div class="ex-ai-score ' + tone + '">AI 评分：<strong>' + score + '</strong> / 100</div>' +
+      (data.feedback ? '<div class="ex-ai-line"><b>评语：</b>' + escapeHtml(data.feedback) + '</div>' : '') +
+      (data.strengths ? '<div class="ex-ai-line"><b>答得好的地方：</b>' + escapeHtml(data.strengths) + '</div>' : '') +
+      (data.weaknesses ? '<div class="ex-ai-line"><b>可以补充：</b>' + escapeHtml(data.weaknesses) + '</div>' : '') +
+      '<div class="ex-ai-hint">对照下面的参考答案再检查一遍，印象更深。</div>';
+    if (score >= 60) {
+      const answerDiv = card.querySelector('.ex-answer');
+      if (answerDiv) answerDiv.style.display = 'block';
+    }
+  } catch (e) {
+    result.innerHTML = '<div class="ex-ai-pending">网络异常，批改失败，请重试。</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '重新提交批改';
+  }
 }
 
 // --- Code Exercise (CodeMirror Enhanced Editor) ---
@@ -303,9 +379,10 @@ async function runLintCheck() {
   } catch (_) {}
 }
 
-function openCodeEx(chapterId, kpIndex, exIndex, prompt) {
+function openCodeEx(chapterId, kpIndex, exIndex, prompt, starter) {
   codeExState = { chapterId, kpIndex, exIndex };
-  document.getElementById('code-ex-prompt').textContent = '💡 ' + prompt;
+  const promptEl = document.getElementById('code-ex-prompt');
+  promptEl.textContent = '📝 ' + prompt;
   document.getElementById('code-ex-output').innerHTML = '';
   document.getElementById('code-ex-status').textContent = '';
   const errEl = document.getElementById('code-ex-lint-errors');
@@ -316,9 +393,14 @@ function openCodeEx(chapterId, kpIndex, exIndex, prompt) {
   document.body.style.overflow = 'hidden';
 
   if (!codeMirrorEditor) initCodeMirror();
-  codeMirrorEditor.setValue('# 在这里编写你的 Python 代码\n');
+  // 教材原题会把题目要点作为注释预置进来，避免学生打开编辑器只看到一片空白
+  codeMirrorEditor.setValue((starter && starter.trim())
+    ? starter.replace(/\s*$/, '\n')
+    : '# 在这里编写你的 Python 代码\n');
   codeMirrorEditor.clearHistory();
   codeMirrorEditor.focus();
+  // 光标落到文件末尾，学生直接开始敲代码
+  codeMirrorEditor.setCursor(codeMirrorEditor.lineCount(), 0);
   codeMirrorEditor.clearGutter('CodeMirror-lint-markers');
   codeMirrorEditor.eachLine(l => codeMirrorEditor.removeLineClass(l, 'wrap', 'cm-lint-error-line'));
   setTimeout(runLintCheck, 500);

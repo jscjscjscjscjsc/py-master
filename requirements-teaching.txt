@@ -1,0 +1,17 @@
+# 教学依赖：教材里要求学生安装的库。
+# 装上之后，学生做到对应章节时才能在平台的在线编辑器里真正跑起来。
+#   第 13 章 第三方库 / 并发异步   -> requests
+#   第 17 章 测试让代码可验证      -> pytest
+#   第 24 章 FastAPI 入门到会用    -> fastapi, uvicorn
+#   第 26 章 数据分析与自动化框架  -> pandas, matplotlib
+#   第 28 章 DeepSeek API 实战     -> openai
+# 国内环境建议用镜像安装：
+#   pip install -r requirements-teaching.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+requests
+pytest
+fastapi
+uvicorn
+httpx
+pandas
+matplotlib
+openai
