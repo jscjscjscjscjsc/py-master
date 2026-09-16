@@ -26897,5 +26897,1840 @@
     "audio_seconds": 23.21
    }
   ]
+ },
+ "7_2": {
+  "chapter_id": 7,
+  "kp_index": 2,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.2 返回值：函数把结果\"交出来\"",
+  "title": "函数返回值：交出结果还能多值",
+  "hook_line": "代码算好的结果，怎么给程序用？",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 406.5,
+  "narration_chars": 2401,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:30:38",
+  "build_seconds": 105.8,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "代码结果给谁用",
+    "narration": "同学们，先回忆下上节课学的函数，就像帮你跑腿的工具人对吧？比如你让工具人帮你买奶茶，你得拿到手才能喝。那之前写的no_return，会不会就像工具人买了奶茶但自己喝了没给你？那我们今天就解决这个核心问题，怎么让函数把结果交出来还给程序。",
+    "caption": "函数工具人要交结果→程序才能继续用",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "函数结果谁接收",
+     "subtitle": "",
+     "caption": "",
+     "question": "工具人买了奶茶自己留着咋办",
+     "mood": "happy",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "print给人看屏幕结果"
+      },
+      {
+       "icon": "",
+       "text": "return给程序用后续值"
+      }
+     ]
+    },
+    "image": "narrations/7_2/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_a08075f807c8ff6182b0b7362ea1fae6.mp3",
+    "audio_seconds": 21.67
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "return就是交结果",
+    "narration": "好，我们先看最基本的return语法。第一个核心点，return就是把函数内部算好的结果，完完整整交还到调用它的那个位置。第二个，调用函数的那个地方，就相当于直接拿到了return回来的值，可以存变量可以继续计算。第三个，如果函数没有写return，或者只写了return不带任何东西，它默认会返回一个叫None的特殊值，这个None就是什么都没有的意思。",
+    "caption": "return交结果给调用处→无return返回None",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "return语法基础",
+     "subtitle": "搞懂return和None的关系",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "return把结果交还调用处"
+      },
+      {
+       "icon": "②",
+       "text": "调用处等价拿到返回值"
+      },
+      {
+       "icon": "③",
+       "text": "无/空return返回None"
+      }
+     ],
+     "highlight": "记住None是特殊空值"
+    },
+    "image": "narrations/7_2/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_7d08b7954ca75a5017b2d2276f31b7fd.mp3",
+    "audio_seconds": 28.56
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "有returnvs无return",
+    "narration": "那我们直接拿教材里的代码案例验证一下。左边这个add函数，最后写了return a加b。右边这个no_return函数，虽然也算出来了result等于a加b，但根本没交出去。我们运行一下，打印add一逗号二，会得到三；打印no_return一逗号二，会得到None。这就是刚才说的交没交的区别，大家要记住这个对比案例。",
+    "caption": "写return交出3→没写return交出None",
+    "code": "def add(a, b):\n return a + b\n\ndef no_return(a, b):\n result = a + b\n\nprint(add(1, 2))\nprint(no_return(1, 2))",
+    "visual": {
+     "layout": "code",
+     "title": "对比有/无return",
+     "subtitle": "",
+     "caption": "",
+     "code": "def add(a, b):\n return a + b\n\ndef no_return(a, b):\n result = a + b\n\nprint(add(1, 2))\nprint(no_return(1, 2))",
+     "output": "3\nNone",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "记住这个经典对比案例"
+      }
+     ]
+    },
+    "image": "narrations/7_2/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_87a65bc8da218d039afbc6eb46dfba43.mp3",
+    "audio_seconds": 27.46
+   },
+   {
+    "id": 4,
+    "type": "pitfall",
+    "title": "print≠return分不清",
+    "narration": "接下来第一个大常见坑，很多新手刚学函数的时候，会把print和return搞混。比如以为函数里写了print算出来的结果，外面就能直接用这个值。我们举个教材里提到的验证例子，先回忆这个坑的核心，刚才说了print是给人看的，return是给程序用的，千万不能搞错，搞错了后面的计算肯定会报错或者拿到None。",
+    "caption": "print给人看→return给程序用",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "别搞混print和return",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "以为函数里print=交出值",
+     "wrong_code": "def wrong_add(a, b):\n print(a + b)\nres = wrong_add(1, 2)\nprint(res * 2)",
+     "right_answer": "",
+     "right_code": "def right_add(a, b):\n return a + b\nres = right_add(1, 2)\nprint(res * 2)",
+     "highlight": "print≠返回值哦"
+    },
+    "image": "narrations/7_2/s04.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_2088e6fa62fea511409944a64a241966.mp3",
+    "audio_seconds": 26.38
+   },
+   {
+    "id": 5,
+    "type": "code",
+    "title": "交叉验证print返回",
+    "narration": "那我们再用教材里的交叉验证代码加深印象。就是print套print那个，第一个里面的print先把hello打印到屏幕上给人看，然后它自己作为一个没有返回值的函数，返回None，外面的print就把这个None打印出来了。这个例子非常直观地展示了打印和返回是完全两码事，各有各的用途。",
+    "caption": "内层print打hello→外层print打内层的None",
+    "code": "print(print(\"hello\"))",
+    "visual": {
+     "layout": "code",
+     "title": "交叉验证print返回值",
+     "subtitle": "",
+     "caption": "",
+     "code": "print(print(\"hello\"))",
+     "output": "hello\nNone",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "直观区分打印和返回"
+      }
+     ]
+    },
+    "image": "narrations/7_2/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_1d3db4d0b265173bb592c0b9b16bba2f.mp3",
+    "audio_seconds": 22.3
+   },
+   {
+    "id": 6,
+    "type": "concept",
+    "title": "提前return卫语句",
+    "narration": "好，掌握了基础的return，我们来看下进阶用法提前return。什么叫提前return呢？就是在函数执行的过程中，一旦触发某个条件，就立刻执行return，函数马上结束，后面的所有代码都不会再跑了。这个提前return在企业代码里有个专门的名字叫卫语句，用来处理特殊情况，比层层嵌套的if else清晰太多了，大家一定要学会用。",
+    "caption": "提前return→触发条件函数立即结束",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "提前return卫语句",
+     "subtitle": "替代嵌套ifelse的好方法",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "触发条件立即执行return"
+      },
+      {
+       "icon": "②",
+       "text": "后面代码直接跳过不跑"
+      },
+      {
+       "icon": "③",
+       "text": "企业用的卫语句处理特殊"
+      }
+     ],
+     "highlight": "卫语句让代码更清晰"
+    },
+    "image": "narrations/7_2/s06.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_cb44efc8a0e345df0a84f043b72d6408.mp3",
+    "audio_seconds": 26.74
+   },
+   {
+    "id": 7,
+    "type": "flow",
+    "title": "提前return的执行流",
+    "narration": "那我们用一个流程图，来直观看看提前return的执行顺序。首先调用classify函数，传入参数n，第一步先判断n是不是小于零，如果是的话，打印负数，然后直接return，函数就结束了。如果不是小于零，就跳过那个提前return的分支，继续执行后面的代码，打印非负数。这样看是不是比先套一层if else更清楚？",
+    "caption": "先判负→提前return→否则继续后面代码",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "提前return执行流程",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "调用classify传入参数",
+      "判断n是否小于零",
+      "是：打印负数→提前结束",
+      "否：跳过→打印非负数"
+     ],
+     "highlight": "提前return截断函数执行"
+    },
+    "image": "narrations/7_2/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_990604104f9b983909d5660f0cb2b7d2.mp3",
+    "audio_seconds": 25.58
+   },
+   {
+    "id": 8,
+    "type": "code",
+    "title": "卫语句处理特殊情况",
+    "narration": "好，我们直接看教材里的代码案例7.4，补全它正确的写法。这个classify函数，先判断n是不是小于零，如果是的话，先打印负数，然后立刻return，不用再写else了，后面的代码直接就是处理非负数的情况，打印非负数。运行一下传入负五，再传入零，确实会依次打印负数和非负数。",
+    "caption": "判负后提前return→else都不用写",
+    "code": "def classify(n):\n if n < 0:\n  print(\"负数\")\n  return\n print(\"非负数\")\n\nclassify(-5)\nclassify(0)",
+    "visual": {
+     "layout": "code",
+     "title": "卫语句classify函数",
+     "subtitle": "",
+     "caption": "",
+     "code": "def classify(n):\n if n < 0:\n  print(\"负数\")\n  return\n print(\"非负数\")\n\nclassify(-5)\nclassify(0)",
+     "output": "负数\n非负数",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "企业代码常用的写法"
+      }
+     ]
+    },
+    "image": "narrations/7_2/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_c49dae27b11723ca1254bceede0ed70e.mp3",
+    "audio_seconds": 23.54
+   },
+   {
+    "id": 9,
+    "type": "pitfall",
+    "title": "return后面写代码没用",
+    "narration": "接下来第二个大常见坑，很多同学写完提前return之后，还在同一个分支下面或者return后面写了其他代码，这些代码都是永远不会被执行的死代码，没有任何意义，还会让代码看起来很乱，编辑器甚至都会给你标灰或者标黄提醒你，大家一定要注意，return一执行函数就立刻结束了，后面的代码全白写。",
+    "caption": "return之后的代码→永远不会执行的死代码",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "别在return后面写代码",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "return后面跟着其他代码",
+     "wrong_code": "def dead_code(n):\n if n < 0:\n  print(\"负数\")\n  return",
+     "right_answer": "",
+     "right_code": "def good_code(n):\n if n < 0:\n  print(\"负数\")\n  return",
+     "highlight": "return后别留任何代码"
+    },
+    "image": "narrations/7_2/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_9ccdaf9da03e3dacb52d31add75598b4.mp3",
+    "audio_seconds": 25.73
+   },
+   {
+    "id": 10,
+    "type": "concept",
+    "title": "返回多个值是元组",
+    "narration": "最后一个核心知识点，函数可以返回多个值吗？当然可以，这也是函数最常用的能力之一。但这里要注意一个细节，Python里函数其实不能真的返回多个独立的东西，它是把这多个值打包成了一个元组返回给你，调用的时候再用对应数量的变量解包接收就行，这个就是我们第五章学过的元组解包的应用，前后知识要串起来。",
+    "caption": "返回多个值→实际打包成元组返回",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "返回多个值的本质",
+     "subtitle": "第五章元组解包的应用",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "逗号分隔写多个返回值"
+      },
+      {
+       "icon": "②",
+       "text": "实际自动打包成元组"
+      },
+      {
+       "icon": "③",
+       "text": "用对应变量解包接收"
+      }
+     ],
+     "highlight": "本质是返回一个元组"
+    },
+    "image": "narrations/7_2/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_fe70a9e9889ea4f5e58faac5afeb78ad.mp3",
+    "audio_seconds": 24.58
+   },
+   {
+    "id": 11,
+    "type": "code",
+    "title": "返回和差积三个值",
+    "narration": "好，我们直接看教材里的代码案例7.5，calc函数，return后面逗号分隔写了a加b，a减b，a乘b三个值，它实际返回的是一个包含这三个数的元组。然后调用的时候用total、diff、product三个变量对应解包接收，最后用格式化字符串打印出来，和差积分别是八、二、一，运行结果完全正确。",
+    "caption": "三个返回值→对应三个变量解包",
+    "code": "def calc(a, b):\n return a + b, a - b, a * b\n\ntotal, diff, product = calc(5, 3)\nprint(f\"和：{total}，差：{diff}，积：{product}\")",
+    "visual": {
+     "layout": "code",
+     "title": "calc计算和差积",
+     "subtitle": "",
+     "caption": "",
+     "code": "def calc(a, b):\n return a + b, a - b, a * b\n\ntotal, diff, product = calc(5, 3)\nprint(f\"和：{total}，差：{diff}，积：{product}\")",
+     "output": "和：8，差：2，积：15",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "元组解包太好用了"
+      }
+     ]
+    },
+    "image": "narrations/7_2/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_aa8625f2042a5beb2e7fe39a6dc5e892.mp3",
+    "audio_seconds": 25.75
+   },
+   {
+    "id": 12,
+    "type": "compare",
+    "title": "返回单个vs多个值",
+    "narration": "那我们再来简单对比一下返回单个值和返回多个值的写法。返回单个值的话，直接return后面跟一个表达式或者变量就行，调用的时候可以用一个变量接，也可以直接用。返回多个值的话，return后面用逗号分隔多个表达式，调用的时候要用对应数量的变量解包，或者用一个变量存整个元组，再用中括号取单个值。",
+    "caption": "单个值直接接→多个值要解包",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "单个vs多个返回值",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "单个返回值",
+      "lines": [
+       "return后跟单个内容",
+       "用一个变量接/直接用"
+      ]
+     },
+     "right": {
+      "label": "多个返回值",
+      "lines": [
+       "return后逗号分隔多",
+       "对应变量解包/存元组"
+      ]
+     },
+     "highlight": "核心都是返回值的应用"
+    },
+    "image": "narrations/7_2/s12.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_c34f25ddbf35d84db5a9765fe09ed8d6.mp3",
+    "audio_seconds": 26.38
+   },
+   {
+    "id": 13,
+    "type": "code",
+    "title": "用变量存整个元组",
+    "narration": "刚才提到了用一个变量存整个返回的元组，那我们就改一下教材里的calc案例，演示一下这个用法。调用calc五逗号三，把返回的元组存到result变量里，然后用索引零取和，索引一取差，索引二取积，最后打印出来的结果和刚才解包的是一模一样的，这个方法适合返回值多但暂时用不完的情况。",
+    "caption": "多个值存元组→用索引取单个值",
+    "code": "def calc(a, b):\n return a + b, a - b, a * b\n\nresult = calc(5, 3)\nprint(f\"和：{result[0]}，差：{result[1]}，积：{result[2]}\")",
+    "visual": {
+     "layout": "code",
+     "title": "存整个元组再取值",
+     "subtitle": "",
+     "caption": "",
+     "code": "def calc(a, b):\n return a + b, a - b, a * b\n\nresult = calc(5, 3)\nprint(f\"和：{result[0]}，差：{result[1]}，积：{result[2]}\")",
+     "output": "和：8，差：2，积：15",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "适合暂时用不完所有值"
+      }
+     ]
+    },
+    "image": "narrations/7_2/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_0b0b2b0e85ed11ea4e70a23c6651de27.mp3",
+    "audio_seconds": 22.68
+   },
+   {
+    "id": 14,
+    "type": "concept",
+    "title": "完成教材微任务",
+    "narration": "最后我们来完成教材里的微任务卡M1，把刚才那个print套print的案例发给AI，提问请解释print和return的区别，为什么print的返回值是None。然后一句话记录你的理解，比如可以记成print是输出到屏幕的工具，没有需要交回给程序的结果，所以返回None，return是把内部结果交回给调用处的工具，给程序后续计算用。",
+    "caption": "完成微任务→深化print和return的理解",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "完成M1微任务卡",
+     "subtitle": "把问题发给AI并记录",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "发print套print案例给A"
+      },
+      {
+       "icon": "②",
+       "text": "提问区别和返回None的原因"
+      },
+      {
+       "icon": "③",
+       "text": "一句话总结你的理解"
+      }
+     ],
+     "highlight": "用AI辅助巩固知识点"
+    },
+    "image": "narrations/7_2/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f43ea85cb0a65b8f729aab5af3e62f12.mp3",
+    "audio_seconds": 24.19
+   },
+   {
+    "id": 15,
+    "type": "flow",
+    "title": "本节课完整逻辑链",
+    "narration": "好，我们现在快速梳理一下本节课的完整逻辑链。首先开场用工具人买奶茶的例子提问，引出核心问题代码结果怎么给程序用。然后讲return基础和None，用对比代码和交叉验证巩固。接着讲提前return卫语句，讲清楚执行流程和常见坑。最后讲返回多个值的本质是元组，以及两种接收方式。",
+    "caption": "工具人提问→return基础→提前return→多值返回",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "本节课逻辑回顾",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "用工具人例子引出问题",
+      "讲return基础和None",
+      "讲提前return卫语句和坑",
+      "讲多值返回的本质和接收"
+     ],
+     "highlight": "前后知识串起来更牢"
+    },
+    "image": "narrations/7_2/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_83de5d518b8fedd91f83c9574acc3ab6.mp3",
+    "audio_seconds": 25.73
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "三点核心必须记住",
+    "narration": "好，本节课的内容就全部讲完了，最后我们收束成三点必须记住的结论。第一，return把函数内部的结果交还给调用处，没有return或者空return返回None。第二，提前return叫卫语句，处理特殊情况清晰，return一执行函数立刻结束。第三，返回多个值实际是打包成元组，用对应变量解包接收。这三点一定要记牢，这是函数的核心能力之一。",
+    "caption": "return交结果→提前return用卫语句→多值是元组",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本节课核心结论",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "return交结果，无则返回None",
+      "提前return用卫语句，立刻结束",
+      "返回多值是元组，可解包"
+     ]
+    },
+    "image": "narrations/7_2/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_bc13ed9f87038631af1d719e2c187948.mp3",
+    "audio_seconds": 29.23
+   }
+  ]
+ },
+ "7_3": {
+  "chapter_id": 7,
+  "kp_index": 3,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.3 参数：函数与外界的接口",
+  "title": "函数接口的5种参数玩法",
+  "hook_line": "3分钟学会传参避坑拿面试分",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 302.9,
+  "narration_chars": 1793,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:33:55",
+  "build_seconds": 194.5,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "传参有多重要？",
+    "narration": "同学们，咱们之前学过函数是模块化代码块对吧？可是写好的函数，外界怎么给它塞数据呢？或者反过来，函数怎么接收指定的数据呢？这就是咱们今天要学的函数的接口参数，传不对轻则报错重则bug满天飞，面试官还最爱考这里的经典坑",
+    "caption": "函数参数是接口 传错就掉坑",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "参数是函数的门",
+     "subtitle": "",
+     "caption": "",
+     "question": "你写的函数传错过参数吗？",
+     "mood": "alert",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "必懂位置关键字默认"
+      },
+      {
+       "icon": "",
+       "text": "可变对象坑必考面试题"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "",
+    "audio_seconds": 0
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "参数的接口契约",
+    "narration": "先看第一个核心部分，接口契约。什么是接口契约？就是函数定义时写的参数列表，就像是贴在门上的快递单，写清楚了要几个件、按什么顺序来、有的要不要指定。咱们今天先从最基础的位置参数说起，位置参数是参数契约里最基本的类型",
+    "caption": "函数定义时的参数就是接口契约",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "参数的接口契约",
+     "subtitle": "函数调用的基础规则",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "参数个数要完全匹配"
+      },
+      {
+       "icon": "②",
+       "text": "顺序类型要符合约定"
+      },
+      {
+       "icon": "③",
+       "text": "可以灵活选传参方式"
+      }
+     ],
+     "highlight": "参数契约必须严格遵守"
+    },
+    "image": "narrations/7_3/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_0edaded0f031778d464044c8f6cf24bf.mp3",
+    "audio_seconds": 21.36
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "基础位置传参",
+    "narration": "这是教材里的案例7.6，一个简单的自我介绍函数，有三个位置参数。调用的时候我们按写好的顺序，把名字年龄城市依次传进去，第一个值给名字，第二个给年龄，第三个给城市，就能得到正确的打印结果。这里特别注意不要漏记名字或者顺序搞反",
+    "caption": "按顺序传值给对应的位置参数",
+    "code": "def introduce(name, age, city):\n    print(f\"我叫{name}，{age} 岁，来自{city}\")\n\nintroduce(\"张三\", 19, \"北京\")",
+    "visual": {
+     "layout": "code",
+     "title": "正确的位置传参",
+     "subtitle": "",
+     "caption": "",
+     "code": "def introduce(name, age, city):\n    print(f\"我叫{name}，{age} 岁，来自{city}\")\n\nintroduce(\"张三\", 19, \"北京\")",
+     "output": "我叫张三，19 岁，来自北京",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "顺序严格对应不能乱"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_433759025bf16152079aaec10386a2be.mp3",
+    "audio_seconds": 20.33
+   },
+   {
+    "id": 4,
+    "type": "pitfall",
+    "title": "位置参数个数错",
+    "narration": "好，我们来踩第一个坑，位置参数的个数不匹配。刚才的函数要三个参数，要是只传两个会怎么样？大家看运行结果，直接报类型错误，明确说缺了城市这个必填参数。要是传四个呢？也会报同样的类型错误，说函数只接受三个给了四个。记住，个数是硬契约",
+    "caption": "位置参数多传少传都会报错",
+    "code": "introduce(\"张三\", 19)",
+    "visual": {
+     "layout": "pitfall",
+     "title": "位置参数个数错",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "少传或多传必填位置参数",
+     "wrong_code": "introduce(\"张三\", 19)",
+     "right_answer": "严格按函数定义传对应个数",
+     "right_code": "introduce(\"张三\", 19, \"北京\")",
+     "highlight": "参数个数是函数的硬契约"
+    },
+    "image": "narrations/7_3/s04.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_f6c0b94542123d015fa908a39226980e.mp3",
+    "audio_seconds": 24.62
+   },
+   {
+    "id": 5,
+    "type": "code",
+    "title": "灵活关键字传参",
+    "narration": "要是参数多到记不住顺序怎么办？别慌，咱们有第二种传参方式，关键字参数。调用的时候直接写参数名等于值，顺序随便换，而且可读性特别高，一眼就能看出每个值对应什么。真实项目里参数多的函数几乎都用这个",
+    "caption": "参数名=值 顺序无所谓 可读性高",
+    "code": "def introduce(name, age, city):\n    print(f\"我叫{name}，{age} 岁，来自{city}\")\n\nintroduce(city=\"上海\", name=\"李四\", age=20)",
+    "visual": {
+     "layout": "code",
+     "title": "正确的关键字传参",
+     "subtitle": "",
+     "caption": "",
+     "code": "def introduce(name, age, city):\n    print(f\"我叫{name}，{age} 岁，来自{city}\")\n\nintroduce(city=\"上海\", name=\"李四\", age=20)",
+     "output": "我叫李四，20 岁，来自上海",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "适合参数多的复杂场景"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_0aa74442bb108b34b3686eb777020b91.mp3",
+    "audio_seconds": 19.51
+   },
+   {
+    "id": 6,
+    "type": "pitfall",
+    "title": "位置参数排后面",
+    "narration": "关键字参数虽好，但和位置参数混用时得注意顺序。Python规定位置参数必须全部放在关键字参数前面，要是把位置参数插在关键字参数后面，就会直接报语法错误。大家看这个例子，22是位置参数却排在城市等于广州后面，这是绝对不行的",
+    "caption": "位置参数必须全部在关键字参数前",
+    "code": "introduce(\"王五\", city=\"广州\", 22)",
+    "visual": {
+     "layout": "pitfall",
+     "title": "关键字位置顺序错",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "位置参数排在关键字参数后面",
+     "wrong_code": "introduce(\"王五\", city=\"广州\", 22)",
+     "right_answer": "位置参数全在前关键字在后",
+     "right_code": "introduce(\"王五\", 22, city=\"广州\")",
+     "highlight": "位置参数必须先传完"
+    },
+    "image": "narrations/7_3/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_dbf4c167b29773c85b838ed9ed011de3.mp3",
+    "audio_seconds": 22.42
+   },
+   {
+    "id": 7,
+    "type": "code",
+    "title": "贴心默认参数",
+    "narration": "接下来是第三种最贴心的参数，默认参数。咱们在函数定义的时候，给某个参数先赋一个默认值，大多数情况下不用改的话就不用传，直接用默认值就行。要是想改，就像普通参数一样覆盖掉。真实场景比如分页大小超时时间提示语都常用",
+    "caption": "不传默认值 传了覆盖默认值",
+    "code": "def greet(name, greeting=\"你好\"):\n    print(f\"{greeting}，{name}！\")\n\ngreet(\"张三\")\ngreet(\"李四\", \"早上好\")",
+    "visual": {
+     "layout": "code",
+     "title": "正确的默认参数",
+     "subtitle": "",
+     "caption": "",
+     "code": "def greet(name, greeting=\"你好\"):\n    print(f\"{greeting}，{name}！\")\n\ngreet(\"张三\")\ngreet(\"李四\", \"早上好\")",
+     "output": "你好，张三！\n早上好，李四！",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "适合大多数情况不用改的"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_9051d5aa7ff0e51532928c79b260fede.mp3",
+    "audio_seconds": 21.1
+   },
+   {
+    "id": 8,
+    "type": "pitfall",
+    "title": "默认参数位置错",
+    "narration": "默认参数也有自己的位置规则，必须放在所有没有默认值的必填参数后面。要是反过来，把默认参数放在前面，必填参数放在后面，就会报语法错误。为什么呢？因为调用的时候Python会搞不清楚，你传的第一个值到底是给默认参数还是给必填参数的",
+    "caption": "默认参数必须放在无默认参数后面",
+    "code": "def bad(greeting=\"你好\", name):\n    pass",
+    "visual": {
+     "layout": "pitfall",
+     "title": "默认参数位置错",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "默认参数排在无默认参数后面",
+     "wrong_code": "def bad(greeting=\"你好\", name):\n    pass",
+     "right_answer": "无默认参数必须全排在前面",
+     "right_code": "def bad(name, greeting=\"你好\"):\n    pass",
+     "highlight": "必填参数必须先出现"
+    },
+    "image": "narrations/7_3/s08.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_6817362a6cbf1d3ea97413e530dc2dd8.mp3",
+    "audio_seconds": 22.01
+   },
+   {
+    "id": 9,
+    "type": "pitfall",
+    "title": "可变对象当默认",
+    "narration": "这是今天最最经典的面试必考坑，千万记牢！默认参数如果用可变对象比如列表字典，那可就麻烦了。因为默认参数只在函数定义时创建一次，每次调用都会复用同一个对象，结果越攒越多。大家看三次调用add_item的打印结果，列表里的元素越来越长",
+    "caption": "可变对象当默认值会越攒越多",
+    "code": "def add_item(item, lst=[]):\n    lst.append(item)\n    return lst\n\nprint(add_item(\"a\"))\nprint(add_item(\"b\"))\nprint(add_item(\"c\"))",
+    "visual": {
+     "layout": "pitfall",
+     "title": "可变对象当默认值",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用列表字典当默认参数值",
+     "wrong_code": "def add_item(item, lst=[]):\n    lst.append(item)\n    return lst",
+     "right_answer": "默认用None 函数内新建对象",
+     "right_code": "def add_item(item, lst=None):\n    if lst is None:\n        lst = []\n    lst.append(item)",
+     "highlight": "默认值定义时只创建一次"
+    },
+    "image": "narrations/7_3/s09.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_042c73836414d737d9fdb0960d12676d.mp3",
+    "audio_seconds": 23.26
+   },
+   {
+    "id": 10,
+    "type": "code",
+    "title": "修复可变默认坑",
+    "narration": "那怎么修复这个经典坑呢？很简单，把默认值改成不可变的None，然后在函数内部判断一下，如果传入的lst是None的话，就新建一个空列表。这样每次调用都会生成一个新的列表对象，就不会互相影响了。大家看修复后的两次打印结果，都是独立的列表",
+    "caption": "默认值用None 函数内新建空列表",
+    "code": "def add_item(item, lst=None):\n    if lst is None:\n        lst = []\n    lst.append(item)\n    return lst\n\nprint(add_item(\"a\"))\nprint(add_item(\"b\"))",
+    "visual": {
+     "layout": "code",
+     "title": "修复可变默认坑",
+     "subtitle": "",
+     "caption": "",
+     "code": "def add_item(item, lst=None):\n    if lst is None:\n        lst = []\n    lst.append(item)\n    return lst\n\nprint(add_item(\"a\"))\nprint(add_item(\"b\"))",
+     "output": "['a']\n['b']",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "面试必考的标准修复方法"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_e355e93db1b33140938dafc6631767bb.mp3",
+    "audio_seconds": 20.52
+   },
+   {
+    "id": 11,
+    "type": "code",
+    "title": "万能收包参数",
+    "narration": "接下来是看起来最玄乎但超好用的第四种和第五种参数，星号args和双星号kwargs。它们能接收任意数量的多余参数，星号args把多余的位置参数打包成元组，双星号kwargs把多余的关键字参数打包成字典。这两个名字是行业惯例，别乱改",
+    "caption": "*args收位置成元组 **kwargs收关键字成字典",
+    "code": "def show(*args, **kwargs):\n    print(\"位置参数们：\", args)\n    print(\"关键字参数们：\", kwargs)\n\nshow(1, 2, 3, name=\"张三\", age=19)",
+    "visual": {
+     "layout": "code",
+     "title": "万能收包参数",
+     "subtitle": "",
+     "caption": "",
+     "code": "def show(*args, **kwargs):\n    print(\"位置参数们：\", args)\n    print(\"关键字参数们：\", kwargs)\n\nshow(1, 2, 3, name=\"张三\", age=19)",
+     "output": "位置参数们： (1, 2, 3)\n关键字参数们： {'name': '张三', 'age': 19}",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "名字是行业惯例建议保留"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_d5838a0389b27655da5df2cd565634ee.mp3",
+    "audio_seconds": 20.35
+   },
+   {
+    "id": 12,
+    "type": "concept",
+    "title": "星号的打包解包",
+    "narration": "其实星号和双星号的本质是打包和解包，同一个符号在函数定义处是打包，在函数调用处是解包。比如调用add3的时候，用星号把列表拆成三个独立的位置参数传进去，是不是很方便？理解了这一点，很多所谓的Python魔法就消失了",
+    "caption": "定义处打包 调用处解包 本质一样",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "星号的双重身份",
+     "subtitle": "定义是打包 调用是解包",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "函数定义处*args是打包"
+      },
+      {
+       "icon": "②",
+       "text": "函数调用处*列表是解包"
+      },
+      {
+       "icon": "③",
+       "text": "**同理作用于关键字参数"
+      }
+     ],
+     "highlight": "星号的核心是打包解包"
+    },
+    "image": "narrations/7_3/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "",
+    "audio_seconds": 0
+   },
+   {
+    "id": 13,
+    "type": "code",
+    "title": "调用处解包演示",
+    "narration": "我们来看一个调用处解包的具体例子。先定义一个接收三个位置参数的add3函数，然后创建一个包含三个元素的列表nums，在调用add3的时候，在nums前面加一个星号，就可以把这个列表拆成三个独立的参数传进去，得到正确的结果6",
+    "caption": "调用时加*可拆列表为位置参数",
+    "code": "def add3(a, b, c):\n    return a + b + c\n\nnums = [1, 2, 3]\nprint(add3(*nums))",
+    "visual": {
+     "layout": "code",
+     "title": "调用处解包演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "def add3(a, b, c):\n    return a + b + c\n\nnums = [1, 2, 3]\nprint(add3(*nums))",
+     "output": "6",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "元组也可以用*解包哦"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_57cae0854809af2ffceae8e520b734d0.mp3",
+    "audio_seconds": 18.07
+   },
+   {
+    "id": 14,
+    "type": "compare",
+    "title": "参数传递的两种情况",
+    "narration": "最后是原理探秘，Python的参数到底是传值还是传引用？很多同学搞不清，其实是传对象引用。如果是在函数内部修改可变对象的内容，比如列表的append，外面的对象也会跟着变；但如果是重新绑定标签，让参数名指向新对象，外面的就完全不受影响",
+    "caption": "修改对象内容外部可见 重新绑定不可见",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "两种参数传递效果",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "修改内容",
+      "lines": [
+       "nums.append(",
+       "外部列表也变了"
+      ]
+     },
+     "right": {
+      "label": "重新绑定",
+      "lines": [
+       "x = 999",
+       "外部变量不受影响"
+      ]
+     },
+     "highlight": "Python传的是对象引用"
+    },
+    "image": "narrations/7_3/s14.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_c771902769db6a30969dbb0e9a80036f.mp3",
+    "audio_seconds": 22.75
+   },
+   {
+    "id": 15,
+    "type": "code",
+    "title": "对象引用的对比",
+    "narration": "我们来看两个对比案例。第一个案例是在函数内部修改列表的内容，调用add_one之后，外面的lst也变成了包含99的列表。第二个案例是重新绑定整数标签，调用rebind之后，外面的n还是10，完全没变。要是不想污染外部列表，就用切片复制一份",
+    "caption": "可变对象内容修改传导 重新赋值不传导",
+    "code": "def add_one(nums):\n    nums.append(99)\n\nlst = [1, 2]\nadd_one(lst)\nprint(lst)\n\ndef rebind(x):\n    x = 999\n\nn = 10\nrebind(n)\nprint(n)",
+    "visual": {
+     "layout": "code",
+     "title": "对象引用对比演示",
+     "subtitle": "",
+     "caption": "",
+     "code": "def add_one(nums):\n    nums.append(99)\n\nlst = [1, 2]\nadd_one(lst)\nprint(lst)\n\ndef rebind(x):",
+     "output": "[1, 2, 99]\n10",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "不想污染就用切片复制"
+      }
+     ]
+    },
+    "image": "narrations/7_3/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_19be6ceb9ac1f8cbaa91c8a11a6fe56e.mp3",
+    "audio_seconds": 21.77
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲核心3条",
+    "narration": "好，今天的内容有点多，咱们最后总结三条必须记住的核心。第一条，位置参数个数顺序要对，混用时位置在前关键字在后；第二条，默认参数别用可变对象，要用None然后函数内新建；第三条，Python传对象引用，修改内容外部可见，重新绑定不可见。记住这三条，传参避坑没问题",
+    "caption": "3条核心规则 搞定所有传参",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本讲核心3条",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "位置参数顺序对混用时在前",
+      "默认参数别用可变对象",
+      "Python传对象引用看操作类型"
+     ]
+    },
+    "image": "narrations/7_3/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_1dda119e697af59f8aed21a7a798f527.mp3",
+    "audio_seconds": 24.82
+   }
+  ]
+ },
+ "7_4": {
+  "chapter_id": 7,
+  "kp_index": 4,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.4 作用域：变量在哪里\"活着\"",
+  "title": "Python变量作用域与内存栈",
+  "hook_line": "函数内外写同名变量为何变卦",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 354.4,
+  "narration_chars": 2000,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:35:57",
+  "build_seconds": 118.3,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "变量会失踪变卦？",
+    "narration": "你肯定遇到过这种情况：函数外定义的变量，在函数里读没问题，但改了之后外面却没变化，甚至直接报错说变量不存在。其实这不是bug，是Python里变量作用域的规则，今天我们彻底把它讲明白，连内存里的变化都给你扒清楚。",
+    "caption": "同名变量内外表现不同？是作用域的锅",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "变量失踪变卦之谜",
+     "subtitle": "",
+     "caption": "",
+     "question": "函数内外改同名变量为何没效果",
+     "mood": "alert",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "读没问题 改却无效"
+      },
+      {
+       "icon": "",
+       "text": "甚至直接报错未定义"
+      }
+     ]
+    },
+    "image": "narrations/7_4/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_23331e7c996a07617f55437433b38f18.mp3",
+    "audio_seconds": 17.95
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "什么是作用域",
+    "narration": "首先明确两个基本概念：全局变量就是整个Python文件都能看见能用的，写在所有函数外面；局部变量是只在函数内部存在的，函数一结束就直接销毁，外面访问肯定会报错。这就是变量的存活范围，我们叫它作用域。",
+    "caption": "全局全文件可用 局部仅函数内存活",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "全局与局部变量",
+     "subtitle": "决定变量可见的作用域",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "全局变量：写在所有函数外"
+      },
+      {
+       "icon": "②",
+       "text": "局部变量：写在函数内部"
+      },
+      {
+       "icon": "③",
+       "text": "局部变量函数外访问报错"
+      }
+     ],
+     "highlight": "作用域=变量的可见范围"
+    },
+    "image": "narrations/7_4/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_6760306eccfa643f7c4f7686d8d47316.mp3",
+    "audio_seconds": 17.95
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "正确读全局变量",
+    "narration": "我们来看教材里的第一个正确案例，函数外定义全局变量g等于一百，函数f内部定义局部变量local_var等于两百，然后在函数里直接打印g，这是完全没问题的，因为函数内可以读取全局变量的值。最后函数外再打印g，两次都是一百。",
+    "caption": "函数内可以正常读取全局变量",
+    "code": "g = 100\n\ndef f():\n local_var = 200\n print(g)\n\nf()\nprint(g)",
+    "visual": {
+     "layout": "code",
+     "title": "读全局的正确案例",
+     "subtitle": "",
+     "caption": "",
+     "code": "g = 100\n\ndef f():\n local_var = 200\n print(g)\n\nf()\nprint(g)",
+     "output": "100\n100",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "局部变量local_var外面不能用"
+      }
+     ]
+    },
+    "image": "narrations/7_4/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_0a81258f105d45c09dc0c809c1eadac3.mp3",
+    "audio_seconds": 19.7
+   },
+   {
+    "id": 4,
+    "type": "pitfall",
+    "title": "外部访问局部变量",
+    "narration": "这是第一个常见坑，很多初学者会试着在函数外打印刚才的local_var，结果直接跳出NameError说局部变量未定义。为什么呢？因为函数f执行完之后，它的栈帧就被销毁了，里面的所有局部变量标签都没了，自然找不到对应的对象。",
+    "caption": "局部变量仅函数内存活 → 外部访问报错",
+    "code": "g = 100\n\ndef f():\n local_var = 200\n\nf()\nprint(local_var)",
+    "visual": {
+     "layout": "pitfall",
+     "title": "别在函数外碰局部变量",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "在函数外部访问函数内的局部变量",
+     "wrong_code": "g = 100\n\ndef f():\n local_var = 200",
+     "right_answer": "局部变量仅在当前函数内部有效",
+     "right_code": "g = 100\n\ndef f():\n local_var = 200",
+     "highlight": "局部变量函数结束即销毁"
+    },
+    "image": "narrations/7_4/s04.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_18af4938c064bf189804e7cb30c3ddd1.mp3",
+    "audio_seconds": 20.42
+   },
+   {
+    "id": 5,
+    "type": "code",
+    "title": "同名局部不影响全局",
+    "narration": "接下来看教材里的现象1，函数f1内部重新定义了一个同名变量g等于两百，函数内打印出来是两百，但是函数外打印g还是原来的一百。这说明Python在函数内一旦发现对同名变量的赋值，就会默认创建一个全新的局部变量，和全局的g没有任何关系。",
+    "caption": "函数内赋值同名 → 新建局部变量",
+    "code": "g = 100\n\ndef f1():\n g = 200\n print(\"函数内：\", g)\n\nf1()\nprint(\"函数外：\", g)",
+    "visual": {
+     "layout": "code",
+     "title": "现象1：局部同名独立",
+     "subtitle": "",
+     "caption": "",
+     "code": "g = 100\n\ndef f1():\n g = 200\n print(\"函数内：\", g)\n\nf1()\nprint(\"函数外：\", g)",
+     "output": "函数内： 200\n函数外： 100",
+     "bullets": []
+    },
+    "image": "narrations/7_4/s05.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_9e4cc1d2c4347bf2401b9b8cadfe1d9c.mp3",
+    "audio_seconds": 20.86
+   },
+   {
+    "id": 6,
+    "type": "pitfall",
+    "title": "先读后写全局变量",
+    "narration": "这是第二个也是最容易踩的坑，现象2里的函数f2先打印g再给g赋值，结果直接报UnboundLocalError。很多人以为先读的是全局的，为什么报错？因为Python会先扫描整个函数的代码，一旦发现有对g的赋值，就把整个函数里的g都标记成局部的，那前面的print就变成了读还没赋值的局部变量，当然报错。",
+    "caption": "函数内有赋值 → 同名全视为局部 → 先读报错",
+    "code": "g = 100\n\ndef f2():\n print(g)\n g = 300\n\nf2()",
+    "visual": {
+     "layout": "pitfall",
+     "title": "别对全局先读后写",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "函数内先读全局同名变量再赋值",
+     "wrong_code": "g = 100\n\ndef f2():\n print(g)",
+     "right_answer": "先声明global再操作或只读不改",
+     "right_code": "g = 100\n\ndef f2():\n print(g)",
+     "highlight": "Python会提前扫描全函数代码"
+    },
+    "image": "narrations/7_4/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_14762b2dc3cb6f3bcf16e8c502a9ec84.mp3",
+    "audio_seconds": 27.12
+   },
+   {
+    "id": 7,
+    "type": "compare",
+    "title": "两种改法的区别",
+    "narration": "我们对比一下两种改同名变量的方式：第一种是直接在函数里赋值，相当于创建一个全新的局部变量，不会影响全局的那个；第二种是用global声明之后再赋值，这时候Python才会知道你用的是外面的全局变量，修改才会真的生效。",
+    "caption": "直接赋值→新建局部 global声明→修改全局",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "改同名变量的两种方式",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "直接赋值",
+      "lines": [
+       "创建全新局部变量",
+       "不会影响全局变量"
+      ]
+     },
+     "right": {
+      "label": "global声明",
+      "lines": [
+       "使用外面的全局变量",
+       "修改会真正生效"
+      ]
+     },
+     "highlight": "修改全局必须加global"
+    },
+    "image": "narrations/7_4/s07.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_8f4fc739b97e2943b26deec7edba26ee.mp3",
+    "audio_seconds": 19.54
+   },
+   {
+    "id": 8,
+    "type": "code",
+    "title": "用global修改全局",
+    "narration": "来看教材里的正确修改案例，函数f3开头先用global声明g，告诉Python我要用的是全局那个g，然后再给g赋值三百，调用函数之后，外面打印g就变成三百了。不过要特别注意，global别滥用，过度使用会让程序状态失控，工程上优先用参数传递和返回值。",
+    "caption": "global声明后才能真正修改全局变量",
+    "code": "g = 100\n\ndef f3():\n global g\n g = 300\n\nf3()\nprint(g)",
+    "visual": {
+     "layout": "code",
+     "title": "正确修改全局变量",
+     "subtitle": "",
+     "caption": "",
+     "code": "g = 100\n\ndef f3():\n global g\n g = 300\n\nf3()\nprint(g)",
+     "output": "300",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "过度使用global会让程序混乱"
+      }
+     ]
+    },
+    "image": "narrations/7_4/s08.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_40a00dbe3767f3ccae8223733e97a52a.mp3",
+    "audio_seconds": 22.15
+   },
+   {
+    "id": 9,
+    "type": "concept",
+    "title": "LEGB查找规则",
+    "narration": "刚才的所有现象，都可以用LEGB查找规则来解释：当Python要找一个变量名的时候，会按照四层顺序依次查找，找不到才报错。首先查Local当前函数的局部，然后查Enclosing外层函数，接下来查Global模块级全局，最后查Built-in内置名字，比如print len这些。",
+    "caption": "变量查找按 Local→Enclosing→Global→Built-in",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "变量查找的LEGB规则",
+     "subtitle": "面试常考的标准答案",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "Local：当前函数局部"
+      },
+      {
+       "icon": "②",
+       "text": "Enclosing：外层嵌套函数"
+      },
+      {
+       "icon": "③",
+       "text": "Global：模块级全局"
+      },
+      {
+       "icon": "④",
+       "text": "Built-in：Python内"
+      }
+     ],
+     "highlight": "面试问作用域就答LEGB"
+    },
+    "image": "narrations/7_4/s09.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_9f8ad8fb5bc05a6d1c028b42fce54c5e.mp3",
+    "audio_seconds": 21.41
+   },
+   {
+    "id": 10,
+    "type": "concept",
+    "title": "堆与栈的分工",
+    "narration": "接下来讲内存里的核心模型，我们回顾一下第二章的变量绑定：所有对象都存放在堆内存，变量只是指向堆对象的标签。函数调用则用栈内存，每次调用函数，系统在栈顶压入一个栈帧，里面装着参数、局部变量和返回地址，函数返回时栈帧弹栈销毁，栈空程序就结束了。",
+    "caption": "对象在堆 调用在栈 栈帧弹栈即销毁",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "核心内存模型：堆与栈",
+     "subtitle": "解释变量消失的底层原因",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "📦",
+       "text": "堆：存放所有对象"
+      },
+      {
+       "icon": "📚",
+       "text": "栈：存放调用栈帧"
+      },
+      {
+       "icon": "🎯",
+       "text": "变量：指向堆的标签"
+      }
+     ],
+     "highlight": "栈帧销毁则局部标签消失"
+    },
+    "image": "narrations/7_4/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_5c0abe9e0a101296f8bddee421af8672.mp3",
+    "audio_seconds": 23.18
+   },
+   {
+    "id": 11,
+    "type": "flow",
+    "title": "函数调用栈流程",
+    "narration": "我们用教材里的add和main函数模拟一下调用过程：首先调用main函数，栈顶压入main的栈帧，里面有x等于三，y等于四；然后main调用add，再压入add的栈帧，里面有a等于三，b等于四；add计算result等于七并返回，add的栈帧弹栈；main拿到返回值赋值给total，打印之后main栈帧也弹栈，最后栈空程序结束。",
+    "caption": "函数调用压栈帧 返回弹栈帧 销毁局部变量",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "函数调用栈执行步骤",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "main调用 压入main栈",
+      "调用add 压入add栈帧",
+      "add返回 add栈帧弹栈",
+      "main结束 main栈帧弹"
+     ],
+     "highlight": "栈帧弹栈销毁所有局部标签"
+    },
+    "image": "narrations/7_4/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_458ce47f2ebf12b40d21f6e8b2759f31.mp3",
+    "audio_seconds": 26.02
+   },
+   {
+    "id": 12,
+    "type": "concept",
+    "title": "递归耗内存的原因",
+    "narration": "这就解释了为什么递归耗内存，呼应一下下一节的内容：递归每调用一次自己就会压入一个新的栈帧，要是递归一万层，栈里就同时有一万个栈帧，Python为了安全默认限制递归深度大概一千层，超过了就会抛RecursionError，所以工程上要控制递归深度，优先考虑迭代。",
+    "caption": "递归每层压栈 → 超深度抛RecursionError",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "递归耗内存的底层原因",
+     "subtitle": "呼应7.5的递归深度限制",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "🔄",
+       "text": "递归每层压入新栈帧"
+      },
+      {
+       "icon": "⚠️",
+       "text": "默认限制约1000层"
+      },
+      {
+       "icon": "✅",
+       "text": "优先考虑迭代实现"
+      }
+     ],
+     "highlight": "递归要控制深度"
+    },
+    "image": "narrations/7_4/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_b1420b77c9c9a181514b5c7498d2abb2.mp3",
+    "audio_seconds": 21.36
+   },
+   {
+    "id": 13,
+    "type": "code",
+    "title": "小整数与字符串驻留",
+    "narration": "接下来讲一个CPython的实现细节，交叉验证一下对象驻留池：小整数从负五到二百五十六，还有部分简单字符串，CPython会预先创建好放在驻留池里复用，所以a等于一，b等于一的时候，a和b指向同一个对象，用is判断是True；但大整数比如三百，就不保证驻留，不同环境结果可能不同。",
+    "caption": "小整数[-5,256]CPython会复用 → is可能True",
+    "code": "a = 1\nb = 1\nprint(a is b)\n\nx = 300\ny = 300\nprint(x is b)",
+    "visual": {
+     "layout": "code",
+     "title": "小整数驻留的交叉验证",
+     "subtitle": "",
+     "caption": "",
+     "code": "a = 1\nb = 1\nprint(a is b)\n\nx = 300\ny = 300\nprint(x is y)",
+     "output": "True\n可能 False",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "大整数驻留是实现细节"
+      }
+     ]
+    },
+    "image": "narrations/7_4/s13.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_653a9ed23ec5f5e7c685fdf1fdd35a7e.mp3",
+    "audio_seconds": 24.07
+   },
+   {
+    "id": 14,
+    "type": "pitfall",
+    "title": "用is判断值相等",
+    "narration": "这是第三个常见坑，很多初学者分不清is和等于的区别，用is来判断值是否相等。记住了，is只用来判断两个变量是不是指向同一个堆对象，而等于才是判断值是否相等。小整数驻留是实现细节，不能依赖它，所以判断值相等永远用等于。",
+    "caption": "is判断同一对象 ==判断值相等 → 别搞混",
+    "code": "x = 300\ny = 300\nif x is y:\n print(\"相等\")\nelse:\n print(\"不相等\")",
+    "visual": {
+     "layout": "pitfall",
+     "title": "别用is判断值相等",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "用is来判断两个变量的值是否相等",
+     "wrong_code": "x = 300\ny = 300\nif x is y:\n print(\"相等\")",
+     "right_answer": "判断值相等永远用==",
+     "right_code": "x = 300\ny = 300\nif x == y:\n print(\"相等\")",
+     "highlight": "is仅用于判断是否同一对象"
+    },
+    "image": "narrations/7_4/s14.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_cdaa1daf16dff21847d16d6a44f93a34.mp3",
+    "audio_seconds": 22.3
+   },
+   {
+    "id": 15,
+    "type": "concept",
+    "title": "就业提示与动手",
+    "narration": "最后给大家两条就业提示和一个动手作业：第一条，面试问Python函数调用怎么工作，就答每次调用压一个栈帧，返回弹栈，递归太深会抛RecursionError，能补一句对象在堆调用在栈是加分项；第二条，别滥用global。动手作业是用id函数验证两组变量的is结果，确认驻留池的范围。",
+    "caption": "动手用id()验证小整数驻留池的范围",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "就业提示与动手作业",
+     "subtitle": "面试和实操都要掌握",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "💼",
+       "text": "函数调用答压栈弹栈"
+      },
+      {
+       "icon": "⚠️",
+       "text": "别滥用global"
+      },
+      {
+       "icon": "✍️",
+       "text": "用id验证小整数驻留"
+      }
+     ],
+     "highlight": "动手验证驻留池更扎实"
+    },
+    "image": "narrations/7_4/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_f324cd4200e2251e978c5c4d02391365.mp3",
+    "audio_seconds": 25.51
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲核心3条结论",
+    "narration": "好的，我们来总结一下今天必须记住的三条结论：第一条，全局全文件可用，局部仅函数内存活，外部访问报错；第二条，修改全局变量必须用global声明，但别滥用；第三条，变量查找按LEGB顺序，函数调用用栈，栈帧弹栈销毁局部变量。今天的内容就到这里，下一节讲递归。",
+    "caption": "记住3条核心结论 轻松掌握作用域",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本讲核心3条结论",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "全局全文件可用 局部仅函数内存活",
+      "修改全局必须加global但别滥用",
+      "变量查找按LEGB 调用用栈"
+     ]
+    },
+    "image": "narrations/7_4/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_307d7ecaf741b34b4254dc382de53b67.mp3",
+    "audio_seconds": 24.84
+   }
+  ]
+ },
+ "7_5": {
+  "chapter_id": 7,
+  "kp_index": 5,
+  "chapter_title": "函数：把代码组织起来",
+  "kp_title": "7.5 递归：函数调用自己",
+  "title": "Python递归：函数调用自己",
+  "hook_line": "用函数自己解决套娃问题？",
+  "style": "programmatic-slide",
+  "image_engine": "tools/render (程序化作图)",
+  "text_model": "doubao-seed-2-0-code-preview-260215",
+  "total_seconds": 267.5,
+  "narration_chars": 1508,
+  "scene_count": 16,
+  "created_at": "2026-09-16 13:39:11",
+  "build_seconds": 190.7,
+  "scenes": [
+   {
+    "id": 1,
+    "type": "hook",
+    "title": "Python递归来了",
+    "narration": "同学们有没有拆过俄罗斯套娃一层一层拆到最小的实心娃才能停再一层一层装回去有没有觉得这个过程和我们前几章学的循环不一样不是单纯重复相同操作而是每次规模都小一点对不对这就是今天的主角函数自己调用自己的编程技巧",
+    "caption": "俄罗斯套娃的拆和装 → 就是递归的核心",
+    "code": "",
+    "visual": {
+     "layout": "hook",
+     "title": "Python递归来了",
+     "subtitle": "",
+     "caption": "",
+     "question": "拆套娃能用代码一行逻辑模拟吗？",
+     "mood": "happy",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "一层拆一层小"
+      },
+      {
+       "icon": "",
+       "text": "拆完再逐层装"
+      }
+     ]
+    },
+    "image": "narrations/7_5/s01.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_45fa2576b2d22a29b41374fe97e3e8b7.mp3",
+    "audio_seconds": 18.77
+   },
+   {
+    "id": 2,
+    "type": "concept",
+    "title": "递归到底是什么",
+    "narration": "刚才的套娃拆到实心娃直接拿出来这就是基线条件拆每层大娃得到小娃就是递归条件而且每次拆必须更接近实心娃基线条件递归条件每次向基线靠近这就是递归三要素一个都不能少记住哦递归不是循环的替代品是一种新的思维模式",
+    "caption": "递归三要素 缺一个都不行",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "递归到底是什么",
+     "subtitle": "把大问题拆成更小的同类问题",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "①",
+       "text": "必须有基线条件"
+      },
+      {
+       "icon": "②",
+       "text": "要有递归条件缩小问题"
+      },
+      {
+       "icon": "③",
+       "text": "每次更接近基线条件"
+      }
+     ],
+     "highlight": "递归是一种思维模式不是循环替代品"
+    },
+    "image": "narrations/7_5/s02.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_282da334d67a341d41643fc0cab2c73f.mp3",
+    "audio_seconds": 19.61
+   },
+   {
+    "id": 3,
+    "type": "code",
+    "title": "阶乘的正确写法",
+    "narration": "我们先看第一个经典例子阶乘5的阶乘就是5乘4乘3乘2乘1特别注意0的阶乘是1这刚好能当基线条件教材里的代码完全贴合数学定义没有多余的内容我们直接运行一下传入参数5看看结果",
+    "caption": "阶乘的数学定义 → 直接写成递归代码",
+    "code": "def factorial(n):\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))",
+    "visual": {
+     "layout": "code",
+     "title": "阶乘的正确写法",
+     "subtitle": "",
+     "caption": "",
+     "code": "def factorial(n):\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))",
+     "output": "120",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "完全贴合数学定义"
+      }
+     ]
+    },
+    "image": "narrations/7_5/s03.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_6f3b2daf59456b1e159e1c85367d6ad3.mp3",
+    "audio_seconds": 16.58
+   },
+   {
+    "id": 4,
+    "type": "flow",
+    "title": "阶乘的执行流程",
+    "narration": "刚才的代码是怎么运行的呢先递下去一直调用自己直到碰到n等于0或者1然后直接返回1接着归上来一层一层算乘法这就是递归名字的由来先递后归是不是和套娃的拆和装完全对应上了我们再仔细过一遍这个追踪过程",
+    "caption": "先递后归 → 拆解完逐层返回结果",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "阶乘的执行流程",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "递下去调用自己",
+      "碰到基线条件返回1",
+      "归上来逐层算乘法",
+      "最后得到最终结果"
+     ],
+     "highlight": "先递后归是递归的执行顺序"
+    },
+    "image": "narrations/7_5/s04.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_3c677daecfbbfc1df7c116fcf8a4f737.mp3",
+    "audio_seconds": 18.1
+   },
+   {
+    "id": 5,
+    "type": "pitfall",
+    "title": "忘了基线条件的坑",
+    "narration": "刚才强调了基线条件必须有现在我们看看没写会怎么样教材里的错误代码没有判断直接返回n乘n减1的阶乘运行一下马上就会报错叫RecursionError这是递归失控的信号因为Python默认有递归深度上限大概1000层",
+    "caption": "缺基线条件 → 报RecursionError深度超限",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "忘了基线条件的坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "没有写任何基线条件判断",
+     "wrong_code": "def bad(n):\n    return n * bad(n - 1)\n\nbad(5)",
+     "right_answer": "必须加存在且可达的基线条件",
+     "right_code": "def factorial(n):\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)",
+     "highlight": "写递归第一件事确认基线条件"
+    },
+    "image": "narrations/7_5/s05.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_04dd4caed836560edc4114e61914311f.mp3",
+    "audio_seconds": 18.5
+   },
+   {
+    "id": 6,
+    "type": "pitfall",
+    "title": "基线条件不可达的坑",
+    "narration": "除了没写基线条件还有一种情况基线条件写了但永远到不了比如刚才的阶乘代码如果把n等于1写成n等于2而且传入了1你想想会发生什么同样会报RecursionError所以写递归第二件事要确认基线条件是可以被触碰到的",
+    "caption": "基线条件不可达 → 同样深度超限",
+    "code": "",
+    "visual": {
+     "layout": "pitfall",
+     "title": "基线条件不可达的坑",
+     "subtitle": "",
+     "caption": "",
+     "wrong": "把n等于1改成n等于2传入1",
+     "wrong_code": "def bad_fact(n):\n    if n == 2:\n        return 1\n    return n * bad_fact(n - 1)",
+     "right_answer": "基线条件要覆盖所有终止情况",
+     "right_code": "def factorial(n):\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)",
+     "highlight": "确认基线条件能覆盖终止情况"
+    },
+    "image": "narrations/7_5/s06.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_319aa4effb0ce1190f53ac9a347b368d.mp3",
+    "audio_seconds": 18.6
+   },
+   {
+    "id": 7,
+    "type": "code",
+    "title": "斐波那契的正确写法",
+    "narration": "接下来第二个经典例子斐波那契数列定义更有意思第0项是0第1项是1从第2项开始每一项都是前两项之和教材里的代码也是和数学定义一一对应我们运行一下打印前10项看看结果",
+    "caption": "斐波那契定义 → 代码几乎一模一样",
+    "code": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nfor i in range(10):\n    print(fib(i), end=\" \")",
+    "visual": {
+     "layout": "code",
+     "title": "斐波那契的正确写法",
+     "subtitle": "",
+     "caption": "",
+     "code": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n - 1) + fib(n - 2)\n",
+     "output": "0 1 1 2 3 5 8 13 21 34",
+     "bullets": [
+      {
+       "icon": "",
+       "text": "可读性极强 代码即定义"
+      }
+     ]
+    },
+    "image": "narrations/7_5/s07.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_1bde6cd79461df785441f79255a80edf.mp3",
+    "audio_seconds": 15.02
+   },
+   {
+    "id": 8,
+    "type": "compare",
+    "title": "递归vs循环的斐波那契",
+    "narration": "教材里只给了递归写法我们可以对比一下递归的优势是代码简洁清晰像数学公式一样缺点呢就是性能问题比如算第40项会重复计算大量子问题比如第30项会被算无数遍慢到怀疑人生工业界有两种解法后面会学",
+    "caption": "递归简洁但可能慢 → 这是性能 trade-off",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "递归vs循环的斐波那契",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "递归写法",
+      "lines": [
+       "代码简洁",
+       "可读性极强",
+       "代码即定义"
+      ]
+     },
+     "right": {
+      "label": "迭代写法",
+      "lines": [
+       "代码稍长",
+       "执行速度快",
+       "不重复计算"
+      ]
+     },
+     "highlight": "递归有可读性优势但需注意性能"
+    },
+    "image": "narrations/7_5/s08.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_23e2b23d61b57e88129eb324f1f95d2c.mp3",
+    "audio_seconds": 19.39
+   },
+   {
+    "id": 9,
+    "type": "concept",
+    "title": "递归的性能小问题",
+    "narration": "刚才提到的性能问题我们再展开说一点属于了解级内容不用现在掌握记住结论就行工业界第一种解法是备忘录把算过的结果存进字典下次直接取第二种是改迭代用循环从前往后推这两种都会在第12章练习里涉及",
+    "caption": "递归的性能优化 → 后面第12章会学",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "递归的性能小问题",
+     "subtitle": "了解级内容 记住结论即可",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "💡",
+       "text": "问题是重复计算子问题"
+      },
+      {
+       "icon": "📝",
+       "text": "解法1 用备忘录存结果"
+      },
+      {
+       "icon": "🔄",
+       "text": "解法2 改成迭代循环"
+      }
+     ],
+     "highlight": "优化是后面的内容现在先记写法"
+    },
+    "image": "narrations/7_5/s09.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_a635a7bce178bf98a2045c688ec48d07.mp3",
+    "audio_seconds": 17.81
+   },
+   {
+    "id": 10,
+    "type": "code",
+    "title": "汉诺塔的正确写法",
+    "narration": "第三个经典例子是汉诺塔也是了解级的它的思路非常符合递归思维把n减1个盘子先挪到辅助柱把最大的盘子直接挪到目标柱再把n减1个盘子从辅助柱挪到目标柱教材里的代码也是严格按照这个思路写的",
+    "caption": "汉诺塔思路 → 拆成两次n-1+一步大的",
+    "code": "def hanoi(n, source, target, helper):\n    if n == 1:\n        print(f\"把第 1 个盘子从 {source} 移到 {target}\")\n        return\n    hanoi(n - 1, source, helper, target)\n    print(f\"把第 {n} 个盘子从 {source} 移到 {target}\")\n    hanoi(n - 1, helper, target, source)\n\nhanoi(3, \"A\", \"C\", \"B\")",
+    "visual": {
+     "layout": "code",
+     "title": "汉诺塔的正确写法",
+     "subtitle": "",
+     "caption": "",
+     "code": "def hanoi(n, source, target, helper):\n    if n == 1:\n        print(f\"把第 1 个盘子从 {source} 移到 {target}\")\n        return\n    hanoi(n - 1, source, helper, target)\n    print(f\"把第 {n} 个盘子从 {source} 移到 {target}\")\n    hanoi(n - 1, helper, target, source)\n",
+     "output": "把第 1 个盘子从 A 移到 C\n把第 2 个盘子从 A 移到 B\n把第 1 个盘子从 C 移到 B\n把第 3 个盘子从 A 移到 C",
+     "bullets": []
+    },
+    "image": "narrations/7_5/s10.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_2c4454888ddd59f18d8255f3dd4c4969.mp3",
+    "audio_seconds": 17.71
+   },
+   {
+    "id": 11,
+    "type": "flow",
+    "title": "汉诺塔的解题思路",
+    "narration": "我们再理一遍汉诺塔的递归思路不管有多少个盘子n大于1的时候都只做三件事第一把上面n减1个盘子从源柱通过目标柱移到辅助柱第二把最下面的第n个盘子直接移到目标柱第三把辅助柱上的n减1个盘子通过源柱移到目标柱",
+    "caption": "汉诺塔三步 → n减1+大的+n减1",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "汉诺塔的解题思路",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "n-1个移到辅助柱",
+      "最大的移到目标柱",
+      "n-1个移到目标柱"
+     ],
+     "highlight": "总步数等于2的n次方减1"
+    },
+    "image": "narrations/7_5/s11.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_163c5b9ac92e38de2084794f3017444a.mp3",
+    "audio_seconds": 18.34
+   },
+   {
+    "id": 12,
+    "type": "concept",
+    "title": "汉诺塔体现的递归美",
+    "narration": "汉诺塔是递归美的极致体现不管是3个盘子还是100个盘子我们写的代码几乎是一模一样的只用描述怎么把问题变小不用去关心中间的每一步具体怎么走完全由计算机来帮我们完成这就是递归思维的魅力",
+    "caption": "递归的美 → 不管规模多大逻辑不变",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "汉诺塔体现的递归美",
+     "subtitle": "不管n多大代码逻辑几乎不变",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "✨",
+       "text": "只描述问题怎么变小"
+      },
+      {
+       "icon": "🤖",
+       "text": "计算机帮你走中间步骤"
+      },
+      {
+       "icon": "📐",
+       "text": "极致贴合分解问题思维"
+      }
+     ],
+     "highlight": "递归是分解同类问题的好工具"
+    },
+    "image": "narrations/7_5/s12.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_5d707c6b71a945d43faaedc1b907d150.mp3",
+    "audio_seconds": 16.49
+   },
+   {
+    "id": 13,
+    "type": "compare",
+    "title": "三个经典例子对比",
+    "narration": "我们把今天学的三个经典例子对比一下阶乘和斐波那契是数值计算汉诺塔是逻辑模拟但它们的核心都是把大问题拆成更小的同类问题阶乘拆一个斐波那契拆两个汉诺塔拆两个加一步但都符合递归三要素",
+    "caption": "三个例子 → 都是拆同类小问题",
+    "code": "",
+    "visual": {
+     "layout": "compare",
+     "title": "三个经典例子对比",
+     "subtitle": "",
+     "caption": "",
+     "left": {
+      "label": "数值计算",
+      "lines": [
+       "阶乘 拆1个小问题",
+       "斐波那契 拆2个小问题"
+      ]
+     },
+     "right": {
+      "label": "逻辑模拟",
+      "lines": [
+       "汉诺塔 拆2个+1步",
+       "不管n多大逻辑不变"
+      ]
+     },
+     "highlight": "核心都是分解同类更小的问题"
+    },
+    "image": "narrations/7_5/s13.jpg",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "audio": "data/audio_cache/narr_ca0a02baecb7a7e68263c7291554879a.mp3",
+    "audio_seconds": 17.52
+   },
+   {
+    "id": 14,
+    "type": "flow",
+    "title": "写递归的通用步骤",
+    "narration": "最后我们总结一下写递归的通用步骤不管遇到什么问题都可以按照这个来第一步先找到最小的能直接解决的问题也就是基线条件第二步思考怎么把大问题拆成更小的同类问题第三步确保每次递归都向基线条件靠近",
+    "caption": "写递归三步 → 找基线拆问题靠近基线",
+    "code": "",
+    "visual": {
+     "layout": "flow",
+     "title": "写递归的通用步骤",
+     "subtitle": "",
+     "caption": "",
+     "steps": [
+      "找到最小的直接解",
+      "拆大问题为同类小问题",
+      "确保每次递归向基线靠近"
+     ],
+     "highlight": "按这个步骤写不会出错"
+    },
+    "image": "narrations/7_5/s14.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "",
+    "audio_seconds": 0
+   },
+   {
+    "id": 15,
+    "type": "concept",
+    "title": "什么时候用递归",
+    "narration": "最后再补充一点什么时候选择用递归呢首先是问题本身可以拆成同类更小的问题比如套娃阶乘汉诺塔这种其次是对代码的可读性要求更高对性能要求不那么高的情况或者问题规模比较小不会触碰到递归深度上限的情况",
+    "caption": "选递归 → 问题可拆+规模小+要可读性",
+    "code": "",
+    "visual": {
+     "layout": "concept",
+     "title": "什么时候用递归",
+     "subtitle": "了解适用场景再选择工具",
+     "caption": "",
+     "bullets": [
+      {
+       "icon": "✅",
+       "text": "问题可拆成同类小问题"
+      },
+      {
+       "icon": "✅",
+       "text": "问题规模比较小"
+      },
+      {
+       "icon": "✅",
+       "text": "更看重代码可读性"
+      }
+     ],
+     "highlight": "递归不是万能的要选合适的场景"
+    },
+    "image": "narrations/7_5/s15.jpg",
+    "voice": "zh-CN-YunxiNeural",
+    "audio": "data/audio_cache/narr_0218f6b644aba06d12c4514c4e479397.mp3",
+    "audio_seconds": 16.85
+   },
+   {
+    "id": 16,
+    "type": "summary",
+    "title": "本讲知识点小结",
+    "narration": "今天的课到这里就结束了我们一共学了四个部分第一递归的概念和三要素第二阶乘的递归写法和执行流程第三斐波那契的递归写法和性能问题第四汉诺塔的递归思路和递归美最后记住这三条必须记住的结论",
+    "caption": "记住这三条递归结论 考试面试都有用",
+    "code": "",
+    "visual": {
+     "layout": "summary",
+     "title": "本讲知识点小结",
+     "subtitle": "",
+     "caption": "",
+     "bullets": [
+      "递归三要素缺一不可",
+      "先递后归是执行顺序",
+      "代码简洁但要注意性能"
+     ]
+    },
+    "image": "narrations/7_5/s16.jpg",
+    "voice": "zh-CN-YunyangNeural",
+    "audio": "data/audio_cache/narr_a8f5b9d35cb1060128b0d61335078223.mp3",
+    "audio_seconds": 18.19
+   }
+  ]
  }
 }

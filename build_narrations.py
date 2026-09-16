@@ -25,7 +25,9 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -93,6 +95,12 @@ def images_complete(key, scene_count):
     return len(list(folder.glob('s*.jpg'))) >= scene_count
 
 
+# 渲染器读写的 build-plan.json 是全局共享文件，
+# 多节并发时若同时渲染会互相覆盖计划，所以这里串行化。
+# 渲染本身很快（16 张约 1–2 秒），串行不影响整体吞吐。
+_render_lock = threading.Lock()
+
+
 def render_images(chapter_id, kp_index, log=print):
     """调用程序化作图引擎渲染这一节的 16 张配图。
 
@@ -105,17 +113,18 @@ def render_images(chapter_id, kp_index, log=print):
         log('    ⚠ 未找到 node，跳过配图渲染（可稍后单独跑 tools/render/build-plan.mjs）')
         return False
     key = f'{chapter_id}_{kp_index}'
-    plan = subprocess.run([node, str(ROOT / 'tools' / 'render' / 'build-plan.mjs'),
-                           '--key', key, '--force'],
-                          cwd=ROOT, capture_output=True, text=True, timeout=180)
-    if plan.returncode != 0:
-        log(f'    ⚠ 版式编译失败：{plan.stderr.strip()[:160]}')
-        return False
-    shot = subprocess.run([sys.executable, str(ROOT / 'tools' / 'render' / 'render_plan.py')],
-                          cwd=ROOT, capture_output=True, text=True, timeout=600)
-    if shot.returncode != 0:
-        log(f'    ⚠ 配图渲染失败：{shot.stderr.strip()[:160]}')
-        return False
+    with _render_lock:
+        plan = subprocess.run([node, str(ROOT / 'tools' / 'render' / 'build-plan.mjs'),
+                               '--key', key, '--force'],
+                              cwd=ROOT, capture_output=True, text=True, timeout=180)
+        if plan.returncode != 0:
+            log(f'    ⚠ 版式编译失败：{plan.stderr.strip()[:160]}')
+            return False
+        shot = subprocess.run([sys.executable, str(ROOT / 'tools' / 'render' / 'render_plan.py')],
+                              cwd=ROOT, capture_output=True, text=True, timeout=900)
+        if shot.returncode != 0:
+            log(f'    ⚠ 配图渲染失败：{shot.stderr.strip()[:160]}')
+            return False
     tail = [line for line in shot.stdout.strip().split('\n') if line.strip()]
     log(f'    ✓ {tail[-1] if tail else "配图渲染完成"}')
     return True
@@ -147,7 +156,11 @@ def main():
     parser.add_argument('--limit', type=int, help='最多做几节')
     parser.add_argument('--scenes', type=int, default=DEFAULT_SCENES, help='镜头数（默认 16）')
     parser.add_argument('--size', default='1024x1024', help='配图尺寸')
-    parser.add_argument('--workers', type=int, default=4, help='生图/合成并发数')
+    parser.add_argument('--workers', type=int, default=4, help='配图并发数')
+    parser.add_argument('--voice-workers', type=int, default=2,
+                        help='单节内部的口播并发（压低可减少 edge-tts 限流）')
+    parser.add_argument('--kp-workers', type=int, default=1,
+                        help='同时处理多少节（提升总吞吐，默认 1）')
     parser.add_argument('--force', action='store_true', help='已完成也重做')
     parser.add_argument('--image-model', action='store_true',
                         help='改用第三方生图模型出图（默认用程序化作图引擎）')
@@ -204,7 +217,8 @@ def main():
         raise SystemExit(3)
 
 def run_batch(args, pending, courses):
-    builder = NarrationBuilder(workers=args.workers)
+    builder = NarrationBuilder(workers=args.workers,
+                               voice_workers=args.voice_workers)
     if not builder.text.available:
         print('⚠ 未配置 ARK_API_KEY，无法生成分镜脚本。请在 .env 里补上密钥。')
         return
@@ -213,13 +227,25 @@ def run_batch(args, pending, courses):
 
     source = '第三方生图模型' if args.image_model else '程序化作图引擎'
     print(f'待生成 {len(pending)} 节，每节 {args.scenes} 镜头，配图：{source}'
-          f'{"（本次不渲染配图）" if args.no_render else ""}\n')
+          f'{"（本次不渲染配图）" if args.no_render else ""}')
+    print(f'并发：{args.kp_workers} 节同时做，每节口播并发 {args.voice_workers}\n')
 
     started = time.time()
-    ok, failed = 0, []
-    for order, (chapter, index) in enumerate(pending, start=1):
+    done = {'ok': 0, 'fail': 0}
+    failed = []
+    counter_lock = threading.Lock()
+    log_lock = threading.Lock()
+
+    def log(text):
+        with log_lock:
+            print(text, flush=True)
+
+    def work(order_pair):
+        order, (chapter, index) = order_pair
         kp = chapter['knowledge_points'][index]
-        print(f'[{order}/{len(pending)}] 第 {chapter["id"]} 章 · {kp["title"]}')
+        head = f'[{order}/{len(pending)}] 第 {chapter["id"]} 章 · {kp["title"]}'
+        log(f'{head}  ▶ 开始')
+        t0 = time.time()
         try:
             payload = builder.build(
                 chapter_id=chapter['id'], kp_index=index,
@@ -230,17 +256,23 @@ def run_batch(args, pending, courses):
             )
             save_narration(narration_key(chapter['id'], index), payload)
             if not (args.no_render or args.image_model):
-                render_images(chapter['id'], index)
-            ok += 1
+                render_images(chapter['id'], index, log=lambda m: log(f'{head}  {m.strip()}'))
+            with counter_lock:
+                done['ok'] += 1
+            log(f'{head}  ✓ 完成 {time.time() - t0:.0f}s  '
+                f'（累计成功 {done["ok"]}，耗时 {time.time() - started:.0f}s）')
         except Exception as exc:
-            print(f'    ✗ 失败：{type(exc).__name__}: {exc}')
-            failed.append((chapter['id'], index, str(exc)[:120]))
-        print(f'    用时 {time.time() - started:.0f}s（累计）\n')
-        # 给外部服务留一点喘息：连续请求太密会触发限流
-        time.sleep(2)
+            with counter_lock:
+                done['fail'] += 1
+                failed.append((chapter['id'], index, str(exc)[:120]))
+            log(f'{head}  ✗ 失败：{type(exc).__name__}: {str(exc)[:100]}')
+
+    with ThreadPoolExecutor(max_workers=max(1, args.kp_workers)) as pool:
+        list(pool.map(work, enumerate(pending, start=1)))
 
     total = stats()
-    print(f'完成 {ok} 节，失败 {len(failed)} 节，总耗时 {time.time() - started:.0f}s')
+    print(f'\n完成 {done["ok"]} 节，失败 {done["fail"]} 节，'
+          f'总耗时 {(time.time() - started) / 60:.1f} 分钟')
     print(f'库存：{total["count"]} 节 / {total["scenes"]} 镜头 / '
           f'{total["seconds"] / 60:.1f} 分钟口播')
     for chapter_id, index, message in failed:

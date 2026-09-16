@@ -245,9 +245,20 @@ class VoiceOver:
     _loop_thread = None
     _loop_lock = threading.Lock()
 
+    # 同一段文本只允许一个线程在合成，其余线程等它写完直接读缓存。
+    # 并发生产时不同小节会出现相同文本（命中同一缓存文件），
+    # 两个线程同时写同一个 mp3 会撞出 WinError 32 文件占用。
+    _synth_locks = {}
+    _synth_locks_guard = threading.Lock()
+
     def __init__(self, cache_dir=None):
         self.cache_dir = Path(cache_dir or AUDIO_CACHE)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def _lock_for(cls, path):
+        with cls._synth_locks_guard:
+            return cls._synth_locks.setdefault(str(path), threading.Lock())
 
     @classmethod
     def _ensure_loop(cls):
@@ -259,12 +270,6 @@ class VoiceOver:
                 thread.start()
                 cls._loop, cls._loop_thread = loop, thread
             return cls._loop
-
-    @staticmethod
-    async def _save(text, voice, rate, pitch, path):
-        import edge_tts
-        communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
-        await communicate.save(str(path))
 
     @staticmethod
     def available():
@@ -297,40 +302,54 @@ class VoiceOver:
                 break
         return round(path.stat().st_size * 8 / 48000, 2)
 
+    @staticmethod
+    async def _save(text, voice, rate, pitch, path):
+        import edge_tts
+        communicate = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch)
+        await communicate.save(str(path))
+
     def synth(self, text, voice='zh-CN-YunxiNeural', rate='+6%', pitch='+0Hz', attempts=5):
         """合成一段口播。
 
         edge-tts 是免费公共服务，偶发 TLS 抖动与限流，实测同一句话
         可能连续失败几次再成功，所以这里退避重试并在最后换音色兜底——
         批量生产时单点抖动不应该让整节课作废。
+
+        并发安全：同一段文本用同一把锁串行合成，并且先写临时文件再原子替换，
+        保证读缓存的一方永远看不到写了一半的文件。
         """
         text = self._clean(text)
         if len(text) < 2:
             return None, 0.0
         key = hashlib.md5(f'{voice}|{rate}|{pitch}|{text}'.encode('utf-8')).hexdigest()
         path = self.cache_dir / f'narr_{key}.mp3'
-        if path.exists() and path.stat().st_size > 1024:
-            return path, self.duration_of(path)
 
-        loop = self._ensure_loop()
-        fallbacks = [voice] + [v for v in VOICE_BY_TYPE.values() if v != voice]
-        last_error = None
+        lock = self._lock_for(path)
+        with lock:
+            if path.exists() and path.stat().st_size > 1024:
+                return path, self.duration_of(path)
 
-        for attempt in range(attempts):
-            target_voice = fallbacks[min(attempt // 2, len(fallbacks) - 1)]
-            try:
-                future = asyncio.run_coroutine_threadsafe(
-                    self._save(text, target_voice, rate, pitch, path), loop)
-                future.result(timeout=90)
-                if path.exists() and path.stat().st_size > 1024:
-                    return path, self.duration_of(path)
-                last_error = RuntimeError('返回空音频')
-            except Exception as exc:
-                last_error = exc
-            path.unlink(missing_ok=True)
-            if attempt < attempts - 1:
-                time.sleep(min(2 ** attempt, 16) + random.uniform(0, 1.5))
-        raise RuntimeError(f'语音合成失败（已重试 {attempts} 次）：{last_error}')
+            loop = self._ensure_loop()
+            fallbacks = [voice] + [v for v in VOICE_BY_TYPE.values() if v != voice]
+            last_error = None
+            tmp = path.with_suffix(f'.{os.getpid()}.{threading.get_ident()}.tmp')
+
+            for attempt in range(attempts):
+                target_voice = fallbacks[min(attempt // 2, len(fallbacks) - 1)]
+                try:
+                    future = asyncio.run_coroutine_threadsafe(
+                        self._save(text, target_voice, rate, pitch, tmp), loop)
+                    future.result(timeout=90)
+                    if tmp.exists() and tmp.stat().st_size > 1024:
+                        os.replace(tmp, path)   # 原子替换，读者不会看到半个文件
+                        return path, self.duration_of(path)
+                    last_error = RuntimeError('返回空音频')
+                except Exception as exc:
+                    last_error = exc
+                tmp.unlink(missing_ok=True)
+                if attempt < attempts - 1:
+                    time.sleep(min(2 ** attempt, 16) + random.uniform(0, 1.5))
+            raise RuntimeError(f'语音合成失败（已重试 {attempts} 次）：{last_error}')
 
 
 def kp_text(html_content):
