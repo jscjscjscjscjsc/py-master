@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 前端基础：HTML、CSS、JavaScript</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="22" data-chapter-title="前端基础：HTML、CSS、JavaScript" data-chapter-description="学完本章，你应该能够：
+
+- 写出一个结构完整的 HTML 页面，认识常用标签与语义化标签；
+- 用 CSS 控制样式，理解选择器与盒模型，会用 Flex 做简单布局；
+- 用 JavaScript 操作页面（DOM）与事件；
+- 用 fe">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 22</p>
+    <span class="hero-icon">🌐</span>
+    <h2>第 22 章 · 前端基础：HTML、CSS、JavaScript</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 写出一个结构完整的 HTML 页面，认识常用标签与语义化标签；
+- 用 CSS 控制样式，理解选择器与盒模型，会用 Flex 做简单布局；
+- 用 JavaScript 操作页面（DOM）与事件；
+- 用 fe</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="22_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          22.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>写出一个结构完整的 HTML 页面，认识常用标签与语义化标签；</li><li>用 CSS 控制样式，理解选择器与盒模型，会用 Flex 做简单布局；</li><li>用 JavaScript 操作页面（DOM）与事件；</li><li>用 <code class="md-inline">fetch</code> 调用 API 并渲染 JSON 数据；</li><li>用浏览器开发者工具调试前端；</li><li>综合做一个"个人名片页"；</li><li>按 L3 规则使用 AI：生成页面代码必须 Review。</li></ol>
+<p><strong>前置知识</strong>：第 21 章（架构——本章是"表现层"的具体实现）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 0, "22.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u4fdd\u5b58\u4e3a \u003ccode class=\"md-inline\"\u003e.html\u003c/code\u003e \u6587\u4ef6\u53cc\u51fb\u5373\u53ef\u7528\u6d4f\u89c8\u5668\u6253\u5f00\u2014\u2014\u003cstrong\u003e\u524d\u7aef\u5f00\u53d1\u7684\"\u8fd0\u884c\"\u5c31\u662f\u6253\u5f00\u6d4f\u89c8\u5668\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5199\u4e00\u4e2a\u6700\u5c0f\u5b8c\u6574 HTML \u9875\u9762\uff1a\u6807\u9898\"\u6211\u7684\u9875\u9762\"\u3001\u4e00\u4e2a\u4e00\u7ea7\u6807\u9898\u3001\u4e00\u4e2a\u6bb5\u843d\u3001\u4e00\u4e2a\u94fe\u63a5\uff08\u6307\u5411 Gitee\uff09\uff0c\u6d4f\u89c8\u5668\u6253\u5f00\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;!DOCTYPE html\u0026gt;\n\u0026lt;html lang=\u0026quot;zh-CN\u0026quot;\u0026gt;\n\u0026lt;head\u0026gt;\n    \u0026lt;meta charset=\u0026quot;UTF-8\u0026quot;\u0026gt;\n    \u0026lt;title\u0026gt;\u6211\u7684\u9875\u9762\u0026lt;/title\u0026gt;\n\u0026lt;/head\u0026gt;\n\u0026lt;body\u0026gt;\n    \u0026lt;h1\u0026gt;\u4f60\u597d\uff0cWeb\uff01\u0026lt;/h1\u0026gt;\n    \u0026lt;p\u0026gt;\u8fd9\u662f\u6211\u7684\u7b2c\u4e00\u4e2a\u7f51\u9875\u3002\u0026lt;/p\u0026gt;\n    \u0026lt;a href=\u0026quot;https://gitee.com\u0026quot;\u0026gt;\u8bbf\u95ee Gitee\u0026lt;/a\u0026gt;\n\u0026lt;/body\u0026gt;\n\u0026lt;/html\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 1 \u9898**\uff1a\u5199\u4e00\u4e2a\u6700\u5c0f\u5b8c\u6574 HTML \u9875\u9762\uff1a\u6807\u9898\"\u6211\u7684\u9875\u9762\"\u3001\u4e00\u4e2a\u4e00\u7ea7\u6807\u9898\u3001\u4e00\u4e2a\u6bb5\u843d\u3001\u4e00\u4e2a\u94fe\u63a5\uff08\u6307\u5411 Gitee\uff09\uff0c\u6d4f\u89c8\u5668\u6253\u5f00\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 0, '22.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 0, '22.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="22_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          22.1 HTML：页面的骨架
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">22.1.1 概念认知：HTML 是什么</h3>
+<p><strong>HTML（超文本标记语言）</strong> 用<strong>标签</strong>描述页面的"结构"：这是标题、这是段落、这是按钮。它不是编程语言（没有逻辑），是"标记语言"。</p>
+<h3 class="md-h">22.1.2 语法掌握：页面基本结构</h3>
+<p><strong>代码案例 22.1</strong>：最小完整页面（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;我的第一个页面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;你好，Web！&lt;/h1&gt;
+    &lt;p&gt;这是第一段文字。&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">&lt;!DOCTYPE html&gt;</code>：告诉浏览器"这是 HTML5"；</li><li><code class="md-inline">&lt;head&gt;</code>：页面"配置区"（编码、标题、样式引用）；</li><li><code class="md-inline">&lt;body&gt;</code>：页面"内容区"（用户看到的一切）；</li><li>标签成对出现（<code class="md-inline">&lt;h1&gt;</code> 开始、<code class="md-inline">&lt;/h1&gt;</code> 结束）——<strong>忘记闭合标签是新手最常见错误</strong>。</li></ul>
+<h3 class="md-h">22.1.3 语法掌握：常用标签</h3>
+<p><strong>代码案例 22.2</strong>：常用标签（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;h1&gt;一级标题&lt;/h1&gt;
+&lt;h2&gt;二级标题&lt;/h2&gt;
+&lt;p&gt;段落文字，可以包含 &lt;strong&gt;加粗&lt;/strong&gt; 和 &lt;em&gt;斜体&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;无序列表项&lt;/li&gt;
+    &lt;li&gt;另一项&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+    &lt;li&gt;有序第一项&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;a href=&quot;https://gitee.com&quot;&gt;链接到 Gitee&lt;/a&gt;
+&lt;img src=&quot;logo.png&quot; alt=&quot;logo 图片&quot;&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;姓名&lt;/th&gt;&lt;th&gt;成绩&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;张三&lt;/td&gt;&lt;td&gt;88&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;form action=&quot;/submit&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;用户名&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;提交&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+<p><strong>讲解</strong>：先认识标签长什么样（<code class="md-inline">&lt;标签 属性="值"&gt;内容&lt;/标签&gt;</code>），不需要背全——<strong>用的时候查，查多了自然记住</strong>。</p>
+<h3 class="md-h">22.1.4 语法掌握：语义化标签</h3>
+<p><strong>代码案例 22.3</strong>：页面分区（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;body&gt;
+    &lt;header&gt;页面头部（标题、导航）&lt;/header&gt;
+    &lt;nav&gt;导航链接&lt;/nav&gt;
+    &lt;main&gt;
+        &lt;article&gt;主要内容&lt;/article&gt;
+        &lt;aside&gt;侧边栏&lt;/aside&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;页脚（版权、联系方式）&lt;/footer&gt;
+&lt;/body&gt;</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">header / nav / main / article / aside / footer</code> 是<strong>语义化标签</strong>——不只"长得像 div"，还<strong>告诉浏览器和搜索引擎"这块是什么"</strong>。<strong>真实场景</strong>：SEO、无障碍阅读、代码可读性都靠它。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 1, "22.1 HTML\uff1a\u9875\u9762\u7684\u9aa8\u67b6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u6807\u7b7e\u9009\u62e9\u5668\u76f4\u63a5\u5199\u6807\u7b7e\u540d\uff1b\u653e\u8fdb \u003ccode class=\"md-inline\"\u003e\u0026lt;head\u0026gt;\u003c/code\u003e \u7684 \u003ccode class=\"md-inline\"\u003e\u0026lt;style\u0026gt;\u003c/code\u003e \u91cc\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u7ed9\u9875\u9762\u52a0 CSS\uff1a\u6807\u9898\u84dd\u8272\u3001\u6bb5\u843d\u7070\u8272\u3001\u94fe\u63a5\u7ea2\u8272\uff0c\u7528\u6807\u7b7e\u9009\u62e9\u5668\u5b9e\u73b0\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;style\u0026gt;\n    h1 { color: blue; }\n    p { color: gray; }\n    a { color: red; }\n\u0026lt;/style\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 2 \u9898**\uff1a\u7ed9\u9875\u9762\u52a0 CSS\uff1a\u6807\u9898\u84dd\u8272\u3001\u6bb5\u843d\u7070\u8272\u3001\u94fe\u63a5\u7ea2\u8272\uff0c\u7528\u6807\u7b7e\u9009\u62e9\u5668\u5b9e\u73b0\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c22.1 HTML\uff1a\u9875\u9762\u7684\u9aa8\u67b6\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「22.1 HTML：页面的骨架」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(22, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c22.1 HTML\uff1a\u9875\u9762\u7684\u9aa8\u67b6\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 1, '22.1 HTML：页面的骨架')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 1, '22.1 HTML：页面的骨架')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="22_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          22.2 CSS：页面的样式
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">22.2.1 概念认知：CSS 是什么</h3>
+<p><strong>CSS（层叠样式表）</strong> 控制页面"长什么样"：颜色、大小、间距、布局。写法：<code class="md-inline">选择器 { 属性: 值; }</code>。</p>
+<h3 class="md-h">22.2.2 语法掌握：选择器与盒模型</h3>
+<p><strong>代码案例 22.4</strong>：CSS 基础（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;style&gt;
+    /* 标签选择器：所有 h1 */
+    h1 { color: #2563eb; }
+
+    /* 类选择器：class=&quot;card&quot; 的元素 */
+    .card {
+        border: 1px solid #ddd;
+        padding: 16px;      /* 内边距：内容与边框的距离 */
+        margin: 12px;       /* 外边距：卡片与周围的距离 */
+        border-radius: 8px;
+    }
+
+    /* id 选择器：id=&quot;header&quot; 的元素 */
+    #header { background: #f0f0f0; }
+&lt;/style&gt;
+
+&lt;div class=&quot;card&quot;&gt;卡片内容&lt;/div&gt;</code></pre></div>
+<blockquote class="md-quote"><p><strong>原理探秘：盒模型</strong></p>
+<p>每个 HTML 元素都是一个"盒子"，从外到内四层：<strong>margin（外边距）→ border（边框）→ padding（内边距）→ content（内容）</strong>。</p>
+<p>调间距时先想清楚：是"盒子之间的距离"（margin）还是"内容与边框的距离"（padding）？<strong>90% 的"布局对不齐"都是这两个搞混了</strong>。</p></blockquote>
+<h3 class="md-h">22.2.3 语法掌握：Flex 布局入门</h3>
+<p><strong>代码案例 22.5</strong>：Flex 水平布局（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;style&gt;
+    .row {
+        display: flex;              /* 开启弹性布局 */
+        gap: 12px;                  /* 子元素间距 */
+        justify-content: center;    /* 水平居中 */
+    }
+    .box { width: 100px; height: 100px; background: #38bdf8; }
+&lt;/style&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">display: flex</code> 让子元素<strong>横着排</strong>；<code class="md-inline">justify-content</code> 控制水平对齐（center 居中、space-between 两端对齐）。<strong>最终项目的数据大屏/卡片布局会大量用到 flex</strong>（第 33 章）。</p>
+<p><strong>微任务卡（M1 · 讲解卡 · L3）</strong>：把盒模型代码发给 AI："请解释 margin 和 padding 的区别，为什么它们容易搞混？"一句话记录理解。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 2, "22.2 CSS\uff1a\u9875\u9762\u7684\u6837\u5f0f", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003egetElementById\u003c/code\u003e \u627e\u5143\u7d20 \u2192 \u003ccode class=\"md-inline\"\u003eaddEventListener(\"click\", \u51fd\u6570)\u003c/code\u003e \u6ce8\u518c\u4e8b\u4ef6 \u2192 \u51fd\u6570\u91cc\u6539\u5185\u5bb9\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5728\u9875\u9762\u52a0\u4e00\u4e2a\u6309\u94ae\u548c\u4e00\u6bb5\u6587\u5b57\uff0c\u70b9\u51fb\u6309\u94ae\u540e\u6587\u5b57\u53d8\u6210\"\u88ab\u70b9\u51fb\u4e86\"\uff08JS \u4e8b\u4ef6\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;p id=\u0026quot;text\u0026quot;\u0026gt;\u539f\u59cb\u6587\u5b57\u0026lt;/p\u0026gt;\n\u0026lt;button id=\u0026quot;btn\u0026quot;\u0026gt;\u70b9\u51fb\u0026lt;/button\u0026gt;\n\u0026lt;script\u0026gt;\n    document.getElementById(\u0026quot;btn\u0026quot;).addEventListener(\u0026quot;click\u0026quot;, function () {\n        document.getElementById(\u0026quot;text\u0026quot;).textContent = \u0026quot;\u88ab\u70b9\u51fb\u4e86\u0026quot;;\n    });\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 3 \u9898**\uff1a\u5728\u9875\u9762\u52a0\u4e00\u4e2a\u6309\u94ae\u548c\u4e00\u6bb5\u6587\u5b57\uff0c\u70b9\u51fb\u6309\u94ae\u540e\u6587\u5b57\u53d8\u6210\"\u88ab\u70b9\u51fb\u4e86\"\uff08JS \u4e8b\u4ef6\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c22.2 CSS\uff1a\u9875\u9762\u7684\u6837\u5f0f\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「22.2 CSS：页面的样式」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(22, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c22.2 CSS\uff1a\u9875\u9762\u7684\u6837\u5f0f\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 2, '22.2 CSS：页面的样式')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 2, '22.2 CSS：页面的样式')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="22_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          22.3 JavaScript：页面的行为
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">22.3.1 概念认知：JS 是什么</h3>
+<p><strong>JavaScript</strong> 让页面"动起来"：点击按钮、动态加内容、请求数据。<strong>注意：它和 Python 语法不同（但编程思想完全一样）</strong>——你学的变量、循环、函数、对象，在 JS 里都有对应。</p>
+<h3 class="md-h">22.3.2 语法掌握：JS 基础（对照 Python 学）</h3>
+<p><strong>代码案例 22.6</strong>：JS 基础（✅ 正确，Node 实测过）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;script&gt;
+    // 变量：let 可变、const 常量
+    let name = &quot;张三&quot;;
+    const age = 19;
+
+    // 函数
+    function greet(n) {
+        return `你好，${n}！`;
+    }
+
+    // 模板字符串（相当于 Python 的 f-string）
+    console.log(`${name} 今年 ${age} 岁`);
+
+    // 数组与遍历
+    const scores = [88, 92, 76];
+    let total = 0;
+    for (const s of scores) {
+        total += s;
+    }
+
+    // 对象（相当于 Python 的字典）
+    const student = { name: &quot;张三&quot;, scores: [88, 92] };
+    console.log(student.name, student.scores[0]);
+&lt;/script&gt;</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">console.log()</code> 相当于 Python 的 <code class="md-inline">print()</code>（在浏览器开发者工具的控制台显示）。<strong>你已经会的编程思维，换个语法就是 JS</strong>。</p>
+<h3 class="md-h">22.3.3 语法掌握：DOM 与事件</h3>
+<p><strong>DOM（文档对象模型）</strong> = 浏览器把 HTML 变成一棵"可操作的树"，JS 通过它读写页面。</p>
+<p><strong>代码案例 22.7</strong>：点击按钮修改页面（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;p id=&quot;message&quot;&gt;原始文字&lt;/p&gt;
+&lt;button id=&quot;btn&quot;&gt;点我&lt;/button&gt;
+
+&lt;script&gt;
+    const btn = document.getElementById(&quot;btn&quot;);
+    const msg = document.getElementById(&quot;message&quot;);
+
+    btn.addEventListener(&quot;click&quot;, function () {
+        msg.textContent = &quot;按钮被点击了！&quot;;
+        msg.style.color = &quot;#2563eb&quot;;
+    });
+&lt;/script&gt;</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">document.getElementById("btn")</code>：<strong>从 DOM 里找到元素</strong>（第 5 章"按名字找"——JS 版字典查询）；</li><li><code class="md-inline">addEventListener("click", 函数)</code>：注册<strong>事件处理</strong>——点击时执行函数（第 7 章"回调函数"的实战！）；</li><li><code class="md-inline">msg.textContent = ...</code>：修改元素内容。</li></ul>
+<p><strong>交叉验证：你的 Python 知识怎么迁移到 JS？</strong></p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>概念</th><th>Python</th><th>JavaScript</th></tr></thead><tbody><tr><td>输出</td><td><code class="md-inline">print(x)</code></td><td><code class="md-inline">console.log(x)</code></td></tr><tr><td>字典/对象</td><td><code class="md-inline">d["name"]</code></td><td><code class="md-inline">obj.name</code></td></tr><tr><td>字符串模板</td><td><code class="md-inline">f"{x}"</code></td><td>`<code class="md-inline"> </code>${x}<code class="md-inline"> </code>`</td></tr><tr><td>列表/数组</td><td><code class="md-inline">[1, 2]</code></td><td><code class="md-inline">[1, 2]</code></td></tr><tr><td>回调</td><td><code class="md-inline">sorted(key=fn)</code></td><td><code class="md-inline">btn.addEventListener("click", fn)</code></td></tr></tbody></table></div>
+<p><strong>讲解</strong>：<strong>编程思想是通用的，语法只是换皮</strong>——这是你学完 Python 后学第二门语言最大的红利。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 3, "22.3 JavaScript\uff1a\u9875\u9762\u7684\u884c\u4e3a", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003etr:nth-child(even)\u003c/code\u003e \u662f\"\u5076\u6570\u884c\"\u9009\u62e9\u5668\u2014\u2014\u003cstrong\u003e\u9694\u884c\u53d8\u8272\u7684\u6807\u51c6\u5199\u6cd5\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 HTML \u8868\u683c\u505a\u4e00\u4e2a 3\u00d73 \u8bfe\u7a0b\u8868\uff08\u8868\u5934\uff1a\u5468\u4e00/\u5468\u4e8c/\u5468\u4e09\uff09\uff0c\u7528 CSS \u9694\u884c\u53d8\u8272\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;style\u0026gt;\n    table { border-collapse: collapse; width: 300px; }\n    td, th { border: 1px solid #ccc; padding: 8px; text-align: center; }\n    tr:nth-child(even) { background: #f0f4ff; }   /* \u9694\u884c\u53d8\u8272 */\n\u0026lt;/style\u0026gt;\n\n\u0026lt;table\u0026gt;\n    \u0026lt;tr\u0026gt;\u0026lt;th\u0026gt;\u0026lt;/th\u0026gt;\u0026lt;th\u0026gt;\u5468\u4e00\u0026lt;/th\u0026gt;\u0026lt;th\u0026gt;\u5468\u4e8c\u0026lt;/th\u0026gt;\u0026lt;th\u0026gt;\u5468\u4e09\u0026lt;/th\u0026gt;\u0026lt;/tr\u0026gt;\n    \u0026lt;tr\u0026gt;\u0026lt;td\u0026gt;\u4e0a\u5348\u0026lt;/td\u0026gt;\u0026lt;td\u0026gt;Python\u0026lt;/td\u0026gt;\u0026lt;td\u0026gt;\u6570\u636e\u7ed3\u6784\u0026lt;/td\u0026gt;\u0026lt;td\u0026gt;\u9ad8\u6570\u0026lt;/td\u0026gt;\u0026lt;/tr\u0026gt;\n    \u0026lt;tr\u0026gt;\u0026lt;td\u0026gt;\u4e0b\u5348\u0026lt;/td\u0026gt;\u0026lt;td\u0026gt;Web\u0026lt;/td\u0026gt;\u0026lt;td\u0026gt;\u6570\u636e\u5e93\u0026lt;/td\u0026gt;\u0026lt;td\u0026gt;\u4f53\u80b2\u0026lt;/td\u0026gt;\u0026lt;/tr\u0026gt;\n\u0026lt;/table\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 4 \u9898**\uff1a\u7528 HTML \u8868\u683c\u505a\u4e00\u4e2a 3\u00d73 \u8bfe\u7a0b\u8868\uff08\u8868\u5934\uff1a\u5468\u4e00/\u5468\u4e8c/\u5468\u4e09\uff09\uff0c\u7528 CSS \u9694\u884c\u53d8\u8272\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c22.3 JavaScript\uff1a\u9875\u9762\u7684\u884c\u4e3a\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「22.3 JavaScript：页面的行为」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(22, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c22.3 JavaScript\uff1a\u9875\u9762\u7684\u884c\u4e3a\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 3, '22.3 JavaScript：页面的行为')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 3, '22.3 JavaScript：页面的行为')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="22_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          22.4 fetch：前端调后端
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">22.4.1 语法掌握：fetch 与 JSON</h3>
+<p><strong>代码案例 22.8</strong>：调用 API 并渲染（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;ul id=&quot;list&quot;&gt;&lt;/ul&gt;
+
+&lt;script&gt;
+    // fetch 返回一个 Promise，用 async/await 等待结果（第 13 章异步思想！）
+    async function loadStudents() {
+        const resp = await fetch(&quot;/api/students&quot;);
+        const students = await resp.json();   // 解析 JSON
+
+        const list = document.getElementById(&quot;list&quot;);
+        for (const s of students) {
+            const li = document.createElement(&quot;li&quot;);
+            li.textContent = `${s.name}: ${s.score}`;
+            list.appendChild(li);
+        }
+    }
+
+    loadStudents();
+&lt;/script&gt;</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">fetch("/api/students")</code>：发 HTTP 请求（第 13 章 requests 的前端版）；</li><li><code class="md-inline">await resp.json()</code>：等响应并解析 JSON（async/await 你在第 13 章学过！）；</li><li><code class="md-inline">createElement / appendChild</code>：动态往页面加元素；</li><li><strong>前端调用后端的完整链路</strong>：前端 <code class="md-inline">fetch</code> → 后端处理 → 返回 JSON → 前端渲染——这就是前后端分离的数据流（第 21 章）。</li></ul>
+<p><strong>微任务卡（M2 · 讲解卡 · L3）</strong>：把 fetch 代码发给 AI："请解释 async/await 在这里的作用，为什么需要等待？和 Python 的 asyncio 有什么相似？"一句话记录理解。</p>
+<h3 class="md-h">22.4.2 语法掌握：开发者工具调试</h3>
+<ol><li>在页面按 <strong>F12</strong>（或右键 → 检查）打开开发者工具；</li><li><strong>Elements</strong>：查看/修改 HTML 和 CSS（改完即时生效，方便试样式）；</li><li><strong>Console</strong>：看 <code class="md-inline">console.log</code> 输出和报错；</li><li><strong>Network</strong>：看每个请求的状态码、响应内容——<strong>前后端联调必看</strong>（第 33 章）。</li></ol>
+<p><strong>交叉验证：前端报错的排查顺序</strong></p>
+<ol><li>Console 有没有红字？（语法错误/类型错误）</li><li>Network 里请求的状态码是多少？（404 = 路径错、500 = 后端错、200 = 请求正常）</li><li>返回的 JSON 结构和代码期望的一致吗？（字段名对不对）</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 4, "22.4 fetch\uff1a\u524d\u7aef\u8c03\u540e\u7aef", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u5faa\u73af + createElement + appendChild\u2014\u2014\u003cstrong\u003e\"\u6570\u636e\u9a71\u52a8\u9875\u9762\"\u7684\u6700\u57fa\u672c\u5f62\u6001\u003c/strong\u003e\uff08Vue \u4f1a\u628a\u5b83\u53d8\u5f97\u66f4\u7b80\u5355\uff09\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u6bb5 JS\uff1a\u5b9a\u4e49\u5b66\u751f\u6570\u7ec4 `[{name, score}, ...]`\uff0c\u7528\u5faa\u73af\u628a\u6bcf\u4e2a\u5b66\u751f\u6e32\u67d3\u6210\u4e00\u4e2a `\u003cli\u003e` \u52a0\u8fdb `\u003cul\u003e`\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;ul id=\u0026quot;list\u0026quot;\u0026gt;\u0026lt;/ul\u0026gt;\n\u0026lt;script\u0026gt;\n    const students = [\n        { name: \u0026quot;\u5f20\u4e09\u0026quot;, score: 88 },\n        { name: \u0026quot;\u674e\u56db\u0026quot;, score: 95 },\n    ];\n\n    const list = document.getElementById(\u0026quot;list\u0026quot;);\n    for (const s of students) {\n        const li = document.createElement(\u0026quot;li\u0026quot;);\n        li.textContent = `${s.name}: ${s.score}`;\n        list.appendChild(li);\n    }\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u6bb5 JS\uff1a\u5b9a\u4e49\u5b66\u751f\u6570\u7ec4 `[{name, score}, ...]`\uff0c\u7528\u5faa\u73af\u628a\u6bcf\u4e2a\u5b66\u751f\u6e32\u67d3\u6210\u4e00\u4e2a `\u003cli\u003e` \u52a0\u8fdb `\u003cul\u003e`\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c22.4 fetch\uff1a\u524d\u7aef\u8c03\u540e\u7aef\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「22.4 fetch：前端调后端」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(22, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c22.4 fetch\uff1a\u524d\u7aef\u8c03\u540e\u7aef\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 4, '22.4 fetch：前端调后端')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 4, '22.4 fetch：前端调后端')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="22_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          22.5 综合案例：个人名片页
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>代码案例 22.9</strong>：完整名片页（✅ 正确）</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;个人名片&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; background: #f8fafc; }
+        .card {
+            max-width: 320px;
+            margin: 60px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card h1 { margin: 0; color: #1e293b; }
+        .card p { color: #64748b; }
+        button { width: 100%; padding: 8px; border: none;
+                 border-radius: 6px; background: #2563eb; color: white; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;h1 id=&quot;name&quot;&gt;张三&lt;/h1&gt;
+        &lt;p id=&quot;info&quot;&gt;Python 学习者 · Gitee：zhangsan&lt;/p&gt;
+        &lt;button id=&quot;btn&quot;&gt;换一句介绍&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        const messages = [
+            &quot;正在学习 FastAPI 和 Vue&quot;,
+            &quot;目标：独立开发全栈项目&quot;,
+            &quot;喜欢用 pytest 验证代码&quot;,
+        ];
+        let index = 0;
+
+        document.getElementById(&quot;btn&quot;).addEventListener(&quot;click&quot;, function () {
+            index = (index + 1) % messages.length;
+            document.getElementById(&quot;info&quot;).textContent = messages[index];
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p><strong>讲解</strong>：一个文件里 HTML（结构）+ CSS（样式）+ JS（行为）三件套齐全——<strong>这就是前端的"最小完整应用"</strong>。最终项目的页面会是它的"放大 + 数据驱动"版本。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 5, "22.5 \u7efc\u5408\u6848\u4f8b\uff1a\u4e2a\u4eba\u540d\u7247\u9875", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684\u9875\u9762\u4ee3\u7801\u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5\u6807\u7b7e\u95ed\u5408\u3001\u8bed\u4e49\u5316\u6807\u7b7e\u3001\u6837\u5f0f\u53ef\u8bfb\u6027\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u5efa\u8bae\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eNetwork \u9762\u677f\u5e94\u770b\u5230 200\uff1b\u82e5\u6d4f\u89c8\u5668\u63d0\u793a\u8de8\u57df\uff08CORS\uff09\u95ee\u9898\uff0c\u7b2c 24 \u7ae0 FastAPI \u4f1a\u8bb2\u540e\u7aef\u5982\u4f55\u5141\u8bb8\u8de8\u57df\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7528 `fetch` \u8c03\u7528 `https://httpbin.org/get`\uff0c\u628a\u8fd4\u56de\u7684 `url` \u5b57\u6bb5\u663e\u793a\u5230\u9875\u9762\u4e0a\uff08\u53ef\u5148\u770b Network \u9762\u677f\u9a8c\u8bc1\u8bf7\u6c42\u6210\u529f\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;p id=\u0026quot;url\u0026quot;\u0026gt;\u0026lt;/p\u0026gt;\n\u0026lt;script\u0026gt;\n    async function load() {\n        const resp = await fetch(\u0026quot;https://httpbin.org/get\u0026quot;);\n        const data = await resp.json();\n        document.getElementById(\u0026quot;url\u0026quot;).textContent = data.url;\n    }\n    load();\n\u0026lt;/script\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 6 \u9898**\uff1a\u7528 `fetch` \u8c03\u7528 `https://httpbin.org/get`\uff0c\u628a\u8fd4\u56de\u7684 `url` \u5b57\u6bb5\u663e\u793a\u5230\u9875\u9762\u4e0a\uff08\u53ef\u5148\u770b Network \u9762\u677f\u9a8c\u8bc1\u8bf7\u6c42\u6210\u529f\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c22.5 \u7efc\u5408\u6848\u4f8b\uff1a\u4e2a\u4eba\u540d\u7247\u9875\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「22.5 综合案例：个人名片页」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(22, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c22.5 \u7efc\u5408\u6848\u4f8b\uff1a\u4e2a\u4eba\u540d\u7247\u9875\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 5, '22.5 综合案例：个人名片页')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 5, '22.5 综合案例：个人名片页')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="22_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          22.6 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：标签没闭合</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;p&gt;第一段
+&lt;p&gt;第二段</code></pre></div>
+<p><strong>实际表现</strong>：页面显示错乱（段落嵌套、样式错位）。</p>
+<p><strong>提示</strong>：<code class="md-inline">&lt;p&gt;</code> 的结束标签在哪？</p>
+<p><strong>讲解</strong>：<strong>标签必须成对闭合</strong>（<code class="md-inline">&lt;p&gt;...&lt;/p&gt;</code>）。浏览器对错误很宽容，但宽容的结果是"显示得莫名其妙"。养成"写开始标签立刻写结束标签"的习惯。</p>
+<h3 class="md-h">问题 2：CSS 不生效</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="html"><div class="md-codebar"><span class="md-codelang">html</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-html">&lt;style&gt;
+    .Card { color: red; }
+&lt;/style&gt;
+&lt;div class=&quot;card&quot;&gt;文字&lt;/div&gt;</code></pre></div>
+<p><strong>实际表现</strong>：文字不是红色。</p>
+<p><strong>提示</strong>：选择器里的类名和 HTML 里的 class 一致吗？大小写呢？</p>
+<p><strong>讲解</strong>：<code class="md-inline">.Card</code> 和 <code class="md-inline">class="card"</code> 不匹配——<strong>类名严格区分大小写</strong>。对照检查选择器与 HTML 的 class 是否完全一致。</p>
+<h3 class="md-h">问题 3：JS 报错 undefined</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="js"><div class="md-codebar"><span class="md-codelang">js</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-js">const student = { name: &quot;张三&quot; };
+console.log(student.score);</code></pre></div>
+<p><strong>实际表现</strong>：控制台输出 <code class="md-inline">undefined</code>，后续用到 <code class="md-inline">score</code> 的地方出错。</p>
+<p><strong>提示</strong>：对象里没有 <code class="md-inline">score</code> 这个键，读取返回什么？（对照第 6 章 KeyError 的 JS 版本）</p>
+<p><strong>讲解</strong>：<strong>JS 读取不存在的属性返回 <code class="md-inline">undefined</code>（不报错）</strong>——比 Python 的 KeyError 更"安静"，所以更危险。<strong>假设数据可能缺字段，用前先判断</strong>（<code class="md-inline">if (student.score !== undefined)</code>）。</p>
+<h3 class="md-h">问题 4：fetch 的 URL 404</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="js"><div class="md-codebar"><span class="md-codelang">js</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-js">const resp = await fetch(&quot;/api/students&quot;);   // 后端实际是 /api/student</code></pre></div>
+<p><strong>实际表现</strong>：Network 面板显示 404，页面空白。</p>
+<p><strong>提示</strong>：请求地址和后端路由一致吗？Network 面板怎么查？</p>
+<p><strong>讲解</strong>：<strong>404 先查 URL 拼写</strong>（单复数、大小写）；前端和后端的路径必须严格一致——这就是第 21 章"接口契约"的日常维护。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 6, "22.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u8bed\u4e49\u5316\u6807\u7b7e\uff08header/main/section/footer\uff09+ \u5361\u7247\u5f0f\u5e03\u5c40 + \u4e8b\u4ef6\u5207\u6362\uff0c\u4e09\u4ef6\u5957\u9f50\u5168\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u7efc\u5408\u505a\u4e00\u4e2a\"\u81ea\u6211\u4ecb\u7ecd\u9875\"\uff1a\u5934\u90e8\uff08\u59d3\u540d+\u7167\u7247\u5360\u4f4d\uff09\u3001\u4e3b\u4f53\uff08\u6280\u80fd\u5217\u8868 + \u4e00\u53e5\u8bdd\u4ecb\u7ecd + \u6309\u94ae\u70b9\u51fb\u5207\u6362\u4ecb\u7ecd\uff09\u3001\u9875\u811a\uff08Gitee \u94fe\u63a5\uff09\uff0c\u7528\u8bed\u4e49\u5316\u6807\u7b7e + \u5361\u7247\u6837\u5f0f\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u9aa8\u67b6\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"html\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ehtml\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-html\"\u003e\u0026lt;body\u0026gt;\n    \u0026lt;header\u0026gt;\n        \u0026lt;h1\u0026gt;\u5f20\u4e09\u0026lt;/h1\u0026gt;\n        \u0026lt;img src=\u0026quot;avatar.png\u0026quot; alt=\u0026quot;\u5934\u50cf\u5360\u4f4d\u0026quot; width=\u0026quot;80\u0026quot;\u0026gt;\n    \u0026lt;/header\u0026gt;\n\n    \u0026lt;main\u0026gt;\n        \u0026lt;section\u0026gt;\n            \u0026lt;h2\u0026gt;\u6280\u80fd\u0026lt;/h2\u0026gt;\n            \u0026lt;ul\u0026gt;\n                \u0026lt;li\u0026gt;Python\u0026lt;/li\u0026gt;\n                \u0026lt;li\u0026gt;FastAPI\uff08\u5b66\u4e60\u4e2d\uff09\u0026lt;/li\u0026gt;\n                \u0026lt;li\u0026gt;Vue\uff08\u5b66\u4e60\u4e2d\uff09\u0026lt;/li\u0026gt;\n            \u0026lt;/ul\u0026gt;\n        \u0026lt;/section\u0026gt;\n        \u0026lt;section\u0026gt;\n            \u0026lt;p id=\u0026quot;intro\u0026quot;\u0026gt;\u6b63\u5728\u5b66\u4e60\u524d\u540e\u7aef\u5f00\u53d1\u3002\u0026lt;/p\u0026gt;\n            \u0026lt;button id=\u0026quot;btn\u0026quot;\u0026gt;\u6362\u4e00\u53e5\u0026lt;/button\u0026gt;\n        \u0026lt;/section\u0026gt;\n    \u0026lt;/main\u0026gt;\n\n    \u0026lt;footer\u0026gt;\n        \u0026lt;a href=\u0026quot;https://gitee.com\u0026quot;\u0026gt;\u6211\u7684 Gitee\u0026lt;/a\u0026gt;\n    \u0026lt;/footer\u0026gt;\n\n    \u0026lt;script\u0026gt;\n        const intros = [\u0026quot;\u76ee\u6807\u662f\u5168\u6808\u0026quot;, \u0026quot;\u559c\u6b22\u5199\u6d4b\u8bd5\u0026quot;, \u0026quot;Git \u6bcf\u5929\u63d0\u4ea4\u0026quot;];\n        let i = 0;\n        document.getElementById(\u0026quot;btn\u0026quot;).addEventListener(\u0026quot;click\u0026quot;, function () {\n            i = (i + 1) % intros.length;\n            document.getElementById(\u0026quot;intro\u0026quot;).textContent = intros[i];\n        });\n    \u0026lt;/script\u0026gt;\n\u0026lt;/body\u0026gt;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 7 \u9898**\uff1a\u7efc\u5408\u505a\u4e00\u4e2a\"\u81ea\u6211\u4ecb\u7ecd\u9875\"\uff1a\u5934\u90e8\uff08\u59d3\u540d+\u7167\u7247\u5360\u4f4d\uff09\u3001\u4e3b\u4f53\uff08\u6280\u80fd\u5217\u8868 + \u4e00\u53e5\u8bdd\u4ecb\u7ecd + \u6309\u94ae\u70b9\u51fb\u5207\u6362\u4ecb\u7ecd\uff09\u3001\u9875\u811a\uff08Gitee \u94fe\u63a5\uff09\uff0c\u7528\u8bed\u4e49\u5316\u6807\u7b7e + \u5361\u7247\u6837\u5f0f\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c22.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「22.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(22, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c22.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 6, '22.6 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 6, '22.6 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="22_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          22.7 Vibe Coding 任务卡（L3 主卡）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 生成页面，你 Review 后修改</p>
+<p><strong>任务内容</strong>：让 AI 生成一个"课程表页面"（HTML+CSS，含表格和标题），然后按 Review 清单检查。</p>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请用 HTML + CSS 生成一个简单的课程表页面：包含标题、5 列 3 行的表格、
+隔行变色样式、页面居中。不要用任何前端框架。</pre></div>
+<p><strong>Review 清单（L3）</strong>：</p>
+<ul><li>[ ] <strong>读懂</strong>：每个标签和样式我都能说出作用；</li><li>[ ] <strong>运行</strong>：用浏览器打开，页面正常显示；</li><li>[ ] <strong>验证</strong>：把班级真实课表填进去；检查表格是否有 <code class="md-inline">&lt;/tr&gt;</code>/<code class="md-inline">&lt;/td&gt;</code> 闭合；</li><li>[ ] <strong>修改</strong>：标题改成我的信息、配色改成我喜欢的主色，并记录修改理由。</li></ul>
+<p><strong>微任务卡（M3 · 审查卡 · L3）</strong>：把 AI 生成的页面发给 AI："请审查：标签闭合、语义化标签使用、样式是否有可读性问题。"记录你采纳/否决的建议。</p>
+<blockquote class="md-quote"><p><strong>就业红线（了解级边界）</strong>：本章是"前端基础"——能读懂、能改、能拼页面；<strong>前端岗位要求远不止这些</strong>：框架（Vue/React）工程化、组件设计、响应式布局、性能优化、浏览器原理。进阶路径：本课程给你"看得懂前端"的底子，就业前按前端岗位学习路径补全。</p></blockquote>
+<p><strong>微任务卡（M4 · 报错卡 · L2）</strong>：把前端控制台的报错发给 AI："请解释 Console 里的红色报错和 Network 里的 404 分别说明什么问题，排查顺序是什么？"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 7, "22.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u8bfb\u61c2 + \u8fd0\u884c + \u9a8c\u8bc1\uff08\u95ed\u5408\u6807\u7b7e\uff09+ \u4fee\u6539\uff08\u771f\u5b9e\u6570\u636e/\u914d\u8272\uff09+ \u5426\u51b3\u7406\u7531\u2014\u2014L3 Review \u4e94\u6b65\u9f50\u5168\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 22.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u8bfe\u7a0b\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5\u95ed\u5408\u3001\u8bed\u4e49\u5316\u3001\u6837\u5f0f\u53ef\u8bfb\u6027\uff09\u5e76\u4fee\u6539\uff08\u586b\u771f\u5b9e\u8bfe\u8868\u3001\u6539\u914d\u8272\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\uff1a\u8868\u683c + \u9694\u884c\u53d8\u8272 + \u5c45\u4e2d\uff0c\u7ed3\u6784\u57fa\u672c\u53ef\u7528\u3002\n\u6211\u7684\u4fee\u6539\uff1a\n1. \u8868\u5934\u4ece\u901a\u7528\u5b57\u6bb5\u6539\u6210\u771f\u5b9e\u8bfe\u7a0b\uff08\u5468\u4e00~\u5468\u4e94 + \u4e0a\u5348/\u4e0b\u5348\uff09\uff1b\n2. \u914d\u8272\u4ece\u9ed8\u8ba4\u84dd\u6539\u6210\u73ed\u7ea7\u4e3b\u9898\u8272\uff1b\n3. \u68c0\u67e5\u5e76\u8865\u9f50\u4e86 AI \u6f0f\u6389\u7684 \u0026lt;/table\u0026gt; \u95ed\u5408\u6807\u7b7e\u3002\n\u5426\u51b3\uff1aAI \u5efa\u8bae\u52a0 JS \u52a8\u6001\u52a0\u8f7d\u8bfe\u8868\u2014\u2014\u672c\u9875\u6570\u636e\u56fa\u5b9a\uff0c\u4e0d\u9700\u8981\uff08YAGNI\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(22, '0', "**\u7b2c 8 \u9898**\uff1a\u6309 22.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u8bfe\u7a0b\u8868\u9875\u9762\"\uff0c\u4f60 Review\uff08\u68c0\u67e5\u95ed\u5408\u3001\u8bed\u4e49\u5316\u3001\u6837\u5f0f\u53ef\u8bfb\u6027\uff09\u5e76\u4fee\u6539\uff08\u586b\u771f\u5b9e\u8bfe\u8868\u3001\u6539\u914d\u8272\uff09\uff0c\u8bb0\u5f55\u4fee\u6539\u7406\u7531\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 7, '22.7 Vibe Coding 任务卡（L3 主卡）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 7, '22.7 Vibe Coding 任务卡（L3 主卡）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="22_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          22.8 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">前端基础：HTML / CSS / JavaScript
+├── HTML（骨架）：标签成对闭合；head 配置 / body 内容
+│   ├── 常用：h1-h6 / p / ul / ol / a / img / table / form
+│   └── 语义化：header / nav / main / article / aside / footer
+├── CSS（样式）：选择器 { 属性: 值 }
+│   ├── 选择器：标签 / .类 / #id
+│   ├── 盒模型：margin（外）→ border → padding（内）→ content
+│   └── Flex：display:flex + gap + justify-content
+├── JavaScript（行为）
+│   ├── 与 Python 对照：console.log / 对象 / 模板字符串 / 数组
+│   ├── DOM：document.getElementById → 修改 textContent / style
+│   └── 事件：addEventListener(&quot;click&quot;, 回调函数)
+├── fetch：await fetch(url) → await resp.json() → 渲染 DOM
+│   └── 调试：F12 → Elements / Console / Network（404 先查 URL）
+└── 综合：个人名片页 = HTML + CSS + JS 三件套</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>标签成对闭合；<code class="md-inline">&lt;head&gt;</code> 配置、<code class="md-inline">&lt;body&gt;</code> 内容；</li><li>盒模型：margin 管"盒子外"，padding 管"盒子内"；</li><li><code class="md-inline">console.log</code> 相当于 JS 的 print，调试从 F12 开始；</li><li><code class="md-inline">fetch</code> = 前端的 requests；404 先查 URL；</li><li>你的 Python 思维可以直接迁移到 JS——思想通用，语法换皮。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 8, "22.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 8, '22.8 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 8, '22.8 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="22_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td><code class="md-inline">&lt;h1&gt;</code> <code class="md-inline">&lt;p&gt;</code> <code class="md-inline">&lt;a&gt;</code></td><td>标题 / 段落 / 链接</td></tr><tr><td><code class="md-inline">header</code> <code class="md-inline">nav</code> <code class="md-inline">main</code> <code class="md-inline">footer</code></td><td>语义化标签</td></tr><tr><td><code class="md-inline">.类名</code> / <code class="md-inline">#id</code></td><td>CSS 选择器</td></tr><tr><td>盒模型</td><td>margin→border→padding→content</td></tr><tr><td><code class="md-inline">display: flex</code></td><td>弹性布局</td></tr><tr><td><code class="md-inline">getElementById</code></td><td>从 DOM 找元素</td></tr><tr><td><code class="md-inline">addEventListener("click", fn)</code></td><td>事件监听（回调）</td></tr><tr><td><code class="md-inline">fetch(url)</code> / <code class="md-inline">resp.json()</code></td><td>请求 API / 解析 JSON</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(22, 9, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="22_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(22, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(22, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(22, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="22_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(22, 9, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(22, 9, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 前端基础：HTML、CSS、JavaScript — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 前端基础：HTML、CSS、JavaScript — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 前端基础：HTML、CSS、JavaScript
+## 22.1 HTML：页面的骨架
+### 概念认知：HTML 是什么
+### 语法掌握：页面基本结构
+### 语法掌握：常用标签
+### 语法掌握：语义化标签
+## 22.2 CSS：页面的样式
+### 概念认知：CSS 是什么
+### 语法掌握：选择器与盒模型
+### 语法掌握：Flex 布局入门
+## 22.3 JavaScript：页面的行为
+### 概念认知：JS 是什么
+### 语法掌握：JS 基础（对照 Python 学）
+### 语法掌握：DOM 与事件
+## 22.4 fetch：前端调后端
+### 语法掌握：fetch 与 JSON
+### 语法掌握：开发者工具调试
+## 22.5 综合案例：个人名片页
+## 22.6 本章 Debug 四件套
+### 问题 1：标签没闭合
+### 问题 2：CSS 不生效
+### 问题 3：JS 报错 undefined
+### 问题 4：fetch 的 URL 404
+## 22.7 Vibe Coding 任务卡（L3 主卡）
+## 22.8 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 22;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["22.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "22.1 HTML\uff1a\u9875\u9762\u7684\u9aa8\u67b6", "22.2 CSS\uff1a\u9875\u9762\u7684\u6837\u5f0f", "22.3 JavaScript\uff1a\u9875\u9762\u7684\u884c\u4e3a", "22.4 fetch\uff1a\u524d\u7aef\u8c03\u540e\u7aef", "22.5 \u7efc\u5408\u6848\u4f8b\uff1a\u4e2a\u4eba\u540d\u7247\u9875", "22.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "22.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "22.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u524d\u7aef\u57fa\u7840\uff1aHTML\u3001CSS\u3001JavaScript";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(22, "\u524d\u7aef\u57fa\u7840\uff1aHTML\u3001CSS\u3001JavaScript", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u5199\u51fa\u4e00\u4e2a\u7ed3\u6784\u5b8c\u6574\u7684 HTML \u9875\u9762\uff0c\u8ba4\u8bc6\u5e38\u7528\u6807\u7b7e\u4e0e\u8bed\u4e49\u5316\u6807\u7b7e\uff1b\n- \u7528 CSS \u63a7\u5236\u6837\u5f0f\uff0c\u7406\u89e3\u9009\u62e9\u5668\u4e0e\u76d2\u6a21\u578b\uff0c\u4f1a\u7528 Flex \u505a\u7b80\u5355\u5e03\u5c40\uff1b\n- \u7528 JavaScript \u64cd\u4f5c\u9875\u9762\uff08DOM\uff09\u4e0e\u4e8b\u4ef6\uff1b\n- \u7528 fe", ["22.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "22.1 HTML\uff1a\u9875\u9762\u7684\u9aa8\u67b6", "22.2 CSS\uff1a\u9875\u9762\u7684\u6837\u5f0f", "22.3 JavaScript\uff1a\u9875\u9762\u7684\u884c\u4e3a", "22.4 fetch\uff1a\u524d\u7aef\u8c03\u540e\u7aef", "22.5 \u7efc\u5408\u6848\u4f8b\uff1a\u4e2a\u4eba\u540d\u7247\u9875", "22.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "22.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "22.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

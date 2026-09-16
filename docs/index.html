@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/star_map.css">
 <link rel="stylesheet" href="static/css/atlas.css">
+<script>window.PYMASTER_STATIC = true;</script>
 </head>
 <body class="dashboard-page">
 
@@ -60,13 +61,13 @@
     <p>选择章节，开始你的 Python 学习之旅</p>
     <div class="stats-row">
       <div class="stat-chip">
-        📚 <span>共 <span class="stat-value">9</span> 个章节</span>
+        📚 <span>共 <span class="stat-value">39</span> 个章节</span>
       </div>
       <div class="stat-chip">
-        🎯 <span>知识点 <span class="stat-value">40</span> 个</span>
+        🎯 <span>知识点 <span class="stat-value">400</span> 个</span>
       </div>
       <div class="stat-chip">
-        ✏️ <span>练习题 <span class="stat-value">25</span> 道</span>
+        ✏️ <span>练习题 <span class="stat-value">212</span> 道</span>
       </div>
       <div class="stat-chip" style="cursor:pointer;" onclick="window.location.href='canvas.html'">
         🎨 <span>画布工具</span>
@@ -86,13 +87,17 @@
     
     <div class="chapter-card animate-in " style="animation-delay: 0.0s">
       
-      <span class="card-icon" onclick="goToChapter(1)">🚀</span>
+      <span class="card-icon" onclick="goToChapter(1)">🐍</span>
       <div class="card-num" onclick="goToChapter(1)">第 1 章</div>
-      <h3 onclick="goToChapter(1)">Python 简介与环境搭建</h3>
-      <p onclick="goToChapter(1)">了解 Python 语言的历史、特点，学会安装 Python 并编写你的第一个程序</p>
+      <h3 onclick="goToChapter(1)">认识 Python 与开发环境</h3>
+      <p onclick="goToChapter(1)">学完本章，你应该能够：
+
+- 说出 Python 是什么、能做什么，并从原理上解释&#34;解释型语言&#34;到底怎么运行；
+- 独立完成 Python 3.12 的安装与验证，并理解 PATH 的作用；
+- 用三种方式运行 Python 程序，并说清三</p>
       <div class="card-meta" onclick="goToChapter(1)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 3 道练习</span>
+        <span>📖 13 个知识点</span>
+        <span>✏️ 6 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(1)">
         <div class="progress-bar">
@@ -100,10 +105,6 @@
         </div>
         <div class="progress-label">0% 完成</div>
       </div>
-      
-      <a href="https://feishu.doubao.com/slides/JeXMsQ0J2lYuW1dGPXPchL1znDh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
       
       
     </div>
@@ -113,11 +114,15 @@
       
       <span class="card-icon" onclick="goToChapter(2)">📦</span>
       <div class="card-num" onclick="goToChapter(2)">第 2 章</div>
-      <h3 onclick="goToChapter(2)">变量与数据类型</h3>
-      <p onclick="goToChapter(2)">学习如何存储数据，认识 Python 中的数字、字符串、布尔值等基本数据类型</p>
+      <h3 onclick="goToChapter(2)">变量、数据类型与输入输出</h3>
+      <p onclick="goToChapter(2)">学完本章，你应该能够：
+
+- 理解变量的本质（名字绑定到对象，而不是&#34;装数据的盒子&#34;），并遵循规范命名；
+- 掌握 Python 四种基本数据类型：整数 int、浮点数 float、字符串 str、布尔 bool；
+- 熟练使用算术运算符（</p>
       <div class="card-meta" onclick="goToChapter(2)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(2)">
         <div class="progress-bar">
@@ -126,23 +131,24 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
     
     <div class="chapter-card animate-in " style="animation-delay: 0.16s">
       
-      <span class="card-icon" onclick="goToChapter(3)">⚡</span>
+      <span class="card-icon" onclick="goToChapter(3)">🔀</span>
       <div class="card-num" onclick="goToChapter(3)">第 3 章</div>
-      <h3 onclick="goToChapter(3)">运算符与表达式</h3>
-      <p onclick="goToChapter(3)">掌握算术、比较、逻辑、赋值等运算符，理解运算优先级</p>
+      <h3 onclick="goToChapter(3)">流程控制：条件与循环</h3>
+      <p onclick="goToChapter(3)">学完本章，你应该能够：
+
+- 理解程序的三种基本结构：顺序、分支、循环；
+- 熟练使用 if / elif / else 做条件判断，并理解&#34;真值测试&#34;的本质；
+- 掌握 and / or / not 逻辑运算与短路求值；
+- 熟练使用 w</p>
       <div class="card-meta" onclick="goToChapter(3)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(3)">
         <div class="progress-bar">
@@ -151,23 +157,24 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
     
     <div class="chapter-card animate-in " style="animation-delay: 0.24s">
       
-      <span class="card-icon" onclick="goToChapter(4)">🔄</span>
+      <span class="card-icon" onclick="goToChapter(4)">🔤</span>
       <div class="card-num" onclick="goToChapter(4)">第 4 章</div>
-      <h3 onclick="goToChapter(4)">条件判断与循环</h3>
-      <p onclick="goToChapter(4)">学习 if-elif-else 条件分支、for/while 循环，让程序拥有决策和重复执行的能力</p>
+      <h3 onclick="goToChapter(4)">字符串深入</h3>
+      <p onclick="goToChapter(4)">学完本章，你应该能够：
+
+- 熟练使用索引（含负数索引）与切片访问字符串的任意部分；
+- 掌握字符串常用方法：查找、判断、大小写、拆分合并、去空白、替换；
+- 理解 find 与 index 的区别、split 与 join 的互逆关系；
+</p>
       <div class="card-meta" onclick="goToChapter(4)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(4)">
         <div class="progress-bar">
@@ -176,23 +183,25 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/JUbOsaW9qlrWLpdhqm8cuuRrnNh" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
     
     <div class="chapter-card animate-in " style="animation-delay: 0.32s">
       
-      <span class="card-icon" onclick="goToChapter(5)">📝</span>
+      <span class="card-icon" onclick="goToChapter(5)">📋</span>
       <div class="card-num" onclick="goToChapter(5)">第 5 章</div>
-      <h3 onclick="goToChapter(5)">字符串操作</h3>
-      <p onclick="goToChapter(5)">深入学习字符串的切片、常用方法、格式化输出和编码知识</p>
+      <h3 onclick="goToChapter(5)">数据结构（上）：列表与元组</h3>
+      <p onclick="goToChapter(5)">学完本章，你应该能够：
+
+- 理解列表的本质：可变、有序的容器；
+- 熟练使用列表的增删改查、排序反转、遍历；
+- 理解&#34;列表是可变对象&#34;带来的引用共享陷阱，掌握复制方法；
+- 掌握元组的创建、解包，理解&#34;不可变&#34;的意义；
+- 能区分列表与</p>
       <div class="card-meta" onclick="goToChapter(5)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 9 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(5)">
         <div class="progress-bar">
@@ -201,23 +210,24 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/GbQesnTmvleEcLdNRwlchu40nFv" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
     
     <div class="chapter-card animate-in " style="animation-delay: 0.4s">
       
-      <span class="card-icon" onclick="goToChapter(6)">📋</span>
+      <span class="card-icon" onclick="goToChapter(6)">🗂️</span>
       <div class="card-num" onclick="goToChapter(6)">第 6 章</div>
-      <h3 onclick="goToChapter(6)">列表与元组</h3>
-      <p onclick="goToChapter(6)">掌握 Python 中最常用的序列类型：可变列表与不可变元组</p>
+      <h3 onclick="goToChapter(6)">数据结构（下）：字典与集合</h3>
+      <p onclick="goToChapter(6)">学完本章，你应该能够：
+
+- 理解字典的本质：按键取值、键唯一、查找快；
+- 熟练使用字典的增删改查、遍历（keys/values/items）、get 安全取值；
+- 理解字典的底层是哈希表，知道&#34;键必须不可变&#34;的原因；
+- 熟练使用集合</p>
       <div class="card-meta" onclick="goToChapter(6)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 8 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(6)">
         <div class="progress-bar">
@@ -226,23 +236,24 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/VfsHsBF9mlGuBAdDhdecD3JPnze" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
     
     <div class="chapter-card animate-in " style="animation-delay: 0.48s">
       
-      <span class="card-icon" onclick="goToChapter(7)">🔑</span>
+      <span class="card-icon" onclick="goToChapter(7)">🧩</span>
       <div class="card-num" onclick="goToChapter(7)">第 7 章</div>
-      <h3 onclick="goToChapter(7)">字典与集合</h3>
-      <p onclick="goToChapter(7)">学习键值对存储的字典和无序不重复的集合，掌握哈希表的使用</p>
+      <h3 onclick="goToChapter(7)">函数：把代码组织起来</h3>
+      <p onclick="goToChapter(7)">学完本章，你应该能够：
+
+- 理解函数的意义：打包、复用、接口；
+- 熟练定义和调用函数，掌握 return 与 None 的区别；
+- 掌握四种参数形态：位置、关键字、默认值、*args / **kwargs；
+- 理解参数传递的本质（对</p>
       <div class="card-meta" onclick="goToChapter(7)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 13 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(7)">
         <div class="progress-bar">
@@ -251,22 +262,22 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/VbsesSsPxloxGddI6TQc4nFbnKd" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
     
     <div class="chapter-card animate-in " style="animation-delay: 0.56s">
       
-      <span class="card-icon" onclick="goToChapter(8)">🔧</span>
+      <span class="card-icon" onclick="goToChapter(8)">📚</span>
       <div class="card-num" onclick="goToChapter(8)">第 8 章</div>
-      <h3 onclick="goToChapter(8)">函数进阶</h3>
-      <p onclick="goToChapter(8)">从函数基础到装饰器、生成器、闭包、类型提示——全面掌握 Python 函数式编程</p>
+      <h3 onclick="goToChapter(8)">模块、包与工程化</h3>
+      <p onclick="goToChapter(8)">学完本章，你应该能够：
+
+- 理解模块的意义：复用、组织、命名空间；
+- 掌握 import 的三种写法，熟练使用 math / random / datetime / os 常用标准库；
+- 理解 import 的执行机制（搜索路径、执行</p>
       <div class="card-meta" onclick="goToChapter(8)">
-        <span>📖 8 个知识点</span>
+        <span>📖 10 个知识点</span>
         <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(8)">
@@ -276,10 +287,6 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/HY7YsbW66liMKydjtn2cI5qInVg" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
-      
       
     </div>
     
@@ -288,11 +295,16 @@
       
       <span class="card-icon" onclick="goToChapter(9)">📁</span>
       <div class="card-num" onclick="goToChapter(9)">第 9 章</div>
-      <h3 onclick="goToChapter(9)">文件操作与异常处理</h3>
-      <p onclick="goToChapter(9)">学习读写文件、with 语句、常见异常类型以及 try-except 错误处理机制</p>
+      <h3 onclick="goToChapter(9)">文件读写、异常与调试</h3>
+      <p onclick="goToChapter(9)">学完本章，你应该能够：
+
+- 用 open + with 读写文本文件，理解 w / r / a 三种模式；
+- 处理文件编码（UTF-8），避免中文乱码；
+- 读写 CSV 与 JSON——前后端数据交换的基础格式；
+- 用 try / </p>
       <div class="card-meta" onclick="goToChapter(9)">
-        <span>📖 4 个知识点</span>
-        <span>✏️ 2 道练习</span>
+        <span>📖 11 个知识点</span>
+        <span>✏️ 8 道练习</span>
       </div>
       <div class="progress-wrap" onclick="goToChapter(9)">
         <div class="progress-bar">
@@ -301,9 +313,782 @@
         <div class="progress-label">0% 完成</div>
       </div>
       
-      <a href="https://feishu.doubao.com/slides/PzjJsPQbWlH8m1dtc1ZcyQaInlg" target="_blank" class="btn-ppt-card" onclick="event.stopPropagation()">
-        📊 查看 PPT
-      </a>
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.72s">
+      
+      <span class="card-icon" onclick="goToChapter(10)">🏛️</span>
+      <div class="card-num" onclick="goToChapter(10)">第 10 章</div>
+      <h3 onclick="goToChapter(10)">面向对象（上）：类与封装</h3>
+      <p onclick="goToChapter(10)">学完本章，你应该能够：
+
+- 理解面向对象的核心思想：把&#34;数据&#34;和&#34;操作数据的方法&#34;绑在一起；
+- 用 class 定义类、创建对象，理解 self 的本质；
+- 掌握 __init__ 构造方法与实例属性；
+- 区分实例方法、类方法、静态</p>
+      <div class="card-meta" onclick="goToChapter(10)">
+        <span>📖 13 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(10)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.8s">
+      
+      <span class="card-icon" onclick="goToChapter(11)">🔗</span>
+      <div class="card-num" onclick="goToChapter(11)">第 11 章</div>
+      <h3 onclick="goToChapter(11)">面向对象（下）：继承、多态与设计模式入门</h3>
+      <p onclick="goToChapter(11)">学完本章，你应该能够：
+
+- 理解继承的意义：复用 + 扩展；
+- 掌握子类定义、方法重写、super() 调用父类方法；
+- 理解多态：同一接口、不同实现，isinstance 与鸭子类型；
+- 了解多继承与 MRO（方法解析顺序）；
+-</p>
+      <div class="card-meta" onclick="goToChapter(11)">
+        <span>📖 12 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(11)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.88s">
+      
+      <span class="card-icon" onclick="goToChapter(12)">✨</span>
+      <div class="card-num" onclick="goToChapter(12)">第 12 章</div>
+      <h3 onclick="goToChapter(12)">高级特性：推导式、迭代器、生成器、装饰器</h3>
+      <p onclick="goToChapter(12)">学完本章，你应该能够：
+
+- 熟练使用列表、字典、集合、生成器四种推导式；
+- 理解迭代器协议（__iter__ / __next__ / StopIteration）；
+- 掌握生成器 yield，理解惰性求值与内存优势；
+- 掌握装饰器</p>
+      <div class="card-meta" onclick="goToChapter(12)">
+        <span>📖 12 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(12)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 0.96s">
+      
+      <span class="card-icon" onclick="goToChapter(13)">⚡</span>
+      <div class="card-num" onclick="goToChapter(13)">第 13 章</div>
+      <h3 onclick="goToChapter(13)">第三方库、并发与异步</h3>
+      <p onclick="goToChapter(13)">学完本章，你应该能够：
+
+- 用 pip 安装第三方库，用 requests 发送 HTTP 请求并解析 JSON；
+- 用 datetime 计算日期差、用 re 提取文本中的关键信息；
+- 理解进程/线程/协程的概念与区别；
+- 用 t</p>
+      <div class="card-meta" onclick="goToChapter(13)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(13)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.04s">
+      
+      <span class="card-icon" onclick="goToChapter(14)">🏁</span>
+      <div class="card-num" onclick="goToChapter(14)">第 14 章</div>
+      <h3 onclick="goToChapter(14)">Python 综合训练与阶段测验</h3>
+      <p onclick="goToChapter(14)">学完本章，你应该能够：
+
+- 独立完成&#34;菜单驱动&#34;的命令行小系统（增删改查 + 文件持久化）；
+- 独立完成数据清洗流程（读脏数据 → 校验 → 写干净数据）；
+- 独立完成一个带状态循环的小游戏；
+- 适应 L0 手写机试的节奏与要求；
+</p>
+      <div class="card-meta" onclick="goToChapter(14)">
+        <span>📖 7 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(14)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.12s">
+      
+      <span class="card-icon" onclick="goToChapter(15)">📐</span>
+      <div class="card-num" onclick="goToChapter(15)">第 15 章</div>
+      <h3 onclick="goToChapter(15)">软件工程导论与需求分析</h3>
+      <p onclick="goToChapter(15)">学完本章，你应该能够：
+
+- 说出软件危机的由来与软件工程的定义；
+- 画出软件生命周期，对比瀑布与敏捷两种开发模式；
+- 理解&#34;需求阶段的错误代价最大&#34;；
+- 说出软件定义与分类，认识软件开发各阶段的岗位角色；
+- 用&#34;用户、场景、价值、</p>
+      <div class="card-meta" onclick="goToChapter(15)">
+        <span>📖 7 个知识点</span>
+        <span>✏️ 6 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(15)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.2s">
+      
+      <span class="card-icon" onclick="goToChapter(16)">💎</span>
+      <div class="card-num" onclick="goToChapter(16)">第 16 章</div>
+      <h3 onclick="goToChapter(16)">设计思维与代码质量</h3>
+      <p onclick="goToChapter(16)">学完本章，你应该能够：
+
+- 说出并应用五个设计原则：单一职责、高内聚低耦合、DRY、分层、SOLID 一句话版；
+- 写出符合 PEP 8 的命名与注释规范；
+- 认识类型提示（了解）；
+- 识别代码&#34;坏味道&#34;，掌握提取函数、消除魔法数字</p>
+      <div class="card-meta" onclick="goToChapter(16)">
+        <span>📖 8 个知识点</span>
+        <span>✏️ 6 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(16)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.28s">
+      
+      <span class="card-icon" onclick="goToChapter(17)">🧪</span>
+      <div class="card-num" onclick="goToChapter(17)">第 17 章</div>
+      <h3 onclick="goToChapter(17)">测试：让代码可验证</h3>
+      <p onclick="goToChapter(17)">学完本章，你应该能够：
+
+- 说出为什么需要测试、什么是测试金字塔；
+- 安装并使用 pytest 编写单元测试；
+- 读懂 pytest 的运行输出（通过、失败、断言详情）；
+- 设计边界用例（空列表、极值、非法输入）；
+- 了解 fix</p>
+      <div class="card-meta" onclick="goToChapter(17)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(17)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.36s">
+      
+      <span class="card-icon" onclick="goToChapter(18)">🌿</span>
+      <div class="card-num" onclick="goToChapter(18)">第 18 章</div>
+      <h3 onclick="goToChapter(18)">Git 进阶：分支、合并与冲突</h3>
+      <p onclick="goToChapter(18)">学完本章，你应该能够：
+
+- 用 git diff 审查改动，区分 restore / reset / revert 的用途；
+- 理解&#34;分支 = 可移动指针&#34;，熟练创建、切换、合并分支；
+- 读懂冲突标记（&lt;&lt;&lt;&lt;&lt;&lt;&lt; / ======</p>
+      <div class="card-meta" onclick="goToChapter(18)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(18)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.44s">
+      
+      <span class="card-icon" onclick="goToChapter(19)">☁️</span>
+      <div class="card-num" onclick="goToChapter(19)">第 19 章</div>
+      <h3 onclick="goToChapter(19)">Gitee 平台与远程协作</h3>
+      <p onclick="goToChapter(19)">学完本章，你应该能够：
+
+- 理解本地仓库与远程仓库的关系，区分 SSH 与 HTTPS 两种连接方式；
+- 在 Gitee 创建仓库，完成 remote add / push / pull / clone 全流程；
+- 编写规范的 REA</p>
+      <div class="card-meta" onclick="goToChapter(19)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 6 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(19)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.52s">
+      
+      <span class="card-icon" onclick="goToChapter(20)">👥</span>
+      <div class="card-num" onclick="goToChapter(20)">第 20 章</div>
+      <h3 onclick="goToChapter(20)">团队协作工作流与 Code Review</h3>
+      <p onclick="goToChapter(20)">学完本章，你应该能够：
+
+- 说出单人/小组两种工作流的完整环节；
+- 遵循 Conventional Commits 提交信息规范；
+- 使用 Code Review 清单评审代码，能发现常见问题；
+- 完成&#34;feature 分支 + P</p>
+      <div class="card-meta" onclick="goToChapter(20)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(20)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.6s">
+      
+      <span class="card-icon" onclick="goToChapter(21)">🏗️</span>
+      <div class="card-num" onclick="goToChapter(21)">第 21 章</div>
+      <h3 onclick="goToChapter(21)">软件架构基础</h3>
+      <p onclick="goToChapter(21)">学完本章，你应该能够：
+
+- 说出架构是什么、为什么重要；
+- 画出三层架构（表现层/业务逻辑层/数据访问层）并说明各层职责；
+- 理解 MVC 模式（Model/View/Controller）；
+- 对比单体架构与前后端分离架构，说出各</p>
+      <div class="card-meta" onclick="goToChapter(21)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 6 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(21)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.68s">
+      
+      <span class="card-icon" onclick="goToChapter(22)">🌐</span>
+      <div class="card-num" onclick="goToChapter(22)">第 22 章</div>
+      <h3 onclick="goToChapter(22)">前端基础：HTML、CSS、JavaScript</h3>
+      <p onclick="goToChapter(22)">学完本章，你应该能够：
+
+- 写出一个结构完整的 HTML 页面，认识常用标签与语义化标签；
+- 用 CSS 控制样式，理解选择器与盒模型，会用 Flex 做简单布局；
+- 用 JavaScript 操作页面（DOM）与事件；
+- 用 fe</p>
+      <div class="card-meta" onclick="goToChapter(22)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(22)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.76s">
+      
+      <span class="card-icon" onclick="goToChapter(23)">🛠️</span>
+      <div class="card-num" onclick="goToChapter(23)">第 23 章</div>
+      <h3 onclick="goToChapter(23)">后端基础：HTTP、REST 与数据库</h3>
+      <p onclick="goToChapter(23)">学完本章，你应该能够：
+
+- 说出 HTTP 请求方法与状态码的常见用法；
+- 按 REST 风格设计资源路径（/api/students）与 JSON 响应；
+- 用 SQLite 建表、增删改查，用 Python 的 sqlite3 操</p>
+      <div class="card-meta" onclick="goToChapter(23)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(23)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.84s">
+      
+      <span class="card-icon" onclick="goToChapter(24)">🚄</span>
+      <div class="card-num" onclick="goToChapter(24)">第 24 章</div>
+      <h3 onclick="goToChapter(24)">FastAPI：从入门到会用</h3>
+      <p onclick="goToChapter(24)">学完本章，你应该能够：
+
+- 理解&#34;Web 框架&#34;解决了什么（对比第 23.4 的手写路由）；
+- 安装并运行 FastAPI + uvicorn，访问自动文档 /docs；
+- 写路由：路径参数、查询参数、请求体（Pydantic 校验）</p>
+      <div class="card-meta" onclick="goToChapter(24)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(24)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 1.92s">
+      
+      <span class="card-icon" onclick="goToChapter(25)">💚</span>
+      <div class="card-num" onclick="goToChapter(25)">第 25 章</div>
+      <h3 onclick="goToChapter(25)">Vue 入门</h3>
+      <p onclick="goToChapter(25)">学完本章，你应该能够：
+
+- 说出前端框架解决了手写 DOM 的什么痛点；
+- 用 CDN 方式创建 Vue 应用，掌握模板语法与数据绑定；
+- 使用 v-for / v-if / v-on / v-model 四个核心指令；
+- 理解组件</p>
+      <div class="card-meta" onclick="goToChapter(25)">
+        <span>📖 11 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(25)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.0s">
+      
+      <span class="card-icon" onclick="goToChapter(26)">📊</span>
+      <div class="card-num" onclick="goToChapter(26)">第 26 章</div>
+      <h3 onclick="goToChapter(26)">数据分析与自动化框架（了解）</h3>
+      <p onclick="goToChapter(26)">学完本章，你应该能够：
+
+- 说出 pandas 是什么、解决什么问题（表格数据处理）；
+- 用 pandas 读取 CSV、查看数据、分组汇总；
+- 了解 NumPy 数组（pandas 的底层），看懂向量化运算；
+- 用 matplot</p>
+      <div class="card-meta" onclick="goToChapter(26)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 6 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(26)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.08s">
+      
+      <span class="card-icon" onclick="goToChapter(27)">🧠</span>
+      <div class="card-num" onclick="goToChapter(27)">第 27 章</div>
+      <h3 onclick="goToChapter(27)">大模型、API 与智能体概念</h3>
+      <p onclick="goToChapter(27)">学完本章，你应该能够：
+
+- 说出大模型能做什么、不能做什么（能力边界）；
+- 理解 API 调用原理（POST /chat/completions、messages、role）；
+- 理解 Prompt 与上下文窗口的关系；
+- 说出智能</p>
+      <div class="card-meta" onclick="goToChapter(27)">
+        <span>📖 9 个知识点</span>
+        <span>✏️ 4 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(27)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.16s">
+      
+      <span class="card-icon" onclick="goToChapter(28)">🤖</span>
+      <div class="card-num" onclick="goToChapter(28)">第 28 章</div>
+      <h3 onclick="goToChapter(28)">DeepSeek API 实战</h3>
+      <p onclick="goToChapter(28)">学完本章，你应该能够：
+
+- 注册 DeepSeek 开放平台并理解成本控制；
+- 用环境变量管理 API Key，绝不入库；
+- 用 requests 和 OpenAI SDK 两种方式调用 DeepSeek；
+- 用 system pr</p>
+      <div class="card-meta" onclick="goToChapter(28)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 8 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(28)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.24s">
+      
+      <span class="card-icon" onclick="goToChapter(29)">🧭</span>
+      <div class="card-num" onclick="goToChapter(29)">第 29 章</div>
+      <h3 onclick="goToChapter(29)">主流智能体框架全景</h3>
+      <p onclick="goToChapter(29)">学完本章，你应该能够：
+
+- 说出 4 个以上主流智能体框架/平台的名字和定位；
+- 根据场景选择合适的框架；
+- 理解&#34;框架 = 第 28 章工具调用循环的工程化&#34;；
+- 完成一次小组框架调研分享。
+
+前置知识：第 27-28 章（API</p>
+      <div class="card-meta" onclick="goToChapter(29)">
+        <span>📖 8 个知识点</span>
+        <span>✏️ 4 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(29)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.32s">
+      
+      <span class="card-icon" onclick="goToChapter(30)">🎯</span>
+      <div class="card-num" onclick="goToChapter(30)">第 30 章</div>
+      <h3 onclick="goToChapter(30)">综合实战 M1-1：项目启动、L4 解锁与需求分析</h3>
+      <p onclick="goToChapter(30)">学完本章你能：
+
+- 完成小组组建与角色分工，明确&#34;接口先行&#34;的协作方式；
+- 完成 L4 解锁仪式，理解 L4 的边界与纪律；
+- 用&#34;AI 生成框架 + 学生完善&#34;的方式产出《需求文档》，并完成小组互评与需求冻结；
+- 把需求落到 P0</p>
+      <div class="card-meta" onclick="goToChapter(30)">
+        <span>📖 11 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(30)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.4s">
+      
+      <span class="card-icon" onclick="goToChapter(31)">🗺️</span>
+      <div class="card-num" onclick="goToChapter(31)">第 31 章</div>
+      <h3 onclick="goToChapter(31)">综合实战 M1-2：架构设计、数据库与 API 设计与仓库搭建</h3>
+      <p onclick="goToChapter(31)">学完本章你能：
+
+- 画出&#34;前后端分离 + 三层架构&#34;的架构图，并能解释每一层为什么存在；
+- 完成数据库设计：笔记 / 标签多对多建模、对话历史表、外键与时间戳约定；
+- 冻结一份 REST API 清单（路径、参数、响应、错误约定），为</p>
+      <div class="card-meta" onclick="goToChapter(31)">
+        <span>📖 12 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(31)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.48s">
+      
+      <span class="card-icon" onclick="goToChapter(32)">🧱</span>
+      <div class="card-num" onclick="goToChapter(32)">第 32 章</div>
+      <h3 onclick="goToChapter(32)">综合实战 M2：后端开发（FastAPI + SQLite + DeepSeek + pytest）</h3>
+      <p onclick="goToChapter(32)">学完本章你能：
+
+- 从零搭起 FastAPI 项目骨架（config / db / routers / services 分层）；
+- 完成笔记与标签 CRUD、搜索、标签筛选、置顶，全部走参数化 SQL；
+- 封装 DeepSeek 调</p>
+      <div class="card-meta" onclick="goToChapter(32)">
+        <span>📖 13 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(32)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.56s">
+      
+      <span class="card-icon" onclick="goToChapter(33)">🎨</span>
+      <div class="card-num" onclick="goToChapter(33)">第 33 章</div>
+      <h3 onclick="goToChapter(33)">综合实战 M3：前端开发（Vue 三栏工作区）</h3>
+      <p onclick="goToChapter(33)">学完本章你能：
+
+- 用 HTML + CSS Grid 搭出三栏工作区，用 CSS 变量实现亮/暗双主题；
+- 用 api.js 统一封装 fetch（/api 前缀、错误解析、204 处理）；
+- 用 Vue 3 Options API</p>
+      <div class="card-meta" onclick="goToChapter(33)">
+        <span>📖 13 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(33)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.64s">
+      
+      <span class="card-icon" onclick="goToChapter(34)">🔧</span>
+      <div class="card-num" onclick="goToChapter(34)">第 34 章</div>
+      <h3 onclick="goToChapter(34)">综合实战 M4：联调、测试与部署</h3>
+      <p onclick="goToChapter(34)">学完本章你能：
+
+- 系统化完成前后端联调（契约核对、CORS、字段、错误码）；
+- 用 Debug 记录模板沉淀 3 条以上真实问题（这是验收项，也是答辩素材）；
+- 完成回归测试（pytest 全绿 + 手工清单）；
+- 完善 READ</p>
+      <div class="card-meta" onclick="goToChapter(34)">
+        <span>📖 11 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(34)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.72s">
+      
+      <span class="card-icon" onclick="goToChapter(35)">🎤</span>
+      <div class="card-num" onclick="goToChapter(35)">第 35 章</div>
+      <h3 onclick="goToChapter(35)">综合实战 M5：演示答辩与复盘</h3>
+      <p onclick="goToChapter(35)">学完本章你能：
+
+- 用 8 分钟演示脚本流畅展示项目（功能 + 架构 + 工程证据）；
+- 用&#34;分层 → 数据流 → 取舍&#34;的话术讲清架构，回答高频追问；
+- 完成 Code Review 复盘：统计 PR、梳理&#34;哪些让 AI 做、哪些自</p>
+      <div class="card-meta" onclick="goToChapter(35)">
+        <span>📖 12 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(35)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.8000000000000003s">
+      
+      <span class="card-icon" onclick="goToChapter(37)">🔌</span>
+      <div class="card-num" onclick="goToChapter(37)">第 37 章</div>
+      <h3 onclick="goToChapter(37)">LLM API 工程化与 AI 后端（Day 06–10）</h3>
+      <p onclick="goToChapter(37)">本章把“命令行里调用一次模型”逐层升级为“可供前端和其他系统调用的后端服务”。每天只增加一个主要复杂度。
+
+```text
+flowchart LR
+ A[Day05 同步单次调用] --&gt; B[Day06 异步与多供应商]
+ B --&gt; </p>
+      <div class="card-meta" onclick="goToChapter(37)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(37)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.88s">
+      
+      <span class="card-icon" onclick="goToChapter(38)">📚</span>
+      <div class="card-num" onclick="goToChapter(38)">第 38 章</div>
+      <h3 onclick="goToChapter(38)">RAG 检索增强生成（Day 11–16）</h3>
+      <p onclick="goToChapter(38)">完成本章后，学生能够：
+
+- 解释 RAG 的数据流，以及它缓解知识过期和无依据回答的原因。
+- 将 PDF、Word、HTML 转成统一的 Document 数据。
+- 独立实现固定窗口、递归和基于段落的切块，并通过实验选择参数。
+- 使</p>
+      <div class="card-meta" onclick="goToChapter(38)">
+        <span>📖 12 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(38)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 2.96s">
+      
+      <span class="card-icon" onclick="goToChapter(39)">🕹️</span>
+      <div class="card-num" onclick="goToChapter(39)">第 39 章</div>
+      <h3 onclick="goToChapter(39)">Agent 核心机制：从零自研（Day 17–20）</h3>
+      <p onclick="goToChapter(39)">完成本章后，学生能够：
+
+- 解释普通对话、工作流与 Agent 的控制流差异。
+- 使用 JSON Schema 描述工具输入，完成 tool call、tool result 的往返循环。
+- 手写带最大步数、超时、参数校验和停止原因的</p>
+      <div class="card-meta" onclick="goToChapter(39)">
+        <span>📖 11 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(39)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="chapter-card animate-in " style="animation-delay: 3.04s">
+      
+      <span class="card-icon" onclick="goToChapter(40)">🧰</span>
+      <div class="card-num" onclick="goToChapter(40)">第 40 章</div>
+      <h3 onclick="goToChapter(40)">Agent 框架实战（Day 21–25）</h3>
+      <p onclick="goToChapter(40)">本章不重新学习“Agent 是什么”，而是把第四章手写组件逐项映射到框架。
+
+第四章手写概念 | LangGraph 映射 | 本章出现时间 | 
+
+AgentResult 中的运行数据 | State | Day 21 | 
+一个处理函数</p>
+      <div class="card-meta" onclick="goToChapter(40)">
+        <span>📖 10 个知识点</span>
+        <span>✏️ 0 道练习</span>
+      </div>
+      <div class="progress-wrap" onclick="goToChapter(40)">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">0% 完成</div>
+      </div>
       
       
     </div>

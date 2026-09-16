@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyMaster — 字符串操作</title>
+<title>PyMaster — 数据结构（上）：列表与元组</title>
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
@@ -12,8 +12,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
 </head>
-<body class="chapter-page" data-chapter-id="5" data-chapter-title="字符串操作" data-chapter-description="深入学习字符串的切片、常用方法、格式化输出和编码知识">
+<body class="chapter-page" data-chapter-id="5" data-chapter-title="数据结构（上）：列表与元组" data-chapter-description="学完本章，你应该能够：
+
+- 理解列表的本质：可变、有序的容器；
+- 熟练使用列表的增删改查、排序反转、遍历；
+- 理解&#34;列表是可变对象&#34;带来的引用共享陷阱，掌握复制方法；
+- 掌握元组的创建、解包，理解&#34;不可变&#34;的意义；
+- 能区分列表与">
 
 <div class="bg-grid"></div>
 <canvas id="particles-canvas"></canvas>
@@ -43,15 +55,17 @@
   <!-- Hero -->
   <div class="chapter-hero">
     <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 05</p>
-    <span class="hero-icon">📝</span>
-    <h2>第 5 章 · 字符串操作</h2>
-    <p class="hero-desc">深入学习字符串的切片、常用方法、格式化输出和编码知识</p>
+    <span class="hero-icon">📋</span>
+    <h2>第 5 章 · 数据结构（上）：列表与元组</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 理解列表的本质：可变、有序的容器；
+- 熟练使用列表的增删改查、排序反转、遍历；
+- 理解&#34;列表是可变对象&#34;带来的引用共享陷阱，掌握复制方法；
+- 掌握元组的创建、解包，理解&#34;不可变&#34;的意义；
+- 能区分列表与</p>
     <div class="hero-buttons">
       <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
-      
-      <a href="https://feishu.doubao.com/slides/GbQesnTmvleEcLdNRwlchu40nFv" target="_blank" class="btn-ppt-hero">
-        📊 查看本章 PPT 课件
-      </a>
       
       
       
@@ -80,7 +94,7 @@
           
           <span style="color:var(--cyan);font-weight:700;">01.</span>
           
-          字符串索引与切片
+          5.0 学习目标与前置知识
         </span>
         <span class="kp-indicator">
           ▼
@@ -90,42 +104,15 @@
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>索引（从 0 开始）</h3><pre><code>s = "Hello Python"
-print(s[0])   # H（第一个字符）
-print(s[6])   # P（第七个字符，空格也算一个字符）
-print(s[-1])  # n（最后一个字符）
-print(s[-3])  # h（倒数第三个）</code></pre><h3>切片 [start:stop:step]</h3><pre><code>s = "Hello Python"
-# 三个参数都可以省略
-print(s[0:5])    # Hello（索引 0~4，含头不含尾）
-print(s[6:])     # Python（从索引6到末尾）
-print(s[:5])     # Hello（从开头到索引4）
-print(s[::2])    # HloPto（步长为2，隔一个取一个）
-print(s[::-1])   # nohtyP olleH（反转字符串！经典技巧）</code></pre>
-<h3>切片的三个参数</h3><pre><code># s[start:stop:step]
-# start: 起始索引（默认0）
-# stop:  结束索引（默认末尾），不包含该索引位置
-# step:  步长（默认1），负数表示反向
-
-s = "0123456789"
-print(s[2:8])     # "234567"
-print(s[2:8:2])   # "246"
-print(s[8:2:-1])  # "876543"（反向切片）</code></pre>
-<h3>切片 vs 索引：越界行为不同</h3><pre><code>s = "Hello"
-# 索引越界 → 报错
-# print(s[100])  # IndexError!
-
-# 切片越界 → 不报错，返回空或截断到末尾
-print(s[0:100])  # "Hello"（安全！）
-print(s[100:])   # ""（空字符串）</code></pre>
-<h3>字符串不可变性（复习）</h3><pre><code>s = "Hello"
-# s[0] = "h"  # ❌ 报错
-s = "h" + s[1:]  # ✅ 创建新字符串</code></pre>
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>理解列表的本质：可变、有序的容器；</li><li>熟练使用列表的增删改查、排序反转、遍历；</li><li>理解"列表是可变对象"带来的引用共享陷阱，掌握复制方法；</li><li>掌握元组的创建、解包，理解"不可变"的意义；</li><li>能区分列表与元组、可变与不可变的适用场景；</li><li>用列表 + 循环解决成绩管理、去重等实际问题；</li><li>会用二维列表表示矩阵/表格，并遍历访问；</li><li>掌握顺序/二分/插值查找与选择/冒泡/插入排序的思路，能看懂并手写其中一种；</li><li>理解 L0 → L1 的升级规则：AI 仍然只能"讲解"，不能"写码"。</li></ol>
+<p><strong>前置知识</strong>：第 1-4 章（变量、运算、input、if、while、for、字符串索引切片）。</p>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 0, "\u5b57\u7b26\u4e32\u7d22\u5f15\u4e0e\u5207\u7247", [{"answer": 1, "ex_idx": 0, "explanation": "\u003ccode\u003e[::-1]\u003c/code\u003e \u8868\u793a\u4ece\u672b\u5c3e\u5230\u5f00\u5934\uff0c\u6b65\u957f\u4e3a -1\uff0c\u5373\u003cstrong\u003e\u53cd\u8f6c\u5b57\u7b26\u4e32\u003c/strong\u003e\u3002\u8fd9\u662f Python \u4e2d\u6700\u7b80\u6d01\u7684\u5b57\u7b26\u4e32\u53cd\u8f6c\u65b9\u5f0f\uff0c\u7ed3\u679c\u5c31\u662f \"nohtyP\"\u3002", "options": ["A. \"Python\"", "B. \"nohtyP\"", "C. \"P\"", "D. \u62a5\u9519"], "question": "s = \"Python\"\uff0c\u6267\u884c s[::-1] \u7684\u7ed3\u679c\u662f\u4ec0\u4e48\uff1f", "type": "choice"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 0, "5.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7d22\u5f15\u4ece 0 \u5f00\u59cb\uff1b\u003ccode class=\"md-inline\"\u003e[-1]\u003c/code\u003e \u53d6\u6700\u540e\u4e00\u4e2a\uff1b\u5207\u7247 \u003ccode class=\"md-inline\"\u003e[0:3]\u003c/code\u003e \u542b\u5934\u4e0d\u542b\u5c3e\uff1b\u003ccode class=\"md-inline\"\u003elen\u003c/code\u003e \u8fd4\u56de\u5143\u7d20\u4e2a\u6570\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u521b\u5efa\u4e00\u4e2a\u5217\u8868 `nums = [10, 20, 30, 40, 50]`\uff0c\u5206\u522b\u8f93\u51fa\uff1a\u7b2c\u4e00\u4e2a\u5143\u7d20\u3001\u6700\u540e\u4e00\u4e2a\u5143\u7d20\u3001\u524d\u4e09\u4e2a\u5143\u7d20\u3001\u5217\u8868\u957f\u5ea6\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [10, 20, 30, 40, 50]\n\nprint(nums[0])\nprint(nums[-1])\nprint(nums[0:3])\nprint(len(nums))\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e10\n50\n[10, 20, 30]\n5\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -138,70 +125,8 @@ s = "h" + s[1:]  # ✅ 创建新字符串</code></pre>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(5, '0', "s = \"Python\"\uff0c\u6267\u884c s[::-1] \u7684\u7ed3\u679c\u662f\u4ec0\u4e48\uff1f")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 1 \u9898**\uff1a\u521b\u5efa\u4e00\u4e2a\u5217\u8868 `nums = [10, 20, 30, 40, 50]`\uff0c\u5206\u522b\u8f93\u51fa\uff1a\u7b2c\u4e00\u4e2a\u5143\u7d20\u3001\u6700\u540e\u4e00\u4e2a\u5143\u7d20\u3001\u524d\u4e09\u4e2a\u5143\u7d20\u3001\u5217\u8868\u957f\u5ea6\u3002")" title="收藏">☆</button>
               </div>
-            </div>
-            
-            <!-- Multiple Choice -->
-            <div class="ex-question" style="font-size:14px;margin-bottom:12px;white-space:pre-wrap;font-family:monospace;background:var(--bg-secondary);padding:10px 12px;border-radius:6px;line-height:1.6;">s = &#34;Python&#34;，执行 s[::-1] 的结果是什么？</div>
-            <div class="ex-options" data-ex-type="choice" data-correct="1">
-              
-              <label class="ex-option" data-opt="0">
-                <span class="opt-letter">A</span>
-                <span> "Python"</span>
-              </label>
-              
-              <label class="ex-option" data-opt="1">
-                <span class="opt-letter">B</span>
-                <span> "nohtyP"</span>
-              </label>
-              
-              <label class="ex-option" data-opt="2">
-                <span class="opt-letter">C</span>
-                <span> "P"</span>
-              </label>
-              
-              <label class="ex-option" data-opt="3">
-                <span class="opt-letter">D</span>
-                <span> 报错</span>
-              </label>
-              
-            </div>
-            <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-submit" onclick="submitChoiceEx(this, 5, 0, 0)">提交答案</button>
-              <button class="btn-show-answer" onclick="showExAnswer(this)">查看解析</button>
-              <button class="btn-jj small" onclick="askJJAboutExercise("s = \"Python\"\uff0c\u6267\u884c s[::-1] \u7684\u7ed3\u679c\u662f\u4ec0\u4e48\uff1f")">请教 AI 助教</button>
-            </div>
-            <div class="ex-answer" style="display:none;">
-              <div class="answer-label">📝 答案解析</div>
-              <div class="answer-text"><code>[::-1]</code> 表示从末尾到开头，步长为 -1，即<strong>反转字符串</strong>。这是 Python 中最简洁的字符串反转方式，结果就是 "nohtyP"。</div>
-            </div>
-            
-          </div>
-          
-          <div class="kp-exercise" data-ex-idx="1" data-kp-index="0">
-            <div class="kp-ex-header">
-              <span>练习 2</span>
-              <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u7d22\u5f15\u4e0e\u5207\u7247\u300d")" title="收藏">☆</button>
-              </div>
-            </div>
-            
-            <!-- Code Exercise -->
-            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
-            </div>
-            <div class="ex-code-hint">
-              💡 提示：定义字符串，使用 f-string 拼接并输出。
-            </div>
-            <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(5, 0, 1, "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002")'>
-                💻 打开编辑器作答
-              </button>
-            </div>
-            <div class="ex-answer code-result" style="display:none;">
-              <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
             </div>
             
           </div>
@@ -230,8 +155,11 @@ s = "h" + s[1:]  # ✅ 创建新字符串</code></pre>
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 0, '字符串索引与切片')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 0, '5.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 0, '5.0 学习目标与前置知识')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -252,7 +180,7 @@ s = "h" + s[1:]  # ✅ 创建新字符串</code></pre>
           
           <span style="color:var(--cyan);font-weight:700;">02.</span>
           
-          字符串常用方法（上）
+          5.1 列表：可变的有序序列
         </span>
         <span class="kp-indicator">
           ▼
@@ -262,43 +190,298 @@ s = "h" + s[1:]  # ✅ 创建新字符串</code></pre>
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>大小写转换</h3><pre><code>s = "Hello World"
-print(s.upper())       # HELLO WORLD
-print(s.lower())       # hello world
-print(s.title())       # Hello World（每个单词首字母大写）
-print(s.capitalize())  # Hello world（只有第一个字符大写）
-print(s.swapcase())    # hELLO wORLD（大小写互换）
+            <h3 class="md-h">5.1.1 概念认知：为什么需要列表</h3>
+<p>第 3 章我们用 <code class="md-inline">scores = [88, 95, 76, 100, 82]</code> 做过打擂台——那就是<strong>列表</strong>。为什么不用 5 个变量 <code class="md-inline">s1, s2, s3, s4, s5</code>？</p>
+<p><strong>代码案例 5.1</strong>：多个变量 vs 一个列表（❌ vs ✅）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># 用 5 个变量：想处理 100 个成绩就要写 100 个变量，根本没法循环
+s1 = 88
+s2 = 95
+s3 = 76
 
-# 实用场景
-user_input = "  YES  "
-if user_input.strip().lower() == "yes":  # 不区分大小写
-    print("确认")</code></pre>
-<h3>去除空白</h3><pre><code>s = "  hello world  \n"
-print(repr(s.strip()))   # 'hello world'（去两端）
-print(repr(s.lstrip()))  # 'hello world  \n'（去左侧）
-print(repr(s.rstrip()))  # '  hello world'（去右侧）</code></pre>
-<h3>查找与替换</h3><pre><code>s = "Hello World, Hello Python"
-# find vs index
-print(s.find("World"))     # 6（找到返回索引）
-print(s.find("Java"))      # -1（没找到返回-1，不报错）
-# print(s.index("Java"))   # ❌ ValueError!（没找到会报错）
+# 用列表：一个名字装一堆数据，还能循环处理
+scores = [88, 95, 76, 100, 82]
+total = 0
+for score in scores:
+    total += score
+print(f&quot;总分：{total}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">总分：441</pre></div>
+<p><strong>讲解</strong>：列表是<strong>容器</strong>——一个变量装多个数据；列表是<strong>有序</strong>的——每个元素有固定位置；列表是<strong>可变</strong>的——可以增删改。这三个特性让它成为 Python 使用频率最高的数据结构。</p>
+<h3 class="md-h">5.1.2 语法掌握：创建与访问</h3>
+<p><strong>代码案例 5.2</strong>：创建列表、索引、负数索引、切片（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;, &quot;grape&quot;]
 
-# rfind: 从右侧查找
-print(s.rfind("Hello"))    # 13（最后一次出现的位置）
+print(fruits[0])
+print(fruits[-1])
+print(fruits[0:2])
+print(fruits[::2])
+print(len(fruits))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">apple
+grape
+[&#x27;apple&#x27;, &#x27;banana&#x27;]
+[&#x27;apple&#x27;, &#x27;orange&#x27;]
+4</pre></div>
+<p><strong>讲解</strong>：列表的索引、负数索引、切片语法<strong>与字符串完全一样</strong>——第 4 章学的技能直接迁移。区别只在于：字符串切片得到字符串，列表切片得到<strong>新列表</strong>。</p>
+<p><strong>交叉验证：索引越界（与字符串相同的坑）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(fruits[10])</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">IndexError: list index out of range</pre></div>
+<p><strong>讲解</strong>：列表索引同样从 0 开始、越界报 <code class="md-inline">IndexError</code>。处理不确定长度的列表时，先用 <code class="md-inline">len()</code> 或切片，别硬写索引。</p>
+<h3 class="md-h">5.1.3 语法掌握：序列的共性——列表与字符串的对比</h3>
+<p><strong>代码案例 5.3</strong>：序列通用操作（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">word = &quot;Python&quot;
+lst = [&quot;P&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;]
 
-# count: 统计次数
-print(s.count("Hello"))    # 2
-print(s.count("l"))        # 5
+print(len(word), len(lst))
+print(&quot;t&quot; in word, &quot;t&quot; in lst)
+print(word[1:3], lst[1:3])</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">6 6
+True True
+yt [&#x27;y&#x27;, &#x27;t&#x27;]</pre></div>
+<p><strong>讲解</strong>：字符串和列表都是<strong>序列（sequence）</strong>，共享一套操作：<code class="md-inline">len</code>、<code class="md-inline">in</code>、索引、切片、遍历。但有一个关键区别——</p>
+<p><strong>交叉验证：字符串不可变 vs 列表可变</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">word = &quot;Python&quot;
+word[0] = &quot;J&quot;      # TypeError: &#x27;str&#x27; object does not support item assignment
 
-# replace
-print(s.replace("Hello", "你好"))  # 你好 World, 你好 Python
-print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换第一处）</code></pre>
+lst = [&quot;P&quot;, &quot;y&quot;, &quot;t&quot;, &quot;h&quot;, &quot;o&quot;, &quot;n&quot;]
+lst[0] = &quot;J&quot;       # 成功！
+print(lst)</code></pre></div>
+<p><strong>运行结果</strong>（注释掉第一句后）：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;J&#x27;, &#x27;y&#x27;, &#x27;t&#x27;, &#x27;h&#x27;, &#x27;o&#x27;, &#x27;n&#x27;]</pre></div>
+<p><strong>讲解</strong>：字符串不可变（改不了），列表可变（能改）。<strong>"序列"是一家人，但"可变性"分了家</strong>——这是后面所有数据结构理解的起点。</p>
+<h3 class="md-h">5.1.4 语法掌握：增删改——列表的五大类操作</h3>
+<p><strong>代码案例 5.4</strong>：追加、插入、扩展（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">fruits = [&quot;apple&quot;, &quot;banana&quot;]
+
+fruits.append(&quot;orange&quot;)          # 末尾追加一个
+print(fruits)
+
+fruits.insert(1, &quot;kiwi&quot;)         # 指定位置插入
+print(fruits)
+
+fruits.extend([&quot;pear&quot;, &quot;plum&quot;])  # 追加一整个列表
+print(fruits)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;orange&#x27;]
+[&#x27;apple&#x27;, &#x27;kiwi&#x27;, &#x27;banana&#x27;, &#x27;orange&#x27;]
+[&#x27;apple&#x27;, &#x27;kiwi&#x27;, &#x27;banana&#x27;, &#x27;orange&#x27;, &#x27;pear&#x27;, &#x27;plum&#x27;]</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">append(x)</code>：末尾追加<strong>一个</strong>元素；</li><li><code class="md-inline">insert(位置, x)</code>：在指定位置插入；</li><li><code class="md-inline">extend(列表)</code>：把另一个列表的所有元素逐个追加。</li></ul>
+<p><strong>交叉验证：append 和 extend 的区别</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">fruits = [&quot;apple&quot;]
+fruits.append([&quot;pear&quot;, &quot;plum&quot;])   # 整个列表作为一个元素
+print(fruits)
+
+fruits2 = [&quot;apple&quot;]
+fruits2.extend([&quot;pear&quot;, &quot;plum&quot;])  # 逐个元素追加
+print(fruits2)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;apple&#x27;, [&#x27;pear&#x27;, &#x27;plum&#x27;]]
+[&#x27;apple&#x27;, &#x27;pear&#x27;, &#x27;plum&#x27;]</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">append</code> 把参数当<strong>一个元素</strong>塞进去（嵌套列表）；<code class="md-inline">extend</code> 把参数<strong>拆开</strong>逐个追加。<strong>想合并两个列表，用 extend；想装一个"整体"，用 append</strong>。</p>
+<p><strong>代码案例 5.5</strong>：删除（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;, &quot;grape&quot;]
+
+last = fruits.pop()        # 删除并返回最后一个
+print(last)
+print(fruits)
+
+fruits.remove(&quot;banana&quot;)    # 按值删除第一个匹配
+print(fruits)
+
+del fruits[0]              # 按位置删除
+print(fruits)
+
+fruits.clear()             # 清空
+print(fruits)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">grape
+[&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;orange&#x27;]
+[&#x27;apple&#x27;, &#x27;orange&#x27;]
+[&#x27;orange&#x27;]
+[]</pre></div>
+<p><strong>讲解</strong>：四种删除各有分工——<code class="md-inline">pop()</code> 删末尾还能拿回值（像"栈"），<code class="md-inline">remove</code> 按值删，<code class="md-inline">del</code> 按位置删，<code class="md-inline">clear</code> 清空。<strong>"删除并返回"用 pop，"只删除"用 del/remove</strong>。</p>
+<p><strong>交叉验证：remove 删不存在的元素</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">fruits.remove(&quot;watermelon&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: list.remove(x): x not in list</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">remove</code> 找不到值会抛 <code class="md-inline">ValueError</code>。<strong>删除前先判断 <code class="md-inline">if x in fruits</code></strong>，或捕获异常（第 9 章学）。</p>
+<p><strong>交叉验证：append 的返回值是 None</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">lst = [1, 2]
+result = lst.append(3)
+print(result)
+print(lst)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">None
+[1, 2, 3]</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">append</code> 等"原地修改"的方法<strong>返回 None</strong>——它们不返回新列表！新手常写 <code class="md-inline">lst = lst.append(3)</code>，结果把列表弄丢了（<code class="md-inline">lst</code> 变成了 None）。<strong>记住：修改型方法原地改、返回 None；生成型方法（如 sorted）返回新结果</strong>。</p>
+<p><strong>微任务卡（M1 · 报错卡 · L1）</strong>：把 <code class="md-inline">fruits.remove("watermelon")</code> 的 ValueError 报错发给 AI，提问："remove 找不到元素为什么会报错？删除前应该先做什么？"一句话记录结论。</p>
+<h3 class="md-h">5.1.5 语法掌握：查找、排序、反转</h3>
+<p><strong>代码案例 5.6</strong>：in / index / count / sort / reverse（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [3, 1, 4, 1, 5, 9, 2]
+
+print(4 in nums)
+print(nums.index(4))
+print(nums.count(1))
+
+nums.sort()
+print(nums)
+
+nums.sort(reverse=True)
+print(nums)
+
+nums.reverse()
+print(nums)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True
+2
+2
+[1, 1, 2, 3, 4, 5, 9]
+[9, 5, 4, 3, 2, 1, 1]
+[1, 1, 2, 3, 4, 5, 9]</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">in</code> 判断存在；<code class="md-inline">index</code> 找位置；<code class="md-inline">count</code> 统计次数；</li><li><code class="md-inline">sort()</code> <strong>原地</strong>排序（默认升序），<code class="md-inline">reverse=True</code> 降序；</li><li><code class="md-inline">reverse()</code> <strong>原地</strong>反转。</li></ul>
+<p><strong>交叉验证：sort 原地改 vs sorted 返回新列表</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [3, 1, 2]
+
+nums.sort()               # 原地：nums 被改了，返回值是 None
+print(nums)
+
+nums2 = [3, 1, 2]
+new_list = sorted(nums2)  # 生成：返回新列表，nums2 不变
+print(new_list)
+print(nums2)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[1, 2, 3]
+[1, 2, 3]
+[3, 1, 2]</pre></div>
+<p><strong>讲解</strong>：<strong><code class="md-inline">sort</code> 原地排序（原列表变，返回 None）；<code class="md-inline">sorted</code> 返回新列表（原列表不变）</strong>。想保留原始顺序就 sorted，不在乎就 sort。这个区别和第 5.1.4 的 append 返回值一样，是"修改型 vs 生成型"的同一逻辑。</p>
+<h3 class="md-h">5.1.6 原理探秘：列表是可变对象——引用共享的"大坑"</h3>
+<p>第 2 章讲过"变量是标签"。对整数这种不可变对象，<code class="md-inline">b = a</code> 没任何问题；但列表是<strong>可变对象</strong>，<code class="md-inline">b = a</code> 会带来一个著名的坑：</p>
+<p><strong>代码案例 5.7</strong>：<code class="md-inline">b = a</code> 之后，改 b 竟然改了 a（❌ 陷阱演示）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = [1, 2, 3]
+b = a
+
+b.append(4)
+
+print(&quot;a =&quot;, a)
+print(&quot;b =&quot;, b)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">a = [1, 2, 3, 4]
+b = [1, 2, 3, 4]</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">b = a</code> 并没有复制数据，而是让 <code class="md-inline">b</code> 和 <code class="md-inline">a</code> <strong>指向同一个列表对象</strong>。通过 <code class="md-inline">b</code> 改列表，<code class="md-inline">a</code> 看到的也是同一个列表——所以两个都变了。<strong>这符合"标签"模型：两个标签贴在同一个对象上</strong>。</p>
+<p><strong>交叉验证：如何真正复制列表</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = [1, 2, 3]
+
+c = a[:]          # 方法一：切片复制
+d = list(a)       # 方法二：list() 复制
+
+c.append(4)
+d.append(5)
+
+print(&quot;a =&quot;, a)
+print(&quot;c =&quot;, c)
+print(&quot;d =&quot;, d)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">a = [1, 2, 3]
+c = [1, 2, 3, 4]
+d = [1, 2, 3, 5]</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">a[:]</code> 和 <code class="md-inline">list(a)</code> 都创建了<strong>新列表</strong>，改 c、d 不影响 a。<strong>"复制" vs "共享引用"，是面试必考、工作必踩的点</strong>。注意：这是"浅复制"——如果列表里还套着列表（第 10 章讲深/浅拷贝），还要更小心。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：函数参数传递也是"传引用"（第 7 章会看到：函数里修改列表，外面也会变）。这是 Python 与"值传递"语言最大的思维差异。</p></blockquote>
+<h3 class="md-h">5.1.7 语法掌握：遍历与列表推导式入门</h3>
+<p><strong>代码案例 5.8</strong>：两种遍历方式（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [10, 20, 30]
+
+# 方式一：遍历元素
+for num in nums:
+    print(num)
+
+# 方式二：按索引遍历（需要位置信息时）
+for i in range(len(nums)):
+    print(f&quot;第 {i} 个是 {nums[i]}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">10
+20
+30
+第 0 个是 10
+第 1 个是 20
+第 2 个是 30</pre></div>
+<p><strong>讲解</strong>：只要元素本身 → 方式一；需要"第几个" → 方式二。</p>
+<p><strong>代码案例 5.9</strong>：列表推导式入门（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3, 4, 5]
+
+doubled = [x * 2 for x in nums]
+evens = [x for x in nums if x % 2 == 0]
+
+print(doubled)
+print(evens)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[2, 4, 6, 8, 10]
+[2, 4]</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">[x * 2 for x in nums]</code> 读作"对 nums 里的每个 x，生成 x*2"——它用一行代替了"建空列表 + for 循环 + append"三行。第 12 章会系统学推导式，这里先认识它的长相。</p>
+<p><strong>微任务卡（M2 · 讲解卡 · L1）</strong>：把 <code class="md-inline">b = a</code> 引用共享案例发给 AI，提问："请解释为什么修改 b 之后 a 也变了？a[:] 和 list(a) 为什么能复制？"一句话记录理解。</p>
+<h3 class="md-h">5.1.8 语法掌握：二维列表（矩阵）</h3>
+<p><strong>概念认知</strong>：列表的元素还可以是列表——这就是<strong>二维列表</strong>，天然适合表示"表格/矩阵"。</p>
+<p><strong>代码案例 5.10</strong>：二维列表的创建与访问（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+
+print(len(matrix))        # 3：外层有几行
+print(len(matrix[0]))     # 3：第 0 行有几列
+print(matrix[1][2])       # 6：第 2 行第 3 列
+
+# 遍历：按索引（可以修改元素）
+for i in range(len(matrix)):
+    for j in range(len(matrix[i])):
+        print(matrix[i][j], end=&quot; &quot;)
+    print()</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3
+3
+6
+1 2 3
+4 5 6
+7 8 9</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">matrix[1][2]</code> 读作"先取第 1 行（<code class="md-inline">[4,5,6]</code>），再取它的第 2 个元素（6）"——<strong>外层索引取行、内层索引取列</strong>。</p>
+<p><strong>代码案例 5.11</strong>：不规则二维列表（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">rows = [
+    [1, 2, 3],
+    [4, 5],
+    [6, 7, 8, 9],
+]
+
+for i in range(len(rows)):
+    for j in range(len(rows[i])):     # 每行长度可能不同！
+        print(rows[i][j], end=&quot; &quot;)
+    print()</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1 2 3
+4 5
+6 7 8 9</pre></div>
+<p><strong>交叉验证：两种遍历方式</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># 按索引遍历：需要&quot;第几行第几列&quot;时用
+for i in range(len(rows)):
+    for j in range(len(rows[i])):
+        pass
+
+# 直接遍历元素：只要内容时用
+for row in rows:          # row = rows[i]
+    for num in row:       # num = row[j]
+        pass</code></pre></div>
+<p><strong>讲解</strong>：<strong>"需要位置"用索引遍历，"只要内容"用元素遍历</strong>——和第 5.1.7 一维列表的判断标准完全一致。二维列表在真实场景的典型用途：成绩表（行=学生、列=科目）、棋盘、图片像素。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：二维列表是数据结构与算法的基础（矩阵运算、动态规划）——面试里"螺旋矩阵""杨辉三角"都是二维列表题。本课程先会"创建 + 访问 + 遍历"，算法题库可自行进阶。</p></blockquote>
+<p><strong>动手 5 分钟</strong>：用二维列表存"3 个学生的 3 科成绩"，计算每个学生的总分（提示：对每一行 <code class="md-inline">sum(row)</code>）。</p>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 1, "\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0a\uff09", [{"answer": 1, "ex_idx": 0, "explanation": "\u003ccode\u003ejoin()\u003c/code\u003e \u662f\u5b57\u7b26\u4e32\u7684\u65b9\u6cd5\uff0c\u7528\u4e8e\u5c06\u53ef\u8fed\u4ee3\u5bf9\u8c61\u4e2d\u7684\u5143\u7d20\u7528\u6307\u5b9a\u5206\u9694\u7b26\u8fde\u63a5\u6210\u4e00\u4e2a\u5b57\u7b26\u4e32\u3002\u7528\u6cd5\uff1a\u003ccode\u003e\"\u5206\u9694\u7b26\".join(\u5217\u8868)\u003c/code\u003e\u3002\u800c \u003ccode\u003esplit()\u003c/code\u003e \u662f\u76f8\u53cd\u7684\u64cd\u4f5c\uff0c\u5c06\u5b57\u7b26\u4e32\u5206\u5272\u6210\u5217\u8868\u3002", "options": ["A. split()", "B. join()", "C. merge()", "D. concat()"], "question": "\u4ee5\u4e0b\u54ea\u4e2a\u65b9\u6cd5\u53ef\u4ee5\u5c06\u5b57\u7b26\u4e32\u5217\u8868\u5408\u5e76\u4e3a\u4e00\u4e2a\u5b57\u7b26\u4e32\uff1f", "type": "choice"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 1, "5.1 \u5217\u8868\uff1a\u53ef\u53d8\u7684\u6709\u5e8f\u5e8f\u5217", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eappend\u003c/code\u003e \u672b\u5c3e\u8ffd\u52a0\u3001\u003ccode class=\"md-inline\"\u003einsert(1, ...)\u003c/code\u003e \u5728\u7d22\u5f15 1 \u63d2\u5165\u3001\u003ccode class=\"md-inline\"\u003epop()\u003c/code\u003e \u5220\u9664\u5e76\u8fd4\u56de\u6700\u540e\u4e00\u4e2a\u3002\u6ce8\u610f \u003ccode class=\"md-inline\"\u003epop()\u003c/code\u003e \u4e4b\u540e grape \u88ab\u79fb\u9664\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5df2\u77e5 `fruits = [\"apple\", \"banana\", \"orange\"]`\uff0c\u4f9d\u6b21\u6267\u884c\uff1a`append(\"grape\")`\u3001`insert(1, \"kiwi\")`\u3001`pop()`\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa\u5217\u8868\uff0c\u89c2\u5bdf\u53d8\u5316\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efruits = [\u0026quot;apple\u0026quot;, \u0026quot;banana\u0026quot;, \u0026quot;orange\u0026quot;]\n\nfruits.append(\u0026quot;grape\u0026quot;)\nprint(fruits)\n\nfruits.insert(1, \u0026quot;kiwi\u0026quot;)\nprint(fruits)\n\nlast = fruits.pop()\nprint(last)\nprint(fruits)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[\u0026#x27;apple\u0026#x27;, \u0026#x27;banana\u0026#x27;, \u0026#x27;orange\u0026#x27;, \u0026#x27;grape\u0026#x27;]\n[\u0026#x27;apple\u0026#x27;, \u0026#x27;kiwi\u0026#x27;, \u0026#x27;banana\u0026#x27;, \u0026#x27;orange\u0026#x27;, \u0026#x27;grape\u0026#x27;]\ngrape\n[\u0026#x27;apple\u0026#x27;, \u0026#x27;kiwi\u0026#x27;, \u0026#x27;banana\u0026#x27;, \u0026#x27;orange\u0026#x27;]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -311,43 +494,8 @@ print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(5, '0', "\u4ee5\u4e0b\u54ea\u4e2a\u65b9\u6cd5\u53ef\u4ee5\u5c06\u5b57\u7b26\u4e32\u5217\u8868\u5408\u5e76\u4e3a\u4e00\u4e2a\u5b57\u7b26\u4e32\uff1f")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 2 \u9898**\uff1a\u5df2\u77e5 `fruits = [\"apple\", \"banana\", \"orange\"]`\uff0c\u4f9d\u6b21\u6267\u884c\uff1a`append(\"grape\")`\u3001`insert(1, \"kiwi\")`\u3001`pop()`\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa\u5217\u8868\uff0c\u89c2\u5bdf\u53d8\u5316\u3002")" title="收藏">☆</button>
               </div>
-            </div>
-            
-            <!-- Multiple Choice -->
-            <div class="ex-question" style="font-size:14px;margin-bottom:12px;white-space:pre-wrap;font-family:monospace;background:var(--bg-secondary);padding:10px 12px;border-radius:6px;line-height:1.6;">以下哪个方法可以将字符串列表合并为一个字符串？</div>
-            <div class="ex-options" data-ex-type="choice" data-correct="1">
-              
-              <label class="ex-option" data-opt="0">
-                <span class="opt-letter">A</span>
-                <span> split()</span>
-              </label>
-              
-              <label class="ex-option" data-opt="1">
-                <span class="opt-letter">B</span>
-                <span> join()</span>
-              </label>
-              
-              <label class="ex-option" data-opt="2">
-                <span class="opt-letter">C</span>
-                <span> merge()</span>
-              </label>
-              
-              <label class="ex-option" data-opt="3">
-                <span class="opt-letter">D</span>
-                <span> concat()</span>
-              </label>
-              
-            </div>
-            <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-submit" onclick="submitChoiceEx(this, 5, 1, 0)">提交答案</button>
-              <button class="btn-show-answer" onclick="showExAnswer(this)">查看解析</button>
-              <button class="btn-jj small" onclick="askJJAboutExercise("\u4ee5\u4e0b\u54ea\u4e2a\u65b9\u6cd5\u53ef\u4ee5\u5c06\u5b57\u7b26\u4e32\u5217\u8868\u5408\u5e76\u4e3a\u4e00\u4e2a\u5b57\u7b26\u4e32\uff1f")">请教 AI 助教</button>
-            </div>
-            <div class="ex-answer" style="display:none;">
-              <div class="answer-label">📝 答案解析</div>
-              <div class="answer-text"><code>join()</code> 是字符串的方法，用于将可迭代对象中的元素用指定分隔符连接成一个字符串。用法：<code>"分隔符".join(列表)</code>。而 <code>split()</code> 是相反的操作，将字符串分割成列表。</div>
             </div>
             
           </div>
@@ -356,7 +504,7 @@ print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0a\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c5.1 \u5217\u8868\uff1a\u53ef\u53d8\u7684\u6709\u5e8f\u5e8f\u5217\u300d")" title="收藏">☆</button>
               </div>
             </div>
             
@@ -365,10 +513,10 @@ print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换
               请编写代码验证你对本知识点的理解
             </div>
             <div class="ex-code-hint">
-              💡 提示：定义字符串，使用 f-string 拼接并输出。
+              💡 提示：用代码把「5.1 列表：可变的有序序列」的核心用法演示一遍，并打印出结果。
             </div>
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(5, 1, 1, "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002")'>
+              <button class="btn-code-ex" onclick='openCodeEx(5, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c5.1 \u5217\u8868\uff1a\u53ef\u53d8\u7684\u6709\u5e8f\u5e8f\u5217\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -403,8 +551,11 @@ print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 1, '字符串常用方法（上）')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 1, '5.1 列表：可变的有序序列')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 1, '5.1 列表：可变的有序序列')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -425,7 +576,7 @@ print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换
           
           <span style="color:var(--cyan);font-weight:700;">03.</span>
           
-          字符串常用方法（下）
+          5.2 元组：不可变序列
         </span>
         <span class="kp-indicator">
           ▼
@@ -435,50 +586,66 @@ print(s.replace("Hello", "你好", 1))  # 你好 World, Hello Python（只替换
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>字符串判断方法（返回 True/False）</h3><pre><code># 内容类型判断
-print("123".isdigit())    # True（全数字）
-print("abc".isalpha())    # True（全字母）
-print("abc123".isalnum()) # True（字母或数字）
-print("  ".isspace())     # True（全空白字符）
-print("Hello".isascii())  # True（全 ASCII 字符）
+            <h3 class="md-h">5.2.1 概念认知：元组是"只读列表"</h3>
+<p><strong>元组（tuple）</strong> 用圆括号创建，功能与列表几乎一样（索引、切片、遍历、len、in），<strong>唯一区别：创建后不能修改</strong>。</p>
+<p>适用场景：坐标 <code class="md-inline">(x, y)</code>、RGB 颜色 <code class="md-inline">(255, 0, 0)</code>、日期 <code class="md-inline">(2026, 8, 6)</code>、函数返回多个值（第 7 章）。</p>
+<h3 class="md-h">5.2.2 语法掌握：创建元组与单元素陷阱</h3>
+<p><strong>代码案例 5.12</strong>：创建元组（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">point = (3, 5)
+rgb = (255, 0, 0)
 
-# 大小写判断
-print("hello".islower())  # True
-print("HELLO".isupper())  # True
-print("Hello".istitle())  # True
+print(point[0])
+print(rgb[-1])
+print(len(point))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3
+0
+2</pre></div>
+<p><strong>交叉验证：<code class="md-inline">(1)</code> 不是元组！</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(type((1)))
+print(type((1,)))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">&lt;class &#x27;int&#x27;&gt;
+&lt;class &#x27;tuple&#x27;&gt;</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">(1)</code> 只是加了个括号的整数 1；<strong>单元素元组必须写成 <code class="md-inline">(1,)</code>——那个逗号才是元组的标志</strong>。这是元组最经典的坑，面试常考。</p>
+<h3 class="md-h">5.2.3 语法掌握：元组解包</h3>
+<p><strong>代码案例 5.13</strong>：解包（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">point = (3, 5)
+x, y = point
+print(x, y)
 
-# 前后缀判断
-print("hello.py".startswith("hello"))  # True
-print("hello.py".endswith(".py"))      # True（判断文件类型常用）</code></pre>
-<h3>分割与连接</h3><pre><code># split: 字符串 → 列表（重要！）
-s = "苹果,香蕉,橙子,葡萄"
-fruits = s.split(",")
-print(fruits)  # ['苹果', '香蕉', '橙子', '葡萄']
+a, b = 10, 20
+print(a, b)
 
-# 限制分割次数
-print(s.split(",", 2))  # ['苹果', '香蕉', '橙子,葡萄']
+for name, score in [(&quot;张三&quot;, 88), (&quot;李四&quot;, 95)]:
+    print(f&quot;{name}: {score}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3 5
+10 20
+张三: 88
+李四: 95</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">x, y = point</code> 把元组拆开赋值——第 2 章的 <code class="md-inline">a, b = b, a</code> 就是解包的底层机制；</li><li><code class="md-inline">a, b = 10, 20</code> 是"右侧打包成元组、左侧解包"；</li><li>遍历元组列表时直接解包成两个变量，是高频写法。</li></ul>
+<h3 class="md-h">5.2.4 原理探秘：为什么需要元组</h3>
+<p>既然元组和列表差不多，为什么 Python 要两个？三个理由：</p>
+<ol><li><strong>安全</strong>：不可变 = 不会被意外修改。把"不该改的数据"（配置、坐标、常量组合）放进元组，相当于贴了"只读"标签；</li><li><strong>可哈希</strong>：不可变对象能作为<strong>字典的键</strong>（第 6 章讲）；列表不行；</li><li><strong>性能</strong>：元组更省内存、访问更快（不可变允许更紧凑的存储）。</li></ol>
+<p><strong>列表 vs 元组对比表</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>维度</th><th>列表 list</th><th>元组 tuple</th></tr></thead><tbody><tr><td>语法</td><td><code class="md-inline">[1, 2, 3]</code></td><td><code class="md-inline">(1, 2, 3)</code></td></tr><tr><td>可变性</td><td>可变（增删改）</td><td>不可变</td></tr><tr><td>场景</td><td>数量/内容会变的集合</td><td>固定的一组数据</td></tr><tr><td>字典键</td><td>不能当键</td><td>可以当键</td></tr><tr><td>典型用途</td><td>学生列表、待办</td><td>坐标、配置、返回多值</td></tr></tbody></table></div>
+<h3 class="md-h">5.2.5 综合运用：元组的"不可变"是相对的</h3>
+<p><strong>代码案例 5.14</strong>：元组里的列表可以变！（✅ 观察）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">t = (1, [2, 3])
 
-# rsplit: 从右侧分割
-print(s.rsplit(",", 1))  # ['苹果,香蕉,橙子', '葡萄']
-
-# splitlines: 按行分割
-text = "第一行\n第二行\n第三行"
-print(text.splitlines())  # ['第一行', '第二行', '第三行']
-
-# join: 列表 → 字符串（split 的逆操作）
-print(" | ".join(fruits))   # 苹果 | 香蕉 | 橙子 | 葡萄
-print("".join(["H","e","l","l","o"]))  # Hello</code></pre>
-<h3>partition: 分割成三部分</h3><pre><code>email = "user@example.com"
-local, at, domain = email.partition("@")
-print(local)   # user
-print(at)      # @
-print(domain)  # example.com</code></pre>
+t[1].append(4)
+print(t)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">(1, [2, 3, 4])</pre></div>
+<p><strong>讲解</strong>：元组的不可变是指<strong>元素引用不能换</strong>（不能 <code class="md-inline">t[0] = 9</code>），但元素指向的<strong>对象本身如果是可变的</strong>（列表），仍然可以改。<strong>"元组不可变"精确含义是"不能增删改元组的元素"，不是"元素永远不变"</strong>——面试追问的经典细节。</p>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 2, "\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0b\uff09", [{"code_prompt": "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0b\uff09\u300d", "type": "code"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 2, "5.2 \u5143\u7ec4\uff1a\u4e0d\u53ef\u53d8\u5e8f\u5217", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003esort()\u003c/code\u003e \u539f\u5730\u6392\u5e8f\u3001\u539f\u5217\u8868\u88ab\u6539\u3001\u8fd4\u56de None\uff1b\u003ccode class=\"md-inline\"\u003esorted()\u003c/code\u003e \u8fd4\u56de\u65b0\u5217\u8868\u3001\u539f\u5217\u8868\u4e0d\u53d8\u3002\u003cstrong\u003e\u8fd9\u662f\"\u4fee\u6539\u578b vs \u751f\u6210\u578b\"\u7684\u6838\u5fc3\u533a\u522b\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a`nums = [5, 2, 8, 1, 9]`\uff0c\u5206\u522b\u7528 `sort()` \u548c `sorted()` \u6392\u5e8f\uff0c\u8f93\u51fa\u4e24\u79cd\u65b9\u5f0f\u5404\u81ea\u7684\"\u539f\u5217\u8868\"\u548c\"\u7ed3\u679c\"\uff0c\u4f53\u4f1a\u533a\u522b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [5, 2, 8, 1, 9]\n\nnums.sort()\nprint(\u0026quot;sort \u540e\u7684 nums\uff1a\u0026quot;, nums)\n\nnums2 = [5, 2, 8, 1, 9]\nnew_list = sorted(nums2)\nprint(\u0026quot;sorted \u8fd4\u56de\u7684\u65b0\u5217\u8868\uff1a\u0026quot;, new_list)\nprint(\u0026quot;sorted \u540e\u7684\u539f\u5217\u8868\uff1a\u0026quot;, nums2)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003esort \u540e\u7684 nums\uff1a [1, 2, 5, 8, 9]\nsorted \u8fd4\u56de\u7684\u65b0\u5217\u8868\uff1a [1, 2, 5, 8, 9]\nsorted \u540e\u7684\u539f\u5217\u8868\uff1a [5, 2, 8, 1, 9]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -491,7 +658,17 @@ print(domain)  # example.com</code></pre>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(5, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0b\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 3 \u9898**\uff1a`nums = [5, 2, 8, 1, 9]`\uff0c\u5206\u522b\u7528 `sort()` \u548c `sorted()` \u6392\u5e8f\uff0c\u8f93\u51fa\u4e24\u79cd\u65b9\u5f0f\u5404\u81ea\u7684\"\u539f\u5217\u8868\"\u548c\"\u7ed3\u679c\"\uff0c\u4f53\u4f1a\u533a\u522b\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c5.2 \u5143\u7ec4\uff1a\u4e0d\u53ef\u53d8\u5e8f\u5217\u300d")" title="收藏">☆</button>
               </div>
             </div>
             
@@ -500,10 +677,10 @@ print(domain)  # example.com</code></pre>
               请编写代码验证你对本知识点的理解
             </div>
             <div class="ex-code-hint">
-              💡 提示：定义字符串，使用 f-string 拼接并输出。
+              💡 提示：创建一个元组并解包到多个变量。
             </div>
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(5, 2, 0, "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002")'>
+              <button class="btn-code-ex" onclick='openCodeEx(5, 2, 1, "\u521b\u5efa\u4e00\u4e2a\u5143\u7ec4\u5e76\u89e3\u5305\u5230\u591a\u4e2a\u53d8\u91cf\u3002")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -538,8 +715,11 @@ print(domain)  # example.com</code></pre>
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 2, '字符串常用方法（下）')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 2, '5.2 元组：不可变序列')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 2, '5.2 元组：不可变序列')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -560,7 +740,7 @@ print(domain)  # example.com</code></pre>
           
           <span style="color:var(--cyan);font-weight:700;">04.</span>
           
-          字符串格式化
+          5.3 综合应用：学生成绩系统 v1
         </span>
         <span class="kp-indicator">
           ▼
@@ -570,61 +750,48 @@ print(domain)  # example.com</code></pre>
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>四种格式化方式（推荐 f-string）</h3><pre><code>name = "Alice"
-age = 25
+            <p><strong>代码案例 5.15</strong>：列表 + 循环 + 条件判断的综合（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">scores = []
 
-# 1. f-string（Python 3.6+，⭐最推荐！）
-print(f"我叫{name}，明年{age + 1}岁")
+while True:
+    score = input(&quot;请输入成绩（回车结束）：&quot;)
+    if score == &quot;&quot;:
+        break
+    scores.append(int(score))
 
-# 2. str.format() 方法
-print("我叫{}，今年{}岁".format(name, age))
-print("我叫{0}，今年{1}岁".format(name, age))  # 按位置
-print("我叫{n}，今年{a}岁".format(n=name, a=age))  # 按名称
+if scores:
+    total = sum(scores)
+    avg = total / len(scores)
+    best = max(scores)
+    worst = min(scores)
+    passed = 0
+    for s in scores:
+        if s &gt;= 60:
+            passed += 1
 
-# 3. % 格式化（旧式，不推荐新代码使用）
-print("我叫%s，今年%d岁" % (name, age))
-
-# 4. 字符串拼接（最差，不用）
-print("我叫" + name + "，今年" + str(age) + "岁")</code></pre>
-<h3>f-string 高级格式化</h3><pre><code>price = 12345.6789
-# 小数控制
-print(f"{price:.2f}")    # 12345.68（保留2位小数，四舍五入）
-print(f"{price:.0f}")    # 12346
-
-# 千分位
-print(f"{price:,.2f}")   # 12,345.68
-
-# 对齐与填充
-name = "Bob"
-print(f"|{name:<10}|")   # |Bob       |（左对齐，占10格）
-print(f"|{name:>10}|")   # |       Bob|（右对齐）
-print(f"|{name:^10}|")   # |   Bob    |（居中对齐）
-print(f"|{name:*^10}|")  # |***Bob****|（*填充居中）
-
-# 进制转换
-n = 255
-print(f"{n:b}")   # 11111111（二进制）
-print(f"{n:x}")   # ff（十六进制）
-print(f"{n:#x}")  # 0xff
-
-# 百分比
-rate = 0.857
-print(f"{rate:.1%}")  # 85.7%</code></pre>
-<h3>format() 高级用法</h3><pre><code># 按位置
-print("{1} 比 {0} 大".format(3, 5))  # 5 比 3 大
-
-# 按名称
-print("坐标: ({x}, {y})".format(x=10, y=20))
-
-# 解包字典
-data = {"name": "Tom", "score": 95}
-print("{name}: {score}分".format(**data))</code></pre>
+    print(f&quot;共 {len(scores)} 门&quot;)
+    print(f&quot;总分：{total}，平均分：{avg:.1f}&quot;)
+    print(f&quot;最高：{best}，最低：{worst}&quot;)
+    print(f&quot;及格 {passed} 门，及格率：{passed / len(scores):.0%}&quot;)
+else:
+    print(&quot;没有输入成绩&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请输入成绩（回车结束）：88
+请输入成绩（回车结束）：95
+请输入成绩（回车结束）：76
+请输入成绩（回车结束）：
+共 3 门
+总分：259，平均分：86.3
+最高：95，最低：76
+及格 3 门，及格率：100%</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">scores.append(...)</code> 动态收集数据——<strong>"先收集、后统计"是处理批量数据的标准结构</strong>；</li><li><code class="md-inline">sum / max / min</code> 是内置函数，一行搞定第 3 章手写的累加和打擂台；</li><li>及格率用 <code class="md-inline">:.0%</code> 转百分比；</li><li>思考：如果要求"去掉一个最高分、一个最低分再平均"，怎么改？（提示：<code class="md-inline">scores.remove(max(scores))</code>）</li></ul>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 3, "\u5b57\u7b26\u4e32\u683c\u5f0f\u5316", [{"code_prompt": "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u683c\u5f0f\u5316\u300d", "type": "code"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 3, "5.3 \u7efc\u5408\u5e94\u7528\uff1a\u5b66\u751f\u6210\u7ee9\u7cfb\u7edf v1", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eappend\u003c/code\u003e \u52a8\u6001\u6536\u96c6 \u2192 \u003ccode class=\"md-inline\"\u003esum/max/min\u003c/code\u003e \u4e00\u884c\u7edf\u8ba1\u3002\u003cstrong\u003e\u5148\u6536\u96c6\u3001\u540e\u7edf\u8ba1\u003c/strong\u003e\u662f\u5904\u7406\u6279\u91cf\u6570\u636e\u7684\u6807\u51c6\u7ed3\u6784\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u8f93\u5165 5 \u4e2a\u6574\u6570\u5b58\u5165\u5217\u8868\uff0c\u8f93\u51fa\uff1a\u603b\u548c\u3001\u5e73\u5747\u503c\uff08\u4fdd\u7559 1 \u4f4d\uff09\u3001\u6700\u5927\u503c\u3001\u6700\u5c0f\u503c\uff08\u7528 sum/max/min \u6216\u624b\u52a8\u5faa\u73af\u7686\u53ef\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = []\nfor i in range(5):\n    nums.append(int(input(f\u0026quot;\u8bf7\u8f93\u5165\u7b2c {i + 1} \u4e2a\u6570\uff1a\u0026quot;)))\n\ntotal = sum(nums)\nprint(f\u0026quot;\u603b\u548c\uff1a{total}\u0026quot;)\nprint(f\u0026quot;\u5e73\u5747\uff1a{total / len(nums):.1f}\u0026quot;)\nprint(f\u0026quot;\u6700\u5927\uff1a{max(nums)}\u0026quot;)\nprint(f\u0026quot;\u6700\u5c0f\uff1a{min(nums)}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u8f93\u5165 88 92 76 99 61\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u7b2c 1 \u4e2a\u6570\uff1a88\n\u8bf7\u8f93\u5165\u7b2c 2 \u4e2a\u6570\uff1a92\n\u8bf7\u8f93\u5165\u7b2c 3 \u4e2a\u6570\uff1a76\n\u8bf7\u8f93\u5165\u7b2c 4 \u4e2a\u6570\uff1a99\n\u8bf7\u8f93\u5165\u7b2c 5 \u4e2a\u6570\uff1a61\n\u603b\u548c\uff1a416\n\u5e73\u5747\uff1a83.2\n\u6700\u5927\uff1a99\n\u6700\u5c0f\uff1a61\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -637,7 +804,17 @@ print("{name}: {score}分".format(**data))</code></pre>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(5, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u683c\u5f0f\u5316\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 4 \u9898**\uff1a\u8f93\u5165 5 \u4e2a\u6574\u6570\u5b58\u5165\u5217\u8868\uff0c\u8f93\u51fa\uff1a\u603b\u548c\u3001\u5e73\u5747\u503c\uff08\u4fdd\u7559 1 \u4f4d\uff09\u3001\u6700\u5927\u503c\u3001\u6700\u5c0f\u503c\uff08\u7528 sum/max/min \u6216\u624b\u52a8\u5faa\u73af\u7686\u53ef\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c5.3 \u7efc\u5408\u5e94\u7528\uff1a\u5b66\u751f\u6210\u7ee9\u7cfb\u7edf v1\u300d")" title="收藏">☆</button>
               </div>
             </div>
             
@@ -646,10 +823,10 @@ print("{name}: {score}分".format(**data))</code></pre>
               请编写代码验证你对本知识点的理解
             </div>
             <div class="ex-code-hint">
-              💡 提示：定义字符串，使用 f-string 拼接并输出。
+              💡 提示：用代码把「5.3 综合应用：学生成绩系统 v1」的核心用法演示一遍，并打印出结果。
             </div>
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(5, 3, 0, "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002")'>
+              <button class="btn-code-ex" onclick='openCodeEx(5, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c5.3 \u7efc\u5408\u5e94\u7528\uff1a\u5b66\u751f\u6210\u7ee9\u7cfb\u7edf v1\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -684,8 +861,707 @@ print("{name}: {score}分".format(**data))</code></pre>
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 3, '字符串格式化')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 3, '5.3 综合应用：学生成绩系统 v1')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 3, '5.3 综合应用：学生成绩系统 v1')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="5_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          5.4 算法拓展：查找与排序
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">5.4.1 查找算法：顺序、二分与插值</h3>
+<p><strong>场景</strong>：在一个列表中找某个数。最朴素的做法是从头看到尾——<strong>顺序查找</strong>。但如果数据<strong>有序</strong>，我们有更聪明的办法。</p>
+<p><strong>代码案例 5.16</strong>：顺序查找（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def linear_search(nums, key):
+    for i in range(len(nums)):
+        if nums[i] == key:
+            return i
+    return -1
+
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(linear_search(nums, 8))
+print(linear_search(nums, 100))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">7
+-1</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">-1</code> 表示"没找到"（约定俗成的返回值）。最坏情况要遍历全部 n 个元素——<strong>O(n)</strong>，但<strong>无序数据也能用</strong>。</p>
+<p><strong>代码案例 5.17</strong>：二分查找（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def binary_search(nums, key):
+    low = 0
+    high = len(nums) - 1
+    while low &lt;= high:
+        mid = (low + high) // 2
+        if nums[mid] == key:
+            return mid
+        elif nums[mid] &lt; key:
+            low = mid + 1      # 目标在右半边
+        else:
+            high = mid - 1     # 目标在左半边
+    return -1
+
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(binary_search(nums, 8))
+print(binary_search(nums, 2.5))
+print(binary_search(nums, 100))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">7
+-1
+-1</pre></div>
+<p><strong>讲解</strong>（核心逻辑三步）：</p>
+<ol><li>取中间位置 <code class="md-inline">mid = (low + high) // 2</code>；</li><li>中间值等于 key → 找到；小于 key → 只查右半边（<code class="md-inline">low = mid + 1</code>）；大于 key → 只查左半边（<code class="md-inline">high = mid - 1</code>）；</li><li><code class="md-inline">low &gt; high</code> 说明区间空了 → 没找到，返回 -1。</li></ol>
+<p><strong>原理探秘：为什么二分查找快？</strong></p>
+<p>每比较一次，搜索范围就<strong>缩小一半</strong>：n 个元素最多比较 <code class="md-inline">log₂(n)</code> 次。1 亿个有序数据，顺序查找最多 1 亿次，二分查找最多约 27 次。<strong>"数据有序"是能把 O(n) 变成 O(log n) 的前提</strong>——这就是下一节"排序"如此重要的原因。</p>
+<p><strong>代码案例 5.18</strong>：插值查找（✅ 正确，修正版，了解）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def interpolation_search(nums, key):
+    low, high = 0, len(nums) - 1
+    while low &lt;= high and nums[low] &lt;= key &lt;= nums[high]:
+        if nums[high] == nums[low]:      # 防除零：两端相等时直接判断
+            return low if nums[low] == key else -1
+        # 按&quot;key 在区间中的比例&quot;猜位置，而不是固定取中间
+        mid = low + int((key - nums[low]) * (high - low) / (nums[high] - nums[low]))
+        if nums[mid] == key:
+            return mid
+        elif nums[mid] &lt; key:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(interpolation_search(nums, 8))
+print(interpolation_search(nums, 100))
+print(interpolation_search(nums, 2.5))
+print(interpolation_search([5, 5, 5], 5))   # 重复数据：防除零分支</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">7
+-1
+-1
+0</pre></div>
+<p><strong>讲解</strong>：二分固定取"中间"，插值按<strong>比例</strong>猜位置（key 靠近区间左端就猜左边）。数据<strong>均匀分布</strong>时它一步到位；但分布极不均匀时会退化成 O(n)。<strong>了解即可，工程上很少用</strong>。</p>
+<p><strong>交叉验证：三种查找怎么选</strong></p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>查找</th><th>前提</th><th>复杂度</th><th>定位</th></tr></thead><tbody><tr><td>顺序查找</td><td>无</td><td>O(n)</td><td>无序数据、数据量小</td></tr><tr><td>二分查找</td><td>有序</td><td>O(log n)</td><td><strong>面试必考，最常用</strong></td></tr><tr><td>插值查找</td><td>有序 + 均匀分布</td><td>均摊最好，最坏 O(n)</td><td>了解（加分项）</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>修正说明</strong>：插值查找的常见错误实现缺少两个保护——<code class="md-inline">nums[high] == nums[low]</code> 时除零崩溃、<code class="md-inline">mid</code> 越界。本教材版本已处理。</p>
+<p><strong>就业提示</strong>：二分查找是面试手撕代码的高频题。能写出"while 循环版 + 边界用 <code class="md-inline">low &lt;= high</code>"就是合格答案；能说出"每轮砍半，O(log n)"就是加分项。插值查找了解即可。</p></blockquote>
+<p><strong>动手 5 分钟</strong>：把二分查找改写成递归版（第 7 章学完递归后回来看，思路和 3.5.3 素数判断的递归版一致）。</p>
+<h3 class="md-h">5.4.2 排序算法：选择、冒泡、插入</h3>
+<p><strong>场景</strong>：数据乱序时，<code class="md-inline">sort()</code> 一行搞定。但面试和算法课会要求你理解排序的<strong>原理</strong>——三种最基础的 O(n²) 排序，思路完全不同。</p>
+<p><strong>代码案例 5.19</strong>：选择排序（✅ 正确，标准实现）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def selection_sort(nums):
+    &quot;&quot;&quot;每轮找到最小元素的下标，与当前位置交换&quot;&quot;&quot;
+    for i in range(len(nums) - 1):
+        min_idx = i
+        for j in range(i + 1, len(nums)):
+            if nums[j] &lt; nums[min_idx]:
+                min_idx = j
+        nums[i], nums[min_idx] = nums[min_idx], nums[i]
+
+nums = [6, 9, 1, 8, 2, 7, 5, 3, 4]
+selection_sort(nums)
+print(nums)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[1, 2, 3, 4, 5, 6, 7, 8, 9]</pre></div>
+<p><strong>讲解</strong>：第 i 轮在 <code class="md-inline">nums[i:]</code> 里找<strong>最小值下标</strong>，只交换一次。就像"每轮挑出最小的放到最前面"。</p>
+<p><strong>代码案例 5.20</strong>：冒泡排序（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def bubble_sort(nums):
+    &quot;&quot;&quot;相邻比较，大的往后冒；每轮确定一个最大值&quot;&quot;&quot;
+    for i in range(len(nums) - 1):
+        for j in range(len(nums) - i - 1):
+            if nums[j] &gt; nums[j + 1]:
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+
+nums = [6, 9, 1, 8, 2, 7, 5, 3, 4]
+bubble_sort(nums)
+print(nums)</code></pre></div>
+<p><strong>讲解</strong>：相邻两两比较，大的"冒"到后面。每完成一轮，末尾就确定一个最大值，所以内层范围每轮减 1（<code class="md-inline">len(nums) - i - 1</code>）。</p>
+<p><strong>代码案例 5.21</strong>：插入排序（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def insertion_sort(nums):
+    &quot;&quot;&quot;像抓扑克牌：新牌从后往前找位置插入&quot;&quot;&quot;
+    for i in range(1, len(nums)):
+        j = i
+        while j &gt; 0 and nums[j - 1] &gt; nums[j]:
+            nums[j - 1], nums[j] = nums[j], nums[j - 1]
+            j -= 1
+
+nums = [6, 9, 1, 8, 2, 7, 5, 3, 4]
+insertion_sort(nums)
+print(nums)</code></pre></div>
+<p><strong>讲解</strong>：把 <code class="md-inline">nums[i]</code> 当成"新抓的牌"，从后往前找位置，比它大的都往后挪——<strong>像整理扑克牌</strong>。</p>
+<p><strong>原理探秘：为什么都是 O(n²)，还要分三种？</strong></p>
+<ul><li>三种排序最坏情况都是 <strong>O(n²)</strong>（两层循环）；</li><li>但<strong>插入排序在"基本有序"的数据上接近 O(n)</strong>——只比一轮就停，实际最快；</li><li><strong>选择排序交换次数最少</strong>（每轮只换一次），适合"交换代价高"的场景；</li><li><strong>冒泡排序最容易理解和记忆</strong>，是教学与面试的"开场题"。</li></ul>
+<p><strong>交叉验证：三种排序的结果一致，过程不同</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">data = [6, 9, 1, 8, 2, 7, 5, 3, 4]
+selection_sort(data.copy())</code></pre></div>
+<p><strong>讲解</strong>：三种排序最终都得到升序结果——<strong>"结果相同"不代表"过程相同"</strong>。真实工程用 <code class="md-inline">sorted()</code> 和 <code class="md-inline">sort()</code>（C 语言实现，快得多）；手写排序是为了<strong>理解原理</strong>，不是为了替代内置函数。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：面试高频题"手写排序"。三选一写出并讲清思路即可；能说"工程中用内置 sort，手写是为了理解原理"是加分项。<strong>注意</strong>：调用排序函数会修改原列表，先 <code class="md-inline">data.copy()</code> 再传（第 5 章引用共享教训）。</p></blockquote>
+<p><strong>动手 5 分钟</strong>：用 <code class="md-inline">print</code> 在每轮结束后打印列表，观察三种排序各自的"过程轨迹"——选一个你最能讲清楚的，说给同桌听。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 4, "5.4 \u7b97\u6cd5\u62d3\u5c55\uff1a\u67e5\u627e\u4e0e\u6392\u5e8f", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u904d\u5386 + \u6761\u4ef6\u8ba1\u6570\uff1b\u53ca\u683c\u7387\u7528 \u003ccode class=\"md-inline\"\u003e:.0%\u003c/code\u003e \u76f4\u63a5\u8f93\u51fa\u767e\u5206\u6bd4\u3002\u6ce8\u610f \u003ccode class=\"md-inline\"\u003e55\u003c/code\u003e \u662f\u4e0d\u53ca\u683c\uff08\u0026lt; 60\uff09\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5df2\u77e5 `scores = [88, 92, 76, 55, 99, 61]`\uff0c\u7edf\u8ba1\u53ca\u683c\uff08\u226560\uff09\u4eba\u6570\u548c\u4e0d\u53ca\u683c\u4eba\u6570\uff0c\u5e76\u8f93\u51fa\u53ca\u683c\u7387\uff08\u767e\u5206\u6bd4\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003escores = [88, 92, 76, 55, 99, 61]\n\npassed = 0\nfailed = 0\nfor score in scores:\n    if score \u0026gt;= 60:\n        passed += 1\n    else:\n        failed += 1\n\nprint(f\u0026quot;\u53ca\u683c {passed} \u4eba\uff0c\u4e0d\u53ca\u683c {failed} \u4eba\u0026quot;)\nprint(f\u0026quot;\u53ca\u683c\u7387\uff1a{passed / len(scores):.0%}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u53ca\u683c 5 \u4eba\uff0c\u4e0d\u53ca\u683c 1 \u4eba\n\u53ca\u683c\u7387\uff1a83%\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 5 \u9898**\uff1a\u5df2\u77e5 `scores = [88, 92, 76, 55, 99, 61]`\uff0c\u7edf\u8ba1\u53ca\u683c\uff08\u226560\uff09\u4eba\u6570\u548c\u4e0d\u53ca\u683c\u4eba\u6570\uff0c\u5e76\u8f93\u51fa\u53ca\u683c\u7387\uff08\u767e\u5206\u6bd4\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c5.4 \u7b97\u6cd5\u62d3\u5c55\uff1a\u67e5\u627e\u4e0e\u6392\u5e8f\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「5.4 算法拓展：查找与排序」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(5, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c5.4 \u7b97\u6cd5\u62d3\u5c55\uff1a\u67e5\u627e\u4e0e\u6392\u5e8f\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="5_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(5, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(5, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(5, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="5_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 4, '5.4 算法拓展：查找与排序')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 4, '5.4 算法拓展：查找与排序')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="5_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          5.5 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：把 append 的返回值赋给列表</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">fruits = [&quot;apple&quot;]
+fruits = fruits.append(&quot;banana&quot;)
+print(fruits)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;apple&#x27;, &#x27;banana&#x27;]</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">None</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">append</code> 返回什么？它是不是"原地修改"型方法？</p>
+<p><strong>讲解</strong>：<code class="md-inline">append</code> 原地修改、返回 None。<code class="md-inline">fruits = fruits.append(...)</code> 把 None 赋给 fruits，列表丢了。<strong>修改型方法不要接返回值，生成型方法必须接返回值</strong>——先分清方法是哪种。</p>
+<h3 class="md-h">问题 2：remove 不存在的元素</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3]
+nums.remove(5)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">（正常删除，什么都不输出）</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: list.remove(x): x not in list</pre></div>
+<p><strong>提示</strong>：删除前该判断什么？</p>
+<p><strong>讲解</strong>：<code class="md-inline">remove</code> 找不到值抛 ValueError。删除前先 <code class="md-inline">if 5 in nums:</code> 判断，或第 9 章学 <code class="md-inline">try/except</code>。<strong>真实场景</strong>：从用户提供的名单里删除人，名单里可能没有这个人。</p>
+<h3 class="md-h">问题 3：索引越界</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">students = [&quot;张三&quot;, &quot;李四&quot;]
+print(students[2])</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">（第 3 个学生）</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">IndexError: list index out of range</pre></div>
+<p><strong>提示</strong>：列表有几个元素？合法索引范围是多少？</p>
+<p><strong>讲解</strong>：2 个元素的合法索引是 0 和 1。<strong>写死索引是最容易越界的写法</strong>——能遍历就遍历，能切片就切片。</p>
+<h3 class="md-h">问题 4：<code class="md-inline">b = a</code> 引用共享</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">menu = [&quot;宫保鸡丁&quot;, &quot;鱼香肉丝&quot;]
+my_menu = menu
+my_menu.append(&quot;麻婆豆腐&quot;)
+print(menu)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;宫保鸡丁&#x27;, &#x27;鱼香肉丝&#x27;]</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;宫保鸡丁&#x27;, &#x27;鱼香肉丝&#x27;, &#x27;麻婆豆腐&#x27;]</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">my_menu = menu</code> 复制的是数据还是标签？</p>
+<p><strong>讲解</strong>：<code class="md-inline">my_menu</code> 和 <code class="md-inline">menu</code> 指向同一个列表，改一个两个都变。想复制数据用 <code class="md-inline">my_menu = menu[:]</code>。<strong>真实场景</strong>：把一个列表"备份"再改，结果原列表也被改了——这种 bug 极难发现，因为代码看起来完全正确。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 5, "5.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u518d\u95ee\u5b83\"\u4e3a\u4ec0\u4e48\u4e0d\u80fd\u7528 set \u4e00\u884c\u53bb\u91cd\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e[\u8868\u8fbe\u5f0f for \u53d8\u91cf in \u5217\u8868 if \u6761\u4ef6]\u003c/code\u003e\u2014\u2014\u5148\u6ee1\u8db3\u6761\u4ef6\u7684\u5143\u7d20\uff0c\u518d\u5957\u8868\u8fbe\u5f0f\u3002\u003ccode class=\"md-inline\"\u003ex ** 2\u003c/code\u003e \u662f\u5e73\u65b9\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5df2\u77e5 `nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\u4e24\u4e2a\u65b0\u5217\u8868\uff1a\u6240\u6709\u5076\u6570\u7684\u5e73\u65b9\u3001\u6240\u6709\u5927\u4e8e 5 \u7684\u6570\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\neven_squares = [x ** 2 for x in nums if x % 2 == 0]\nbig_nums = [x for x in nums if x \u0026gt; 5]\n\nprint(even_squares)\nprint(big_nums)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[4, 16, 36, 64, 100]\n[6, 7, 8, 9, 10]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 6 \u9898**\uff1a\u5df2\u77e5 `nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\u4e24\u4e2a\u65b0\u5217\u8868\uff1a\u6240\u6709\u5076\u6570\u7684\u5e73\u65b9\u3001\u6240\u6709\u5927\u4e8e 5 \u7684\u6570\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c5.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「5.5 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(5, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c5.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="5_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(5, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(5, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(5, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="5_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 5, '5.5 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 5, '5.5 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="5_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          5.6 Vibe Coding：L1 解锁仪式
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">5.6.1 你的等级升级了</h3>
+<p>从本章开始，你完成了第 1-5 章的手写筑基，可以解锁 <strong>L1（阅读辅助）</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>等级</th><th>你现在能做什么</th><th>仍然禁止</th></tr></thead><tbody><tr><td>L0（已通过）</td><td>概念问答、报错解释</td><td>生成、补全代码</td></tr><tr><td><strong>L1（解锁）</strong></td><td><strong>解释已有代码、逐行讲解运行过程、解释报错</strong></td><td><strong>AI 生成功能代码、帮你改代码</strong></td></tr></tbody></table></div>
+<p><strong>L1 的新权利</strong>：可以把教材里的代码、自己手写的代码发给 AI，让它"逐行讲解运行过程"。</p>
+<p><strong>L1 的新责任</strong>：AI 讲解后，你要能用自己的话复述，并写进 Prompt 日志。</p>
+<p><strong>判别标准没变</strong>：AI 输出里只要出现"新代码"，就说明你越界了。</p>
+<h3 class="md-h">5.6.2 Vibe Coding 任务卡（L1）</h3>
+<p><strong>任务名称</strong>：让 AI 模拟"列表引用共享"的运行过程</p>
+<p><strong>任务内容</strong>：把下面这段代码发给 AI，提问："请模拟这段代码的执行过程，解释为什么修改 b 之后 a 也变了。不要给我新代码。"</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = [1, 2, 3]
+b = a
+b.append(4)
+print(a)</code></pre></div>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请模拟下面这段 Python 代码的执行过程：
+1. b = a 这一行在内存里发生了什么？
+2. 为什么 b.append(4) 之后，print(a) 输出 [1, 2, 3, 4]？
+3. 如果我想让 b 是 a 的独立副本，应该怎么写？请解释方案，但不要替我把代码写出来。</pre></div>
+<p><strong>Review 清单（L1）</strong>：</p>
+<ul><li>[ ] 我能用"两个标签贴在一个对象上"复述 b = a 的原理；</li><li>[ ] 我知道 <code class="md-inline">a[:]</code> 能复制，并能解释为什么；</li><li>[ ] 我理解了"列表是可变对象"意味着什么；</li><li>[ ] AI 没有直接给出新代码（如果给了，我不复制，并记录到 Prompt 日志）。</li></ul>
+<p><strong>L1 纪律自查</strong>：</p>
+<ul><li>练习题全部手写，没有让 AI 生成任何代码；</li><li>让 AI 讲解前，我先自己运行了代码、有了自己的理解；</li><li>我把 AI 的讲解要点写进了 Prompt 日志。</li></ul>
+<p><strong>微任务卡（M3 · 讲解卡 · L1）</strong>：把列表和元组的对比发给 AI："请解释什么时候用列表、什么时候用元组？'不可变'在实际项目中有什么好处？"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 6, "5.6 Vibe Coding\uff1aL1 \u89e3\u9501\u4eea\u5f0f", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u5148\u5224 \u003ccode class=\"md-inline\"\u003elen(scores) \u0026lt; 3\u003c/code\u003e\uff0c\u907f\u514d\"\u53bb\u6389\u4e24\u4e2a\u540e\u5217\u8868\u4e3a\u7a7a\"\u5bfc\u81f4\u9664\u96f6\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003eremove(max(...))\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eremove(min(...))\u003c/code\u003e \u5404\u5220\u4e00\u4e2a\uff08\u6ce8\u610f\uff1a\u5982\u679c\u6709\u5e76\u5217\u6700\u9ad8\u5206\uff0c\u53ea\u5220\u4e00\u4e2a\uff0c\u7b26\u5408\u9898\u610f\"\u4e00\u4e2a\u6700\u9ad8\u3001\u4e00\u4e2a\u6700\u4f4e\"\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u539f\u5217\u8868\u88ab\u6539\uff0c\u5269\u4e0b 4 \u4e2a\u6570\u5e73\u5747\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u8f93\u5165\u4e00\u4e32\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff0c\u7528\u5217\u8868\u4fdd\u5b58\u540e\uff0c\u8f93\u51fa\uff1a\u53bb\u6389\u4e00\u4e2a\u6700\u9ad8\u5206\u548c\u4e00\u4e2a\u6700\u4f4e\u5206\u540e\u7684\u5e73\u5747\u5206\uff08\u4fdd\u7559 1 \u4f4d\uff09\u3002\u5982\u679c\u6210\u7ee9\u4e0d\u8db3 3 \u4e2a\uff0c\u63d0\u793a\"\u6210\u7ee9\u4e0d\u8db3\uff0c\u65e0\u6cd5\u8ba1\u7b97\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003escores = []\nwhile True:\n    score = input(\u0026quot;\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a\u0026quot;)\n    if score == \u0026quot;\u0026quot;:\n        break\n    scores.append(int(score))\n\nif len(scores) \u0026lt; 3:\n    print(\u0026quot;\u6210\u7ee9\u4e0d\u8db3\uff0c\u65e0\u6cd5\u8ba1\u7b97\u0026quot;)\nelse:\n    scores.remove(max(scores))\n    scores.remove(min(scores))\n    avg = sum(scores) / len(scores)\n    print(f\u0026quot;\u53bb\u6389\u6700\u9ad8\u5206\u548c\u6700\u4f4e\u5206\u540e\u7684\u5e73\u5747\u5206\uff1a{avg:.1f}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u8f93\u5165 90 80 70 60 100 50\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a90\n\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a80\n\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a70\n\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a60\n\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a100\n\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a50\n\u8bf7\u8f93\u5165\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff1a\n\u53bb\u6389\u6700\u9ad8\u5206\u548c\u6700\u4f4e\u5206\u540e\u7684\u5e73\u5747\u5206\uff1a75.0\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 7 \u9898**\uff1a\u8f93\u5165\u4e00\u4e32\u6210\u7ee9\uff08\u56de\u8f66\u7ed3\u675f\uff09\uff0c\u7528\u5217\u8868\u4fdd\u5b58\u540e\uff0c\u8f93\u51fa\uff1a\u53bb\u6389\u4e00\u4e2a\u6700\u9ad8\u5206\u548c\u4e00\u4e2a\u6700\u4f4e\u5206\u540e\u7684\u5e73\u5747\u5206\uff08\u4fdd\u7559 1 \u4f4d\uff09\u3002\u5982\u679c\u6210\u7ee9\u4e0d\u8db3 3 \u4e2a\uff0c\u63d0\u793a\"\u6210\u7ee9\u4e0d\u8db3\uff0c\u65e0\u6cd5\u8ba1\u7b97\"\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c5.6 Vibe Coding\uff1aL1 \u89e3\u9501\u4eea\u5f0f\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「5.6 Vibe Coding：L1 解锁仪式」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(5, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c5.6 Vibe Coding\uff1aL1 \u89e3\u9501\u4eea\u5f0f\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="5_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(5, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(5, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(5, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="5_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 6, '5.6 Vibe Coding：L1 解锁仪式')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 6, '5.6 Vibe Coding：L1 解锁仪式')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="5_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          5.7 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">列表与元组
+├── 列表 list（可变、有序、容器）
+│   ├── 创建：[] / list()；索引、负数、切片（与字符串同语法）
+│   ├── 增：append（一个）/ extend（拆开）/ insert（指定位置）
+│   ├── 删：pop（删并返回）/ remove（按值）/ del（按位置）/ clear（清空）
+│   ├── 查：in / index / count
+│   ├── 排序：sort 原地（返回 None）vs sorted 返回新列表
+│   ├── 原理：可变对象 → b = a 共享引用；复制用 a[:] / list(a)
+│   └── 推导式入门：[x * 2 for x in nums]
+├── 元组 tuple（不可变、有序）
+│   ├── 创建：(1, 2)；单元素必须 (1,)
+│   ├── 解包：x, y = point；遍历解包
+│   ├── 意义：安全 / 可哈希（能当字典键）/ 省内存
+│   └── 坑：元组里的列表仍然可变
+└── 综合：收集 → 统计（sum/max/min/avg/及格率）</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>修改型方法（append/sort/remove）原地改、返回 None；生成型方法（sorted）返回新结果；</li><li><code class="md-inline">b = a</code> 是共享引用不是复制；复制用 <code class="md-inline">a[:]</code> 或 <code class="md-inline">list(a)</code>；</li><li>单元素元组必须带逗号：<code class="md-inline">(1,)</code>；</li><li>元组不可变 = 不能换元素；但元组里的列表可以变；</li><li>L1 已解锁：AI 可以讲解代码运行过程，但<strong>仍然不能写代码</strong>。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 7, "5.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u601d\u8def\uff1f\uff08\u63d0\u793a\uff1a\u5efa\u7a7a\u5217\u8868\uff0c\u9010\u4e2a\u5224\u65ad\"\u662f\u5426\u5df2\u5728\u91cc\u9762\"\uff09\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u9047\u5230\"\u5f15\u7528\u5171\u4eab\"\u7684\u5751\u4e86\u5417\uff1f\u662f\u5728\u54ea\u9053\u9898\u9047\u5230\u7684\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u601d\u8def\uff1a\u5efa\u7a7a\u5217\u8868\uff0c\u9010\u4e2a\u5224\u65ad\"\u662f\u5426\u5df2\u5728\u91cc\u9762\"\uff0c\u4e0d\u5728\u5c31 append\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u987a\u5e8f\u4fdd\u6301\u003c/strong\u003e\u7684\u539f\u56e0\uff1a\u003ccode class=\"md-inline\"\u003eunique\u003c/code\u003e \u91cc\u7684\u5143\u7d20\u987a\u5e8f\u7531\"\u7b2c\u4e00\u6b21\u51fa\u73b0\"\u51b3\u5b9a\u2014\u20141 \u5148\u6765\uff0c2 \u7b2c\u4e8c\uff0c3 \u7b2c\u4e09\u2026\u2026\u53bb\u91cd\u540e\u4ecd\u7136\u6309\u7b2c\u4e00\u6b21\u51fa\u73b0\u987a\u5e8f\u6392\u5217\uff1b\u003c/li\u003e\u003cli\u003e\u5bf9\u6bd4 \u003ccode class=\"md-inline\"\u003elist(set(nums))\u003c/code\u003e\uff1aset \u662f\u65e0\u5e8f\u7684\uff0c\u8f93\u51fa\u987a\u5e8f\u4e0d\u4fdd\u8bc1\uff08\u53ef\u80fd \u003ccode class=\"md-inline\"\u003e[1, 2, 3, 4, 5]\u003c/code\u003e\uff0c\u4e5f\u53ef\u80fd\u662f\u5176\u4ed6\u987a\u5e8f\uff09\u2014\u2014\u003cstrong\u003e\u8981\u901f\u5ea6\u7528 set\uff0c\u8981\u7a33\u5b9a\u987a\u5e8f\u7528\u624b\u5199\u003c/strong\u003e\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5217\u8868\u53bb\u91cd\uff08\u4e0d\u4f7f\u7528 set\uff09\uff1a\u5df2\u77e5 `nums = [1, 2, 2, 3, 1, 4, 3, 5]`\uff0c\u7528\u5faa\u73af + `in` \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff0c\u8f93\u51fa\u7ed3\u679c\uff0c\u5e76\u8bf4\u660e\u4e3a\u4ec0\u4e48\u987a\u5e8f\u80fd\u4fdd\u6301\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [1, 2, 2, 3, 1, 4, 3, 5]\n\nunique = []\nfor num in nums:\n    if num not in unique:\n        unique.append(num)\n\nprint(unique)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[1, 2, 3, 4, 5]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(5, '0', "**\u7b2c 8 \u9898**\uff1a\u5217\u8868\u53bb\u91cd\uff08\u4e0d\u4f7f\u7528 set\uff09\uff1a\u5df2\u77e5 `nums = [1, 2, 2, 3, 1, 4, 3, 5]`\uff0c\u7528\u5faa\u73af + `in` \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff0c\u8f93\u51fa\u7ed3\u679c\uff0c\u5e76\u8bf4\u660e\u4e3a\u4ec0\u4e48\u987a\u5e8f\u80fd\u4fdd\u6301\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="5_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(5, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(5, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(5, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="5_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 7, '5.7 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 7, '5.7 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="5_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td>顺序/二分/插值查找</td><td>有序数据用二分（O(log n)）；插值了解</td></tr><tr><td>选择/冒泡/插入排序</td><td>三种 O(n²) 手写排序（工程中用 sort）</td></tr><tr><td>二维列表 <code class="md-inline">matrix[i][j]</code></td><td>外层取行、内层取列（表格/矩阵）</td></tr><tr><td>列表 <code class="md-inline">[1, 2]</code></td><td>可变、有序容器</td></tr><tr><td><code class="md-inline">append</code> / <code class="md-inline">extend</code> / <code class="md-inline">insert</code></td><td>追加一个 / 追加多个 / 插入</td></tr><tr><td><code class="md-inline">pop</code> / <code class="md-inline">remove</code> / <code class="md-inline">del</code></td><td>删并返回 / 按值删 / 按位置删</td></tr><tr><td><code class="md-inline">sort</code> / <code class="md-inline">sorted</code></td><td>原地排序 / 返回新列表</td></tr><tr><td><code class="md-inline">b = a[:]</code></td><td>复制列表（防引用共享）</td></tr><tr><td>元组 <code class="md-inline">(1, 2)</code></td><td>不可变序列；单元素要写 <code class="md-inline">(1,)</code></td></tr><tr><td>解包 <code class="md-inline">a, b = b, a</code></td><td>交换 / 多变量赋值</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(5, 8, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="5_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(5, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(5, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(5, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="5_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(5, 8, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(5, 8, '本章速查')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -828,7 +1704,7 @@ print("{name}: {score}分".format(**data))</code></pre>
 <div id="mindmap-overlay" class="mindmap-overlay">
   <div class="mindmap-container">
     <div class="mindmap-toolbar">
-      <span class="mindmap-title">🧠 字符串操作 — 思维大纲</span>
+      <span class="mindmap-title">🧠 数据结构（上）：列表与元组 — 思维大纲</span>
       <div class="mindmap-tools">
         <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
         <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
@@ -846,7 +1722,7 @@ print("{name}: {score}分".format(**data))</code></pre>
 <div id="my-mindmap-overlay" class="mindmap-overlay">
   <div class="mindmap-container" style="max-width:900px;">
     <div class="mindmap-toolbar">
-      <span class="mindmap-title">✏️ 字符串操作 — 我的思维导图</span>
+      <span class="mindmap-title">✏️ 数据结构（上）：列表与元组 — 我的思维导图</span>
       <div class="mindmap-tools">
         <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
         <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
@@ -879,41 +1755,35 @@ print("{name}: {score}分".format(**data))</code></pre>
 </div>
 
 
-<script id="mindmap-data" type="text/markdown"># 字符串操作
-## 索引与切片
-### 正向索引[0开始]
-### 反向索引[-1开始]
-### 切片 [开始:结束:步长]
-#### [0:5] 取前5个
-#### [::-1] 反转字符串
-#### 切片安全(不越界)
-## 大小写转换
-### upper() 全大写
-### lower() 全小写
-### title() 单词首字母大写
-### swapcase() 大小写互换
-## 去除空白
-### strip() 去两端空白
-### lstrip() 去左侧
-### rstrip() 去右侧
-## 查找与替换
-### find() 返回索引/-1
-### index() 返回索引/报错
-### count() 统计次数
-### replace(old,new) 替换
-## 判断方法
-### isdigit() 纯数字
-### isalpha() 纯字母
-### startswith() 以..开头
-### endswith() 以..结尾
-## 分割与连接
-### split(&#34;,&#34;) 字符串-&gt;列表
-### join(&#34;|&#34;) 列表-&gt;字符串
-## 格式化方式
-### f-string [推荐] f&#34;{var}&#34;
-### .format() 方法
-### % 旧式(不推荐)
-### :.2f 保留小数 / :^居中 / :&lt;左齐</script>
+<script id="mindmap-data" type="text/markdown"># 数据结构（上）：列表与元组
+## 5.1 列表：可变的有序序列
+### 概念认知：为什么需要列表
+### 语法掌握：创建与访问
+### 语法掌握：序列的共性——列表与字符串的对比
+### 语法掌握：增删改——列表的五大类操作
+### 语法掌握：查找、排序、反转
+### 原理探秘：列表是可变对象——引用共享的&#34;大坑&#34;
+### 语法掌握：遍历与列表推导式入门
+### 语法掌握：二维列表（矩阵）
+## 5.2 元组：不可变序列
+### 概念认知：元组是&#34;只读列表&#34;
+### 语法掌握：创建元组与单元素陷阱
+### 语法掌握：元组解包
+### 原理探秘：为什么需要元组
+### 综合运用：元组的&#34;不可变&#34;是相对的
+## 5.3 综合应用：学生成绩系统 v1
+## 5.4 算法拓展：查找与排序
+### 查找算法：顺序、二分与插值
+### 排序算法：选择、冒泡、插入
+## 5.5 本章 Debug 四件套
+### 问题 1：把 append 的返回值赋给列表
+### 问题 2：remove 不存在的元素
+### 问题 3：索引越界
+### 问题 4：`b = a` 引用共享
+## 5.6 Vibe Coding：L1 解锁仪式
+### 你的等级升级了
+### Vibe Coding 任务卡（L1）
+## 5.7 本章小结与知识树</script>
 
 
 <script>
@@ -921,9 +1791,9 @@ print("{name}: {score}分".format(**data))</code></pre>
   const USER_MODE = 'all_unlocked';
   const COMPLETED_KPS = [];
   const CHAPTER_COMPLETED = false;
-  const CHAPTER_KP_TITLES = ["\u5b57\u7b26\u4e32\u7d22\u5f15\u4e0e\u5207\u7247", "\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0a\uff09", "\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0b\uff09", "\u5b57\u7b26\u4e32\u683c\u5f0f\u5316"];
+  const CHAPTER_KP_TITLES = ["5.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "5.1 \u5217\u8868\uff1a\u53ef\u53d8\u7684\u6709\u5e8f\u5e8f\u5217", "5.2 \u5143\u7ec4\uff1a\u4e0d\u53ef\u53d8\u5e8f\u5217", "5.3 \u7efc\u5408\u5e94\u7528\uff1a\u5b66\u751f\u6210\u7ee9\u7cfb\u7edf v1", "5.4 \u7b97\u6cd5\u62d3\u5c55\uff1a\u67e5\u627e\u4e0e\u6392\u5e8f", "5.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "5.6 Vibe Coding\uff1aL1 \u89e3\u9501\u4eea\u5f0f", "5.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
   const CHAPTER_WRONG = [];
-  const CHAPTER_TITLE = "\u5b57\u7b26\u4e32\u64cd\u4f5c";
+  const CHAPTER_TITLE = "\u6570\u636e\u7ed3\u6784\uff08\u4e0a\uff09\uff1a\u5217\u8868\u4e0e\u5143\u7ec4";
 </script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
@@ -964,7 +1834,7 @@ print("{name}: {score}分".format(**data))</code></pre>
 <script src="static/js/chapter_challenge.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    ChapterIntro3D.open(5, "\u5b57\u7b26\u4e32\u64cd\u4f5c", "\u6df1\u5165\u5b66\u4e60\u5b57\u7b26\u4e32\u7684\u5207\u7247\u3001\u5e38\u7528\u65b9\u6cd5\u3001\u683c\u5f0f\u5316\u8f93\u51fa\u548c\u7f16\u7801\u77e5\u8bc6", ["\u5b57\u7b26\u4e32\u7d22\u5f15\u4e0e\u5207\u7247", "\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0a\uff09", "\u5b57\u7b26\u4e32\u5e38\u7528\u65b9\u6cd5\uff08\u4e0b\uff09", "\u5b57\u7b26\u4e32\u683c\u5f0f\u5316"], null);
+    ChapterIntro3D.open(5, "\u6570\u636e\u7ed3\u6784\uff08\u4e0a\uff09\uff1a\u5217\u8868\u4e0e\u5143\u7ec4", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7406\u89e3\u5217\u8868\u7684\u672c\u8d28\uff1a\u53ef\u53d8\u3001\u6709\u5e8f\u7684\u5bb9\u5668\uff1b\n- \u719f\u7ec3\u4f7f\u7528\u5217\u8868\u7684\u589e\u5220\u6539\u67e5\u3001\u6392\u5e8f\u53cd\u8f6c\u3001\u904d\u5386\uff1b\n- \u7406\u89e3\"\u5217\u8868\u662f\u53ef\u53d8\u5bf9\u8c61\"\u5e26\u6765\u7684\u5f15\u7528\u5171\u4eab\u9677\u9631\uff0c\u638c\u63e1\u590d\u5236\u65b9\u6cd5\uff1b\n- \u638c\u63e1\u5143\u7ec4\u7684\u521b\u5efa\u3001\u89e3\u5305\uff0c\u7406\u89e3\"\u4e0d\u53ef\u53d8\"\u7684\u610f\u4e49\uff1b\n- \u80fd\u533a\u5206\u5217\u8868\u4e0e", ["5.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "5.1 \u5217\u8868\uff1a\u53ef\u53d8\u7684\u6709\u5e8f\u5e8f\u5217", "5.2 \u5143\u7ec4\uff1a\u4e0d\u53ef\u53d8\u5e8f\u5217", "5.3 \u7efc\u5408\u5e94\u7528\uff1a\u5b66\u751f\u6210\u7ee9\u7cfb\u7edf v1", "5.4 \u7b97\u6cd5\u62d3\u5c55\uff1a\u67e5\u627e\u4e0e\u6392\u5e8f", "5.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "5.6 Vibe Coding\uff1aL1 \u89e3\u9501\u4eea\u5f0f", "5.7 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
   });
 </script>
 

@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 设计思维与代码质量</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="16" data-chapter-title="设计思维与代码质量" data-chapter-description="学完本章，你应该能够：
+
+- 说出并应用五个设计原则：单一职责、高内聚低耦合、DRY、分层、SOLID 一句话版；
+- 写出符合 PEP 8 的命名与注释规范；
+- 认识类型提示（了解）；
+- 识别代码&#34;坏味道&#34;，掌握提取函数、消除魔法数字">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 16</p>
+    <span class="hero-icon">💎</span>
+    <h2>第 16 章 · 设计思维与代码质量</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 说出并应用五个设计原则：单一职责、高内聚低耦合、DRY、分层、SOLID 一句话版；
+- 写出符合 PEP 8 的命名与注释规范；
+- 认识类型提示（了解）；
+- 识别代码&#34;坏味道&#34;，掌握提取函数、消除魔法数字</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="16_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          16.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>说出并应用五个设计原则：单一职责、高内聚低耦合、DRY、分层、SOLID 一句话版；</li><li>写出符合 PEP 8 的命名与注释规范；</li><li>认识类型提示（了解）；</li><li>识别代码"坏味道"，掌握提取函数、消除魔法数字、简化条件等重构手法；</li><li>把一个"能跑的代码"重构成"结构清晰的代码"；</li><li>继续遵守 L2 纪律：AI 是评审员。</li></ol>
+<p><strong>前置知识</strong>：第 1-15 章（函数、类、模块、需求分析——本章是它们的"质量验收标准"）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 0, "16.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef run():\n    data = load(\u0026quot;data.json\u0026quot;)\n    total = sum(data)\n    print(total)\n    save(\u0026quot;report.json\u0026quot;, {\u0026quot;total\u0026quot;: total})\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa\u5355\u4e00\u804c\u8d23\u7684\u4e00\u53e5\u8bdd\u5b9a\u4e49\uff0c\u5e76\u6307\u51fa\u4e0b\u9762\u51fd\u6570\u8fdd\u53cd\u4e86\u54ea\u6761\u539f\u5219\uff1a", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cp\u003e\u003ccode class=\"md-inline\"\u003erun\u003c/code\u003e \u51fd\u6570\u8fdd\u53cd\u4e86\u003cstrong\u003e\u5355\u4e00\u804c\u8d23\u003c/strong\u003e\uff1a\u5b83\u540c\u65f6\u5e72\u4e86\u56db\u4ef6\u4e8b\u2014\u2014\u52a0\u8f7d\u6570\u636e\uff08\u6570\u636e\u5c42\uff09\u3001\u8ba1\u7b97\u603b\u548c\uff08\u903b\u8f91\u5c42\uff09\u3001\u6253\u5370\uff08\u8868\u73b0\u5c42\uff09\u3001\u4fdd\u5b58\u7ed3\u679c\uff08\u6570\u636e\u5c42\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u62c6\u5206\u5efa\u8bae\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef load_data(path): ...\ndef calc_total(data): ...\ndef save_report(path, total): ...\ndef print_result(total): ...\n\ndef main():\n    data = load_data(\u0026quot;data.json\u0026quot;)\n    total = calc_total(data)\n    print_result(total)\n    save_report(\u0026quot;report.json\u0026quot;, {\u0026quot;total\u0026quot;: total})\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '0', "**\u7b2c 1 \u9898**\uff1a\u5199\u51fa\u5355\u4e00\u804c\u8d23\u7684\u4e00\u53e5\u8bdd\u5b9a\u4e49\uff0c\u5e76\u6307\u51fa\u4e0b\u9762\u51fd\u6570\u8fdd\u53cd\u4e86\u54ea\u6761\u539f\u5219\uff1a")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 0, '16.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 0, '16.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="16_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          16.1 设计原则
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">16.1.1 概念认知：设计是什么</h3>
+<p><strong>设计（design）</strong> 是编码之前的"布局"：模块怎么分、函数怎么拆、数据怎么流。设计得好，改需求时只动一小块；设计得差，改一个功能牵一发动全身。</p>
+<h3 class="md-h">16.1.2 语法掌握：单一职责原则（SRP）</h3>
+<p><strong>一个函数/类只做一件事</strong>——这是最重要、最容易理解的设计原则。</p>
+<p><strong>代码案例 16.1</strong>：职责过多 vs 单一职责（❌ vs ✅）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 一个函数干三件事：输入、统计、打印
+def process_scores():
+    scores = []
+    while True:
+        s = input(&quot;成绩（回车结束）：&quot;)
+        if s == &quot;&quot;:
+            break
+        scores.append(int(s))
+    total = sum(scores)
+    avg = total / len(scores)
+    print(f&quot;总分 {total}，平均 {avg:.1f}&quot;)
+
+# ✅ 三个函数各干一件事，可以单独测试、单独复用
+def input_scores():
+    &quot;&quot;&quot;收集成绩，返回列表&quot;&quot;&quot;
+    ...
+
+def calc_stats(scores):
+    &quot;&quot;&quot;统计，返回字典&quot;&quot;&quot;
+    ...
+
+def print_report(stats):
+    &quot;&quot;&quot;打印报告&quot;&quot;&quot;
+    ...</code></pre></div>
+<p><strong>交叉验证：为什么"顺便打印"是坏味道？</strong></p>
+<p class="md-callout md-bad"><strong>❌ 问题</strong>：统计函数里顺便打印，测试时没法只验证"统计结果"（输出混在结果里）；以后想改成写文件、发消息，得改统计函数。</p>
+<p class="md-callout md-good"><strong>✅ 解法</strong>：函数只 <code class="md-inline">return</code> 结果，<strong>输出交给调用者决定</strong>——这就是你 Day 7 学过的"函数 = 接口"。</p>
+<p><strong>微任务卡（M1 · 讲解卡 · L2）</strong>：把上面两个版本发给 AI，提问："请解释单一职责为什么让代码可测试、可复用？"一句话记录理解。</p>
+<h3 class="md-h">16.1.3 语法掌握：高内聚、低耦合</h3>
+<ul><li><strong>高内聚</strong>：一个模块里的东西关系紧密（学生相关都在一起）；</li><li><strong>低耦合</strong>：模块之间依赖少、接口清晰（改 A 不影响 B）。</li></ul>
+<p><strong>代码案例 16.2</strong>：耦合对比（❌ vs ✅）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 高耦合：主程序直接读写文件、算统计、打印，全搅在一起
+# （改文件格式要动主程序，改统计也要动主程序）
+
+# ✅ 低耦合：三个模块各自独立，通过&quot;返回值/参数&quot;协作
+# file_utils.read_scores(path) → 列表
+# score_utils.calc_stats(scores) → 字典
+# main.py 只负责&quot;调用谁、传什么、展示什么&quot;</code></pre></div>
+<p><strong>讲解</strong>：低耦合的检验方法——<strong>"改需求 A，会不会被迫改模块 B？"</strong> 数据层改格式，统计层和展示层应该毫不知情。</p>
+<h3 class="md-h">16.1.4 语法掌握：DRY——不要重复自己</h3>
+<p><strong>代码案例 16.3</strong>：重复代码 vs 提取函数（❌ vs ✅）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 相同的校验逻辑写三遍
+age = int(input(&quot;年龄：&quot;))
+if age &lt; 0 or age &gt; 150:
+    print(&quot;年龄不合法&quot;)
+score = int(input(&quot;成绩：&quot;))
+if score &lt; 0 or score &gt; 100:
+    print(&quot;成绩不合法&quot;)
+...
+
+# ✅ 提取成一个校验函数
+def check_range(value, low, high, name):
+    if value &lt; low or value &gt; high:
+        print(f&quot;{name}不合法&quot;)
+        return False
+    return True</code></pre></div>
+<p><strong>讲解</strong>：<strong>复制三遍 = bug 改三处、漏一处就出事故</strong>。DRY 不是"代码越少越好"，而是"<strong>每一份知识只保留一个权威来源</strong>"。</p>
+<h3 class="md-h">16.1.5 语法掌握：分层思想</h3>
+<p><strong>代码案例 16.4</strong>：未分层 vs 分层（❌ vs ✅）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 三层混在一起：界面逻辑 + 业务逻辑 + 数据逻辑 全在 main
+def main():
+    # 界面：print 菜单、input 选择
+    # 业务：算平均、判断及格
+    # 数据：open json 读写
+    ...
+
+# ✅ 分三层（你 Day 9 的成绩系统 v3 已经是雏形）
+# 表现层：菜单、输入输出（main.py）
+# 逻辑层：统计、判断（score_utils.py）
+# 数据层：读文件、写文件（file_utils.py）</code></pre></div>
+<p><strong>讲解</strong>：分层 = <strong>同层之间不互相掺和</strong>。改界面不影响逻辑，换数据库不影响统计——这就是第 21 章软件架构的起点。</p>
+<h3 class="md-h">16.1.6 了解：SOLID 一句话版</h3>
+<p>SOLID 是面向对象设计的五个原则缩写，<strong>本课程要求记住"一句话含义"</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>字母</th><th>原则</th><th>一句话</th></tr></thead><tbody><tr><td>S</td><td>单一职责</td><td>一个类只做一件事</td></tr><tr><td>O</td><td>开闭原则</td><td>对扩展开放、对修改关闭（加功能不改老代码）</td></tr><tr><td>L</td><td>里氏替换</td><td>子类应该能替换父类而不出错（第 11 章继承的"体检"）</td></tr><tr><td>I</td><td>接口隔离</td><td>不要强迫使用者依赖用不到的接口</td></tr><tr><td>D</td><td>依赖倒置</td><td>依赖抽象，不依赖具体实现</td></tr></tbody></table></div>
+<p><strong>就业提示</strong>：面试问"你了解设计原则吗"，答"S 单一职责 + O 开闭"加一个例子，就够过初面；能说出全部五个是加分项。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 1, "16.1 \u8bbe\u8ba1\u539f\u5219", [{"body": "\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eif n \u0026gt; 0.6 and x \u0026lt; 1000 and y \u0026gt; 0.6:\n    print(\u0026quot;\u901a\u8fc7\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u4e0b\u9762\u4ee3\u7801\u6709\u4ec0\u4e48\u574f\u5473\u9053\uff1f\u600e\u4e48\u6539\uff1f", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003cstrong\u003e\u9b54\u6cd5\u6570\u5b57\u003c/strong\u003e\u2014\u2014\u003ccode class=\"md-inline\"\u003e0.6\u003c/code\u003e \u51fa\u73b0\u4e24\u6b21\u3001\u003ccode class=\"md-inline\"\u003e1000\u003c/code\u003e \u542b\u4e49\u4e0d\u660e\uff0c\u6ca1\u4eba\u77e5\u9053\u5b83\u4eec\u4ee3\u8868\u4ec0\u4e48\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u6539\u5199\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ePASS_RATE = 0.6\nMAX_AMOUNT = 1000\n\nif n \u0026gt; PASS_RATE and x \u0026lt; MAX_AMOUNT and y \u0026gt; PASS_RATE:\n    print(\u0026quot;\u901a\u8fc7\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '0', "**\u7b2c 2 \u9898**\uff1a\u4e0b\u9762\u4ee3\u7801\u6709\u4ec0\u4e48\u574f\u5473\u9053\uff1f\u600e\u4e48\u6539\uff1f")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.1 \u8bbe\u8ba1\u539f\u5219\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「16.1 设计原则」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(16, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c16.1 \u8bbe\u8ba1\u539f\u5219\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 1, '16.1 设计原则')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 1, '16.1 设计原则')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="16_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          16.2 代码质量：让代码&#34;可读&#34;
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">16.2.1 语法掌握：命名规范（PEP 8）</h3>
+<p><strong>代码案例 16.5</strong>：坏命名 vs 好命名（❌ vs ✅）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌
+def f(a, b):
+    x = a * b
+    return x
+
+# ✅
+def calc_rectangle_area(width, height):
+    area = width * height
+    return area</code></pre></div>
+<p><strong>PEP 8 命名四规则</strong>（复习 + 强化）：</p>
+<ol><li>变量/函数：小写 + 下划线（<code class="md-inline">total_score</code>）；</li><li>类名：大驼峰（<code class="md-inline">BankAccount</code>）；</li><li>常量：全大写（<code class="md-inline">MAX_RETRY = 3</code>）；</li><li>函数名要"动词 + 名词"（<code class="md-inline">calc_stats</code>、<code class="md-inline">save_report</code>）。</li></ol>
+<h3 class="md-h">16.2.2 语法掌握：注释与文档字符串</h3>
+<p><strong>代码案例 16.6</strong>：注释的三种用途（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def calc_stats(scores):
+    &quot;&quot;&quot;计算成绩统计，返回 (总分, 平均分)。&quot;&quot;&quot;
+    # 空列表直接返回，避免除零
+    if not scores:
+        return 0, 0
+    total = sum(scores)
+    return total, total / len(scores)</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><strong>文档字符串 <code class="md-inline">"""..."""</code></strong>：解释函数"是什么"（供调用者读，PyCharm 悬停可见）；</li><li><strong>行注释 <code class="md-inline">#</code></strong>：解释"为什么这么写"（供维护者读，重点写"不明显的意图"）；</li><li><strong>不要写废话注释</strong>：<code class="md-inline">x = x + 1  # 让 x 加 1</code>——注释要和代码互补，不是复述。</li></ul>
+<h3 class="md-h">16.2.3 了解：类型提示</h3>
+<p><strong>代码案例 16.7</strong>：类型提示（✅ 正确，了解级）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def calc_stats(scores: list[int]) -&gt; tuple[int, float]:
+    &quot;&quot;&quot;scores: 成绩列表；返回 (总分, 平均分)&quot;&quot;&quot;
+    total = sum(scores)
+    return total, total / len(scores)</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">scores: list[int]</code> 声明"期望传入整数列表"，<code class="md-inline">-&gt; tuple[int, float]</code> 声明"返回元组"。<strong>它不强制检查（还是动态类型），但让读者和 IDE 一眼看懂接口</strong>——大型项目标配，本课程了解即可，第 30 章项目里用到再看。</p>
+<p><strong>原理探秘：可读性的经济学</strong></p>
+<p>代码被<strong>阅读的次数远多于编写的次数</strong>（行业流传"读:写 ≈ 10:1"）：你现在写的每一行，将来会被自己、队友、接手的人反复读。<strong>命名、注释、结构不是"洁癖"，而是经济决策</strong>——可读性差的代码，维护成本由整个团队买单。这也是企业代码评审第一条看命名的原因。</p>
+<blockquote class="md-quote"><p><strong>就业红线（了解级边界）</strong>：类型提示这里只要求"认识"；后端岗位（尤其 FastAPI/Django 项目）会要求<strong>实际使用</strong>——FastAPI 的参数与响应模型全靠类型标注。面试可答："类型提示是轻量静态检查，FastAPI 用它生成接口文档与校验。"</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 2, "16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u628a\u4e0b\u9762\u547d\u540d\u6539\u6210\u7b26\u5408 PEP 8 \u7684\u540d\u5b57\uff1a`class studentinfo`\u3001`def getdata()`\u3001`MAX_retry`\u3001`abc`\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass StudentInfo:      # \u7c7b\u540d\u5927\u9a7c\u5cf0\ndef get_data():         # \u51fd\u6570\u52a8\u8bcd+\u540d\u8bcd\u3001\u5c0f\u5199\u4e0b\u5212\u7ebf\nMAX_RETRY = 3           # \u5e38\u91cf\u5168\u5927\u5199\nname = \u0026quot;\u5f20\u4e09\u0026quot;           # \u53d8\u91cf\u89c1\u540d\u77e5\u610f\uff08abc \u6362\u6210\u6709\u610f\u4e49\u7684\u8bcd\uff09\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '0', "**\u7b2c 3 \u9898**\uff1a\u628a\u4e0b\u9762\u547d\u540d\u6539\u6210\u7b26\u5408 PEP 8 \u7684\u540d\u5b57\uff1a`class studentinfo`\u3001`def getdata()`\u3001`MAX_retry`\u3001`abc`\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「16.2 代码质量：让代码&#34;可读&#34;」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(16, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 2, '16.2 代码质量：让代码&#34;可读&#34;')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 2, '16.2 代码质量：让代码&#34;可读&#34;')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="16_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          16.3 重构：不改变功能，改善结构
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">16.3.1 概念认知：重构是什么</h3>
+<p><strong>重构（refactoring）</strong> = 在不改变程序外部行为的前提下，改善内部结构。<strong>前提是先有测试</strong>（第 17 章）——没有测试的重构像走钢丝。</p>
+<h3 class="md-h">16.3.2 语法掌握：识别坏味道</h3>
+<p>四个最常见的"坏味道"：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>坏味道</th><th>症状</th><th>药方</th></tr></thead><tbody><tr><td>魔法数字</td><td>代码里到处是 <code class="md-inline">86400</code>、<code class="md-inline">0.6</code></td><td>提取为常量</td></tr><tr><td>长函数</td><td>一个函数 50 行</td><td>提取函数</td></tr><tr><td>重复代码</td><td>相同逻辑复制粘贴</td><td>提取函数（DRY）</td></tr><tr><td>命名差</td><td><code class="md-inline">a</code>、<code class="md-inline">x1</code>、<code class="md-inline">data2</code></td><td>见名知意</td></tr></tbody></table></div>
+<h3 class="md-h">16.3.3 语法掌握：三个基础手法（重构前后对比）</h3>
+<p><strong>代码案例 16.8 · 手法一：消除魔法数字（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 魔法数字
+if retry_count &gt;= 3:
+    raise ConnectionError(&quot;重试次数过多&quot;)
+
+# ✅ 常量
+MAX_RETRY = 3
+if retry_count &gt;= MAX_RETRY:
+    raise ConnectionError(f&quot;超过最大重试次数 {MAX_RETRY}&quot;)</code></pre></div>
+<p><strong>代码案例 16.9 · 手法二：提取函数（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 主流程里塞了判断逻辑
+for row in rows:
+    if row[1].isdigit() and 0 &lt;= int(row[1]) &lt;= 100:
+        clean.append(row)
+
+# ✅ 提取为&quot;表达意图&quot;的函数
+def is_valid_score(text):
+    return text.isdigit() and 0 &lt;= int(text) &lt;= 100
+
+for row in rows:
+    if is_valid_score(row[1]):
+        clean.append(row)</code></pre></div>
+<p><strong>代码案例 16.10 · 手法三：简化条件（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 多层嵌套，读起来像迷宫
+if user:
+    if user.get(&quot;logged_in&quot;):
+        if user.get(&quot;role&quot;) == &quot;admin&quot;:
+            return &quot;允许访问&quot;
+    return &quot;拒绝&quot;
+
+# ✅ 卫语句提前返回（Day 7 学过）
+if not user:
+    return &quot;拒绝&quot;
+if not user.get(&quot;logged_in&quot;):
+    return &quot;拒绝&quot;
+if user.get(&quot;role&quot;) != &quot;admin&quot;:
+    return &quot;拒绝&quot;
+return &quot;允许访问&quot;</code></pre></div>
+<p><strong>微任务卡（M2 · 对比卡 · L2）</strong>：把重构前后的代码发给 AI，提问："请对比两版的差异，说明重构为什么没有改变功能、却改善了可读性。"一句话记录结论。</p>
+<h3 class="md-h">16.3.4 手法速览：六组高频对比</h3>
+<p><strong>代码案例 16.11 · 手法四：引入解释性变量（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 条件含义不明
+if total &gt; 1000 and count &gt; 5 and avg &gt; 80:
+    print(&quot;绩效优秀&quot;)
+
+# ✅ 用有名字的变量解释条件
+high_total = total &gt; 1000
+high_volume = count &gt; 5
+high_avg = avg &gt; 80
+if high_total and high_volume and high_avg:
+    print(&quot;绩效优秀&quot;)</code></pre></div>
+<p><strong>代码案例 16.12 · 手法五：用数据表替代 if-elif 链（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 五层 elif 的等级判断
+if score &gt;= 90:
+    grade = &quot;优秀&quot;
+elif score &gt;= 80:
+    grade = &quot;良好&quot;
+...
+
+# ✅ 边界列表 + 循环（规则集中、易扩展）
+levels = [(90, &quot;优秀&quot;), (80, &quot;良好&quot;), (70, &quot;中等&quot;), (60, &quot;及格&quot;)]
+grade = &quot;不及格&quot;
+for bound, label in levels:
+    if score &gt;= bound:
+        grade = label
+        break</code></pre></div>
+<p><strong>代码案例 16.13 · 手法六：重命名（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌
+def f(a, b):
+    x = a * b
+    return x
+
+# ✅
+def calc_rectangle_area(width, height):
+    area = width * height
+    return area</code></pre></div>
+<p><strong>代码案例 16.14 · 手法七：消除死代码（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 定义了没用到的变量/分支
+def calc_total(scores):
+    backup = scores[:]      # 从没用到
+    if False:               # 永远不执行
+        print(&quot;debug&quot;)
+    return sum(scores)
+
+# ✅ 删干净
+def calc_total(scores):
+    return sum(scores)</code></pre></div>
+<p><strong>代码案例 16.15 · 手法八：合并重复分支（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 两个分支做同一件事
+if is_weekend:
+    price = price * 0.8
+else:
+    price = price * 0.8
+
+# ✅ 条件合并
+if is_weekend or is_holiday:
+    price = price * 0.8</code></pre></div>
+<p><strong>代码案例 16.16 · 手法九：拆分长函数（❌ → ✅）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># ❌ 30 行的&quot;做一切&quot;函数
+def process_order(order):
+    # 校验订单（10 行）
+    # 计算金额（10 行）
+    # 更新库存（10 行）
+    ...
+
+# ✅ 三个小函数 + 主流程三行调用
+def validate_order(order): ...
+def calc_amount(order): ...
+def update_stock(order): ...
+def process_order(order):
+    validate_order(order)
+    amount = calc_amount(order)
+    update_stock(order)
+    return amount</code></pre></div>
+<p><strong>讲解</strong>：基础三手法 + 速览六手法，覆盖了 80% 的日常重构场景。<strong>练习方法：每次写完代码，用这 9 个手法挨个问一遍"有没有可以套用的"</strong>——重构能力就是这样练出来的。</p>
+<h3 class="md-h">16.3.5 综合运用：重构实战</h3>
+<p><strong>代码案例 16.17</strong>：重构前（❌ 能跑但结构差）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def main():
+    d = {}
+    while True:
+        print(&quot;1加 2查 3删 4退&quot;)
+        c = input()
+        if c == &quot;1&quot;:
+            n = input(&quot;名&quot;)
+            s = int(input(&quot;分&quot;))
+            d[n] = s
+        elif c == &quot;2&quot;:
+            n = input(&quot;名&quot;)
+            if n in d:
+                print(d[n])
+            else:
+                print(&quot;无&quot;)
+        elif c == &quot;3&quot;:
+            n = input(&quot;名&quot;)
+            d.pop(n, None)
+        elif c == &quot;4&quot;:
+            break</code></pre></div>
+<p><strong>代码案例 16.18</strong>：重构后（✅ 结构清晰）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">STUDENTS = &quot;students.json&quot;
+
+def load_data() -&gt; dict:
+    &quot;&quot;&quot;从文件加载成绩表&quot;&quot;&quot;
+    ...
+
+def save_data(data: dict) -&gt; None:
+    &quot;&quot;&quot;保存成绩表到文件&quot;&quot;&quot;
+    ...
+
+def add_student(data: dict) -&gt; None:
+    &quot;&quot;&quot;添加学生成绩&quot;&quot;&quot;
+    ...
+
+def query_student(data: dict) -&gt; None:
+    &quot;&quot;&quot;查询学生成绩&quot;&quot;&quot;
+    ...
+
+def delete_student(data: dict) -&gt; None:
+    &quot;&quot;&quot;删除学生成绩&quot;&quot;&quot;
+    ...
+
+def main():
+    data = load_data()
+    while True:
+        choice = show_menu()
+        if choice == &quot;1&quot;:
+            add_student(data)
+        elif choice == &quot;2&quot;:
+            query_student(data)
+        elif choice == &quot;3&quot;:
+            delete_student(data)
+        elif choice == &quot;4&quot;:
+            save_data(data)
+            break</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li>每个函数 3-5 行，名字就是意图；</li><li>魔法数字换成常量、单字母变量换成全名；</li><li>主流程变成"菜单 + 调用"——<strong>读主函数 10 秒就知道程序在干什么</strong>；</li><li><strong>行为没变，结构大变</strong>——这就是重构。</li></ul>
+<p><strong>微任务卡（M3 · 审查卡 · L2）</strong>：把你重构后的代码发给 AI："请按单一职责、命名规范、坏味道清单评审。只给建议，不要重写。"记录采纳/否决理由。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 3, "16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784", [{"body": "\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eif score \u0026gt; 100:\n    raise ValueError(\u0026quot;\u6210\u7ee9\u8d85\u8303\u56f4\u0026quot;)\nif retry_count \u0026gt; 3:\n    print(\u0026quot;\u91cd\u8bd5\u592a\u591a\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u5e38\u91cf\u96c6\u4e2d\u5b9a\u4e49\u5728\u6587\u4ef6\u9876\u90e8\uff0c\u89c4\u5219\u53ea\u5b58\u4e00\u5904\u3001\u6539\u52a8\u53ea\u6539\u4e00\u5904\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u628a\u4e0b\u9762\u7684\u9b54\u6cd5\u6570\u5b57\u63d0\u53d6\u4e3a\u5e38\u91cf\u5e76\u6539\u5199\uff1a", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eMAX_SCORE = 100\nMAX_RETRY = 3\n\nif score \u0026gt; MAX_SCORE:\n    raise ValueError(\u0026quot;\u6210\u7ee9\u8d85\u8303\u56f4\u0026quot;)\nif retry_count \u0026gt; MAX_RETRY:\n    print(\u0026quot;\u91cd\u8bd5\u592a\u591a\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '0', "**\u7b2c 4 \u9898**\uff1a\u628a\u4e0b\u9762\u7684\u9b54\u6cd5\u6570\u5b57\u63d0\u53d6\u4e3a\u5e38\u91cf\u5e76\u6539\u5199\uff1a")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「16.3 重构：不改变功能，改善结构」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(16, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 3, '16.3 重构：不改变功能，改善结构')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 3, '16.3 重构：不改变功能，改善结构')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="16_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          16.4 本章 Debug 四件套（质量类）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：魔法数字失控</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">if age &gt; 150:
+    print(&quot;不合法&quot;)
+if score &gt; 100:
+    print(&quot;不合法&quot;)
+if retry &gt; 3:
+    print(&quot;太多&quot;)</code></pre></div>
+<p><strong>问题</strong>：<code class="md-inline">150</code>、<code class="md-inline">100</code>、<code class="md-inline">3</code> 各代表什么？改规则时漏改一处怎么办？</p>
+<p><strong>讲解</strong>：提取常量（<code class="md-inline">MAX_AGE = 150</code>）并统一命名——<strong>规则只存一处，改动只改一处</strong>。</p>
+<h3 class="md-h">问题 2：函数职责过多</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def handle(name):
+    data = load()
+    data[name] = input(&quot;分数：&quot;)
+    save(data)
+    print(&quot;成功&quot;)</code></pre></div>
+<p><strong>问题</strong>：这个函数干了四件事，哪件属于"数据层"？哪件属于"表现层"？</p>
+<p><strong>讲解</strong>：输入、加载、保存、打印混在一起——测试 <code class="md-inline">handle</code> 必须模拟输入和文件。拆成 <code class="md-inline">add_student</code>（逻辑）+ 数据函数 + 界面函数。</p>
+<h3 class="md-h">问题 3：注释复述代码</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">total = total + score   # 把 score 加到 total 上
+count += 1              # count 加 1</code></pre></div>
+<p><strong>问题</strong>：这两条注释提供了什么新信息？</p>
+<p><strong>讲解</strong>：没有——它们在复述代码。<strong>注释写"为什么"，不写"是什么"</strong>（如 <code class="md-inline"># 跳过空行，避免 int() 报错</code>）。</p>
+<h3 class="md-h">问题 4：复制粘贴的重复逻辑</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">if 0 &lt;= int(a) &lt;= 100 and str(a).isdigit():
+    ...
+if 0 &lt;= int(b) &lt;= 100 and str(b).isdigit():
+    ...</code></pre></div>
+<p><strong>问题</strong>：如果规则变成"0-120"，要改几处？漏改会发生什么？</p>
+<p><strong>讲解</strong>：两处校验逻辑不一致时（一处 <code class="md-inline">isdigit</code> 顺序错了），同一个 bug 只在一个地方出现——<strong>这就是重复代码的可怕之处</strong>。提取 <code class="md-inline">is_valid_score</code> 函数。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 4, "16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09", [{"body": "\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef check(user):\n    if user:\n        if user.get(\u0026quot;age\u0026quot;, 0) \u0026gt;= 18:\n            return \u0026quot;\u6210\u5e74\u0026quot;\n        else:\n            return \u0026quot;\u672a\u6210\u5e74\u0026quot;\n    return \u0026quot;\u65e0\u7528\u6237\u0026quot;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u91cd\u6784\u540e\uff0c\u628a\u91cd\u6784\u524d\u540e\u4e24\u7248\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5bf9\u6bd4\u4e24\u7248\u7684\u53ef\u8bfb\u6027\u4e0e\u804c\u8d23\u5212\u5206\uff0c\u6307\u51fa\u6211\u8fd8\u53ef\u4ee5\u6539\u8fdb\u7684\u4e00\u5904\u3002\"\u9010\u6761\u5224\u65ad\u91c7\u7eb3/\u5426\u51b3\u5e76\u8bb0\u5f55\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7528\u536b\u8bed\u53e5\"\u5148\u5904\u7406\u7279\u6b8a\u60c5\u51b5\u3001\u540e\u7559\u4e3b\u903b\u8f91\"\uff0c\u6d88\u9664\u5d4c\u5957\uff1b\u884c\u4e3a\u4e0e\u539f\u6765\u5b8c\u5168\u4e00\u81f4\uff08\u9a8c\u8bc1\uff1a\u65e0\u7528\u6237\u2192\u65e0\u7528\u6237\uff1bage\u226518\u2192\u6210\u5e74\uff1bage\u0026lt;18\u2192\u672a\u6210\u5e74\uff09\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u628a\u4e0b\u9762\u7684\u591a\u5c42\u5d4c\u5957\u7528\u536b\u8bed\u53e5\u91cd\u6784\uff08\u4e0d\u6539\u53d8\u884c\u4e3a\uff09\uff1a", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef check(user):\n    if not user:\n        return \u0026quot;\u65e0\u7528\u6237\u0026quot;\n    if user.get(\u0026quot;age\u0026quot;, 0) \u0026lt; 18:\n        return \u0026quot;\u672a\u6210\u5e74\u0026quot;\n    return \u0026quot;\u6210\u5e74\u0026quot;\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '0', "**\u7b2c 5 \u9898**\uff1a\u628a\u4e0b\u9762\u7684\u591a\u5c42\u5d4c\u5957\u7528\u536b\u8bed\u53e5\u91cd\u6784\uff08\u4e0d\u6539\u53d8\u884c\u4e3a\uff09\uff1a")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「16.4 本章 Debug 四件套（质量类）」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(16, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 4, '16.4 本章 Debug 四件套（质量类）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 4, '16.4 本章 Debug 四件套（质量类）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="16_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          16.5 Vibe Coding 任务卡（L2 主卡）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 评审你的重构</p>
+<p><strong>任务内容</strong>：把第 14 章"迷你通讯录"（或你自己写的任何 30 行以上程序）按 16.3 的手法重构，然后发给 AI 评审。</p>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">这是我重构后的代码。请按这个清单评审：
+1. 每个函数是否满足单一职责？
+2. 有没有魔法数字、重复代码、命名问题？
+3. 还有什么坏味道我没处理？
+请给出具体建议和理由。只给建议，不要重写我的代码。</pre></div>
+<p><strong>Review 清单（L2）</strong>：</p>
+<ul><li>[ ] 我逐条判断了 AI 的建议并记录理由；</li><li>[ ] 重构前后功能一致（我用相同输入跑了两遍对比）；</li><li>[ ] 重构后的代码已提交 Git；</li><li>[ ] 一句话日志记录评审结论。</li></ul>
+<p><strong>微任务卡（M4 · 报错卡 · L2）</strong>：把一段"魔法数字 + 命名差"的代码发给 AI："请指出这段代码的坏味道，并说明为什么'能跑'不等于'可维护'。"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 5, "16.5 Vibe Coding \u4efb\u52a1\u5361\uff08L2 \u4e3b\u5361\uff09", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u91cd\u6784\u7684\u94c1\u5f8b\u662f\"\u5148\u6709\u6d4b\u8bd5\uff08\u7b2c 17 \u7ae0\uff09\u3001\u884c\u4e3a\u4e0d\u53d8\u3001\u9010\u6b65\u5c0f\u6539\"\u2014\u2014\u4e0d\u8ffd\u6c42\u4e00\u6b21\u5230\u4f4d\uff0c\u6bcf\u6b21\u53ea\u505a\u4e00\u4e2a\u624b\u6cd5\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff08\u91cd\u6784\u9898\uff09\uff1a\u628a\u7b2c 14 \u7ae0\"\u8ff7\u4f60\u901a\u8baf\u5f55\"\uff08\u6216\u4f60\u9009\u4e00\u4e2a 30 \u884c\u4ee5\u4e0a\u7684\u65e7\u7a0b\u5e8f\uff09\u6309\u672c\u7ae0\u539f\u5219\u91cd\u6784\uff1a\u63d0\u53d6\u51fd\u6570\u3001\u6d88\u9664\u9b54\u6cd5\u6570\u5b57\u3001\u547d\u540d\u89c4\u8303\u5316\u3001\u5206\u5c42\uff08\u754c\u9762/\u903b\u8f91/\u6570\u636e\uff09\u3002\u91cd\u6784\u524d\u540e\u7528\u76f8\u540c\u8f93\u5165\u5404\u8dd1\u4e00\u904d\u9a8c\u8bc1\u884c\u4e3a\u4e00\u81f4\uff0c\u7136\u540e\u6309 16.5 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u8981\u70b9\uff0c\u5b66\u751f\u6309\u81ea\u5df1\u7684\u7a0b\u5e8f\u5177\u4f53\u5316\uff09\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u003cstrong\u003e\u63d0\u53d6\u51fd\u6570\u003c/strong\u003e\uff1a\u628a\"\u6dfb\u52a0/\u67e5\u627e/\u5220\u9664/\u5217\u51fa\"\u5404\u62c6\u6210\u4e00\u4e2a\u51fd\u6570\uff08\u53c2\u7167\u7b2c 14 \u7ae0\u7b54\u6848\u7684\u901a\u8baf\u5f55\u7ed3\u6784\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u6d88\u9664\u9b54\u6cd5\u6570\u5b57\u003c/strong\u003e\uff1a\u83dc\u5355\u9009\u9879\u6570\u3001\u6587\u4ef6\u540d\u7b49\u63d0\u53d6\u4e3a\u5e38\u91cf\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u547d\u540d\u89c4\u8303\u5316\u003c/strong\u003e\uff1a\u5355\u5b57\u6bcd\u53d8\u91cf\u6539\u5168\u540d\uff08\u003ccode class=\"md-inline\"\u003ec\u003c/code\u003e \u2192 \u003ccode class=\"md-inline\"\u003echoice\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003en\u003c/code\u003e \u2192 \u003ccode class=\"md-inline\"\u003ename\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u5206\u5c42\u003c/strong\u003e\uff1a\u6570\u636e\u8bfb\u5199\uff08file \u51fd\u6570\uff09\u3001\u4e1a\u52a1\u903b\u8f91\uff08\u589e\u5220\u67e5\u6539\uff09\u3001\u754c\u9762\uff08\u83dc\u5355\u5faa\u73af\uff09\u4e09\u5c42\u5206\u79bb\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u884c\u4e3a\u4e00\u81f4\u6027\u9a8c\u8bc1\u003c/strong\u003e\uff1a\u91cd\u6784\u524d\u540e\u7528\u76f8\u540c\u8f93\u5165\u5404\u8dd1\u4e00\u904d\uff0c\u8f93\u51fa\u4e00\u81f4\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003eAI \u8bc4\u5ba1\u003c/strong\u003e\uff1a\u6309 16.5 \u6e05\u5355\u8bf7 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002\u003c/li\u003e\u003c/ol\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(16, '0', "**\u7b2c 6 \u9898**\uff08\u91cd\u6784\u9898\uff09\uff1a\u628a\u7b2c 14 \u7ae0\"\u8ff7\u4f60\u901a\u8baf\u5f55\"\uff08\u6216\u4f60\u9009\u4e00\u4e2a 30 \u884c\u4ee5\u4e0a\u7684\u65e7\u7a0b\u5e8f\uff09\u6309\u672c\u7ae0\u539f\u5219\u91cd\u6784\uff1a\u63d0\u53d6\u51fd\u6570\u3001\u6d88\u9664\u9b54\u6cd5\u6570\u5b57\u3001\u547d\u540d\u89c4\u8303\u5316\u3001\u5206\u5c42\uff08\u754c\u9762/\u903b\u8f91/\u6570\u636e\uff09\u3002\u91cd\u6784\u524d\u540e\u7528\u76f8\u540c\u8f93\u5165\u5404\u8dd1\u4e00\u904d\u9a8c\u8bc1\u884c\u4e3a\u4e00\u81f4\uff0c\u7136\u540e\u6309 16.5 \u6d41\u7a0b\u8ba9 AI \u8bc4\u5ba1\uff0c\u8bb0\u5f55\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 5, '16.5 Vibe Coding 任务卡（L2 主卡）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 5, '16.5 Vibe Coding 任务卡（L2 主卡）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="16_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          16.6 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">设计思维与代码质量
+├── 设计原则
+│   ├── 单一职责：一个函数/类只做一件事
+│   ├── 高内聚低耦合：模块内紧密、模块间依赖少
+│   ├── DRY：一份知识只保留一个权威来源
+│   ├── 分层：表现层 / 逻辑层 / 数据层
+│   └── SOLID 一句话版（了解）
+├── 代码质量
+│   ├── PEP 8：小写下划线 / 大驼峰 / 全大写常量 / 动词+名词
+│   ├── 注释：写&quot;为什么&quot;不写&quot;是什么&quot;；文档字符串
+│   └── 类型提示（了解）
+└── 重构（不改变功能、改善结构）
+    ├── 坏味道：魔法数字 / 长函数 / 重复代码 / 命名差
+    ├── 手法：提取常量 / 提取函数 / 卫语句简化条件
+    └── 前提：先有测试（第 17 章）</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>单一职责是最重要也最容易做的设计原则；</li><li>高内聚低耦合的检验法："改需求 A 会不会被迫动模块 B？"；</li><li>DRY = 一份知识一个权威来源，不是"代码越少越好"；</li><li>重构的铁律：<strong>先有测试，再重构</strong>；不改变功能，只改善结构；</li><li>注释写"为什么"，命名写"是什么"。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 6, "16.6 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 6, '16.6 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 6, '16.6 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="16_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语</th><th>一句话</th></tr></thead><tbody><tr><td>单一职责</td><td>一个函数/类只做一件事</td></tr><tr><td>高内聚低耦合</td><td>模块内紧密、模块间依赖少</td></tr><tr><td>DRY</td><td>一份知识一个权威来源</td></tr><tr><td>分层</td><td>表现层 / 逻辑层 / 数据层</td></tr><tr><td>SOLID</td><td>面向对象五原则（一句话版）</td></tr><tr><td>PEP 8</td><td>命名与代码规范</td></tr><tr><td>魔法数字</td><td>提取为常量</td></tr><tr><td>卫语句</td><td>提前 return 处理特殊情况</td></tr><tr><td>重构</td><td>不改变功能、改善结构（先有测试）</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(16, 7, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="16_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(16, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(16, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(16, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="16_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(16, 7, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(16, 7, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 设计思维与代码质量 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 设计思维与代码质量 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 设计思维与代码质量
+## 16.1 设计原则
+### 概念认知：设计是什么
+### 语法掌握：单一职责原则（SRP）
+### 语法掌握：高内聚、低耦合
+### 语法掌握：DRY——不要重复自己
+### 语法掌握：分层思想
+### 了解：SOLID 一句话版
+## 16.2 代码质量：让代码&#34;可读&#34;
+### 语法掌握：命名规范（PEP 8）
+### 语法掌握：注释与文档字符串
+### 了解：类型提示
+## 16.3 重构：不改变功能，改善结构
+### 概念认知：重构是什么
+### 语法掌握：识别坏味道
+### 语法掌握：三个基础手法（重构前后对比）
+### 手法速览：六组高频对比
+### 综合运用：重构实战
+## 16.4 本章 Debug 四件套（质量类）
+### 问题 1：魔法数字失控
+### 问题 2：函数职责过多
+### 问题 3：注释复述代码
+### 问题 4：复制粘贴的重复逻辑
+## 16.5 Vibe Coding 任务卡（L2 主卡）
+## 16.6 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 16;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["16.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "16.1 \u8bbe\u8ba1\u539f\u5219", "16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"", "16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784", "16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09", "16.5 Vibe Coding \u4efb\u52a1\u5361\uff08L2 \u4e3b\u5361\uff09", "16.6 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u8bbe\u8ba1\u601d\u7ef4\u4e0e\u4ee3\u7801\u8d28\u91cf";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(16, "\u8bbe\u8ba1\u601d\u7ef4\u4e0e\u4ee3\u7801\u8d28\u91cf", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u8bf4\u51fa\u5e76\u5e94\u7528\u4e94\u4e2a\u8bbe\u8ba1\u539f\u5219\uff1a\u5355\u4e00\u804c\u8d23\u3001\u9ad8\u5185\u805a\u4f4e\u8026\u5408\u3001DRY\u3001\u5206\u5c42\u3001SOLID \u4e00\u53e5\u8bdd\u7248\uff1b\n- \u5199\u51fa\u7b26\u5408 PEP 8 \u7684\u547d\u540d\u4e0e\u6ce8\u91ca\u89c4\u8303\uff1b\n- \u8ba4\u8bc6\u7c7b\u578b\u63d0\u793a\uff08\u4e86\u89e3\uff09\uff1b\n- \u8bc6\u522b\u4ee3\u7801\"\u574f\u5473\u9053\"\uff0c\u638c\u63e1\u63d0\u53d6\u51fd\u6570\u3001\u6d88\u9664\u9b54\u6cd5\u6570\u5b57", ["16.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "16.1 \u8bbe\u8ba1\u539f\u5219", "16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"", "16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784", "16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09", "16.5 Vibe Coding \u4efb\u52a1\u5361\uff08L2 \u4e3b\u5361\uff09", "16.6 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

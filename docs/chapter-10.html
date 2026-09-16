@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 面向对象（上）：类与封装</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="10" data-chapter-title="面向对象（上）：类与封装" data-chapter-description="学完本章，你应该能够：
+
+- 理解面向对象的核心思想：把&#34;数据&#34;和&#34;操作数据的方法&#34;绑在一起；
+- 用 class 定义类、创建对象，理解 self 的本质；
+- 掌握 __init__ 构造方法与实例属性；
+- 区分实例方法、类方法、静态">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 10</p>
+    <span class="hero-icon">🏛️</span>
+    <h2>第 10 章 · 面向对象（上）：类与封装</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 理解面向对象的核心思想：把&#34;数据&#34;和&#34;操作数据的方法&#34;绑在一起；
+- 用 class 定义类、创建对象，理解 self 的本质；
+- 掌握 __init__ 构造方法与实例属性；
+- 区分实例方法、类方法、静态</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="10_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          10.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>理解面向对象的核心思想：把"数据"和"操作数据的方法"绑在一起；</li><li>用 <code class="md-inline">class</code> 定义类、创建对象，理解 <code class="md-inline">self</code> 的本质；</li><li>掌握 <code class="md-inline">__init__</code> 构造方法与实例属性；</li><li>区分实例方法、类方法、静态方法；</li><li>理解封装：私有属性（<code class="md-inline">__</code> 名称改写）与访问接口；</li><li>区分类变量与实例变量；</li><li>掌握 <code class="md-inline">__str__</code>、<code class="md-inline">__repr__</code>、<code class="md-inline">__eq__</code> 三个魔术方法；</li><li>用 <code class="md-inline">@property</code> 把方法变成属性，理解它与 getter/setter 的关系；</li><li>认识 <code class="md-inline">__add__</code>、<code class="md-inline">__len__</code>、<code class="md-inline">__getitem__</code> 等更多魔术方法（运算符重载）；</li><li>理解 L2 解锁规则：AI 可以审查你手写的代码，但仍不能写代码。</li></ol>
+<p><strong>前置知识</strong>：第 1-9 章全部内容（尤其是函数与字典——类就是它们的"升级组合"）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 0, "10.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e__init__\u003c/code\u003e \u521d\u59cb\u5316\u5c5e\u6027\uff0c\u5b9e\u4f8b\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003eintroduce\u003c/code\u003e \u901a\u8fc7 \u003ccode class=\"md-inline\"\u003eself\u003c/code\u003e \u8bfb\u53d6\u5c5e\u6027\u3002\u4e24\u4e2a\u5bf9\u8c61\u5c5e\u6027\u4e92\u4e0d\u5f71\u54cd\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Person` \u7c7b\uff08`name`\u3001`age`\uff09\uff0c\u63d0\u4f9b `introduce()` \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def introduce(self):\n        return f\u0026quot;\u6211\u53eb{self.name}\uff0c\u4eca\u5e74{self.age}\u5c81\u0026quot;\n\np1 = Person(\u0026quot;\u5f20\u4e09\u0026quot;, 19)\np2 = Person(\u0026quot;\u674e\u56db\u0026quot;, 20)\nprint(p1.introduce())\nprint(p2.introduce())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6211\u53eb\u5f20\u4e09\uff0c\u4eca\u5e7419\u5c81\n\u6211\u53eb\u674e\u56db\uff0c\u4eca\u5e7420\u5c81\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Person` \u7c7b\uff08`name`\u3001`age`\uff09\uff0c\u63d0\u4f9b `introduce()` \u65b9\u6cd5\u8fd4\u56de\"\u6211\u53ebX\uff0c\u4eca\u5e74X\u5c81\"\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u5e76\u8f93\u51fa\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 0, '10.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 0, '10.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="10_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          10.1 概念认知：从字典到类
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.1.1 用字典表示学生的痛点</h3>
+<p>第 6 章我们用字典存学生信息：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">student = {&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 19, &quot;scores&quot;: [88, 92]}</code></pre></div>
+<p>它有两个问题：</p>
+<ol><li><strong>键名靠自觉</strong>：有人写 <code class="md-inline">"name"</code>，有人写 <code class="md-inline">"Name"</code>，一拼错就 KeyError；</li><li><strong>行为散落</strong>：算平均分、改年龄的逻辑散在各处，每个用到的人都要重写一遍。</li></ol>
+<h3 class="md-h">10.1.2 概念认知：类 = 数据 + 行为的模板</h3>
+<p><strong>类（class）</strong> 把"学生有什么（属性：姓名、年龄、成绩）"和"学生会做什么（方法：介绍、算平均分）"<strong>打包</strong>成一个模板。根据模板造出来的具体个体叫<strong>对象（object）/实例（instance）</strong>。</p>
+<p>类比：<strong>类 = 图纸，对象 = 按图纸造出来的房子</strong>。一张图纸能造无数栋房子，每栋的家具（数据）不同。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 1, "10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u5468\u957f\u516c\u5f0f \u003ccode class=\"md-inline\"\u003e(\u5bbd+\u9ad8)\u00d72\u003c/code\u003e\uff0c\u6ce8\u610f\u62ec\u53f7\uff08\u7b2c 2 \u7ae0\u4f18\u5148\u7ea7\u8003\u70b9\u53c8\u51fa\u73b0\u4e86\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Rectangle` \u7c7b\uff08`width`\u3001`height`\uff09\uff0c\u63d0\u4f9b `area()` \u548c `perimeter()` \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Rectangle:\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n\n    def area(self):\n        return self.width * self.height\n\n    def perimeter(self):\n        return (self.width + self.height) * 2\n\nr1 = Rectangle(3, 4)\nr2 = Rectangle(5, 2)\nprint(r1.area(), r1.perimeter())\nprint(r2.area(), r2.perimeter())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e12 14\n10 14\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Rectangle` \u7c7b\uff08`width`\u3001`height`\uff09\uff0c\u63d0\u4f9b `area()` \u548c `perimeter()` \u65b9\u6cd5\uff1b\u521b\u5efa\u4e24\u4e2a\u957f\u65b9\u5f62\u5bf9\u8c61\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.1 概念认知：从字典到类」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 1, '10.1 概念认知：从字典到类')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 1, '10.1 概念认知：从字典到类')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="10_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          10.2 类与对象：第一个类
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.2.1 语法掌握：定义类与创建对象</h3>
+<p><strong>代码案例 10.1</strong>：最简单的类（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    pass
+
+s1 = Student()
+s2 = Student()
+
+print(s1)
+print(s2)</code></pre></div>
+<p><strong>运行结果</strong>（内存地址每次不同）：</p>
+<div class="md-figure"><pre class="md-diagram">&lt;__main__.Student object at 0x00000294D9DB7F80&gt;
+&lt;__main__.Student object at 0x00000294D9DB7FA0&gt;</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">class Student:</code> 定义类（类名<strong>大驼峰</strong>命名：<code class="md-inline">Student</code>、<code class="md-inline">BankAccount</code>）；</li><li><code class="md-inline">Student()</code> 创建对象（实例化）；</li><li><code class="md-inline">print(s1)</code> 显示的是默认的"对象描述"——10.7 节用 <code class="md-inline">__str__</code> 改成好看的格式；</li><li>类名和变量名命名规范不同：<strong>类名大驼峰，变量/函数小写下划线</strong>（PEP 8）。</li></ul>
+<h3 class="md-h">10.2.2 语法掌握：给对象加属性</h3>
+<p><strong>代码案例 10.2</strong>：手动加属性（✅ 正确，但不推荐）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    pass
+
+s1 = Student()
+s1.name = &quot;张三&quot;
+s1.age = 19
+
+print(s1.name)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">张三</pre></div>
+<p><strong>讲解</strong>：Python 允许给对象随便贴属性（<code class="md-inline">对象.属性名 = 值</code>）。但每个对象都要手动贴一遍，太麻烦——所以要用 <code class="md-inline">__init__</code> 自动初始化。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 2, "10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u662f\u7c7b\u53d8\u91cf\uff08\u6240\u6709\u5bf9\u8c61\u5171\u4eab\uff09\uff1b\u003ccode class=\"md-inline\"\u003eCounter.count += 1\u003c/code\u003e \u5fc5\u987b\u901a\u8fc7\u003cstrong\u003e\u7c7b\u540d\u003c/strong\u003e\u4fee\u6539\uff0c\u4e0d\u80fd\u5199 \u003ccode class=\"md-inline\"\u003eself.count += 1\u003c/code\u003e\uff08\u90a3\u4f1a\u521b\u5efa\u5b9e\u4f8b\u53d8\u91cf\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `Counter` \u7c7b\uff0c\u7c7b\u53d8\u91cf `count`\uff0c`__init__` \u91cc `Counter.count += 1`\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa `Counter.count` \u5e94\u4e3a 3\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Counter:\n    count = 0\n\n    def __init__(self):\n        Counter.count += 1\n\nCounter()\nCounter()\nCounter()\nprint(Counter.count)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e3\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `Counter` \u7c7b\uff0c\u7c7b\u53d8\u91cf `count`\uff0c`__init__` \u91cc `Counter.count += 1`\uff1b\u521b\u5efa 3 \u4e2a\u5bf9\u8c61\u540e\u8f93\u51fa `Counter.count` \u5e94\u4e3a 3\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.2 类与对象：第一个类」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 2, '10.2 类与对象：第一个类')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 2, '10.2 类与对象：第一个类')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="10_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          10.3 __init__ 与实例属性
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.3.1 语法掌握：构造方法 __init__</h3>
+<p><strong>代码案例 10.3</strong>：用 __init__ 初始化（✅ 正确，标准写法）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def introduce(self):
+        return f&quot;我是{self.name}，今年{self.age}岁&quot;
+
+
+s1 = Student(&quot;张三&quot;, 19)
+s2 = Student(&quot;李四&quot;, 20)
+
+print(s1.name)
+print(s1.introduce())
+print(s2.introduce())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">张三
+我是张三，今年19岁
+我是李四，今年20岁</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">__init__</code> 是<strong>构造方法</strong>：创建对象时自动调用，负责初始化属性；</li><li><code class="md-inline">self</code> 代表"正在创建的这个对象本身"——<code class="md-inline">self.name = name</code> 意思是"把传入的 name 存到我自己身上"；</li><li>一个类可以创建任意多个对象，每个对象的属性独立。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：self 到底是什么？</strong></p>
+<p><code class="md-inline">s1.introduce()</code> 调用时，Python 自动把 <code class="md-inline">s1</code> 传给第一个参数 <code class="md-inline">self</code>。所以：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">s1.introduce()
+# 等价于
+Student.introduce(s1)</code></pre></div>
+<p><strong><code class="md-inline">self</code> 不是关键字</strong>（换成 <code class="md-inline">this</code>、<code class="md-inline">me</code> 也能跑），但行业铁律是叫 <code class="md-inline">self</code>。它的本质是"方法访问'自己'的通行证"——没有它，方法就不知道操作哪个对象的数据。</p></blockquote>
+<p><strong>交叉验证：忘写 self / 忘传参数</strong></p>
+<p class="md-callout md-bad"><strong>❌ 错误 1</strong>：方法里忘写 self</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    def __init__(self, name):
+        self.name = name
+    def introduce():          # 少了 self
+        return f&quot;我是{self.name}&quot;
+
+s1 = Student(&quot;张三&quot;)
+print(s1.introduce())</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: introduce() takes 0 positional arguments but 1 was given</pre></div>
+<p><strong>讲解</strong>：调用 <code class="md-inline">s1.introduce()</code> 时 Python 会把 s1 传进去，但函数没声明 self 接——"给了 1 个参数但函数只收 0 个"。<strong>类的方法第一个参数必须是 self</strong>。</p>
+<p class="md-callout md-bad"><strong>❌ 错误 2</strong>：创建对象时忘传参数</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">s1 = Student()</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: Student.__init__() missing 2 required positional arguments: &#x27;name&#x27; and &#x27;age&#x27;</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">__init__</code> 声明了两个必填参数，<code class="md-inline">Student()</code> 不传就报错。<strong><code class="md-inline">__init__</code> 的参数 = 创建对象时必须提供的信息</strong>——这就是类的"接口契约"。</p>
+<p><strong>微任务卡（M1 · 报错卡 · L2）</strong>：把 <code class="md-inline">introduce()</code> 忘写 self 的 TypeError 报错发给 AI，提问："takes 0 positional arguments but 1 was given 是什么意思？self 在这里扮演什么角色？"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 3, "10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e__balance\u003c/code\u003e \u79c1\u6709\uff0c\u5916\u90e8\u53ea\u80fd\u901a\u8fc7\u65b9\u6cd5\u5b58\u53d6\uff1b\u003ccode class=\"md-inline\"\u003ewithdraw\u003c/code\u003e \u5148\u5224\u65ad\u4f59\u989d\u591f\u4e0d\u591f\uff0c\u4e0d\u591f\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\u2014\u2014\u003cstrong\u003e\u4e1a\u52a1\u89c4\u5219\u5c01\u88c5\u5728\u65b9\u6cd5\u91cc\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5b9a\u4e49 `BankAccount` \u7c7b\uff1a\u79c1\u6709 `__balance`\uff1b\u65b9\u6cd5 `deposit(amount)`\uff08\u5b58\u94b1\uff09\u3001`withdraw(amount)`\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001`get_balance()`\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def deposit(self, amount):\n        self.__balance += amount\n        return self.__balance\n\n    def withdraw(self, amount):\n        if amount \u0026gt; self.__balance:\n            return False\n        self.__balance -= amount\n        return self.__balance\n\n    def get_balance(self):\n        return self.__balance\n\nacct = BankAccount(1000)\nprint(acct.deposit(500))        # 1500\nprint(acct.withdraw(2000))      # False\uff08\u4f59\u989d\u4e0d\u8db3\uff09\nprint(acct.withdraw(300))       # 1200\nprint(acct.get_balance())       # 1200\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e1500\nFalse\n1200\n1200\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 4 \u9898**\uff1a\u5b9a\u4e49 `BankAccount` \u7c7b\uff1a\u79c1\u6709 `__balance`\uff1b\u65b9\u6cd5 `deposit(amount)`\uff08\u5b58\u94b1\uff09\u3001`withdraw(amount)`\uff08\u53d6\u94b1\uff0c\u4f59\u989d\u4e0d\u8db3\u8fd4\u56de False \u4e14\u4e0d\u6263\u6b3e\uff09\u3001`get_balance()`\uff1b\u6d4b\u8bd5\u5b58\u53d6\u6d41\u7a0b\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.3 __init__ 与实例属性」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 3, '10.3 __init__ 与实例属性')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 3, '10.3 __init__ 与实例属性')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="10_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          10.4 三种方法：实例方法、类方法、静态方法
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.4.1 概念认知：方法 = 属于类的函数</h3>
+<p><strong>代码案例 10.4</strong>：三种方法对比（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Util:
+    version = &quot;1.0&quot;
+
+    def instance_method(self):
+        return f&quot;实例方法，访问 self：{self}&quot;
+
+    @classmethod
+    def class_method(cls):
+        return f&quot;类方法，版本 {cls.version}&quot;
+
+    @staticmethod
+    def static_method(a, b):
+        return f&quot;静态方法，和普通函数一样：{a + b}&quot;
+
+
+u = Util()
+print(u.instance_method())
+print(Util.class_method())
+print(Util.static_method(3, 4))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">实例方法，访问 self：&lt;__main__.Util object at 0x...&gt;
+类方法，版本 1.0
+静态方法，和普通函数一样：7</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><strong>实例方法</strong>：第一个参数 <code class="md-inline">self</code>，操作具体对象的数据（最常用）；</li><li><strong>类方法</strong>：用 <code class="md-inline">@classmethod</code> 装饰，第一个参数 <code class="md-inline">cls</code>（类本身），操作类变量，<strong>不需要对象就能调用</strong>；</li><li><strong>静态方法</strong>：用 <code class="md-inline">@staticmethod</code> 装饰，<strong>既不收 self 也不收 cls</strong>，就是放在类里的普通函数（按主题归类用）。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：什么时候用哪种？</strong></p>
+<ul><li>方法需要<strong>读/写某个对象的数据</strong> → 实例方法（self）；</li><li>方法需要<strong>读/写类级别的数据</strong>（如总实例数、全局配置）→ 类方法（cls）；</li><li>方法跟类只是"主题相关"、不碰任何数据 → 静态方法。</li></ul>
+<p>判断口诀：<strong>有 self 管个体，有 cls 管集体，都没有管工具</strong>。</p></blockquote>
+<p><strong>交叉验证：实例方法能通过类调用吗？</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">Util.instance_method(u)    # 手动传对象，可以
+Util.instance_method()     # 不传对象，报错</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">类名.实例方法(对象)</code> 等价于 <code class="md-inline">对象.实例方法()</code>；但不传对象就报 <code class="md-inline">TypeError: instance_method() missing 1 required positional argument: 'self'</code>。<strong>实例方法必须绑定到一个对象上使用</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 4, "10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eprint(p)\u003c/code\u003e \u81ea\u52a8\u8c03\u7528 \u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e\u3002\u6ca1\u6709\u5b83\uff0c\u8f93\u51fa\u7684\u662f \u003ccode class=\"md-inline\"\u003e\u0026lt;__main__.Person object at 0x...\u0026gt;\u003c/code\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7ed9\u7b2c 1 \u9898\u7684 `Person` \u52a0 `__str__`\uff0c\u4f7f `print(person)` \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def __str__(self):\n        return f\u0026quot;{self.name}\uff08{self.age}\u5c81\uff09\u0026quot;\n\np = Person(\u0026quot;\u5f20\u4e09\u0026quot;, 19)\nprint(p)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff0819\u5c81\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 5 \u9898**\uff1a\u7ed9\u7b2c 1 \u9898\u7684 `Person` \u52a0 `__str__`\uff0c\u4f7f `print(person)` \u8f93\u51fa\"\u5f20\u4e09\uff0819\u5c81\uff09\"\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.4 三种方法：实例方法、类方法、静态方法」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 4, '10.4 三种方法：实例方法、类方法、静态方法')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 4, '10.4 三种方法：实例方法、类方法、静态方法')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="10_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          10.5 封装：把内部藏起来
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.5.1 概念认知：封装是什么</h3>
+<p><strong>封装（encapsulation）</strong> 是面向对象的三大特性之一：<strong>把数据藏在对象内部，只提供受控的方法给外部使用</strong>。</p>
+<p>比如银行账户：余额是核心数据。如果外部能随便 <code class="md-inline">acct.balance = -100</code>，账户就乱套了。封装的做法：余额私有，存取款必须走方法，方法里做校验。</p>
+<h3 class="md-h">10.5.2 语法掌握：私有属性（名称改写）</h3>
+<p><strong>代码案例 10.5</strong>：私有属性与访问方法（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance      # 双下划线开头 = 私有
+
+    def deposit(self, amount):
+        self.__balance += amount
+        return self.__balance
+
+    def get_balance(self):
+        return self.__balance
+
+
+acct = BankAccount(1000)
+print(acct.get_balance())
+print(acct.deposit(500))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1000
+1500</pre></div>
+<p><strong>交叉验证：外部直接访问私有属性</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(acct.__balance)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">AttributeError: &#x27;BankAccount&#x27; object has no attribute &#x27;__balance&#x27;</pre></div>
+<p><strong>讲解</strong>：双下划线开头的属性会被<strong>名称改写（name mangling）</strong>——Python 在内部把它改名为 <code class="md-inline">_BankAccount__balance</code>。所以外部直接写 <code class="md-inline">acct.__balance</code> 找不到。<strong>注意</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(acct._BankAccount__balance)   # 仍然能访问（1000）</code></pre></div>
+<blockquote class="md-quote"><p><strong>原理探秘：私有是"约定"不是"铁壁"</strong></p>
+<p>Python 没有真正的 private——<code class="md-inline">_BankAccount__balance</code> 还是能访问到。私有机制的意义不是"防黑客"，而是<strong>明确告诉开发者：这是内部细节，别碰</strong>。真要去碰（调试、测试），后果自负。<strong>这符合 Python 哲学：我们是成年人，靠约定自律</strong>。</p></blockquote>
+<h3 class="md-h">10.5.3 语法掌握：私有方法</h3>
+<p>方法同样可以私有（<code class="md-inline">def __secret(self)</code>），外部不能直接调用。<strong>内部逻辑的"辅助步骤"适合私有</strong>——外面只关心主方法，不关心你内部怎么拆步骤。</p>
+<h3 class="md-h">10.5.4 语法掌握：@property——把方法变成属性</h3>
+<p><strong>场景</strong>：私有属性要提供 <code class="md-inline">get_age()</code> / <code class="md-inline">set_age()</code> 两个方法。但 Python 有更优雅的写法：用 <code class="md-inline">@property</code> 装饰器<strong>把方法变成属性</strong>——调用时不加括号。</p>
+<p><strong>代码案例 10.6</strong>：@property 校验（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Human:
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+
+    @property
+    def age(self):
+        &quot;&quot;&quot;像属性一样读取&quot;&quot;&quot;
+        return self.__age
+
+    @age.setter
+    def age(self, value):
+        &quot;&quot;&quot;像属性一样赋值，但带校验&quot;&quot;&quot;
+        if value &lt;= 0 or value &gt; 100:
+            raise ValueError(&quot;年龄必须在 1-100 之间&quot;)
+        self.__age = value
+
+
+h = Human(&quot;张三&quot;, 18)
+print(h.age)      # 不加括号！
+h.age = 20
+print(h.age)
+
+try:
+    h.age = -5
+except ValueError as e:
+    print(&quot;捕获：&quot;, e)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">18
+20
+捕获： 年龄必须在 1-100 之间</pre></div>
+<p><strong>交叉验证：getter/setter 写法 vs @property 写法</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># 方式一：Java 风格 getter/setter（教材 10.5.2 的写法）
+print(h.get_age())
+h.set_age(20)
+
+# 方式二：@property（Python 风格）
+print(h.age)
+h.age = 20</code></pre></div>
+<p><strong>讲解</strong>：两者实现同样的功能，但 <code class="md-inline">@property</code> 让调用方"像操作普通属性一样"（不加括号）——<strong>更符合 Python 的简洁哲学</strong>。校验逻辑写在 <code class="md-inline">@age.setter</code> 里，赋值时自动触发。</p>
+<p><strong>原理探秘：property 本质是装饰器</strong></p>
+<p><code class="md-inline">@property</code> 就是第 12 章要学的装饰器的具体应用：它把一个方法包装成"属性访问"——读 <code class="md-inline">h.age</code> 时自动调用被 <code class="md-inline">@property</code> 装饰的方法，写 <code class="md-inline">h.age = x</code> 时自动调用被 <code class="md-inline">@age.setter</code> 装饰的方法。<strong>先记住用法，第 12 章学完装饰器后回头看，会发现它们是同一件事</strong>。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：Python 里"私有属性 + @property"是标准封装姿势，和 Java 的 getter/setter 对应但更简洁。面试问"Python 怎么实现属性校验"，答 <code class="md-inline">@property + @setter</code> 即可。</p></blockquote>
+<p><strong>微任务卡（M2 · 对比卡 · L2）</strong>：把 getter/setter 版和 @property 版发给 AI："请对比两种封装写法，说明为什么 Python 社区更推荐 @property。"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 5, "10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\u540e\uff0c\u628a\u4f60\u7684\u7c7b\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u79c1\u6709\u5c5e\u6027\u8be5\u4e0d\u8be5\u52a0\uff1fscores \u76f4\u63a5\u66b4\u9732\u6709\u4ec0\u4e48\u98ce\u9669\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u9ed8\u8ba4 \u003ccode class=\"md-inline\"\u003e==\u003c/code\u003e \u6bd4\u8f83\u5185\u5b58\u5730\u5740\uff1b\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e \u540e\u6309\u5185\u5bb9\u6bd4\u8f83\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1a\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__eq__\u003c/code\u003e \u540e\uff0c\u5bf9\u8c61\u4f1a\u53d8\u5f97\"\u4e0d\u53ef\u54c8\u5e0c\"\uff08\u9664\u975e\u540c\u65f6\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003e__hash__\u003c/code\u003e\uff09\u2014\u2014\u9762\u8bd5\u6df1\u5751\uff0c\u672c\u8bfe\u7a0b\u5148\u8bb0\u7ed3\u8bba\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n\np1 = Point(1, 2)\np2 = Point(1, 2)\np3 = Point(3, 4)\nprint(p1 == p2)\nprint(p1 == p3)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eTrue\nFalse\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 6 \u9898**\uff1a\u5b9a\u4e49 `Point` \u7c7b\uff08x\u3001y\uff09\uff0c\u5b9e\u73b0 `__eq__`\uff08\u5750\u6807\u76f8\u540c\u5373\u76f8\u7b49\uff09\uff1b\u521b\u5efa\u4e09\u4e2a\u70b9\u9a8c\u8bc1 `p1 == p2` \u4e3a True\u3001`p1 == p3` \u4e3a False\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.5 封装：把内部藏起来」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 5, '10.5 封装：把内部藏起来')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 5, '10.5 封装：把内部藏起来')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="10_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          10.6 类变量与实例变量
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.6.1 概念认知：两种"属于"不同层级的数据</h3>
+<ul><li><strong>类变量</strong>：写在类体里，<strong>所有对象共享一份</strong>；</li><li><strong>实例变量</strong>：写在 <code class="md-inline">__init__</code> 里（<code class="md-inline">self.xxx</code>），<strong>每个对象各有一份</strong>。</li></ul>
+<p><strong>代码案例 10.7</strong>：类变量计数（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Counter:
+    total = 0                     # 类变量：所有对象共享
+
+    def __init__(self):
+        Counter.total += 1        # 每创建一个对象 +1
+
+
+c1 = Counter()
+c2 = Counter()
+c3 = Counter()
+
+print(Counter.total)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">total</code> 是"类级别"的计数——不管哪个对象创建，都往类的 total 上加。<strong>真实场景</strong>：统计类创建了多少对象、全局配置项。</p>
+<p><strong>交叉验证：<code class="md-inline">c1.total = 100</code> 发生了什么</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">c1.total = 100        # 给 c1 创建了一个&quot;实例变量 total&quot;
+
+print(c1.total)       # 100（c1 自己的）
+print(Counter.total)  # 3（类变量的）
+print(c2.total)       # 3（c2 没有实例 total，读到类变量）</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">100
+3
+3</pre></div>
+<p><strong>讲解</strong>：给对象赋值 <code class="md-inline">c1.total = 100</code> 时，Python 创建的是 <strong>c1 的实例变量</strong>，遮蔽了类变量，但<strong>不影响类变量和其他对象</strong>。<strong>读取时先找实例变量，找不到再找类变量</strong>——这是"遮蔽"规则的类版本（回忆第 7 章变量遮蔽）。</p>
+<p><strong>微任务卡（M3 · 讲解卡 · L2）</strong>：把 <code class="md-inline">c1.total = 100</code> 现象发给 AI，提问："请解释为什么给实例赋值类变量后，类变量和其他实例不受影响？这叫遮蔽吗？"一句话记录理解。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 6, "10.6 \u7c7b\u53d8\u91cf\u4e0e\u5b9e\u4f8b\u53d8\u91cf", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u6570\u636e\uff08scores\uff09\u4e0e\u884c\u4e3a\uff08\u52a0\u6210\u7ee9\u3001\u7b97\u5e73\u5747\u3001\u53d6\u6700\u9ad8\u3001\u683c\u5f0f\u5316\u663e\u793a\uff09\u5168\u90e8\u5c01\u88c5\u5728\u7c7b\u91cc\uff1b\u003ccode class=\"md-inline\"\u003e__str__\u003c/code\u003e \u590d\u7528 \u003ccode class=\"md-inline\"\u003eget_avg\u003c/code\u003e/\u003ccode class=\"md-inline\"\u003eget_best\u003c/code\u003e\u2014\u2014\u003cstrong\u003e\u65b9\u6cd5\u4e4b\u95f4\u4e92\u76f8\u8c03\u7528\u662f\u7c7b\u7684\u5e38\u6001\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a`Student`\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 `add_score`\u3001`get_avg`\u3001`get_best`\u3001`__str__`\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Student:\n    def __init__(self, name):\n        self.name = name\n        self.scores = []\n\n    def add_score(self, score):\n        self.scores.append(score)\n\n    def get_avg(self):\n        if not self.scores:\n            return 0\n        return sum(self.scores) / len(self.scores)\n\n    def get_best(self):\n        return max(self.scores)\n\n    def __str__(self):\n        return f\u0026quot;{self.name}\uff1a\u5e73\u5747 {self.get_avg():.1f}\uff0c\u6700\u9ad8 {self.get_best()}\u0026quot;\n\ns1 = Student(\u0026quot;\u5f20\u4e09\u0026quot;)\ns1.add_score(88); s1.add_score(92); s1.add_score(76)\ns2 = Student(\u0026quot;\u674e\u56db\u0026quot;)\ns2.add_score(95); s2.add_score(89); s2.add_score(91)\n\nprint(s1)\nprint(s2)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff1a\u5e73\u5747 85.3\uff0c\u6700\u9ad8 92\n\u674e\u56db\uff1a\u5e73\u5747 91.7\uff0c\u6700\u9ad8 95\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 7 \u9898**\uff1a\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7c7b\uff1a`Student`\uff08name\u3001scores \u5217\u8868\uff09\uff0c\u65b9\u6cd5 `add_score`\u3001`get_avg`\u3001`get_best`\u3001`__str__`\uff1b\u521b\u5efa\u4e24\u4e2a\u5b66\u751f\uff0c\u5404\u52a0\u4e09\u95e8\u6210\u7ee9\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u5e73\u5747\u5206\u548c\u6700\u9ad8\u5206\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.6 \u7c7b\u53d8\u91cf\u4e0e\u5b9e\u4f8b\u53d8\u91cf\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：创建几个变量并打印它们的值和类型。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 6, 1, "\u521b\u5efa\u51e0\u4e2a\u53d8\u91cf\u5e76\u6253\u5370\u5b83\u4eec\u7684\u503c\u548c\u7c7b\u578b\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 6, '10.6 类变量与实例变量')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 6, '10.6 类变量与实例变量')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="10_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          10.7 魔术方法：让对象&#34;会说话&#34;
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>魔术方法（magic methods）</strong> 是名字被双下划线包围、由 Python 自动调用的方法（<code class="md-inline">__init__</code> 你已经见过了）。本节学三个最常用的。</p>
+<h3 class="md-h">10.7.1 语法掌握：__str__ 与 __repr__</h3>
+<p><strong>代码案例 10.8</strong>：自定义显示（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return f&quot;({self.x}, {self.y})&quot;
+
+    def __repr__(self):
+        return f&quot;Point({self.x}, {self.y})&quot;
+
+
+p = Point(1, 2)
+print(str(p))
+print(repr(p))
+print(p)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">(1, 2)
+Point(1, 2)
+(1, 2)</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">__str__</code>：<code class="md-inline">print(对象)</code>、<code class="md-inline">str(对象)</code> 时调用——<strong>给人看</strong>的友好格式；</li><li><code class="md-inline">__repr__</code>：<code class="md-inline">repr(对象)</code>、交互模式直接输入对象名时调用——<strong>给开发者看</strong>的精确格式；</li><li><code class="md-inline">print(p)</code> 用的是 <code class="md-inline">__str__</code>。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：为什么要有两个？</strong></p>
+<p>行业约定：<code class="md-inline">__str__</code> 面向最终用户（"张三，19岁"），<code class="md-inline">__repr__</code> 面向开发者调试（"Student('张三', 19)"——最好能直接复制回代码里重建这个对象）。<strong>写类时至少实现 <code class="md-inline">__repr__</code></strong>——调试时打印对象才看得懂。</p></blockquote>
+<h3 class="md-h">10.7.2 语法掌握：__eq__ 判断相等</h3>
+<p><strong>代码案例 10.9</strong>：自定义相等（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+
+p1 = Point(1, 2)
+p2 = Point(1, 2)
+p3 = Point(3, 4)
+
+print(p1 == p2)
+print(p1 == p3)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True
+False</pre></div>
+<p><strong>讲解</strong>：默认情况下 <code class="md-inline">p1 == p2</code> 比较的是<strong>内存地址</strong>（两个对象即使内容相同也不相等）。实现 <code class="md-inline">__eq__</code> 后，改为比较<strong>内容</strong>。<strong>真实场景</strong>：坐标、配置项、订单快照需要"按内容比较"时都用它。</p>
+<h3 class="md-h">10.7.3 综合运用：MagicBox——魔法函数全家桶</h3>
+<p>魔法函数的威力在于：<strong>你定义一次，Python 的语法就能直接作用于你的对象</strong>。用一个"魔法盒子"类一次展示 8 个：</p>
+<p><strong>代码案例 10.10</strong>：MagicBox（✅ 正确，修正版，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class MagicBox:
+    def __init__(self, items):
+        self.items = list(items) if items is not None else []
+
+    def __str__(self):
+        return str(self.items)
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, index):
+        return self.items[index]
+
+    def __setitem__(self, key, value):
+        self.items[key] = value
+
+    def __delitem__(self, key):
+        del self.items[key]
+
+    def __contains__(self, item):
+        return item in self.items
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __add__(self, other):
+        if isinstance(other, MagicBox):
+            return MagicBox(self.items + other.items)
+        raise TypeError(&quot;只能与 MagicBox 相加&quot;)
+
+    def __eq__(self, other):
+        return isinstance(other, MagicBox) and self.items == other.items
+
+
+box = MagicBox([1, 2, 3])
+print(box)          # __str__
+print(len(box))     # __len__
+print(box[0])       # __getitem__
+box[0] = 10         # __setitem__
+print(box[0])
+del box[0]          # __delitem__
+print(box)
+print(4 in box)     # __contains__
+print([x for x in box])   # __iter__：支持 for 循环
+
+box2 = MagicBox([4, 5])
+print(box + box2)   # __add__：两个盒子相加</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[1, 2, 3]
+3
+1
+10
+[2, 3]
+False
+[2, 3]
+[2, 3, 4, 5]</pre></div>
+<p><strong>讲解</strong>（每个魔法函数管一个"语法"）：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>魔法函数</th><th>触发的语法</th><th>作用</th></tr></thead><tbody><tr><td><code class="md-inline">__str__</code></td><td><code class="md-inline">print(box)</code></td><td>显示内容</td></tr><tr><td><code class="md-inline">__len__</code></td><td><code class="md-inline">len(box)</code></td><td>长度</td></tr><tr><td><code class="md-inline">__getitem__</code></td><td><code class="md-inline">box[0]</code></td><td>按下标取值</td></tr><tr><td><code class="md-inline">__setitem__</code> / <code class="md-inline">__delitem__</code></td><td><code class="md-inline">box[0]=x</code> / <code class="md-inline">del box[0]</code></td><td>按下标改/删</td></tr><tr><td><code class="md-inline">__contains__</code></td><td><code class="md-inline">4 in box</code></td><td>成员判断</td></tr><tr><td><code class="md-inline">__iter__</code></td><td><code class="md-inline">for x in box</code></td><td>支持遍历</td></tr><tr><td><code class="md-inline">__add__</code></td><td><code class="md-inline">box + box2</code></td><td>定义"相加"的含义（运算符重载）</td></tr><tr><td><code class="md-inline">__eq__</code></td><td><code class="md-inline">box == box2</code></td><td>定义"相等"</td></tr></tbody></table></div>
+<p><strong>原理探秘：运算符重载</strong></p>
+<p><code class="md-inline">box + box2</code> 之所以成立，是因为你定义了 <code class="md-inline">__add__</code>——<strong>运算符 <code class="md-inline">+</code> 对自定义对象的行为由你自己决定</strong>（第 2 章"字符串也能用 +"的同一个机制）。同理 <code class="md-inline">__lt__</code> 定义 <code class="md-inline">&lt;</code>、<code class="md-inline">__mul__</code> 定义 <code class="md-inline">*</code>。这就是为什么 Python 能"一个运算符、无数种含义"。</p>
+<blockquote class="md-quote"><p><strong>修正说明</strong>：某些教材里 <code class="md-inline">__next__</code> 和 <code class="md-inline">__iter__</code> 混在一起写，会出现"每次 next 都返回第一个元素"的 bug。<strong>正确做法</strong>：<code class="md-inline">__iter__</code> 返回 <code class="md-inline">iter(self.items)</code>，把迭代细节交给内置迭代器，不要在类里自己维护 next 状态（除非你写的是真正的迭代器类，第 12 章讲）。</p>
+<p><strong>就业提示</strong>：面试问"Python 的运算符重载"，答"定义 <code class="md-inline">__add__</code> 等双下划线方法即可"；再补一句"数据类、向量、坐标类都会用到"，就是加分项。</p></blockquote>
+<p><strong>动手 5 分钟</strong>：给 MagicBox 加 <code class="md-inline">__lt__</code>（比较两个盒子的 items），验证 <code class="md-inline">box &lt; box2</code> 的语义由你定义。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 7, "10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u7528\u5728\u4e86\u54ea\u91cc\uff1f\u4e3a\u4ec0\u4e48\"\u53d1\u73b0\u95ee\u9898\"\u548c\"\u5904\u7406\u95ee\u9898\"\u8981\u5206\u5f00\uff1f\u003c/li\u003e\u003cli\u003e\u4f60\u8ba9 AI \u8bc4\u5ba1\u81ea\u5df1\u7684\u4ee3\u7801\u4e86\u5417\uff1f\u5b83\u63d0\u4e86\u54ea\u6761\u5efa\u8bae\uff1f\u4f60\u91c7\u7eb3/\u5426\u51b3\u4e86\u54ea\u4e2a\uff0c\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7c7b\u65b9\u6cd5\u8d1f\u8d23\"\u53d1\u73b0\u95ee\u9898\"\uff08\u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e\uff09\uff0c\u4e3b\u6d41\u7a0b\u8d1f\u8d23\"\u5904\u7406\u95ee\u9898\"\uff08\u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e\uff09\u2014\u2014\u804c\u8d23\u5206\u79bb\uff08\u7b2c 9 \u7ae0\uff09\uff1b\u975e\u6cd5\u64cd\u4f5c\u88ab\u62d2\u7edd\u540e\u4f59\u989d\u4e0d\u53d8\uff0c\u003cstrong\u003e\u4e1a\u52a1\u89c4\u5219\u5f97\u5230\u5f3a\u5236\u6267\u884c\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def deposit(self, amount):\n        if amount \u0026lt;= 0:\n            raise ValueError(f\u0026quot;\u5b58\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 {amount}\u0026quot;)\n        self.__balance += amount\n        return self.__balance\n\n    def withdraw(self, amount):\n        if amount \u0026lt;= 0:\n            raise ValueError(f\u0026quot;\u53d6\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 {amount}\u0026quot;)\n        if amount \u0026gt; self.__balance:\n            return False\n        self.__balance -= amount\n        return self.__balance\n\n    def get_balance(self):\n        return self.__balance\n\nacct = BankAccount(1000)\ntry:\n    acct.deposit(-100)\nexcept ValueError as e:\n    print(\u0026quot;\u64cd\u4f5c\u88ab\u62d2\u7edd\uff1a\u0026quot;, e)\n\nprint(acct.get_balance())   # \u4f59\u989d\u6ca1\u53d8\uff0c\u8fd8\u662f 1000\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u64cd\u4f5c\u88ab\u62d2\u7edd\uff1a \u5b58\u6b3e\u91d1\u989d\u5fc5\u987b\u5927\u4e8e 0\uff0c\u6536\u5230 -100\n1000\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "**\u7b2c 8 \u9898**\uff1a\u94f6\u884c\u8d26\u6237\u5b89\u5168\u7248\uff1a\u5728 `BankAccount` \u57fa\u7840\u4e0a\uff0c`deposit` \u548c `withdraw` \u7684\u91d1\u989d\u4e3a\u8d1f\u6570\u6216 0 \u65f6 `raise ValueError`\uff08\u4e1a\u52a1\u6821\u9a8c\uff0c\u7b2c 9 \u7ae0\u5b66\u7684\uff09\uff1b\u4e3b\u6d41\u7a0b\u7528 `try/except` \u6355\u83b7\u975e\u6cd5\u64cd\u4f5c\u5e76\u63d0\u793a\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.7 魔术方法：让对象&#34;会说话&#34;」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 7, 1, "\u7528\u4ee3\u7801\u628a\u300c10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 7, '10.7 魔术方法：让对象&#34;会说话&#34;')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 7, '10.7 魔术方法：让对象&#34;会说话&#34;')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="10_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          10.8 综合案例：学生类 + 成绩管理
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>代码案例 10.11</strong>：面向对象的成绩管理（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self.scores = []
+
+    def add_score(self, score):
+        self.scores.append(score)
+
+    def get_avg(self):
+        if not self.scores:
+            return 0
+        return sum(self.scores) / len(self.scores)
+
+    def __str__(self):
+        return f&quot;{self.name}（{self.age}岁，平均分 {self.get_avg():.1f}）&quot;
+
+
+s1 = Student(&quot;张三&quot;, 19)
+s1.add_score(88)
+s1.add_score(92)
+s1.add_score(76)
+
+s2 = Student(&quot;李四&quot;, 20)
+s2.add_score(95)
+s2.add_score(89)
+
+print(s1)
+print(s2)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">张三（19岁，平均分 85.3）
+李四（20岁，平均分 92.0）</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li>数据（name/age/scores）和行为（add_score/get_avg/__str__）<strong>打包在一个类里</strong>——这是面向对象的直接收益；</li><li><code class="md-inline">add_score</code> 是唯一的"入口"，外部不能直接乱改 scores（虽然现在还没私有化，接口意识已经在了）；</li><li><code class="md-inline">__str__</code> 让 <code class="md-inline">print(s1)</code> 输出人类可读的信息；</li><li>对比第 9 章的"字典 + 散落函数"，<strong>类让相关的东西永远待在一起</strong>。</li></ul>
+<p><strong>微任务卡（M4 · 审查卡 · L2）</strong>：把你手写的 Student 类发给 AI："请评审封装是否合理、get_avg 空列表会怎样、__str__ 是否友好。只给建议，不要重写。"记录采纳/否决理由。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 8, "10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="8">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.8 综合案例：学生类 + 成绩管理」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 8, 0, "\u7528\u4ee3\u7801\u628a\u300c10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 8, '10.8 综合案例：学生类 + 成绩管理')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 8, '10.8 综合案例：学生类 + 成绩管理')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="10_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          10.9 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：方法忘写 self</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Dog:
+    def __init__(self, name):
+        self.name = name
+
+    def bark():
+        return f&quot;{self.name} 汪汪叫&quot;
+
+d = Dog(&quot;旺财&quot;)
+print(d.bark())</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">旺财 汪汪叫</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: bark() takes 0 positional arguments but 1 was given</pre></div>
+<p><strong>提示</strong>：调用 <code class="md-inline">d.bark()</code> 时，Python 悄悄传了什么进去？函数声明接住了吗？</p>
+<p><strong>讲解</strong>：Python 自动把 <code class="md-inline">d</code> 传给第一个参数。<code class="md-inline">bark()</code> 没有参数声明，所以报"给了 1 个但函数收 0 个"。<strong>类里所有实例方法第一个参数必须是 self</strong>。</p>
+<h3 class="md-h">问题 2：__init__ 参数不匹配</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+s = Student(&quot;张三&quot;)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">（创建成功）</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: Student.__init__() missing 1 required positional argument: &#x27;age&#x27;</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">__init__</code> 声明了几个必填参数？创建对象时传了几个？</p>
+<p><strong>讲解</strong>：<code class="md-inline">__init__</code> 的参数 = 创建对象时必须提供的信息。报错信息会直接告诉你缺哪个。<strong>写类时先想清楚：这个对象出生时必须知道什么？</strong></p>
+<h3 class="md-h">问题 3：类变量与实例变量混淆</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Config:
+    theme = &quot;light&quot;
+
+c1 = Config()
+c1.theme = &quot;dark&quot;
+print(Config.theme)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">dark</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">light</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">c1.theme = "dark"</code> 改的是谁？类变量被改了吗？</p>
+<p><strong>讲解</strong>：给实例赋值会创建<strong>实例变量</strong>，遮蔽类变量，但不影响类和其他实例。想改类变量用 <code class="md-inline">Config.theme = "dark"</code>。<strong>想改"全班共享"的数据，就走类名，不要走实例</strong>。</p>
+<h3 class="md-h">问题 4：访问私有属性</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Account:
+    def __init__(self):
+        self.__money = 100
+
+a = Account()
+print(a.__money)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">100</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">AttributeError: &#x27;Account&#x27; object has no attribute &#x27;__money&#x27;</pre></div>
+<p><strong>提示</strong>：双下划线开头的属性发生了什么？（回忆 10.5.2 名称改写）</p>
+<p><strong>讲解</strong>：<code class="md-inline">__money</code> 被改名为 <code class="md-inline">_Account__money</code>，外部直接访问找不到。<strong>要么提供 <code class="md-inline">get_money()</code> 方法，要么尊重私有约定</strong>——这正是封装的意义。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 9, "10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="9">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.9 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 9, 0, "\u7528\u4ee3\u7801\u628a\u300c10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 9, '10.9 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 9, '10.9 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-11" class="kp-item  unlocked"
+         data-kp-index="10" data-kp-key="10_10">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">011.</span>
+          
+          10.10 Vibe Coding：L2 解锁仪式
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">10.10.1 你的等级又升级了</h3>
+<p>你完成了前 10 章的手写训练，可以解锁 <strong>L2（审查辅助）</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>等级</th><th>你能让 AI 做什么</th><th>仍然禁止</th></tr></thead><tbody><tr><td>L1（已通过）</td><td>解释已有代码、讲解运行过程</td><td>AI 生成功能代码、帮你改代码</td></tr><tr><td><strong>L2（解锁）</strong></td><td><strong>审查你手写的代码</strong>：找 bug、提优化建议、补全单行/极小片段</td><td><strong>AI 生成完整函数/类</strong></td></tr></tbody></table></div>
+<p><strong>L2 的新权利</strong>：把你手写的类/函数发给 AI，让它"评审"——找逻辑错误、命名问题、可以改进的地方。</p>
+<p><strong>L2 的新责任</strong>：AI 的建议<strong>你说了算</strong>——采纳要说明理由，不采纳也要说明理由，全部记进 Prompt 日志。<strong>你是代码的主人，AI 是评审员</strong>。</p>
+<p><strong>判别标准</strong>：AI 一次性输出"完整可运行的功能代码"就是越界；输出"评论、建议、单行修正"是允许的。</p>
+<h3 class="md-h">10.10.2 Vibe Coding 任务卡（L2）</h3>
+<p><strong>任务名称</strong>：让 AI 评审你手写的学生类</p>
+<p><strong>任务内容</strong>：先自己手写下面这个类的完整代码（不要复制教材），然后发给 AI 提问："请评审我的代码：有没有 bug？命名是否规范？有什么可以改进的地方？请只给建议，不要重写我的代码。"</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self.scores = []
+
+    def add_score(self, score):
+        self.scores.append(score)
+
+    def get_avg(self):
+        return sum(self.scores) / len(self.scores)</code></pre></div>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">这是我手写的 Student 类。请按这个清单评审：
+1. 有没有逻辑 bug（特别是 get_avg 的空列表情况）？
+2. 命名和 PEP 8 规范有没有问题？
+3. 封装方面可以怎么改进？
+请给出具体的建议和理由。不要重写我的代码，不要给出完整的替代实现。</pre></div>
+<p><strong>Review 清单（L2）</strong>：</p>
+<ul><li>[ ] AI 指出的问题我<strong>逐条验证过</strong>（能复现/能解释）；</li><li>[ ] 采纳了哪些建议、为什么；否决了哪些、为什么——写进 Prompt 日志；</li><li>[ ] AI 没有输出完整替代代码（如果给了，我不复制）；</li><li>[ ] 我根据建议改进了自己的代码，并提交 Git。</li></ul>
+<p><strong>L2 纪律自查</strong>：</p>
+<ul><li>练习题全部手写完成；</li><li>AI 只当"评审员"，没有替我写过任何完整代码；</li><li>我的 Prompt 日志里记录了至少一次"评审 → 判断 → 修改"的完整过程。</li></ul>
+<p><strong>微任务卡（M5 · 讲解卡 · L2）</strong>：把 Point 类的 __eq__ 代码发给 AI："请解释为什么实现 __eq__ 后对象会'不可哈希'？想用对象做字典键应该怎么办？"一句话记录理解。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 10, "10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="10">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(10, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「10.10 Vibe Coding：L2 解锁仪式」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(10, 10, 0, "\u7528\u4ee3\u7801\u628a\u300c10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_10"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 10, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 10)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 10)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_10" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 10, '10.10 Vibe Coding：L2 解锁仪式')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 10, '10.10 Vibe Coding：L2 解锁仪式')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-12" class="kp-item  unlocked"
+         data-kp-index="11" data-kp-key="10_11">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">012.</span>
+          
+          10.11 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">类与封装
+├── 思想：类 = 数据 + 行为 的模板；对象 = 按模板造的个体（图纸 vs 房子）
+├── 类与对象：class Student: / Student() 实例化；类名大驼峰
+├── __init__：构造方法，创建时自动调用；参数 = 出生必填信息
+├── self：代表当前对象；s.introduce() == Student.introduce(s)
+├── 三种方法
+│   ├── 实例方法（self）：管个体数据（最常用）
+│   ├── 类方法 @classmethod（cls）：管集体数据
+│   └── 静态方法 @staticmethod：放类里的普通函数
+├── 封装
+│   ├── 私有属性 __x：名称改写 _Class__x（约定非铁壁）
+│   ├── 私有方法 __y：内部辅助步骤
+│   └── 公开接口方法：get_balance / deposit（带校验）
+├── 类变量 vs 实例变量：共享一份 vs 每人一份；实例赋值会遮蔽
+└── 魔术方法：__str__（给人看）/ __repr__（给开发者看）/ __eq__（按内容比）</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>类方法第一个参数是 <code class="md-inline">self</code>，漏掉就报"takes 0 positional arguments but 1 was given"；</li><li><code class="md-inline">__init__</code> 的参数 = 创建对象必填的信息；</li><li>私有属性是双下划线开头（名称改写），但只是约定不是铁壁；</li><li>类变量所有对象共享；<code class="md-inline">对象.类变量 = 值</code> 只创建实例变量并遮蔽；</li><li><code class="md-inline">__str__</code> 给用户看、<code class="md-inline">__repr__</code> 给开发者看、<code class="md-inline">__eq__</code> 定义"相等"的含义。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 11, "10.11 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_11"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 11, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 11)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 11)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_11" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 11, '10.11 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 11, '10.11 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-13" class="kp-item  unlocked"
+         data-kp-index="12" data-kp-key="10_12">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">013.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td><code class="md-inline">@property</code> / <code class="md-inline">@age.setter</code></td><td>把方法变属性，赋值时自动校验</td></tr><tr><td><code class="md-inline">__add__</code> 等魔法函数</td><td>运算符重载：定义 <code class="md-inline">+</code>、<code class="md-inline">in</code>、<code class="md-inline">for</code> 等行为</td></tr><tr><td><code class="md-inline">class 类名:</code></td><td>定义类（类名大驼峰）</td></tr><tr><td><code class="md-inline">__init__(self)</code></td><td>构造方法（创建时自动调用）</td></tr><tr><td><code class="md-inline">self</code></td><td>当前对象（方法第一个参数）</td></tr><tr><td>实例/类/静态方法</td><td><code class="md-inline">self</code> / <code class="md-inline">cls</code> / 无参数</td></tr><tr><td><code class="md-inline">__私有属性</code></td><td>名称改写（约定非铁壁）</td></tr><tr><td>类变量 vs 实例变量</td><td>共享一份 vs 每人一份</td></tr><tr><td><code class="md-inline">__str__</code> / <code class="md-inline">__repr__</code></td><td>给人看 / 给开发者看</td></tr><tr><td><code class="md-inline">__eq__</code></td><td>定义"相等"的含义</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(10, 12, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="10_12"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(10, 12, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(10, 12)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(10, 12)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="10_12" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(10, 12, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(10, 12, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 面向对象（上）：类与封装 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 面向对象（上）：类与封装 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 面向对象（上）：类与封装
+## 10.1 概念认知：从字典到类
+### 用字典表示学生的痛点
+### 概念认知：类 = 数据 + 行为的模板
+## 10.2 类与对象：第一个类
+### 语法掌握：定义类与创建对象
+### 语法掌握：给对象加属性
+## 10.3 __init__ 与实例属性
+### 语法掌握：构造方法 __init__
+## 10.4 三种方法：实例方法、类方法、静态方法
+### 概念认知：方法 = 属于类的函数
+## 10.5 封装：把内部藏起来
+### 概念认知：封装是什么
+### 语法掌握：私有属性（名称改写）
+### 语法掌握：私有方法
+### 语法掌握：@property——把方法变成属性
+## 10.6 类变量与实例变量
+### 概念认知：两种&#34;属于&#34;不同层级的数据
+## 10.7 魔术方法：让对象&#34;会说话&#34;
+### 语法掌握：__str__ 与 __repr__
+### 语法掌握：__eq__ 判断相等
+### 综合运用：MagicBox——魔法函数全家桶
+## 10.8 综合案例：学生类 + 成绩管理
+## 10.9 本章 Debug 四件套
+### 问题 1：方法忘写 self
+### 问题 2：__init__ 参数不匹配
+### 问题 3：类变量与实例变量混淆
+### 问题 4：访问私有属性
+## 10.10 Vibe Coding：L2 解锁仪式
+### 你的等级又升级了
+### Vibe Coding 任务卡（L2）
+## 10.11 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 10;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["10.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b", "10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b", "10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027", "10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5", "10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765", "10.6 \u7c7b\u53d8\u91cf\u4e0e\u5b9e\u4f8b\u53d8\u91cf", "10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"", "10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406", "10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f", "10.11 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u9762\u5411\u5bf9\u8c61\uff08\u4e0a\uff09\uff1a\u7c7b\u4e0e\u5c01\u88c5";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(10, "\u9762\u5411\u5bf9\u8c61\uff08\u4e0a\uff09\uff1a\u7c7b\u4e0e\u5c01\u88c5", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7406\u89e3\u9762\u5411\u5bf9\u8c61\u7684\u6838\u5fc3\u601d\u60f3\uff1a\u628a\"\u6570\u636e\"\u548c\"\u64cd\u4f5c\u6570\u636e\u7684\u65b9\u6cd5\"\u7ed1\u5728\u4e00\u8d77\uff1b\n- \u7528 class \u5b9a\u4e49\u7c7b\u3001\u521b\u5efa\u5bf9\u8c61\uff0c\u7406\u89e3 self \u7684\u672c\u8d28\uff1b\n- \u638c\u63e1 __init__ \u6784\u9020\u65b9\u6cd5\u4e0e\u5b9e\u4f8b\u5c5e\u6027\uff1b\n- \u533a\u5206\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001", ["10.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "10.1 \u6982\u5ff5\u8ba4\u77e5\uff1a\u4ece\u5b57\u5178\u5230\u7c7b", "10.2 \u7c7b\u4e0e\u5bf9\u8c61\uff1a\u7b2c\u4e00\u4e2a\u7c7b", "10.3 __init__ \u4e0e\u5b9e\u4f8b\u5c5e\u6027", "10.4 \u4e09\u79cd\u65b9\u6cd5\uff1a\u5b9e\u4f8b\u65b9\u6cd5\u3001\u7c7b\u65b9\u6cd5\u3001\u9759\u6001\u65b9\u6cd5", "10.5 \u5c01\u88c5\uff1a\u628a\u5185\u90e8\u85cf\u8d77\u6765", "10.6 \u7c7b\u53d8\u91cf\u4e0e\u5b9e\u4f8b\u53d8\u91cf", "10.7 \u9b54\u672f\u65b9\u6cd5\uff1a\u8ba9\u5bf9\u8c61\"\u4f1a\u8bf4\u8bdd\"", "10.8 \u7efc\u5408\u6848\u4f8b\uff1a\u5b66\u751f\u7c7b + \u6210\u7ee9\u7ba1\u7406", "10.9 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "10.10 Vibe Coding\uff1aL2 \u89e3\u9501\u4eea\u5f0f", "10.11 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

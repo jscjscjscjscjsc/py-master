@@ -1,0 +1,9 @@
+{
+  "name": "pymaster-visuals",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PyMaster 讲解配图的程序化作图引擎（不依赖第三方生图模型）",
+  "scripts": {
+    "still": "node render-stills.mjs"
+  }
+}

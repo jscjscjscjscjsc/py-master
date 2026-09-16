@@ -5,6 +5,7 @@ import ast
 import hashlib
 import secrets
 import subprocess
+import shutil
 import tempfile
 import time
 import re
@@ -46,6 +47,23 @@ else:
 
 from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
+import narration_engine
+from pathlib import Path
+
+# 讲解产物的读写位置跟随 PyInstaller 的 BUNDLE/WRITE 约定：
+# 生成的 json/音频要写到可写目录，静态插画随包分发。
+narration_engine.ROOT = Path(WRITE_ROOT)
+narration_engine.DATA_DIR = Path(WRITE_ROOT) / 'data'
+narration_engine.AUDIO_CACHE = narration_engine.DATA_DIR / 'audio_cache'
+narration_engine.STATIC_NARR_DIR = Path(BUNDLE_DIR) / 'static' / 'narrations'
+for _candidate in (Path(WRITE_ROOT) / 'data' / 'narrations.json',
+                   Path(BUNDLE_DIR) / 'data' / 'narrations.json'):
+    if _candidate.exists():
+        narration_engine.NARRATIONS_FILE = _candidate
+        break
+else:
+    narration_engine.NARRATIONS_FILE = Path(WRITE_ROOT) / 'data' / 'narrations.json'
+narration_engine.AUDIO_CACHE.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 # 持久化 secret key：存到 data 目录，重启后 session 不失效（否则每次重启所有用户被登出，
@@ -502,9 +520,11 @@ def chapter(chapter_id):
             ex['ex_idx'] = 0
             exercises.append(ex)
             ex_idx += 1
-        # Add a code verification exercise if the assigned one wasn't already code
-        if not exercises or exercises[0].get('type') != 'code':
-            hint = '请编写代码展示你对本知识点的理解。'
+        # 只给"真的含代码"的知识点追加编程练习：
+        # 纯概念、流程、协作类知识点硬塞代码题会让学生无从下手。
+        if 'md-codeblock' in kps[i].get('content', '') and (
+                not exercises or exercises[0].get('type') != 'code'):
+            hint = f'用代码把「{kp_title}」的核心用法演示一遍，并打印出结果。'
             for key, val in code_hints.items():
                 if key in kp_title:
                     hint = val
@@ -545,7 +565,8 @@ def chapter(chapter_id):
                           kp_unlocked=kp_unlocked, mode=mode,
                           chapter_completed=chapter_completed,
                           chapter_kp_titles=chapter_kp_titles,
-                          chapter_wrong=chapter_wrong)
+                          chapter_wrong=chapter_wrong,
+                          total_chapters=len(courses))
 
 
 @app.route('/canvas')
@@ -2319,6 +2340,244 @@ def get_tts_voices():
     })
 
 
+# ── 五分钟图文讲解（narration）────────────────────────────
+# 每个知识点配一节 5 分钟带配图的口播讲解：
+# 分镜脚本由大模型撰写，配图由 tools/render 的程序化作图引擎产出（不依赖任何生图接口），
+# 口播由 edge-tts 合成。产物落盘于 data/narrations.json + static/narrations/ + data/audio_cache/。
+
+_narration_jobs = {}
+_narration_job_lock = threading.Lock()
+
+
+def _renderer_available():
+    """程序化作图需要 node（编译版面）+ Playwright（截图）。"""
+    return bool(shutil.which('node'))
+
+
+def _narration_capabilities():
+    builder = narration_engine.NarrationBuilder()
+    return builder.text.available, _renderer_available()
+
+
+def _render_narration_images(chapter_id, kp_index):
+    """渲染这一节的配图；失败不抛错，脚本和口播已经产出，配图可以后补。"""
+    node = shutil.which('node')
+    if not node:
+        return False
+    key = f'{chapter_id}_{kp_index}'
+    plan = subprocess.run([node, str(Path(BUNDLE_DIR) / 'tools' / 'render' / 'build-plan.mjs'),
+                           '--key', key],
+                          cwd=BUNDLE_DIR, capture_output=True, text=True, timeout=180)
+    if plan.returncode != 0:
+        return False
+    shot = subprocess.run([sys.executable,
+                           str(Path(BUNDLE_DIR) / 'tools' / 'render' / 'render_plan.py')],
+                          cwd=BUNDLE_DIR, capture_output=True, text=True, timeout=900)
+    return shot.returncode == 0
+
+
+def _run_narration_job(job_id, chapter_id, kp_index, scenes, with_images):
+    """后台线程：生成一节讲解，把进度写回登记表供前端轮询。"""
+
+    def note(_stage, message):
+        with _narration_job_lock:
+            job = _narration_jobs.get(job_id)
+            if job:
+                job['message'] = message.strip()
+                job['updated_at'] = time.time()
+
+    try:
+        courses = load_json(COURSES_FILE)
+        course = next((c for c in courses if c['id'] == chapter_id), None)
+        if not course:
+            raise RuntimeError('章节不存在')
+        kps = course.get('knowledge_points', [])
+        if kp_index < 0 or kp_index >= len(kps):
+            raise RuntimeError('知识点不存在')
+
+        note('script', '正在撰写分镜脚本…')
+        builder = narration_engine.NarrationBuilder(on_log=lambda m: note('build', m))
+        payload = builder.build(
+            chapter_id=chapter_id, kp_index=kp_index,
+            chapter_title=course['title'], kp_title=kps[kp_index]['title'],
+            kp_text=narration_engine.kp_text(kps[kp_index]['content']),
+            scenes=scenes,
+        )
+        narration_engine.save_narration(
+            narration_engine.narration_key(chapter_id, kp_index), payload)
+
+        if with_images:
+            note('images', '正在绘制配图…')
+            _render_narration_images(chapter_id, kp_index)
+
+        with _narration_job_lock:
+            job = _narration_jobs.get(job_id)
+            if job:
+                job['status'] = 'done'
+                job['message'] = (f"完成：{payload['scene_count']} 个镜头，"
+                                  f"{payload['total_seconds'] / 60:.1f} 分钟")
+                job['finished_at'] = time.time()
+    except Exception as exc:
+        with _narration_job_lock:
+            job = _narration_jobs.get(job_id)
+            if job:
+                job['status'] = 'error'
+                job['message'] = f'{type(exc).__name__}: {exc}'
+                job['finished_at'] = time.time()
+
+
+@app.route('/api/narration/<int:chapter_id>/<int:kp_index>')
+def get_narration_api(chapter_id, kp_index):
+    """取一个知识点的图文讲解分镜；还没生成时返回 available=false。"""
+    narration = narration_engine.get_narration(chapter_id, kp_index)
+    if not narration:
+        return jsonify({
+            'success': True,
+            'available': False,
+            'reason': '这个知识点的 5 分钟图文讲解还没生成',
+        })
+    scenes = []
+    for scene in narration['scenes']:
+        scenes.append({
+            'id': scene['id'],
+            'type': scene.get('type', 'concept'),
+            'title': scene.get('title', ''),
+            'narration': scene.get('narration', ''),
+            'caption': scene.get('caption', ''),
+            'code': scene.get('code', ''),
+            'image': scene.get('image', ''),
+            'audio_url': (f"/api/narration/audio/{chapter_id}/{kp_index}/{scene['id']}"
+                          if scene.get('audio') else ''),
+            'audio_seconds': scene.get('audio_seconds', 0),
+            'voice_label': narration_engine.VOICE_LABELS.get(scene.get('voice', ''), ''),
+        })
+    return jsonify({
+        'success': True,
+        'available': True,
+        'narration': {
+            'chapter_id': chapter_id,
+            'kp_index': kp_index,
+            'chapter_title': narration.get('chapter_title', ''),
+            'kp_title': narration.get('kp_title', ''),
+            'title': narration.get('title', ''),
+            'hook_line': narration.get('hook_line', ''),
+            'scene_count': narration.get('scene_count', len(scenes)),
+            'total_seconds': narration.get('total_seconds', 0),
+            'narration_chars': narration.get('narration_chars', 0),
+            'created_at': narration.get('created_at', ''),
+            'scenes': scenes,
+        },
+    })
+
+
+@app.route('/api/narration/audio/<int:chapter_id>/<int:kp_index>/<int:scene_id>')
+def get_narration_audio(chapter_id, kp_index, scene_id):
+    """返回某个镜头的口播音频（读本地缓存，不重复合成）。"""
+    narration = narration_engine.get_narration(chapter_id, kp_index)
+    if not narration:
+        return jsonify({'success': False, 'message': '讲解不存在'}), 404
+    scene = next((s for s in narration['scenes'] if s['id'] == scene_id), None)
+    if not scene or not scene.get('audio'):
+        return jsonify({'success': False, 'message': '该镜头没有音频'}), 404
+    path = narration_engine.AUDIO_CACHE / os.path.basename(scene['audio'])
+    if not path.exists():
+        return jsonify({'success': False, 'message': '音频文件缺失，请重新生成'}), 404
+    return Response(path.read_bytes(), mimetype='audio/mpeg',
+                    headers={'Cache-Control': 'public, max-age=604800'})
+
+
+@app.route('/api/narration/stats')
+def narration_stats_api():
+    """讲解覆盖率总览，教师端与学习端都用它展示制作进度。"""
+    summary = narration_engine.stats()
+    courses = load_json(COURSES_FILE)
+    total_kp = sum(len(c.get('knowledge_points', [])) for c in courses)
+    chapters = []
+    for course in courses:
+        kps = course.get('knowledge_points', [])
+        ready = sum(1 for i in range(len(kps))
+                    if narration_engine.narration_key(course['id'], i) in summary['ready'])
+        chapters.append({
+            'id': course['id'], 'title': course['title'], 'icon': course.get('icon', '📘'),
+            'stage': course.get('stage', ''), 'ready': ready, 'total': len(kps),
+        })
+    return jsonify({
+        'success': True,
+        'total_kp': total_kp,
+        'ready': summary['count'],
+        'coverage': round(summary['count'] / total_kp * 100, 1) if total_kp else 0,
+        'scenes': summary['scenes'],
+        'minutes': round(summary['seconds'] / 60, 1),
+        'narration_chars': summary['chars'],
+        'chapters': chapters,
+    })
+
+
+@app.route('/api/narration/status')
+def narration_status_api():
+    text_ok, render_ok = _narration_capabilities()
+    with _narration_job_lock:
+        running = [dict(j) for j in _narration_jobs.values() if j['status'] == 'running']
+    return jsonify({
+        'success': True,
+        'text_model_available': text_ok,
+        'renderer_available': render_ok,
+        'voice_available': narration_engine.VoiceOver.available(),
+        'running_jobs': len(running),
+        'current': running[0] if running else None,
+    })
+
+
+@app.route('/api/narration/request', methods=['POST'])
+def request_narration():
+    """现场为一节知识点生成讲解。耗时 3–5 分钟，走后台线程 + 轮询。"""
+    data = request.get_json(silent=True) or {}
+    chapter_id = int(data.get('chapter_id', 0))
+    kp_index = int(data.get('kp_index', 0))
+    scenes = max(8, min(24, int(data.get('scenes', narration_engine.DEFAULT_SCENES))))
+    with_images = bool(data.get('with_images', True))
+
+    if narration_engine.get_narration(chapter_id, kp_index):
+        return jsonify({'success': True, 'status': 'already', 'message': '这节讲解已经生成好了'})
+
+    text_ok, render_ok = _narration_capabilities()
+    if not text_ok:
+        return jsonify({'success': False,
+                        'message': '未配置 ARK_API_KEY，无法生成讲解，请在 .env 里补上密钥。'})
+    if not render_ok:
+        return jsonify({'success': False,
+                        'message': '未找到 node，无法渲染配图；可关闭配图后重试。'})
+    if not narration_engine.VoiceOver.available():
+        return jsonify({'success': False, 'message': '未安装 edge-tts，请先 pip install edge-tts。'})
+
+    with _narration_job_lock:
+        for job in _narration_jobs.values():
+            if job['status'] == 'running':
+                return jsonify({'success': False,
+                                'message': '已有讲解正在生成，请等它完成后再发起。'})
+        job_id = hashlib.md5(f'{chapter_id}_{kp_index}_{time.time()}'.encode()).hexdigest()[:12]
+        _narration_jobs[job_id] = {
+            'job_id': job_id, 'chapter_id': chapter_id, 'kp_index': kp_index,
+            'status': 'running', 'message': '排队中…', 'started_at': time.time(),
+        }
+    threading.Thread(target=_run_narration_job,
+                     args=(job_id, chapter_id, kp_index, scenes, with_images),
+                     daemon=True).start()
+    return jsonify({'success': True, 'status': 'running', 'job_id': job_id,
+                    'message': '已开始生成，大约需要 3–5 分钟'})
+
+
+@app.route('/api/narration/job/<job_id>')
+def narration_job_status(job_id):
+    with _narration_job_lock:
+        job = _narration_jobs.get(job_id)
+        job = dict(job) if job else None
+    if not job:
+        return jsonify({'success': False, 'message': '任务不存在'}), 404
+    job['success'] = True
+    return jsonify(job)
+
+
 # ── Admin Panel ────────────────────────────────────────────
 
 def admin_required(f):
@@ -2435,33 +2694,57 @@ if __name__ == '__main__':
     if not os.path.exists(WHITELIST_FILE):
         _save_whitelist({})
 
-    # Kill any existing Python process on port 5000 (old dev servers)
-    import socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.bind(('127.0.0.1', 5000))
-        sock.close()
-        del sock
-    except OSError:
-        del sock
-        print("[PyMaster] Port 5000 is busy; cleaning the old process...")
-        try:
-            import subprocess
-            result = subprocess.run(
-                ['netstat', '-ano'], capture_output=True, text=True, timeout=5
-            )
-            for line in result.stdout.splitlines():
-                if '127.0.0.1:5000' in line and 'LISTEN' in line:
-                    parts = line.strip().split()
-                    pid = parts[-1]
-                    subprocess.run(['taskkill', '/F', '/PID', pid],
-                                   capture_output=True, timeout=3)
-                    print(f"[PyMaster] Terminated old process (PID: {pid})")
-                    break
-        except Exception:
-            print("[PyMaster] Could not clean the port automatically.")
+    # 端口清理：把占着 5000 的旧实例踢掉再启动。
+    # 注意判据必须按"端口"匹配而不是按"127.0.0.1:5000"匹配：
+    # app.run 绑的是 0.0.0.0，netstat 里显示成 0.0.0.0:5000，
+    # 之前的字符串判据永远匹配不上，于是清理静默失效，
+    # 两个版本同时监听（Windows 允许），浏览器看到的还是旧版内容。
+    port_to_use = int(os.environ.get('PORT', 5000))
 
-    print("[PyMaster] Started at http://127.0.0.1:5000")
-    # Production: use 0.0.0.0 and PORT env var (Railway provides PORT)
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    def _port_busy(port):
+        # 必须探测 0.0.0.0：Windows 下别的进程占着 0.0.0.0:5000 时，
+        # 再绑 127.0.0.1:5000 仍会成功，只测回环地址会误判成"空闲"。
+        probe = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            probe.bind(('0.0.0.0', port))
+            return False
+        except OSError:
+            return True
+        finally:
+            probe.close()
+
+    if _port_busy(port_to_use):
+        print(f'[PyMaster] 端口 {port_to_use} 被占用，正在清理旧实例...')
+        try:
+            # 中文 Windows 的 netstat 输出是 GBK，用 text=True 会按 UTF-8 解码抛错，
+            # 异常一旦被吞掉清理就静默失效——所以这里自己按 gbk 解码，解码失败也不崩。
+            raw = subprocess.run(['netstat', '-ano'], capture_output=True, timeout=8).stdout
+            listing = raw.decode('gbk', errors='ignore')
+            victims = set()
+            for line in listing.splitlines():
+                parts = line.split()
+                if len(parts) >= 5 and parts[0].upper().startswith('TCP') \
+                        and parts[1].endswith(f':{port_to_use}') and 'LISTEN' in parts[3].upper():
+                    try:
+                        pid = int(parts[4])
+                    except ValueError:
+                        continue
+                    if pid != os.getpid():
+                        victims.add(pid)
+            for pid in victims:
+                subprocess.run(['taskkill', '/F', '/PID', str(pid)],
+                               capture_output=True, timeout=5)
+                print(f'[PyMaster] 已结束占用端口的旧进程 PID {pid}')
+            for _ in range(10):
+                if not _port_busy(port_to_use):
+                    print(f'[PyMaster] 端口 {port_to_use} 已释放')
+                    break
+                time.sleep(0.5)
+            else:
+                print(f'[PyMaster] 端口 {port_to_use} 仍未释放，'
+                      f'请手动结束占用进程后重试。')
+        except Exception as exc:
+            print(f'[PyMaster] 端口清理失败：{exc}')
+
+    print(f'[PyMaster] Started at http://127.0.0.1:{port_to_use}')
+    app.run(debug=False, host='0.0.0.0', port=port_to_use)

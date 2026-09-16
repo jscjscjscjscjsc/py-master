@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 高级特性：推导式、迭代器、生成器、装饰器</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="12" data-chapter-title="高级特性：推导式、迭代器、生成器、装饰器" data-chapter-description="学完本章，你应该能够：
+
+- 熟练使用列表、字典、集合、生成器四种推导式；
+- 理解迭代器协议（__iter__ / __next__ / StopIteration）；
+- 掌握生成器 yield，理解惰性求值与内存优势；
+- 掌握装饰器">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 12</p>
+    <span class="hero-icon">✨</span>
+    <h2>第 12 章 · 高级特性：推导式、迭代器、生成器、装饰器</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 熟练使用列表、字典、集合、生成器四种推导式；
+- 理解迭代器协议（__iter__ / __next__ / StopIteration）；
+- 掌握生成器 yield，理解惰性求值与内存优势；
+- 掌握装饰器</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="12_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          12.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>熟练使用列表、字典、集合、生成器四种推导式；</li><li>理解迭代器协议（<code class="md-inline">__iter__</code> / <code class="md-inline">__next__</code> / <code class="md-inline">StopIteration</code>）；</li><li>掌握生成器 <code class="md-inline">yield</code>，理解惰性求值与内存优势；</li><li>掌握装饰器原理（闭包 + 函数即对象），能写带参数装饰器和实际应用；</li><li>用 <code class="md-inline">__enter__/__exit__</code> 或 <code class="md-inline">contextmanager</code> 自定义 <code class="md-inline">with</code>；</li><li>掌握 <code class="md-inline">*</code> 解包与 <code class="md-inline">**</code> 字典合并等进阶写法；</li><li>综合应用：<code class="md-inline">@retry</code> 重试装饰器、生成器处理大文件；</li><li>继续遵守 L2 纪律：AI 是评审员。</li></ol>
+<p><strong>前置知识</strong>：第 1-11 章全部内容（函数、闭包思想、类、魔术方法）。</p>
+<blockquote class="md-quote"><p><strong>6 学时节奏建议</strong>：推导式+迭代器 1.5h → 生成器 1h → <strong>装饰器（本章最重）2.5h</strong> → 上下文管理器+解包 0.5h → 综合案例与练习 0.5h。装饰器如果第一遍吃力，先记住"@ = 包装"这一句，细节第二遍再看——这一章允许"先会用、后懂透"。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 0, "12.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e[\u8868\u8fbe\u5f0f for \u53d8\u91cf in \u5e8f\u5217 if \u6761\u4ef6]\u003c/code\u003e\u2014\u2014\u5148\u8fc7\u6ee4\uff08if\uff09\u518d\u53d8\u6362\uff08\u8868\u8fbe\u5f0f\uff09\u3002\u7b2c\u4e09\u4e2a\uff1a4\u00b3=64\u30015\u00b3=125\u30016\u00b3=216\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a`nums = [1, 2, 3, 4, 5, 6]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [1, 2, 3, 4, 5, 6]\n\nprint([x ** 2 for x in nums])\nprint([x for x in nums if x % 2 == 0])\nprint([x ** 3 for x in nums if x \u0026gt; 3])\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[1, 4, 9, 16, 25, 36]\n[2, 4, 6]\n[64, 125, 216]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 1 \u9898**\uff1a`nums = [1, 2, 3, 4, 5, 6]`\uff0c\u7528\u5217\u8868\u63a8\u5bfc\u5f0f\u751f\u6210\uff1a\u2460 \u6bcf\u4e2a\u6570\u7684\u5e73\u65b9\uff1b\u2461 \u6240\u6709\u5076\u6570\uff1b\u2462 \u5927\u4e8e 3 \u7684\u6570\u7684\u7acb\u65b9\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 0, '12.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 0, '12.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="12_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          12.1 推导式全家族
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">12.1.1 语法掌握：列表推导式回顾</h3>
+<p>第 5 章见过 <code class="md-inline">[x * 2 for x in nums]</code>。它是"建空列表 + for 循环 + append"三行代码的一行写法：</p>
+<p><strong>代码案例 12.1</strong>：列表推导式 vs 循环（✅ 对比）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3, 4]
+
+# 循环写法
+result = []
+for x in nums:
+    result.append(x * 2)
+
+# 推导式写法
+result2 = [x * 2 for x in nums]
+
+print(result == result2)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True</pre></div>
+<p><strong>讲解</strong>：推导式是"语法糖"——用更短的写法做同一件事。<strong>可读性优先</strong>：一行能说清就用推导式，逻辑复杂就老老实实写循环。</p>
+<h3 class="md-h">12.1.2 语法掌握：字典推导式</h3>
+<p><strong>代码案例 12.2</strong>：字典推导式（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3, 4]
+
+squares = {x: x ** 2 for x in nums}
+print(squares)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">{1: 1, 2: 4, 3: 9, 4: 16}</pre></div>
+<p><strong>讲解</strong>：把列表变成字典，<code class="md-inline">{键: 值 for ...}</code>。<strong>真实场景</strong>：把成绩列表转成"姓名 → 成绩"映射、把 id 列表转成"id → 对象"索引。</p>
+<h3 class="md-h">12.1.3 语法掌握：集合推导式</h3>
+<p><strong>代码案例 12.3</strong>：集合推导式（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 2, 3, 4, 4]
+
+evens = {x for x in nums if x % 2 == 0}
+print(evens)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">{2, 4}</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">{}</code> 包住表达式就是集合推导式——自动去重。<strong>注意</strong>：<code class="md-inline">{}</code> 推导式是集合，<code class="md-inline">{k: v for ...}</code> 是字典，靠"有没有冒号"区分。</p>
+<h3 class="md-h">12.1.4 语法掌握：生成器表达式</h3>
+<p><strong>代码案例 12.4</strong>：生成器表达式（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3, 4]
+
+gen = (x * 2 for x in nums)     # 圆括号！不是列表推导式
+
+print(type(gen).__name__)
+print(sum(x * x for x in range(5)))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">generator
+30</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li>圆括号包住的是<strong>生成器表达式</strong>——它不立即生成所有值，而是<strong>用到一个算一个</strong>（惰性）；</li><li><code class="md-inline">sum(x * x for x in range(5))</code> 是经典组合：不需要中间列表，直接求和（0²+1²+...+4²=30）；</li><li>生成器表达式的内存优势在 12.3.3 详细讲。</li></ul>
+<h3 class="md-h">12.1.5 交叉验证：推导式与循环的选型</h3>
+<p class="md-callout md-good"><strong>✅ 用推导式</strong>：<code class="md-inline">[x * 2 for x in nums]</code>、<code class="md-inline">{name: score for ...}</code>——短、清晰、无副作用；</p>
+<p class="md-callout md-bad"><strong>❌ 不要用推导式</strong>：逻辑超过一行、需要 <code class="md-inline">if/else</code> 复杂分支、循环体有多个语句——这时候循环的可读性完胜。</p>
+<p><strong>判断标准</strong>：<strong>推导式是"变换"，不是"过程"</strong>。一个表达式能说清的变换才用推导式；要做多步处理，用循环。</p>
+<p><strong>微任务卡（M1 · 对比卡 · L2）</strong>：把你的两个版本发给 AI："请对比'列表推导式'和'for 循环'两种写法，什么情况适合推导式、什么情况适合循环？"一句话记录结论。</p>
+<p><strong>动手 5 分钟</strong>：用字典推导式把 <code class="md-inline">["张三", "李四", "王五"]</code> 转成 <code class="md-inline">{"张三": 0, "李四": 1, "王五": 2}</code>（值用索引）。想不出 <code class="md-inline">enumerate</code> 也没关系，用第 3 章的 <code class="md-inline">range(len(...))</code> 就能做——跑通再看下一节。</p>
+<p>推导式是"生成新序列"的语法糖。但要真正理解生成器，得先知道 Python 遍历的底层机制——<strong>迭代器协议</strong>。这一节只有 10 分钟，但它是后面所有"惰性"概念的地基。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 1, "12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e{\u952e: \u503c for ...}\u003c/code\u003e\uff1b\u003ccode class=\"md-inline\"\u003erange(len(names))\u003c/code\u003e \u540c\u65f6\u62ff\u5230\u4e24\u4e2a\u5217\u8868\u7684\u5bf9\u5e94\u5143\u7d20\uff08\u7b2c 3 \u7ae0\u6309\u7d22\u5f15\u904d\u5386\u7684\u8fdb\u9636\u5e94\u7528\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a`names = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]`\uff0c`scores = [88, 95, 76]`\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 `{\"\u5f20\u4e09\": 88, ...}` \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enames = [\u0026quot;\u5f20\u4e09\u0026quot;, \u0026quot;\u674e\u56db\u0026quot;, \u0026quot;\u738b\u4e94\u0026quot;]\nscores = [88, 95, 76]\n\nresult = {names[i]: scores[i] for i in range(len(names))}\nprint(result)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{\u0026#x27;\u5f20\u4e09\u0026#x27;: 88, \u0026#x27;\u674e\u56db\u0026#x27;: 95, \u0026#x27;\u738b\u4e94\u0026#x27;: 76}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 2 \u9898**\uff1a`names = [\"\u5f20\u4e09\", \"\u674e\u56db\", \"\u738b\u4e94\"]`\uff0c`scores = [88, 95, 76]`\uff0c\u7528\u5b57\u5178\u63a8\u5bfc\u5f0f\u751f\u6210 `{\"\u5f20\u4e09\": 88, ...}` \u7684\u5b57\u5178\u5e76\u8f93\u51fa\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「12.1 推导式全家族」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 1, '12.1 推导式全家族')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 1, '12.1 推导式全家族')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="12_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          12.2 迭代器协议
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">12.2.1 概念认知：可迭代对象 vs 迭代器</h3>
+<p>为什么 <code class="md-inline">for x in nums</code> 能遍历列表？因为列表是<strong>可迭代对象（iterable）</strong>。<code class="md-inline">for</code> 循环的底层机制叫<strong>迭代器协议</strong>：</p>
+<ol><li>调用 <code class="md-inline">iter(对象)</code> 拿到一个<strong>迭代器（iterator）</strong>；</li><li>反复调用 <code class="md-inline">next(迭代器)</code> 取下一个元素；</li><li>取完了，迭代器抛 <strong><code class="md-inline">StopIteration</code></strong>，<code class="md-inline">for</code> 循环捕获它并结束。</li></ol>
+<blockquote class="md-quote"><p><strong>原理探秘：for 循环的"真实长相"</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># for x in nums: 的底层等价于
+iterator = iter(nums)
+while True:
+    try:
+        x = next(iterator)
+    except StopIteration:
+        break
+    # 循环体</code></pre></div>
+<p>理解这段代码，你就理解了 Python 里"遍历"的通用规则：<strong>任何"能 iter 的东西"都能被 for 遍历</strong>——列表、字符串、字典、集合、文件、生成器……全是这套协议。</p></blockquote>
+<h3 class="md-h">12.2.2 语法掌握：手动使用迭代器</h3>
+<p><strong>代码案例 12.5</strong>：iter / next（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [10, 20, 30]
+
+it = iter(nums)
+print(next(it))
+print(next(it))
+print(next(it))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">10
+20
+30</pre></div>
+<p><strong>交叉验证：迭代器取尽后</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(next(it))</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">StopIteration</pre></div>
+<p><strong>讲解</strong>：迭代器是"一次性"的——取完最后一个再 <code class="md-inline">next</code>，抛 <code class="md-inline">StopIteration</code>。<code class="md-inline">for</code> 循环会自己处理这个异常；手动 <code class="md-inline">next</code> 时要注意别取超。</p>
+<p><strong>微任务卡（M2 · 报错卡 · L2）</strong>：把迭代器取尽后的 StopIteration 发给 AI，提问："为什么迭代器是一次性的？for 循环为什么不会遇到这个报错？"一句话记录理解。</p>
+<p>迭代器协议是"别人帮你实现好的遍历"。这一节，我们自己用 <code class="md-inline">yield</code> 造一个"边算边给"的迭代器——<strong>生成器</strong>。这也是本章从"会用"走向"理解"的一步。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 2, "12.2 \u8fed\u4ee3\u5668\u534f\u8bae", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e1\u00b2+2\u00b2+...+10\u00b2 = 385\u003c/code\u003e\u3002\u003ccode class=\"md-inline\"\u003esum(\u751f\u6210\u5668\u8868\u8fbe\u5f0f)\u003c/code\u003e \u4e0d\u521b\u5efa\u4e2d\u95f4\u5217\u8868\uff0c\u4e00\u6b65\u5230\u4f4d\uff08\u53ef\u81ea\u884c\u9a8c\u8bc1\u5faa\u73af\u7d2f\u52a0\u7ed3\u679c\u4e00\u81f4\uff09\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 `1\u00b2 + 2\u00b2 + ... + 10\u00b2` \u7684\u548c\uff08\u63d0\u793a\uff1a`sum(x * x for x in ...)`\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etotal = sum(x * x for x in range(1, 11))\nprint(total)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e385\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 3 \u9898**\uff1a\u7528\u751f\u6210\u5668\u8868\u8fbe\u5f0f\u8ba1\u7b97 `1\u00b2 + 2\u00b2 + ... + 10\u00b2` \u7684\u548c\uff08\u63d0\u793a\uff1a`sum(x * x for x in ...)`\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.2 \u8fed\u4ee3\u5668\u534f\u8bae\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「12.2 迭代器协议」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c12.2 \u8fed\u4ee3\u5668\u534f\u8bae\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 2, '12.2 迭代器协议')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 2, '12.2 迭代器协议')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="12_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          12.3 生成器：惰性求值
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">12.3.1 概念认知：生成器是什么</h3>
+<p><strong>生成器（generator）</strong> 是"边算边给"的迭代器。函数里只要有 <strong><code class="md-inline">yield</code></strong>，这个函数就变成生成器函数——调用它<strong>不执行函数体</strong>，而是返回一个生成器对象，每 <code class="md-inline">next</code> 一次才执行到下一个 <code class="md-inline">yield</code>。</p>
+<p><strong>代码案例 12.6</strong>：yield 基础（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def countdown(n):
+    while n &gt; 0:
+        yield n
+        n -= 1
+
+g = countdown(3)
+print(next(g))
+print(next(g))
+print(next(g))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3
+2
+1</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">countdown(3)</code> <strong>不会</strong>立刻执行函数体——它返回生成器；</li><li>每次 <code class="md-inline">next(g)</code>：函数从上次 <code class="md-inline">yield</code> 的地方<strong>接着往下跑</strong>，直到下一个 <code class="md-inline">yield</code>；</li><li>这就是"暂停/恢复"——生成器记住自己的执行位置。</li></ul>
+<h3 class="md-h">12.3.2 语法掌握：遍历生成器</h3>
+<p><strong>代码案例 12.7</strong>：for 遍历生成器（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def countdown(n):
+    while n &gt; 0:
+        yield n
+        n -= 1
+
+for num in countdown(3):
+    print(num, end=&quot; &quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">3 2 1</pre></div>
+<p><strong>讲解</strong>：生成器是迭代器，<code class="md-inline">for</code> 直接遍历。<strong>yield 让"产生序列"和"消费序列"解耦</strong>——生产方不用一次性造完整个序列。</p>
+<h3 class="md-h">12.3.3 原理探秘：生成器 vs 列表的内存差异</h3>
+<p>假设要处理 1 亿个数：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># 列表：一次性生成 1 亿个元素，占大量内存
+nums = [x for x in range(100000000)]
+
+# 生成器：只记住&quot;当前位置&quot;，用到一个算一个
+nums = (x for x in range(100000000))</code></pre></div>
+<p><strong>列表推导式</strong>先造出完整列表再使用；<strong>生成器表达式</strong>全程只占用"一个元素"的内存。<strong>真实场景</strong>：处理大文件、大日志、无限序列时，生成器是唯一可行方案。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：面试问"列表推导式和生成器表达式的区别"——标准答案：<strong>列表推导式立即生成完整列表（占内存）；生成器表达式惰性求值（省内存），代价是只能遍历一次</strong>。</p></blockquote>
+<h3 class="md-h">12.3.4 交叉验证：生成器是"一次性"的</h3>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">g = (x for x in [1, 2])
+print(list(g))
+print(list(g))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[1, 2]
+[]</pre></div>
+<p><strong>讲解</strong>：第一次 <code class="md-inline">list(g)</code> 把生成器"耗尽"了，第二次得到空列表。<strong>生成器不能回放</strong>——想再用，重新创建。这是"省内存"的代价。</p>
+<h3 class="md-h">12.3.5 综合运用：逐行处理大文件</h3>
+<p><strong>代码案例 12.8</strong>：用生成器逐行处理日志（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def read_errors(path):
+    &quot;&quot;&quot;逐行读取文件，只 yield 包含 ERROR 的行&quot;&quot;&quot;
+    with open(path, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:
+        for line in f:
+            if &quot;ERROR&quot; in line:
+                yield line.strip()
+
+for error_line in read_errors(&quot;app.log&quot;):
+    print(error_line)</code></pre></div>
+<p><strong>讲解</strong>：文件可能几 GB，<code class="md-inline">readlines()</code> 会一次性读进内存；<strong>生成器版逐行读、逐行判断、逐行 yield</strong>——内存占用恒定。<strong>这是生产环境处理大文件的标配写法</strong>。</p>
+<p><strong>本节路线图（本章最重的 2.5 小时）</strong>：先明白"为什么要装饰" → 再用闭包实现它 → 理解 @ 语法糖 → 进阶带参数 → 最后看真实应用。<strong>前两步是地基，第三步是转折，后两步是锦上添花</strong>。学不动时，回到"函数即对象 + 闭包"这两个点，比硬往下看更有效。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 3, "12.3 \u751f\u6210\u5668\uff1a\u60f0\u6027\u6c42\u503c", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u751f\u6210\u5668\u4e09\u8981\u7d20\uff1a\u521d\u59cb\u5316\uff08current=start\uff09\u3001\u6761\u4ef6\uff08current \u0026lt; end\uff09\u3001\u66f4\u65b0\uff08current += 1\uff09\u3002\u003cstrong\u003eyield \u6bcf\u6b21\u4ea4\u51fa\u4e00\u4e2a\u503c\u5e76\u6682\u505c\uff0cnext \u65f6\u4ece\u6682\u505c\u5904\u7ee7\u7eed\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a `range2(start, end)` \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef range2(start, end):\n    current = start\n    while current \u0026lt; end:\n        yield current\n        current += 1\n\nfor i in range2(3, 7):\n    print(i, end=\u0026quot; \u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e3 4 5 6\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a `range2(start, end)` \u751f\u6210\u5668\u51fd\u6570\uff08\u7528 yield \u81ea\u5df1\u5b9e\u73b0\u7c7b\u4f3c range \u7684\u6548\u679c\uff09\uff0c\u904d\u5386\u8f93\u51fa start \u5230 end-1\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.3 \u751f\u6210\u5668\uff1a\u60f0\u6027\u6c42\u503c\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：写一个生成斐波那契数列的生成器。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 3, 1, "\u5199\u4e00\u4e2a\u751f\u6210\u6590\u6ce2\u90a3\u5951\u6570\u5217\u7684\u751f\u6210\u5668\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 3, '12.3 生成器：惰性求值')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 3, '12.3 生成器：惰性求值')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="12_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          12.4 装饰器：给函数&#34;加装备&#34;
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">12.4.1 概念认知：装饰器解决什么问题</h3>
+<p>假设你有 10 个函数，想给每个函数都加上"打印执行时间"的功能。复制粘贴 10 遍？太丑。<strong>装饰器（decorator）</strong> 让你<strong>不改函数内部代码</strong>，给函数"套一层"额外逻辑。</p>
+<blockquote class="md-quote"><p>装饰器的本质：<strong>一个接收函数、返回新函数的函数</strong>。被装饰的函数"换了一个包装"，但用法不变。</p></blockquote>
+<h3 class="md-h">12.4.2 原理探秘：闭包——装饰器的地基</h3>
+<p>先看一个关键现象（第 7 章函数即对象 + 作用域的合体）：</p>
+<p><strong>代码案例 12.9</strong>：闭包（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def make_multiplier(factor):
+    def multiply(x):
+        return x * factor      # 记住外层的 factor
+    return multiply
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print(double(10))
+print(triple(10))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">20
+30</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">make_multiplier(2)</code> 返回<strong>内层函数 multiply</strong>；</li><li><code class="md-inline">multiply</code> 使用了外层函数的变量 <code class="md-inline">factor</code>——<strong>内层函数记住外层变量的能力叫闭包（closure）</strong>；</li><li><code class="md-inline">double</code> 和 <code class="md-inline">triple</code> 各自记住了不同的 factor（2 和 3），互不干扰。</li></ul>
+<p><strong>闭包 = 装饰器的地基</strong>：装饰器就是"接收函数、返回闭包"的函数。</p>
+<p><strong>微任务卡（M3 · 讲解卡 · L2）</strong>：把闭包示例发给 AI，提问："请解释 multiply 为什么能记住外层的 factor？闭包和装饰器有什么关系？"一句话记录理解。</p>
+<p><strong>停下来想一想</strong>：<code class="md-inline">double = make_multiplier(2)</code> 和 <code class="md-inline">triple = make_multiplier(3)</code> 用了同一个函数，为什么互不干扰？——因为每次调用都创建了一个<strong>独立的 multiply</strong>，各自记住了自己的 factor。想通了再往下走。</p>
+<h3 class="md-h">12.4.3 语法掌握：手写第一个装饰器</h3>
+<p><strong>代码案例 12.10</strong>：计时装饰器（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import time
+
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)     # 调用原函数
+        print(f&quot;耗时 {time.time() - start:.6f} 秒&quot;)
+        return result
+    return wrapper
+
+
+@timer
+def slow_add(a, b):
+    time.sleep(0.01)
+    return a + b
+
+
+print(slow_add(3, 4))</code></pre></div>
+<p><strong>运行结果</strong>（耗时数值因机器而异）：</p>
+<div class="md-figure"><pre class="md-diagram">耗时 0.011090 秒
+7</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">wrapper</code> 是"包装层"：在调用原函数<strong>前后</strong>插入额外逻辑（计时）；</li><li><code class="md-inline">*args, **kwargs</code> 透传原函数的所有参数——<strong>包装层必须兼容任意签名</strong>；</li><li><code class="md-inline">return result</code> 把原函数的返回值原样交出去；</li><li><code class="md-inline">@timer</code> 是语法糖，等价于 <code class="md-inline">slow_add = timer(slow_add)</code>。</li></ul>
+<h3 class="md-h">12.4.4 语法掌握：@ 语法糖的含义</h3>
+<p><strong>代码案例 12.11</strong>：手动包装 vs @ 装饰（✅ 等价）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def shout(func):
+    def wrapper():
+        return func().upper() + &quot;!&quot;
+    return wrapper
+
+def hello():
+    return &quot;hello&quot;
+
+# 写法一：手动包装
+hello = shout(hello)
+print(hello())
+
+# 写法二：@ 语法糖（和上面完全等价）
+@shout
+def hi():
+    return &quot;hi&quot;
+
+print(hi())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">HELLO!
+HI!</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">@shout</code> 放在函数定义前，Python 自动执行 <code class="md-inline">hi = shout(hi)</code>。<strong>装饰器就是"把函数传给装饰器函数，再把返回的包装函数赋值回去"的简写</strong>——理解这一点，装饰器就不再是魔法。</p>
+<p><strong>交叉验证：装饰器忘 return wrapper</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def bad_decorator(func):
+    def wrapper():
+        print(&quot;包装&quot;)
+        func()
+    # 忘了 return wrapper！
+
+@bad_decorator
+def hello():
+    print(&quot;hello&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: &#x27;NoneType&#x27; object is not callable</pre></div>
+<p><strong>讲解</strong>：装饰器必须<strong>返回一个函数</strong>。忘 return，<code class="md-inline">hello</code> 就变成了 None，调用时报"NoneType 不可调用"。<strong>写装饰器第一件事：return wrapper</strong>。</p>
+<p><strong>本节要点</strong>：@ 装饰器 = <code class="md-inline">函数 = 装饰器(函数)</code>；装饰器必须 <code class="md-inline">return wrapper</code>；wrapper 用 <code class="md-inline">*args/**kwargs</code> 透传参数并 <code class="md-inline">return</code> 结果。记住这三条，装饰器就不再是魔法。</p>
+<h3 class="md-h">12.4.5 语法掌握：带参数的装饰器</h3>
+<p>想让装饰器自己接收参数（如"重复 3 次"），需要<strong>三层函数</strong>：</p>
+<p><strong>代码案例 12.12</strong>：@repeat(times=3)（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def repeat(times):
+    def decorator(func):            # 接收被装饰的函数
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+@repeat(times=3)
+def say(msg):
+    print(msg, end=&quot; &quot;)
+
+
+say(&quot;你好&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">你好 你好 你好</pre></div>
+<p><strong>讲解</strong>：三层结构的分工：</p>
+<ul><li>最外层 <code class="md-inline">repeat(times)</code>：接收<strong>装饰器参数</strong>（times=3），返回 decorator；</li><li>中间层 <code class="md-inline">decorator(func)</code>：接收<strong>被装饰的函数</strong>，返回 wrapper；</li><li>内层 <code class="md-inline">wrapper</code>：执行额外逻辑（循环 3 次）+ 调用原函数。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：为什么带参数要多一层？</strong></p>
+<p><code class="md-inline">@repeat(times=3)</code> 的执行顺序是：先调用 <code class="md-inline">repeat(3)</code> 得到 <code class="md-inline">decorator</code>，再用 <code class="md-inline">decorator</code> 装饰 <code class="md-inline">say</code>。<strong>装饰器参数由最外层收，函数由中间层收，真正干活的是内层</strong>。口诀：<strong>"外收参数、中收函数、内干活"</strong>。</p></blockquote>
+<h3 class="md-h">12.4.6 语法掌握：functools.wraps（了解）</h3>
+<p><strong>代码案例 12.13</strong>：wraps 保留原函数信息（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from functools import wraps
+
+def logged(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f&quot;调用 {func.__name__}&quot;)
+        return func(*args, **kwargs)
+    return wrapper
+
+@logged
+def add(a, b):
+    return a + b
+
+print(add(1, 2))
+print(add.__name__)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">调用 add
+3
+add</pre></div>
+<p><strong>讲解</strong>：不加 <code class="md-inline">@wraps</code> 时，<code class="md-inline">add.__name__</code> 会变成 <code class="md-inline">"wrapper"</code>——调试和文档都会混乱。<code class="md-inline">@wraps(func)</code> 把原函数的名字、文档等"元信息"复制给包装函数。<strong>写正式装饰器时养成加 wraps 的习惯</strong>。</p>
+<h3 class="md-h">12.4.7 综合运用：权限校验装饰器（就业场景）</h3>
+<p><strong>代码案例 12.14</strong>：模拟登录校验（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def require_login(func):
+    def wrapper(user, *args, **kwargs):
+        if not user.get(&quot;logged_in&quot;):
+            return &quot;请先登录&quot;
+        return func(user, *args, **kwargs)
+    return wrapper
+
+
+@require_login
+def view_profile(user):
+    return f&quot;个人资料：{user[&#x27;name&#x27;]}&quot;
+
+
+print(view_profile({&quot;name&quot;: &quot;张三&quot;, &quot;logged_in&quot;: False}))
+print(view_profile({&quot;name&quot;: &quot;张三&quot;, &quot;logged_in&quot;: True}))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请先登录
+个人资料：张三</pre></div>
+<p><strong>讲解</strong>：<strong>装饰器把"权限检查"从业务函数中抽离</strong>——<code class="md-inline">view_profile</code> 只关心"显示资料"，登录检查由装饰器统一负责。<strong>真实场景</strong>：Web 框架的路由权限、日志、缓存、重试，全是装饰器的天下（第 24 章 FastAPI 里你会大量见到）。</p>
+<p><strong>装饰器小结</strong>：这一节你学了五样东西——闭包（原理）、手写装饰器（实现）、@ 语法糖（写法）、带参数（三层结构）、wraps（规范），外加权限/重试两个真实应用。如果只能带走一句：<strong>装饰器 = 不改原函数、给它加装备</strong>。</p>
+<p>接下来把注意力从"函数"转到"资源管理"——<code class="md-inline">with</code> 的底层，同样是你可以亲手控制的东西。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 4, "12.4 \u88c5\u9970\u5668\uff1a\u7ed9\u51fd\u6570\"\u52a0\u88c5\u5907\"", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u8c03\u7528\u539f\u51fd\u6570 \u2192 \u5bf9\u8fd4\u56de\u503c \u003ccode class=\"md-inline\"\u003e.upper()\u003c/code\u003e \u2192 \u52a0 \u003ccode class=\"md-inline\"\u003e\"!\"\u003c/code\u003e\u3002\u003cstrong\u003e\u4e24\u5c42\u7ed3\u6784\u003c/strong\u003e\uff08\u88c5\u9970\u5668\u65e0\u53c2\u6570\u65f6\u4e24\u5c42\u5c31\u591f\uff09\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 `@` \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003edef uppercase(func):\n    def wrapper():\n        return func().upper() + \u0026quot;!\u0026quot;\n    return wrapper\n\n@uppercase\ndef greet():\n    return \u0026quot;hello\u0026quot;\n\n@uppercase\ndef cheer():\n    return \u0026quot;go\u0026quot;\n\nprint(greet())\nprint(cheer())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eHELLO!\nGO!\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u5927\u5199\u88c5\u9970\u5668\"\uff1a\u88c5\u9970\u4efb\u4f55\"\u65e0\u53c2\u51fd\u6570\"\uff0c\u628a\u5b83\u7684\u8fd4\u56de\u503c\u8f6c\u6210\u5927\u5199\u5e76\u52a0\"\uff01\"\u3002\u7528 `@` \u8bed\u6cd5\u88c5\u9970\u4e24\u4e2a\u51fd\u6570\u5e76\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.4 \u88c5\u9970\u5668\uff1a\u7ed9\u51fd\u6570\"\u52a0\u88c5\u5907\"\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：写一个简单的日志装饰器。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 4, 1, "\u5199\u4e00\u4e2a\u7b80\u5355\u7684\u65e5\u5fd7\u88c5\u9970\u5668\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 4, '12.4 装饰器：给函数&#34;加装备&#34;')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 4, '12.4 装饰器：给函数&#34;加装备&#34;')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="12_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          12.5 上下文管理器：自定义 with
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">12.5.1 概念认知：with 的本质（复习 + 深入）</h3>
+<p>第 9 章说过 <code class="md-inline">with open(...)</code> 会自动关闭文件。<strong>上下文管理器（context manager）</strong> 就是"能被 with 使用"的对象——进入时执行准备，退出时执行清理。</p>
+<h3 class="md-h">12.5.2 语法掌握：__enter__ 与 __exit__</h3>
+<p><strong>代码案例 12.15</strong>：自定义计时上下文（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import time
+
+class Timer:
+    def __enter__(self):
+        print(&quot;进入 with&quot;)
+        self.start = time.time()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f&quot;退出 with，耗时 {time.time() - self.start:.3f} 秒&quot;)
+        print(f&quot;有没有异常：{exc_type}&quot;)
+        return False
+
+
+with Timer():
+    time.sleep(0.02)</code></pre></div>
+<p><strong>运行结果</strong>（耗时数值因机器而异）：</p>
+<div class="md-figure"><pre class="md-diagram">进入 with
+退出 with，耗时 0.020 秒
+有没有异常：None</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">__enter__</code>：进入 with 时执行（准备资源），返回值赋给 <code class="md-inline">as</code> 后面的变量；</li><li><code class="md-inline">__exit__(exc_type, exc_val, exc_tb)</code>：退出时<strong>无论正常还是异常</strong>都会执行（清理资源）；三个参数是异常信息（没异常时 exc_type 是 None）；</li><li><code class="md-inline">return False</code>：表示"异常不要在这里处理，继续向外传播"。</li></ul>
+<p><strong>交叉验证：with 块内发生异常</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">with Timer():
+    raise ValueError(&quot;出错了&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">进入 with
+退出 with，耗时 0.000 秒
+有没有异常：&lt;class &#x27;ValueError&#x27;&gt;
+Traceback (most recent call last):
+  ...
+ValueError: 出错了</pre></div>
+<p><strong>讲解</strong>：即使块内报错，<code class="md-inline">__exit__</code> 依然执行（清理不缺席），然后因为 <code class="md-inline">return False</code>，异常继续向上传播。<strong>这就是 with 的核心价值：无论成败，清理必达</strong>。</p>
+<h3 class="md-h">12.5.3 语法掌握：contextmanager 装饰器（了解）</h3>
+<p>写类的 <code class="md-inline">__enter__/__exit__</code> 有点啰嗦，<code class="md-inline">contextlib</code> 提供快捷方式：</p>
+<p><strong>代码案例 12.16</strong>：@contextmanager（✅ 正确，了解级）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from contextlib import contextmanager
+
+@contextmanager
+def tag(name):
+    print(f&quot;&lt;{name}&gt;&quot;)
+    yield
+    print(f&quot;&lt;/{name}&gt;&quot;)
+
+
+with tag(&quot;div&quot;):
+    print(&quot;内容&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">&lt;div&gt;
+内容
+&lt;/div&gt;</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">yield</code> 之前的代码是"进入时执行"，<code class="md-inline">yield</code> 之后的是"退出时执行"——<strong>用生成器写上下文管理器，一行 yiled 划分了前后</strong>。真实项目里，数据库连接、锁、临时目录清理都这么写。</p>
+<p><code class="md-inline">with</code> 让你控制"进入/退出"，解包则让"赋值"更聪明。最后一小段，轻松收尾。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 5, "12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898 @retry \u548c\u7b2c 8 \u9898\u81ea\u5b9a\u4e49 with \u540e\uff0c\u5404\u9009\u4e00\u4e2a\u8ba9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"@retry \u4e09\u5c42\u7ed3\u6784\u5206\u522b\u6536\u4ec0\u4e48\uff1f__exit__ \u8fd4\u56de False \u7684\u4f5c\u7528\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u4e0d\u52a0 \u003ccode class=\"md-inline\"\u003e@wraps\u003c/code\u003e \u65f6 \u003ccode class=\"md-inline\"\u003egreet.__name__\u003c/code\u003e \u4f1a\u53d8\u6210 \u003ccode class=\"md-inline\"\u003e\"wrapper\"\u003c/code\u003e\u2014\u2014\u8c03\u8bd5\u3001\u6587\u6863\u3001\u65e5\u5fd7\u5168\u90e8\u6df7\u4e71\u3002\u003ccode class=\"md-inline\"\u003e@wraps(func)\u003c/code\u003e \u628a\u539f\u51fd\u6570\u7684\u5143\u4fe1\u606f\u590d\u5236\u7ed9\u5305\u88c5\u51fd\u6570\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom functools import wraps\n\ndef uppercase(func):\n    @wraps(func)\n    def wrapper():\n        return func().upper() + \u0026quot;!\u0026quot;\n    return wrapper\n\n@uppercase\ndef greet():\n    return \u0026quot;hello\u0026quot;\n\nprint(greet())\nprint(greet.__name__)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eHELLO!\ngreet\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a `uppercase` \u88c5\u9970\u5668\uff08\u540c\u7b2c 5 \u9898\uff09\uff0c\u8fd9\u6b21\u8981\u6c42\u7528 `functools.wraps`\uff0c\u5e76\u9a8c\u8bc1\u88c5\u9970\u540e `\u51fd\u6570.__name__` \u8fd8\u662f\u539f\u51fd\u6570\u540d\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「12.5 上下文管理器：自定义 with」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 5, '12.5 上下文管理器：自定义 with')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 5, '12.5 上下文管理器：自定义 with')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="12_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          12.6 解包进阶：* 与 **
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">12.6.1 语法掌握：* 解包列表/元组</h3>
+<p><strong>代码案例 12.17</strong>：调用时解包（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def add3(a, b, c):
+    return a + b + c
+
+nums = [1, 2, 3]
+print(add3(*nums))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">6</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">*nums</code> 把列表拆成三个位置参数传进去——<strong>定义处打包、调用处解包</strong>（第 7 章 *args 的原理再次出现）。</p>
+<h3 class="md-h">12.6.2 语法掌握：星号变量接收剩余</h3>
+<p><strong>代码案例 12.18</strong>：first / *rest / last（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3, 4, 5]
+
+first, *rest, last = nums
+print(first)
+print(rest)
+print(last)
+
+a, *middle, b = [1, 2, 3, 4]
+print(a, middle, b)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1
+[2, 3, 4]
+5
+1 [2, 3] 4</pre></div>
+<p><strong>讲解</strong>：带 <code class="md-inline">*</code> 的变量接收<strong>所有剩余元素</strong>（列表）。<strong>经典用途</strong>：取第一个和最后一个元素，中间的全打包——解析配置、处理首尾特殊逻辑时很顺手。</p>
+<h3 class="md-h">12.6.3 语法掌握：** 字典解包与合并</h3>
+<p><strong>代码案例 12.19</strong>：合并字典（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">base = {&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 19}
+extra = {&quot;city&quot;: &quot;北京&quot;}
+
+merged = {**base, **extra}
+print(merged)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">{&#x27;name&#x27;: &#x27;张三&#x27;, &#x27;age&#x27;: 19, &#x27;city&#x27;: &#x27;北京&#x27;}</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">{**d1, **d2}</code> 把两个字典"展开"合并成一个新字典。<strong>注意</strong>：如果键重复，后面的覆盖前面的——这是字典合并的默认规则。</p>
+<p><strong>动手 5 分钟</strong>：用 <code class="md-inline">first, *rest, last = [1, 2, 3, 4, 5]</code> 取首尾；再验证 <code class="md-inline">{**a, **b}</code> 合并时键重复会发生什么（后写的覆盖先写的）。两个都是 30 秒能验证的直觉题，跑完再进综合案例。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 6, "12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u003cstrong\u003e\u4e09\u5c42\u7ed3\u6784\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003eretry(times)\u003c/code\u003e \u6536\u88c5\u9970\u5668\u53c2\u6570 \u2192 \u003ccode class=\"md-inline\"\u003edecorator(func)\u003c/code\u003e \u6536\u51fd\u6570 \u2192 \u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u5e72\u6d3b\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003etry/except\u003c/code\u003e \u6355\u83b7\u5f02\u5e38\uff0c\u5931\u8d25\u5c31\u7ee7\u7eed\u4e0b\u4e00\u8f6e\uff1b\u003cstrong\u003e\u6700\u540e\u4e00\u6b21\u5931\u8d25 \u003ccode class=\"md-inline\"\u003eraise\u003c/code\u003e \u539f\u6837\u629b\u51fa\u003c/strong\u003e\uff08\u4e0d\u80fd\u65e0\u9650\u541e\u9519\u8bef\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ereturn func(...)\u003c/code\u003e \u6210\u529f\u65f6\u7acb\u5373\u8fd4\u56de\u2014\u2014\u003ccode class=\"md-inline\"\u003ewrapper\u003c/code\u003e \u7684 return \u8ba9\u8fd4\u56de\u503c\u900f\u4f20\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b9e\u73b0 `@retry(times=3)` \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport random\n\ndef retry(times=3):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for attempt in range(1, times + 1):\n                try:\n                    return func(*args, **kwargs)\n                except Exception as e:\n                    print(f\u0026quot;\u7b2c {attempt} \u6b21\u5931\u8d25\uff1a{e}\u0026quot;)\n                    if attempt == times:\n                        raise\n        return wrapper\n    return decorator\n\n\n@retry(times=3)\ndef unstable():\n    if random.random() \u0026lt; 0.6:\n        raise ConnectionError(\u0026quot;\u7f51\u7edc\u6ce2\u52a8\u0026quot;)\n    return \u0026quot;\u6210\u529f\u0026quot;\n\nprint(unstable())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u968f\u673a\uff0c\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u7b2c 1 \u6b21\u5931\u8d25\uff1a\u7f51\u7edc\u6ce2\u52a8\n\u7b2c 2 \u6b21\u5931\u8d25\uff1a\u7f51\u7edc\u6ce2\u52a8\n\u6210\u529f\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 7 \u9898**\uff1a\u5b9e\u73b0 `@retry(times=3)` \u88c5\u9970\u5668\uff1a\u88ab\u88c5\u9970\u7684\u51fd\u6570\u629b\u51fa\u5f02\u5e38\u65f6\u6700\u591a\u91cd\u8bd5 3 \u6b21\uff0c\u6bcf\u6b21\u5931\u8d25\u6253\u5370\"\u7b2c X \u6b21\u5931\u8d25\"\uff0c3 \u6b21\u90fd\u5931\u8d25\u5219\u628a\u6700\u540e\u4e00\u6b21\u5f02\u5e38\u629b\u7ed9\u8c03\u7528\u8005\u3002\u7528\"\u524d 2 \u6b21\u5fc5\u5931\u8d25\u3001\u7b2c 3 \u6b21\u6210\u529f\"\u7684\u6d4b\u8bd5\u51fd\u6570\u9a8c\u8bc1\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「12.6 解包进阶：* 与 **」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 6, '12.6 解包进阶：* 与 **')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 6, '12.6 解包进阶：* 与 **')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="12_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          12.7 综合案例：@retry 重试装饰器
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p>把本章的装饰器、闭包、*args/**kwargs 全用上——实现一个"失败自动重试"的装饰器（真实场景：网络请求、数据库连接、第三方 API 调用，失败重试是标配）。</p>
+<p><strong>代码案例 12.20</strong>：@retry 装饰器（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import time
+
+def retry(times=3, delay=0.5):
+    &quot;&quot;&quot;失败自动重试：最多重试 times 次，每次间隔 delay 秒&quot;&quot;&quot;
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, times + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f&quot;第 {attempt} 次失败：{e}&quot;)
+                    if attempt == times:
+                        raise
+                    time.sleep(delay)
+        return wrapper
+    return decorator
+
+
+@retry(times=3, delay=0.1)
+def unstable_api():
+    import random
+    if random.random() &lt; 0.6:
+        raise ConnectionError(&quot;网络波动&quot;)
+    return &quot;请求成功&quot;
+
+
+print(unstable_api())</code></pre></div>
+<p><strong>运行结果</strong>（随机，可能直接成功，也可能重试后成功）：</p>
+<div class="md-figure"><pre class="md-diagram">第 1 次失败：网络波动
+第 2 次失败：网络波动
+请求成功</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><strong>三层结构</strong>：<code class="md-inline">retry(times, delay)</code> 收装饰器参数 → <code class="md-inline">decorator</code> 收函数 → <code class="md-inline">wrapper</code> 干活；</li><li><code class="md-inline">try/except</code> 捕获异常，失败就等 <code class="md-inline">delay</code> 秒重试；</li><li><strong>最后一次失败 <code class="md-inline">raise</code> 原样抛出</strong>——重试不能无限吞错误，最终失败必须让调用者知道；</li><li>业务函数 <code class="md-inline">unstable_api</code> 完全不知道重试的存在——<strong>关注点分离</strong>。</li></ul>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：@retry 是真实工程里最常见的自定义装饰器之一。你以后会看到"指数退避"（失败越多次等待越久）的进阶版——理解这个版本，进阶版只是改 delay 的计算方式。</p></blockquote>
+<p><strong>微任务卡（M4 · 审查卡 · L2）</strong>：把你手写的 @retry 发给 AI："请评审：重试次数边界、最后一次失败是否抛出、delay 是否生效。只给建议，不要重写。"记录采纳/否决理由。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 7, "12.7 \u7efc\u5408\u6848\u4f8b\uff1a@retry \u91cd\u8bd5\u88c5\u9970\u5668", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u7684\u88c5\u9970\u5668\u662f\u51e0\u5c42\u7ed3\u6784\uff1f\u6bcf\u4e00\u5c42\u5206\u522b\u6536\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u7684 \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u4f60\u89c2\u5bdf\u5230\u5f02\u5e38\u53d1\u751f\u65f6\u8fd8\u6267\u884c\u5417\uff1f\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u7684\u4f5c\u7528\u662f\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e__enter__\u003c/code\u003e \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff08\u003ccode class=\"md-inline\"\u003eas f\u003c/code\u003e \u62ff\u5230\u5b83\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5757\u5185 \u003ccode class=\"md-inline\"\u003eraise ValueError\u003c/code\u003e \u540e\uff0c\u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u003cstrong\u003e\u4f9d\u7136\u6267\u884c\u003c/strong\u003e\uff08\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff0c\u6587\u4ef6\u88ab\u6b63\u786e\u5173\u95ed\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ereturn False\u003c/code\u003e \u8868\u793a\"\u6211\u4e0d\u5904\u7406\u8fd9\u4e2a\u5f02\u5e38\uff0c\u8ba9\u5b83\u7ee7\u7eed\u5411\u4e0a\u4f20\u64ad\"\u2014\u2014\u6240\u4ee5 Traceback \u4ecd\u7136\u51fa\u73b0\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u8fd9\u5c31\u662f with \u7684\u610f\u4e49\uff1a\u65e0\u8bba\u6210\u8d25\uff0c\u6e05\u7406\u5fc5\u8fbe\u003c/strong\u003e\u3002\u5982\u679c \u003ccode class=\"md-inline\"\u003e__exit__\u003c/code\u003e \u8fd4\u56de True\uff0c\u5f02\u5e38\u4f1a\u88ab\"\u541e\u6389\"\uff08\u4e0d\u63a8\u8350\uff09\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass OpenFile:\n    def __init__(self, path, mode):\n        self.path = path\n        self.mode = mode\n\n    def __enter__(self):\n        self.file = open(self.path, self.mode, encoding=\u0026quot;utf-8\u0026quot;)\n        print(\u0026quot;\u6587\u4ef6\u5df2\u6253\u5f00\u0026quot;)\n        return self.file\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        self.file.close()\n        print(\u0026quot;\u6587\u4ef6\u5df2\u5173\u95ed\u0026quot;)\n        return False\n\n\nwith OpenFile(\u0026quot;demo.txt\u0026quot;, \u0026quot;w\u0026quot;) as f:\n    f.write(\u0026quot;\u4f60\u597d\uff0cwith\uff01\u0026quot;)\n    raise ValueError(\u0026quot;\u6545\u610f\u51fa\u9519\u0026quot;)      # \u89c2\u5bdf\uff1a\u5f02\u5e38\u53d1\u751f\u65f6 __exit__ \u4ecd\u6267\u884c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6587\u4ef6\u5df2\u6253\u5f00\n\u6587\u4ef6\u5df2\u5173\u95ed\nTraceback (most recent call last):\n  ...\nValueError: \u6545\u610f\u51fa\u9519\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u81ea\u5b9a\u4e49 `with`\uff08\u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff09\uff1a\u7c7b `OpenFile(path, mode)`\uff0c\u7528 `__enter__` \u6253\u5f00\u6587\u4ef6\u5e76\u8fd4\u56de\u6587\u4ef6\u5bf9\u8c61\uff0c`__exit__` \u5173\u95ed\u6587\u4ef6\u5e76\u6253\u5370\"\u6587\u4ef6\u5df2\u5173\u95ed\"\uff1b\u7528 `with OpenFile(...)` \u5199\u5165\u4e00\u884c\u6587\u5b57\uff0c\u9a8c\u8bc1\u81ea\u52a8\u5173\u95ed\uff08\u53ef\u5c1d\u8bd5\u5728 with \u5757\u91cc raise \u4e00\u4e2a\u5f02\u5e38\uff0c\u89c2\u5bdf __exit__ \u4ecd\u6267\u884c\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.7 \u7efc\u5408\u6848\u4f8b\uff1a@retry \u91cd\u8bd5\u88c5\u9970\u5668\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：写一个简单的日志装饰器。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 7, 1, "\u5199\u4e00\u4e2a\u7b80\u5355\u7684\u65e5\u5fd7\u88c5\u9970\u5668\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 7, '12.7 综合案例：@retry 重试装饰器')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 7, '12.7 综合案例：@retry 重试装饰器')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="12_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          12.8 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：生成器被耗尽</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [1, 2, 3]
+gen = (x * 2 for x in nums)
+
+print(list(gen))
+print(list(gen))     # 第二次想&quot;再遍历一次&quot;</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[2, 4, 6]
+[2, 4, 6]</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[2, 4, 6]
+[]</pre></div>
+<p><strong>提示</strong>：生成器能重复遍历吗？它是"一次性"的吗？</p>
+<p><strong>讲解</strong>：生成器取完即耗尽，第二次 <code class="md-inline">list()</code> 得到空列表。<strong>想多次遍历就存成列表，想省内存就用生成器并只遍历一次</strong>——两者不可兼得。</p>
+<h3 class="md-h">问题 2：装饰器忘 return wrapper</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def decorate(func):
+    def wrapper():
+        print(&quot;包装&quot;)
+        func()
+    # 忘了 return wrapper
+
+@decorate
+def hello():
+    print(&quot;hello&quot;)
+
+hello()</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">包装
+hello</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: &#x27;NoneType&#x27; object is not callable</pre></div>
+<p><strong>提示</strong>：装饰器必须返回什么？<code class="md-inline">hello</code> 变成了什么？</p>
+<p><strong>讲解</strong>：装饰器必须返回一个函数。忘 return，被装饰的名字变成 None。<strong>写装饰器三步检查：接收函数 → 定义 wrapper → return wrapper</strong>。</p>
+<h3 class="md-h">问题 3：带参数装饰器忘加最外层</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">def repeat(func):        # 想实现 @repeat(3)，却只有两层
+    def wrapper():
+        func()
+    return wrapper
+
+@repeat(3)
+def hello():
+    print(&quot;hello&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: repeat() takes 1 positional argument but 2 were given</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">@repeat(3)</code> 时，3 传给了谁？被装饰的函数又传给了谁？</p>
+<p><strong>讲解</strong>：<code class="md-inline">@repeat(3)</code> 会把 <code class="md-inline">3</code> 传给 <code class="md-inline">repeat</code>，然后把返回结果再用来装饰函数——需要<strong>三层</strong>结构（外收参数、中收函数、内干活）。两层结构只适用于 <code class="md-inline">@repeat</code>（无参数）。</p>
+<h3 class="md-h">问题 4：推导式可读性灾难</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">result = [x * 2 if x &gt; 2 else x + 100 for x in range(10) if x != 5 for y in range(1) if y &gt; 0]</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">（可读的代码）</pre></div>
+<p><strong>实际表现</strong>：代码能跑，但没人看得懂——包括一周后的你自己。</p>
+<p><strong>提示</strong>：这个推导式嵌套了几个条件？用循环重写是不是更清楚？</p>
+<p><strong>讲解</strong>：<strong>推导式超过"一个条件 + 一个表达式"就该拆成循环</strong>。可读性 &gt; 炫技。企业代码评审里"看不懂的推导式"会被要求重写。<strong>判断标准：别人读这行代码需要超过 10 秒，就拆</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 8, "12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="8">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(12, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「12.8 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(12, 8, 0, "\u7528\u4ee3\u7801\u628a\u300c12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 8, '12.8 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 8, '12.8 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="12_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          12.9 Vibe Coding 任务卡（L2）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 评审你的装饰器</p>
+<p><strong>任务内容</strong>：先自己手写一个"计时装饰器"（要求：能处理任意参数、保留原函数返回值、用 @wraps），然后发给 AI 提问："请评审我的装饰器：闭包结构对吗？*args/**kwargs 处理了吗？有没有边界问题？请只给建议，不要重写。"</p>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">这是我手写的计时装饰器。请按这个清单评审：
+1. wrapper 是否正确处理了任意参数和返回值？
+2. 有没有使用 functools.wraps？不用会有什么后果？
+3. 如果被装饰的函数抛异常，计时功能还能正确执行吗？
+请给出具体建议和理由。不要重写我的代码，不要给出完整替代实现。</pre></div>
+<p><strong>Review 清单（L2）</strong>：</p>
+<ul><li>[ ] AI 指出的问题我逐条验证过（能复现/能解释）；</li><li>[ ] 我理解了闭包在装饰器里的角色；</li><li>[ ] AI 没有输出完整替代代码；</li><li>[ ] 改进后的代码提交了 Git。</li></ul>
+<p><strong>L2 纪律自查</strong>：</p>
+<ul><li>练习题全部手写完成；</li><li>AI 只当评审员；</li><li>Prompt 日志记录了"评审 → 判断 → 修改"过程。</li></ul>
+<p><strong>微任务卡（M5 · 对比卡 · L2）</strong>：把"列表 vs 生成器"发给 AI："请对比 <code class="md-inline">[x for x in range(n)]</code> 和 <code class="md-inline">(x for x in range(n))</code> 的内存与速度，说明什么场景必须用生成器。"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 9, "12.9 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 9, '12.9 Vibe Coding 任务卡（L2）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 9, '12.9 Vibe Coding 任务卡（L2）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-11" class="kp-item  unlocked"
+         data-kp-index="10" data-kp-key="12_10">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">011.</span>
+          
+          12.10 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">高级特性
+├── 推导式
+│   ├── 列表：[x * 2 for x in nums]
+│   ├── 字典：{x: x ** 2 for x in nums}
+│   ├── 集合：{x for x in nums if ...}（自动去重）
+│   └── 生成器表达式：(x for x in nums)（惰性）
+├── 迭代器协议：iter() → next() → StopIteration
+│   └── for 的本质：iter + next + 捕获 StopIteration
+├── 生成器：yield；暂停/恢复；惰性求值省内存
+│   ├── 一次性：耗尽后为空
+│   └── 应用：大文件逐行处理
+├── 装饰器
+│   ├── 原理：闭包（内层记住外层变量）
+│   ├── 结构：外收参数、中收函数、内干活（三层）
+│   ├── @ = 函数传给装饰器并赋值回去
+│   ├── 必须 return wrapper；用 @wraps 保留元信息
+│   └── 应用：计时 / 权限校验 / @retry 重试
+├── 上下文管理器：__enter__（准备）/ __exit__（清理）
+│   ├── 异常时 __exit__ 也执行；return False 继续传播
+│   └── @contextmanager：yield 前=进入、后=退出
+└── 解包：*nums 调用解包；first, *rest = ...；{**d1, **d2} 合并</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>生成器惰性求值、只遍历一次——要省内存用生成器，要重复用列表；</li><li>装饰器必须 <code class="md-inline">return wrapper</code>，否则被装饰的函数变 None；</li><li>带参数装饰器三层结构：<strong>外收参数、中收函数、内干活</strong>；</li><li><code class="md-inline">__exit__</code> 无论成败都执行——这就是 with 的意义；</li><li>推导式超过"一个条件 + 一个表达式"就拆成循环，可读性优先。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 10, "12.10 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_10"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 10, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 10)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 10)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_10" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 10, '12.10 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 10, '12.10 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-12" class="kp-item  unlocked"
+         data-kp-index="11" data-kp-key="12_11">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">012.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td><code class="md-inline">[x*2 for x in n]</code></td><td>列表推导式</td></tr><tr><td><code class="md-inline">{k: v for ...}</code></td><td>字典推导式</td></tr><tr><td><code class="md-inline">(x for x in n)</code></td><td>生成器表达式（惰性）</td></tr><tr><td><code class="md-inline">iter</code> / <code class="md-inline">next</code> / <code class="md-inline">StopIteration</code></td><td>迭代器协议</td></tr><tr><td><code class="md-inline">def f(): ... yield ...</code></td><td>生成器函数（暂停/恢复）</td></tr><tr><td><code class="md-inline">@decorator</code></td><td>装饰器（必须 return wrapper）</td></tr><tr><td><code class="md-inline">__enter__</code> / <code class="md-inline">__exit__</code></td><td>自定义 <code class="md-inline">with</code></td></tr><tr><td><code class="md-inline">*args</code> 解包 / <code class="md-inline">{**d1, **d2}</code></td><td>打包解包 / 合并字典</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(12, 11, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="12_11"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(12, 11, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(12, 11)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(12, 11)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="12_11" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(12, 11, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(12, 11, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 高级特性：推导式、迭代器、生成器、装饰器 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 高级特性：推导式、迭代器、生成器、装饰器 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 高级特性：推导式、迭代器、生成器、装饰器
+## 12.1 推导式全家族
+### 语法掌握：列表推导式回顾
+### 语法掌握：字典推导式
+### 语法掌握：集合推导式
+### 语法掌握：生成器表达式
+### 交叉验证：推导式与循环的选型
+## 12.2 迭代器协议
+### 概念认知：可迭代对象 vs 迭代器
+### 语法掌握：手动使用迭代器
+## 12.3 生成器：惰性求值
+### 概念认知：生成器是什么
+### 语法掌握：遍历生成器
+### 原理探秘：生成器 vs 列表的内存差异
+### 交叉验证：生成器是&#34;一次性&#34;的
+### 综合运用：逐行处理大文件
+## 12.4 装饰器：给函数&#34;加装备&#34;
+### 概念认知：装饰器解决什么问题
+### 原理探秘：闭包——装饰器的地基
+### 语法掌握：手写第一个装饰器
+### 语法掌握：@ 语法糖的含义
+### 语法掌握：带参数的装饰器
+### 语法掌握：functools.wraps（了解）
+### 综合运用：权限校验装饰器（就业场景）
+## 12.5 上下文管理器：自定义 with
+### 概念认知：with 的本质（复习 + 深入）
+### 语法掌握：__enter__ 与 __exit__
+### 语法掌握：contextmanager 装饰器（了解）
+## 12.6 解包进阶：* 与 **
+### 语法掌握：* 解包列表/元组
+### 语法掌握：星号变量接收剩余
+### 语法掌握：** 字典解包与合并
+## 12.7 综合案例：@retry 重试装饰器
+## 12.8 本章 Debug 四件套
+### 问题 1：生成器被耗尽
+### 问题 2：装饰器忘 return wrapper
+### 问题 3：带参数装饰器忘加最外层
+### 问题 4：推导式可读性灾难
+## 12.9 Vibe Coding 任务卡（L2）
+## 12.10 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 12;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["12.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf", "12.2 \u8fed\u4ee3\u5668\u534f\u8bae", "12.3 \u751f\u6210\u5668\uff1a\u60f0\u6027\u6c42\u503c", "12.4 \u88c5\u9970\u5668\uff1a\u7ed9\u51fd\u6570\"\u52a0\u88c5\u5907\"", "12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with", "12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **", "12.7 \u7efc\u5408\u6848\u4f8b\uff1a@retry \u91cd\u8bd5\u88c5\u9970\u5668", "12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "12.9 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", "12.10 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u9ad8\u7ea7\u7279\u6027\uff1a\u63a8\u5bfc\u5f0f\u3001\u8fed\u4ee3\u5668\u3001\u751f\u6210\u5668\u3001\u88c5\u9970\u5668";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(12, "\u9ad8\u7ea7\u7279\u6027\uff1a\u63a8\u5bfc\u5f0f\u3001\u8fed\u4ee3\u5668\u3001\u751f\u6210\u5668\u3001\u88c5\u9970\u5668", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u719f\u7ec3\u4f7f\u7528\u5217\u8868\u3001\u5b57\u5178\u3001\u96c6\u5408\u3001\u751f\u6210\u5668\u56db\u79cd\u63a8\u5bfc\u5f0f\uff1b\n- \u7406\u89e3\u8fed\u4ee3\u5668\u534f\u8bae\uff08__iter__ / __next__ / StopIteration\uff09\uff1b\n- \u638c\u63e1\u751f\u6210\u5668 yield\uff0c\u7406\u89e3\u60f0\u6027\u6c42\u503c\u4e0e\u5185\u5b58\u4f18\u52bf\uff1b\n- \u638c\u63e1\u88c5\u9970\u5668", ["12.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "12.1 \u63a8\u5bfc\u5f0f\u5168\u5bb6\u65cf", "12.2 \u8fed\u4ee3\u5668\u534f\u8bae", "12.3 \u751f\u6210\u5668\uff1a\u60f0\u6027\u6c42\u503c", "12.4 \u88c5\u9970\u5668\uff1a\u7ed9\u51fd\u6570\"\u52a0\u88c5\u5907\"", "12.5 \u4e0a\u4e0b\u6587\u7ba1\u7406\u5668\uff1a\u81ea\u5b9a\u4e49 with", "12.6 \u89e3\u5305\u8fdb\u9636\uff1a* \u4e0e **", "12.7 \u7efc\u5408\u6848\u4f8b\uff1a@retry \u91cd\u8bd5\u88c5\u9970\u5668", "12.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "12.9 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", "12.10 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

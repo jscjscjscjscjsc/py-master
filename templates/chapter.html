@@ -12,6 +12,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
 {% if chapter.id == 8 %}<link rel="stylesheet" href="{{ url_for('static', filename='css/func_cg_intro.css') }}">{% endif %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/atlas.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/narration.css') }}">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="{{ url_for('static', filename='js/narration_player.js') }}"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = {{ total_chapters|default(9) }};</script>
 </head>
 <body class="chapter-page" data-chapter-id="{{ chapter.id }}" data-chapter-title="{{ chapter.title|e }}" data-chapter-description="{{ chapter.description|e }}">
 
@@ -198,8 +203,11 @@
         </div>
 
         <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open({{ chapter.id }}, {{ loop.index0 }}, '{{ kp.title|e }}')">
+            🎬 5 分钟图文讲解
+          </button>
           <button class="btn-comic" onclick="event.stopPropagation(); openComic({{ chapter.id }}, {{ loop.index0 }}, '{{ kp.title|e }}')">
-            🎨 漫画讲解
+            🎨 角色对白
           </button>
           {% if is_completed %}
           <span class="kp-done-badge">✅ 已完成</span>

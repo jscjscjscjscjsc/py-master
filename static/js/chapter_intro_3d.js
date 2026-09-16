@@ -11,18 +11,21 @@ const ChapterIntro3D = (() => {
     8: { tag:'THE ART OF ABSTRACTION', title:'把复杂，藏进一个名字。', quote:'函数不是代码的堆叠，而是思维的容器。', definition:'函数封装可复用的行为：参数接收输入，return 交回结果。', code:'def transform(value):\n    return value ** 2\n\nprint(transform(3))  # 9\nprint(transform(4))  # 16', action:'把参数送入函数核心', results:['transform(3) → 9','transform(4) → 16'], kind:'function', color:0xb69aff },
     9: { tag:'BEYOND THE MEMORY', title:'让思想，留下痕迹。', quote:'文件让结果留存，异常处理让程序从容面对意外。', definition:'with 管理文件关闭；try / except 处理预期的运行错误。', code:'try:\n    with open("signal.txt") as f:\n        print(f.read())\nexcept FileNotFoundError:\n    print("文件尚未创建")', action:'切换文件是否存在', results:['signal.txt → Hello, Python!','FileNotFoundError → 文件尚未创建'], kind:'file', color:0xffb879 }
   };
+  // 教材换成 39 章后章节号有位移，这里把新章号对回原来按主题写的开场分镜，
+  // 避免"章节标题与开场动画讲的不是一回事"。
+  const STORY_ALIAS = {1:1, 2:2, 3:4, 4:5, 5:6, 6:7, 7:8, 9:9};
   const escape = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let current=null, lastArgs=null;
   function open(id,title,description,points,onClose,force=false) {
     id=Number(id); if(current) return; lastArgs=[id,title,description,points,onClose];
     const key='pymaster.cinema.v2.'+id;
     try { if(!force && sessionStorage.getItem(key)){onClose?.();return;} } catch(e) {}
-    const story=stories[id]; if(!story){onClose?.();return;}
+    const story=stories[STORY_ALIAS[id]]; if(!story){onClose?.();return;}
     const oldFocus=document.activeElement, oldOverflow=document.body.style.overflow;
     const root=document.createElement('section');root.className='chapter-cinema';root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');root.setAttribute('aria-label',title+' 章节开场');
     root.style.setProperty('--act-accent','#'+story.color.toString(16).padStart(6,'0'));
     root.innerHTML=`<div class="cinema-world" aria-label="可拖动的三维概念模型"></div><div class="cinema-vignette"></div>
-      <header class="cinema-head"><span class="cinema-brand">✳ PYMASTER <i>/ LEARNING ATLAS</i></span><span class="cinema-signal">● CHAPTER ${String(id).padStart(2,'0')} / 09</span><button data-close>跳过开场 ↗</button></header>
+      <header class="cinema-head"><span class="cinema-brand">✳ PYMASTER <i>/ LEARNING ATLAS</i></span><span class="cinema-signal">● CHAPTER ${String(id).padStart(2,'0')} / ${String(window.PYMASTER_TOTAL_CHAPTERS||9).padStart(2,'0')}</span><button data-close>跳过开场 ↗</button></header>
       <div class="cinema-main"><div class="cinema-copy"><div class="cinema-kicker">${story.tag}</div><p class="cinema-course">第 ${id} 章 / ${escape(title)}</p><h1>${story.title.replace('，','，<br>')}</h1><p class="cinema-caption"></p><div class="cinema-definition"></div><button class="cinema-experiment" data-experiment>${story.action} <span>↗</span></button><output class="cinema-output" aria-live="polite"></output></div>
       <aside class="cinema-terminal"><div class="terminal-bar"><span>● ● ●</span><span>chapter_${String(id).padStart(2,'0')}.py</span><span>PYTHON 3</span></div><pre><code></code></pre><div class="terminal-foot">输入 → 执行 → 观察结果</div></aside></div>
       <div class="cinema-scene-caption"><span class="scene-mode">3D CONCEPT STUDY</span><span>拖动旋转 · 滚轮缩放</span></div>

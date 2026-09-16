@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PyMaster 教学平台 · 本次更新说明 — PyMaster</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#21262d;--tx:#e6edf3;--tx2:#8b949e;
+--cyan:#00d4ff;--jade:#2e6f68;--gold:#b8883b;--paper:#f3ead8;--ink:#29251f}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 700px at 50% -10%,#141a26,#0a0a0f 60%);
+color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+line-height:1.85;padding:0 20px 90px}
+.wrap{max-width:960px;margin:0 auto}
+.top{padding:56px 0 28px;border-bottom:1px solid var(--line);margin-bottom:34px}
+.top .kicker{font-size:12px;letter-spacing:.28em;color:var(--cyan);font-weight:700}
+.top h1{font-size:40px;margin:14px 0 10px;letter-spacing:-.01em}
+.top p{color:var(--tx2);margin:0;font-size:15px}
+h2{font-size:26px;margin:52px 0 16px;padding-left:16px;border-left:5px solid var(--jade)}
+h3{font-size:20px;margin:34px 0 10px;color:#cfe3ff}
+p{margin:14px 0}
+a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(0,212,255,.3)}
+strong{color:#fff}
+blockquote{margin:22px 0;padding:16px 22px;background:rgba(0,212,255,.06);
+border-left:4px solid var(--cyan);border-radius:10px;color:#c9d6e4}
+code{background:#1d2432;padding:2px 7px;border-radius:5px;font-size:.92em;
+font-family:Consolas,monospace;color:#9fd9ff}
+pre{background:#171c26;border:1px solid #2a3242;border-radius:12px;padding:16px 18px;
+overflow-x:auto}
+pre code{background:none;padding:0;color:#cfe3ff}
+.md-table-wrap{overflow-x:auto;margin:22px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top}
+th{background:#1b2230;color:#cfe3ff;font-weight:700;white-space:nowrap}
+tr:nth-child(even) td{background:rgba(255,255,255,.017)}
+ul,ol{padding-left:26px}
+li{margin:7px 0}
+hr{border:none;border-top:1px solid var(--line);margin:48px 0}
+.foot{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+color:var(--tx2);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.back{display:inline-block;margin-top:20px;color:var(--cyan);font-size:14px}
+</style></head>
+<body><div class="wrap">
+  <div class="top">
+    <div class="kicker">PYMASTER · RELEASE NOTES</div>
+    <h1>PyMaster 教学平台 · 本次更新说明</h1>
+    <p>PyMaster 教学平台 · 本次功能升级说明</p>
+  </div>
+  <blockquote class="md-quote"><p>更新日期：2026-09-16 一句话概括：<strong>PyMaster 从「Python 基础语法演示 Demo」升级为「从零基础到 AI 应用开发的完整学习平台」， 并为每一个知识点配上了一节 5 分钟的 AI 图文讲解。</strong></p></blockquote>
+<h2 class="md-h">一、更新前 vs 更新后</h2>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th></th><th>更新前</th><th>更新后</th></tr></thead><tbody><tr><td>课程规模</td><td>9 章 Python 基础语法</td><td><strong>39 章 / 400 个知识点</strong></td></tr><tr><td>内容范围</td><td>语法入门</td><td>基础语法 → 软件工程 → 全栈开发 → <strong>大模型应用与 Agent 开发</strong></td></tr><tr><td>练习题库</td><td>少量内置选择题</td><td><strong>212 道教材原题，全部带参考答案与解析</strong></td></tr><tr><td>每章思维导图</td><td>手工维护</td><td>由知识点结构<strong>自动生成</strong></td></tr><tr><td>知识点讲解</td><td>角色对白气泡（纯文字，1–2 分钟）</td><td><strong>5 分钟图文讲解</strong>：配图 + 讲义 + 字幕 + 口播</td></tr><tr><td>讲解制作方式</td><td>人工预写</td><td><strong>AI 生产流水线</strong>，可持续批量扩充</td></tr><tr><td>在线演示</td><td>仅页面截图</td><td><strong>可实际播放的在线演示站</strong>（GitHub Pages）</td></tr></tbody></table></div>
+<h2 class="md-h">二、三大核心升级</h2>
+<h3 class="md-h">1. 课程内容：从语法打通到 AI 开发</h3>
+<p>新教材按五篇组织，学习路径连贯：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>篇</th><th>章数</th><th>知识点</th><th>内容</th></tr></thead><tbody><tr><td>基础篇 · Python 核心语法</td><td>14</td><td>148</td><td>环境搭建、变量、流程控制、容器、函数、面向对象、文件 IO</td></tr><tr><td>工程篇 · 软件工程与协作</td><td>6</td><td>52</td><td>需求分析、代码质量、测试、Git 分支、Gitee、Code Review</td></tr><tr><td>全栈篇 · 后端 / 前端 / 数据</td><td>6</td><td>58</td><td>软件架构、HTML/CSS/JS、HTTP/REST/SQLite、FastAPI、Vue、pandas</td></tr><tr><td>AI 篇 · 大模型应用开发</td><td>9</td><td>99</td><td>大模型能力边界、API 调用、提示词、工具调用、智能体框架、综合实战</td></tr><tr><td>AI 进阶篇 · RAG 与 Agent 工程</td><td>4</td><td>43</td><td>LLM 后端工程化、RAG 检索增强、Agent 核心机制、Agent 框架实战</td></tr></tbody></table></div>
+<p><strong>合计 39 章 / 400 个知识点 / 212 道练习（全部带答案与解析）。</strong></p>
+<h3 class="md-h">2. 每个知识点配一节 5 分钟图文讲解</h3>
+<p>这是本次最大的体验升级。原来是"角色对白气泡 + 机器朗读"，信息密度低、没有画面。 现在每个知识点对应一节完整的短视频课：</p>
+<ul><li><strong>16 个镜头</strong>，每节实测 5 分 00 秒 – 5 分 20 秒</li><li><strong>每个镜头一张课件图</strong>，7 种版式对应不同教学环节：</li><li><strong>口播由 AI 老师讲述</strong>，配字幕要点，支持自动连播、倍速、逐句高亮、点击任意镜头跳转</li><li>讲解稿严格基于教材原文生成，不引入教材里没有的 API 或结论</li></ul>
+<p>讲解不再是预设内容——<strong>平台可以现场生成</strong>：在章节页点「🎬 5 分钟图文讲解」， 如果这节还没做，界面会提示并支持一键现场生成，3–5 分钟出结果。</p>
+<h3 class="md-h">3. 配图改为程序化生成（不依赖任何外部生图服务）</h3>
+<p>配图不是"AI 画的"，而是<strong>用代码精确排版生成的</strong>。这个选择带来三个实际好处：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th></th><th>生成式 AI 画图</th><th>程序化作图（现方案）</th></tr></thead><tbody><tr><td>中文显示</td><td>常出现乱码伪文字</td><td><strong>完全正确</strong></td></tr><tr><td>风格一致性</td><td>同一节课里画风会漂移</td><td><strong>完全统一</strong>，形象固定</td></tr><tr><td>生成速度</td><td>每张约 8 秒，需联网</td><td><strong>每秒 8–14 张，纯本地</strong></td></tr><tr><td>使用成本</td><td>按张计费，有额度上限</td><td><strong>零成本，可无限量生产</strong></td></tr><tr><td>代码/表格</td><td>画不准</td><td>精确排版，语法着色</td></tr></tbody></table></div>
+<p>对技术课件来说，"能把代码和术语写对"比"画得好看"重要得多。这也意味着 <strong>全量 6400 张配图可以在几分钟内本地重建</strong>，不需要任何第三方额度。</p>
+<h2 class="md-h">三、当前进度</h2>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>课程内容</td><td>39 章 / 400 知识点 / 212 题 —— <strong>已全部完成</strong></td></tr><tr><td>图文讲解</td><td><strong>生产进行中</strong>，基础篇优先，已完成 32 节（510 个镜头、175 分钟口播）</td></tr><tr><td>单节生产耗时</td><td>约 2.2 分钟（含分镜撰写、口播合成、配图渲染）</td></tr><tr><td>预计全部完成</td><td>400 节约需 15 小时机器时间（可分批跑，支持断点续做）</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p>讲解生产是"可中断、可续做"的：脚本与音频按内容缓存，中断后重跑不会重复消耗。</p></blockquote>
+<h2 class="md-h">四、怎么使用</h2>
+<h3 class="md-h">方式一：本地运行完整版（推荐，功能最全）</h3>
+<p>双击 <code class="md-inline">启动 PyMaster.bat</code>，浏览器会自动打开 <code class="md-inline">http://127.0.0.1:5000</code>。</p>
+<p>完整版包含：AI 助教答疑、在线代码运行与评分、错题本、笔记与本地文件关联、 思维导图编辑、星海知识图谱、全部 400 节图文讲解。</p>
+<h3 class="md-h">方式二：在线演示站（免安装，可直接分享给客户）</h3>
+<p>访问 GitHub Pages 地址即可浏览全部课程内容、练习题与思维导图， 并<strong>试听其中的讲解样例</strong>（在线站只收录部分讲解，完整版请本地运行）。</p>
+<h2 class="md-h">五、给协作方的说明</h2>
+<p>仓库已开放为<strong>共建仓库</strong>：</p>
+<ul><li>任何人都可以克隆、修改、提交分支</li><li>对 <code class="md-inline">main</code> 分支的改动<strong>需要通过 Pull Request 并经过审查</strong>才能合并，</li><li>欢迎提交：课程内容勘误、新的讲解知识点、配图版式改进、平台功能增强</li></ul>
+<p>仓库内<strong>已包含全部讲解脚本</strong>（<code class="md-inline">data/narrations.json</code>）。讲解配图不需要跟着仓库走—— 克隆后本地执行一次渲染即可把几千张配图重新生成出来，不需要任何外部接口。</p>
+<h2 class="md-h">六、后续计划</h2>
+<ol><li><strong>完成全量 400 节图文讲解生产</strong>（当前优先基础篇，随后是 AI 篇）</li><li>补充章节开场 3D 动画（目前覆盖 9 章）</li><li>LangFlow 等可视化编排工具的教学章节（调研已完成，待落地）</li><li>在线演示站扩充讲解样例</li></ol>
+<p><em>本文档随仓库更新，最新进展见 <code class="md-inline">PROGRESS.md</code>。</em></p>
+  <a class="back" href="index.html">← 打开在线演示</a>
+  <div class="foot"><span>PyMaster 教学平台</span><span>PyMaster 教学平台 · 本次更新说明</span></div>
+</div></body></html>

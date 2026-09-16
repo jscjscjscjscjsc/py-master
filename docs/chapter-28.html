@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — DeepSeek API 实战</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="28" data-chapter-title="DeepSeek API 实战" data-chapter-description="学完本章，你应该能够：
+
+- 注册 DeepSeek 开放平台并理解成本控制；
+- 用环境变量管理 API Key，绝不入库；
+- 用 requests 和 OpenAI SDK 两种方式调用 DeepSeek；
+- 用 system pr">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 28</p>
+    <span class="hero-icon">🤖</span>
+    <h2>第 28 章 · DeepSeek API 实战</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 注册 DeepSeek 开放平台并理解成本控制；
+- 用环境变量管理 API Key，绝不入库；
+- 用 requests 和 OpenAI SDK 两种方式调用 DeepSeek；
+- 用 system pr</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="28_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          28.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>注册 DeepSeek 开放平台并理解成本控制；</li><li>用环境变量管理 API Key，绝不入库；</li><li>用 requests 和 OpenAI SDK 两种方式调用 DeepSeek；</li><li>用 system prompt 设定角色，维护多轮对话；</li><li>了解流式输出；</li><li>实现工具调用（Function Calling），组装一个"能查待办/算数"的最小智能体；</li><li>继续遵守 L3 纪律。</li></ol>
+<p><strong>前置知识</strong>：第 27 章（概念）、第 13 章（requests）、第 23 章（HTTP）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 0, "28.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u54cd\u5e94\u8def\u5f84 \u003ccode class=\"md-inline\"\u003echoices[0].message.content\u003c/code\u003e \u4e0e \u003ccode class=\"md-inline\"\u003eusage.total_tokens\u003c/code\u003e\u2014\u2014\u8c03 API \u7684\u56fa\u5b9a\u52a8\u4f5c\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf `DEEPSEEK_API_KEY`\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport os\nimport requests\n\napi_key = os.environ.get(\u0026quot;DEEPSEEK_API_KEY\u0026quot;)\n\nresp = requests.post(\n    \u0026quot;https://api.deepseek.com/chat/completions\u0026quot;,\n    headers={\u0026quot;Authorization\u0026quot;: f\u0026quot;Bearer {api_key}\u0026quot;},\n    json={\n        \u0026quot;model\u0026quot;: \u0026quot;deepseek-v4-flash\u0026quot;,\n        \u0026quot;messages\u0026quot;: [{\u0026quot;role\u0026quot;: \u0026quot;user\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\u0026quot;}],\n        \u0026quot;max_tokens\u0026quot;: 300,\n    },\n    timeout=30,\n)\n\ndata = resp.json()\nprint(data[\u0026quot;choices\u0026quot;][0][\u0026quot;message\u0026quot;][\u0026quot;content\u0026quot;])\nprint(f\u0026quot;\u6d88\u8017 token\uff1a{data[\u0026#x27;usage\u0026#x27;][\u0026#x27;total_tokens\u0026#x27;]}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 1 \u9898**\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf `DEEPSEEK_API_KEY`\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 0, '28.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 0, '28.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="28_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          28.1 注册与成本控制
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">28.1.1 语法掌握：注册与充值</h3>
+<ol><li>打开 &lt;https://platform.deepseek.com/&gt; 注册；</li><li>创建 <strong>API Key</strong>（API Keys 页面）；</li><li><strong>充值少量金额</strong>（学生自费，本课程用量很小——单次对话通常不到 1 分钱）；</li><li>在"用量"页面可以看消费明细。</li></ol>
+<blockquote class="md-quote"><p><strong>成本控制三招</strong>：</p>
+<ol><li><strong>限输出</strong>：<code class="md-inline">max_tokens</code> 设合理上限（如 300-600），防止模型"话痨"烧 token；<strong>注意：<code class="md-inline">deepseek-v4-flash</code> 是推理型模型，<code class="md-inline">reasoning_tokens</code> 会计入 <code class="md-inline">max_tokens</code>，预算要按"推理 + 回答"一起算，调太小会出现空回复</strong>；</li><li><strong>控轮次</strong>：工具调用/重试不要无限循环（设置最大次数，呼应第 12 章 @retry）；</li><li><strong>缓存复用</strong>：同样的 prompt 结果可以存下来复用，不重复请求。</li></ol></blockquote>
+<h3 class="md-h">28.1.2 红线：API Key 安全</h3>
+<p><strong>API Key = 你的钱</strong>。三条铁律：</p>
+<ol><li><strong>绝不写进代码</strong>；</li><li><strong>绝不提交到 Git</strong>（.gitignore 里必须有 <code class="md-inline">.env</code>）；</li><li>泄露立即在平台<strong>吊销并重新生成</strong>（第 19 章红线的具体执行）。</li></ol>
+<p><strong>代码案例 28.1</strong>：用环境变量管理 Key（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import os
+
+api_key = os.environ.get(&quot;DEEPSEEK_API_KEY&quot;)
+if not api_key:
+    raise RuntimeError(&quot;请先设置环境变量 DEEPSEEK_API_KEY&quot;)</code></pre></div>
+<p><strong>PowerShell 设置环境变量</strong>（临时）：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">$env:DEEPSEEK_API_KEY = &quot;sk-你的密钥&quot;</code></pre></div>
+<p><strong>讲解</strong>：密钥只存在于环境变量中，代码和 Git 里永远看不到明文。<strong>第 28 章练习的第 0 步：把 .env 加进 .gitignore</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 1, "28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eSDK \u4ee3\u7801\u66f4\u77ed\u3001\u7c7b\u578b\u66f4\u6e05\u6670\uff1brequests \u7248\u672c\u4e0d\u4f9d\u8d56\u7b2c\u4e09\u65b9 SDK\u3002\u4e24\u8005\u90fd\u80fd\u7528\uff0c\u003cstrong\u003eSDK \u63a8\u8350\u003c/strong\u003e\uff08\u540e\u7eed\u5de5\u5177\u8c03\u7528/\u6d41\u5f0f\u66f4\u65b9\u4fbf\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get(\u0026quot;DEEPSEEK_API_KEY\u0026quot;),\n    base_url=\u0026quot;https://api.deepseek.com\u0026quot;,\n)\n\nresp = client.chat.completions.create(\n    model=\u0026quot;deepseek-v4-flash\u0026quot;,\n    messages=[{\u0026quot;role\u0026quot;: \u0026quot;user\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\u0026quot;}],\n)\nprint(resp.choices[0].message.content)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 2 \u9898**\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「28.1 注册与成本控制」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(28, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 1, '28.1 注册与成本控制')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 1, '28.1 注册与成本控制')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="28_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          28.2 第一次对话
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">28.2.1 语法掌握：用 requests 调用（不装额外库）</h3>
+<p><strong>代码案例 28.2</strong>：requests 方式（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import os
+import requests
+
+api_key = os.environ.get(&quot;DEEPSEEK_API_KEY&quot;)
+
+resp = requests.post(
+    &quot;https://api.deepseek.com/chat/completions&quot;,
+    headers={&quot;Authorization&quot;: f&quot;Bearer {api_key}&quot;},
+    json={
+        &quot;model&quot;: &quot;deepseek-v4-flash&quot;,
+        &quot;messages&quot;: [
+            {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;用一句话介绍 Python&quot;},
+        ],
+        &quot;max_tokens&quot;: 300,   # 推理型模型：留足&quot;推理 + 回答&quot;预算
+    },
+    timeout=30,
+)
+
+data = resp.json()
+print(data[&quot;choices&quot;][0][&quot;message&quot;][&quot;content&quot;])</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">Authorization: Bearer 密钥</code>：身份验证（第 23 章的 HTTP 头）；</li><li><code class="md-inline">json=</code> 自动序列化请求体（第 13 章）；</li><li>响应路径：<code class="md-inline">data["choices"][0]["message"]["content"]</code>——<strong>解析响应是调用 API 的固定动作</strong>；</li><li><code class="md-inline">timeout=30</code>：网络请求必须设超时（第 13 章教训）。</li></ul>
+<h3 class="md-h">28.2.2 语法掌握：用 OpenAI SDK（推荐，功能全）</h3>
+<p><strong>代码案例 28.3</strong>：安装与调用（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">pip install openai</code></pre></div>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get(&quot;DEEPSEEK_API_KEY&quot;),
+    base_url=&quot;https://api.deepseek.com&quot;,
+)
+
+resp = client.chat.completions.create(
+    model=&quot;deepseek-v4-flash&quot;,
+    messages=[
+        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是 Python 学习助手，回答要简洁&quot;},
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;什么是列表推导式？&quot;},
+    ],
+    temperature=0.7,
+    max_tokens=400,
+)
+
+print(resp.choices[0].message.content)
+print(f&quot;本次消耗 token：{resp.usage.total_tokens}&quot;)</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li>DeepSeek 兼容 OpenAI 接口，所以官方 SDK 直接可用（换 <code class="md-inline">base_url</code> 即可）；</li><li><code class="md-inline">client.chat.completions.create(...)</code> 一行发起对话；</li><li><code class="md-inline">resp.choices[0].message.content</code> 拿回答；<code class="md-inline">resp.usage.total_tokens</code> 看消耗（<strong>成本意识</strong>）；</li><li>需要工具调用/流式输出时，SDK 比手写 requests 省事得多——<strong>本章后面都用 SDK</strong>。</li></ul>
+<p><strong>微任务卡（M1 · 讲解卡 · L3）</strong>：把 SDK 代码发给 AI："请解释 base_url 的作用、为什么 DeepSeek 能用 OpenAI 的 SDK？"一句话记录理解。</p>
+<blockquote class="md-quote"><p><strong>验证边界说明</strong>：本章代码在 <strong>deepseek-v4-flash 真实 API 下实测通过</strong>（requests / SDK / 流式 / 工具调用四类均正常）；模型名、接口地址以 DeepSeek 官方文档为准，可能更新。</p></blockquote>
+<p><strong>原理探秘：temperature 与 token 是什么</strong></p>
+<ul><li><strong>token</strong>：模型处理文本的最小单位（中文一个字常占 1-2 个 token，1 个 token ≈ 0.7 个英文单词）。<code class="md-inline">max_tokens</code> 限制输出长度，也直接决定费用——<strong>"话痨"烧的就是 token</strong>；</li><li><strong>temperature</strong>：控制输出随机性——趋近 0 时模型总选最可能的词（稳定，适合代码/事实问答）；趋近 1 时更发散（适合创意文案）。</li></ul>
+<p><strong>调模型的第一直觉：写代码/查事实用低温（0-0.3），聊天/创意用中温（0.7 左右）</strong>。</p>
+<p><strong>原理探秘：deepseek-v4-flash 是推理型模型</strong></p>
+<p>它响应中可能带 <code class="md-inline">reasoning_content</code>（模型的思考过程），且 <code class="md-inline">reasoning_tokens</code> 会计入 <code class="md-inline">max_tokens</code>。所以调它时 <code class="md-inline">max_tokens</code> 必须<strong>按"推理 + 回答"一起预算</strong>（本章示例 300-400），调太小会出现"空回复"。第七篇项目（第 32 章）已按此设置了各任务的预算。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 2, "28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u660e\u786e\u7684\u9519\u8bef\u63d0\u793a\u8ba9\"\u73af\u5883\u6ca1\u914d\u597d\"\u4e00\u773c\u53ef\u67e5\u2014\u2014\u003cstrong\u003e\u5de5\u7a0b\u4ee3\u7801\u7684\u63d0\u793a\u8981\u80fd\u6307\u5bfc\u4eba\u4e0b\u4e00\u6b65\u505a\u4ec0\u4e48\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08`os.environ.get` + \u5224\u65ad\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport os\n\napi_key = os.environ.get(\u0026quot;DEEPSEEK_API_KEY\u0026quot;)\nif not api_key:\n    raise RuntimeError(\u0026quot;\u8bf7\u5148\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf DEEPSEEK_API_KEY\uff1a$env:DEEPSEEK_API_KEY=\u0026#x27;sk-...\u0026#x27;\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 3 \u9898**\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08`os.environ.get` + \u5224\u65ad\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「28.2 第一次对话」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(28, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 2, '28.2 第一次对话')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 2, '28.2 第一次对话')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="28_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          28.3 系统提示词与多轮对话
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">28.3.1 语法掌握：system prompt 设定角色</h3>
+<p><strong>代码案例 28.4</strong>：角色扮演（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">resp = client.chat.completions.create(
+    model=&quot;deepseek-v4-flash&quot;,
+    messages=[
+        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是电商客服，语气亲切，回答不超过 50 字&quot;},
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;我的订单三天没发货怎么办？&quot;},
+    ],
+)
+print(resp.choices[0].message.content)</code></pre></div>
+<p><strong>讲解</strong>：system prompt = "角色 + 规则"——<strong>回答风格、长度、禁忌都由它控制</strong>。这是低成本"定制"模型行为的核心手段。</p>
+<h3 class="md-h">28.3.2 语法掌握：多轮对话（维护 messages 历史）</h3>
+<p><strong>代码案例 28.5</strong>：简单聊天循环（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">messages = [{&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是学习助手&quot;}]
+
+while True:
+    user_input = input(&quot;你：&quot;)
+    if user_input == &quot;exit&quot;:
+        break
+
+    messages.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: user_input})
+
+    resp = client.chat.completions.create(
+        model=&quot;deepseek-v4-flash&quot;,
+        messages=messages,
+        max_tokens=400,
+    )
+
+    reply = resp.choices[0].message.content
+    print(&quot;助手：&quot;, reply)
+
+    messages.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: reply})</code></pre></div>
+<p><strong>讲解</strong>：<strong>记忆的实现</strong>：每轮把用户输入和模型回答都 append 进 <code class="md-inline">messages</code>，下次请求全部传回——模型就"记得"了。<strong>注意</strong>：历史无限增长会撑爆上下文窗口，真实项目要做"截断/摘要"（本课程了解）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 3, "28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003esystem prompt \u4e00\u53e5\u8bdd\u5c31\u6539\u53d8\u4e86\u56de\u7b54\u98ce\u683c\u2014\u2014\u003cstrong\u003e\u89d2\u8272 + \u89c4\u5219\u662f\u4f4e\u6210\u672c\u5b9a\u5236\u6a21\u578b\u7684\u624b\u6bb5\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003emessages = [\n    {\u0026quot;role\u0026quot;: \u0026quot;system\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u4f60\u662f Python \u9762\u8bd5\u5b98\uff0c\u63d0\u95ee\u8981\u5faa\u5e8f\u6e10\u8fdb\uff0c\u56de\u7b54\u4e0d\u8d85\u8fc7 80 \u5b57\u0026quot;},\n    {\u0026quot;role\u0026quot;: \u0026quot;user\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u8bf7\u5f00\u59cb\u9762\u8bd5\u6211\u0026quot;},\n]\n\nresp = client.chat.completions.create(model=\u0026quot;deepseek-v4-flash\u0026quot;, messages=messages)\nprint(resp.choices[0].message.content)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「28.3 系统提示词与多轮对话」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(28, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 3, '28.3 系统提示词与多轮对话')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 3, '28.3 系统提示词与多轮对话')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="28_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          28.4 流式输出（了解）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>代码案例 28.6</strong>：流式接收（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">response = client.chat.completions.create(
+    model=&quot;deepseek-v4-flash&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;介绍一下你自己&quot;}],
+    stream=True,
+)
+
+for chunk in response:
+    delta = chunk.choices[0].delta.content
+    if delta:
+        print(delta, end=&quot;&quot;, flush=True)</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">stream=True</code> 让回答<strong>一个字一个字地冒出来</strong>（像 ChatGPT 打字效果），而不是等全部生成完——<strong>用户体验好，也是大模型应用的标配</strong>。了解即可，项目阶段可选使用。</p>
+<blockquote class="md-quote"><p><strong>了解级边界（就业提示）</strong>：流式输出了解即可；但大模型应用岗位几乎都要求"打字机效果"——就业前把第 28.4 的循环接到 FastAPI 的 <code class="md-inline">StreamingResponse</code> 上练一遍，就是加分项。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 4, "28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u53c2\u7167\u6848\u4f8b 28.5 \u7684\u5faa\u73af\uff1a\u6bcf\u8f6e\u628a \u003ccode class=\"md-inline\"\u003euser\u003c/code\u003e \u8f93\u5165\u548c \u003ccode class=\"md-inline\"\u003eassistant\u003c/code\u003e \u56de\u590d append \u8fdb messages\u3002\u9a8c\u8bc1\u65b9\u6cd5\uff1a\u7b2c\u4e00\u8f6e\u8bf4\"\u6211\u559c\u6b22 Python\"\uff0c\u7b2c\u4e8c\u8f6e\u95ee\"\u6211\u7b2c\u4e00\u8f6e\u8bf4\u4e86\u4ec0\u4e48\"\u2014\u2014\u6a21\u578b\u80fd\u7b54\u51fa\"\u4f60\u559c\u6b22 Python\"\uff0c\u8bf4\u660e\u5386\u53f2\u751f\u6548\u3002\u003c/p\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 5 \u9898**\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「28.4 流式输出（了解）」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(28, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 4, '28.4 流式输出（了解）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 4, '28.4 流式输出（了解）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="28_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          28.5 工具调用：让智能体&#34;有手有脚&#34;
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">28.5.1 概念认知：Function Calling 是什么</h3>
+<p>工具调用的流程（第 27 章原理的代码化）：</p>
+<div class="md-figure"><pre class="md-diagram">1. 你告诉模型&quot;有哪些工具可用&quot;（tools 声明）；
+2. 模型决定&quot;这个问题该调用 query_todo&quot;（返回 tool_calls）；
+3. 你的代码执行工具函数，拿到结果；
+4. 把结果作为 role=&quot;tool&quot; 的消息传回模型；
+5. 模型基于结果给出最终回答。</pre></div>
+<p><strong>交叉验证：普通对话 vs 工具调用</strong></p>
+<div class="md-figure"><pre class="md-diagram">普通对话：用户问&quot;我的待办有什么&quot; → 模型直接回答（只能&quot;说&quot;，可能编）→ 结束
+工具调用：用户问&quot;我的待办有什么&quot; → 模型决定调 query_todo → 代码查库 → 结果回传 → 模型基于真实数据回答</pre></div>
+<p><strong>讲解</strong>：<strong>普通对话里模型只能"说"；工具调用里模型能"指挥代码去做"，回答基于真实数据</strong>——这就是"智能体有手脚"与"只会说话的模型"的差别。</p>
+<h3 class="md-h">28.5.2 语法掌握：声明工具</h3>
+<p><strong>代码案例 28.7</strong>：工具声明（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">tools = [
+    {
+        &quot;type&quot;: &quot;function&quot;,
+        &quot;function&quot;: {
+            &quot;name&quot;: &quot;query_todo&quot;,
+            &quot;description&quot;: &quot;查询待办列表，可按关键词筛选&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;keyword&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;筛选关键词&quot;},
+                },
+            },
+        },
+    },
+    {
+        &quot;type&quot;: &quot;function&quot;,
+        &quot;function&quot;: {
+            &quot;name&quot;: &quot;calculator&quot;,
+            &quot;description&quot;: &quot;做四则运算&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;expression&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;数学表达式&quot;},
+                },
+            },
+        },
+    },
+]</code></pre></div>
+<p><strong>讲解</strong>：每个工具 = 名字 + 描述 + 参数结构。<strong>描述写得好，模型才知道"什么时候该用它"</strong>——这是工具调用的关键调优点。</p>
+<h3 class="md-h">28.5.3 语法掌握：完整工具调用循环（最小智能体）</h3>
+<p><strong>代码案例 28.8</strong>：最小智能体（✅ 正确，结构实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import json
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get(&quot;DEEPSEEK_API_KEY&quot;),
+    base_url=&quot;https://api.deepseek.com&quot;,
+)
+
+def query_todo(keyword=&quot;&quot;):
+    &quot;&quot;&quot;工具 1：查待办（模拟数据）&quot;&quot;&quot;
+    todos = [{&quot;id&quot;: 1, &quot;content&quot;: &quot;写作业&quot;}, {&quot;id&quot;: 2, &quot;content&quot;: &quot;复习 Python&quot;}]
+    if keyword:
+        todos = [t for t in todos if keyword in t[&quot;content&quot;]]
+    return json.dumps(todos, ensure_ascii=False)
+
+def calculator(expression):
+    &quot;&quot;&quot;工具 2：安全计算&quot;&quot;&quot;
+    # 只允许数字和运算符，防止任意代码执行
+    allowed = set(&quot;0123456789+-*/(). &quot;)
+    if not set(expression) &lt;= allowed:
+        return &quot;表达式包含非法字符&quot;
+    try:
+        return str(eval(expression))
+    except Exception as e:
+        return f&quot;计算失败：{e}&quot;
+
+tools = [
+    {
+        &quot;type&quot;: &quot;function&quot;,
+        &quot;function&quot;: {
+            &quot;name&quot;: &quot;query_todo&quot;,
+            &quot;description&quot;: &quot;查询待办列表&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;keyword&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;筛选关键词&quot;},
+                },
+            },
+        },
+    },
+    {
+        &quot;type&quot;: &quot;function&quot;,
+        &quot;function&quot;: {
+            &quot;name&quot;: &quot;calculator&quot;,
+            &quot;description&quot;: &quot;做四则运算&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;expression&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;数学表达式&quot;},
+                },
+            },
+        },
+    },
+]
+
+def run_agent(user_message, max_turns=3):
+    &quot;&quot;&quot;智能体主循环：LLM 决策 → 执行工具 → 结果回传&quot;&quot;&quot;
+    messages = [
+        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是智能助手，需要工具时调用工具，最后用中文回答用户&quot;},
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: user_message},
+    ]
+
+    for _ in range(max_turns):
+        resp = client.chat.completions.create(
+            model=&quot;deepseek-v4-flash&quot;,
+            messages=messages,
+            tools=tools,
+            tool_choice=&quot;auto&quot;,
+        )
+        msg = resp.choices[0].message
+
+        # 模型要调用工具
+        if msg.tool_calls:
+            messages.append(msg)     # 把模型的&quot;调用意图&quot;加入历史
+            for call in msg.tool_calls:
+                fn_name = call.function.name
+                args = json.loads(call.function.arguments)
+                if fn_name == &quot;query_todo&quot;:
+                    result = query_todo(**args)
+                elif fn_name == &quot;calculator&quot;:
+                    result = calculator(**args)
+                else:
+                    result = &quot;未知工具&quot;
+                messages.append({
+                    &quot;role&quot;: &quot;tool&quot;,
+                    &quot;tool_call_id&quot;: call.id,
+                    &quot;content&quot;: result,
+                })
+            continue    # 带着工具结果再问一次模型
+
+        # 模型直接回答
+        return msg.content
+
+    return &quot;超过最大轮次，已停止&quot;
+
+print(run_agent(&quot;我的待办里有什么？&quot;))
+print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><strong>主循环</strong>：请求 → 判断 <code class="md-inline">msg.tool_calls</code> → 有就执行工具、结果回传、继续；没有就返回回答；</li><li><strong>工具结果用 <code class="md-inline">role="tool"</code> + <code class="md-inline">tool_call_id</code> 回传</strong>（和模型的调用意图一一对应）；</li><li><strong><code class="md-inline">max_turns</code> 兜底</strong>：防止模型反复调用工具死循环（成本控制第二招）；</li><li><strong><code class="md-inline">calculator</code> 的字符白名单</strong>：<code class="md-inline">eval</code> 很危险，只放行数字和运算符——<strong>工具代码的安全由你负责</strong>；</li><li><strong>这就是一个真实的"最小智能体"</strong>：第 29 章的框架（LangChain 等）就是把这个循环工程化、模块化。</li></ul>
+<p><strong>微任务卡（M2 · 审查卡 · L3）</strong>：把最小智能体代码发给 AI："请审查：工具调用的消息回传是否正确、max_turns 兜底、calculator 的安全性。只给建议，不要重写。"记录采纳/否决理由。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 5, "28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1a`query_todo` \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u5de5\u5177\u58f0\u660e + \u6267\u884c\u53c2\u7167\u6848\u4f8b 28.7/28.8\u3002\u9a8c\u8bc1\uff1a\u95ee\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u4f5c\u4e1a\"\uff0c\u6a21\u578b\u5e94\u8c03\u7528 \u003ccode class=\"md-inline\"\u003equery_todo(\"\u4f5c\u4e1a\")\u003c/code\u003e\uff0c\u5de5\u5177\u8fd4\u56de\u8fc7\u6ee4\u540e\u7684\u7ed3\u679c\uff0c\u6a21\u578b\u56de\u7b54\"\u6709 1 \u6761\uff1a\u5199\u4f5c\u4e1a\"\u3002\u003c/p\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 6 \u9898**\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1a`query_todo` \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「28.5 工具调用：让智能体&#34;有手有脚&#34;」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(28, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 5, '28.5 工具调用：让智能体&#34;有手有脚&#34;')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 5, '28.5 工具调用：让智能体&#34;有手有脚&#34;')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="28_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          28.6 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：401 Unauthorized</h3>
+<p><strong>问题描述</strong>：请求返回 401（未授权）。</p>
+<p><strong>提示</strong>：Key 填对了吗？环境变量设置了吗？</p>
+<p><strong>讲解</strong>：<code class="md-inline">DEEPSEEK_API_KEY</code> 没设置、Key 打错、Key 已吊销，都会 401。<strong>先 <code class="md-inline">print(os.environ.get("DEEPSEEK_API_KEY"))</code> 确认存在</strong>（注意别把完整 Key 打到日志里）。</p>
+<h3 class="md-h">问题 2：模型名不存在</h3>
+<p><strong>问题描述</strong>：报 <code class="md-inline">Model Not Exist</code> 或 400。</p>
+<p><strong>提示</strong>：<code class="md-inline">model</code> 字段写对了吗？DeepSeek 的模型名是什么？</p>
+<p><strong>讲解</strong>：<code class="md-inline">deepseek-v4-flash</code>（推理型，本课程默认）与 <code class="md-inline">deepseek-chat</code>（通用对话）是常见模型名——<strong>以官网文档为准</strong>，模型名会更新。推理型模型的 <code class="md-inline">reasoning_tokens</code> 计入 <code class="md-inline">max_tokens</code>，调太小时会出现空回复。抄代码前先核对模型名。</p>
+<h3 class="md-h">问题 3：工具调用死循环</h3>
+<p><strong>问题描述</strong>：模型反复调用工具不回答，token 烧得飞快。</p>
+<p><strong>提示</strong>：循环有没有上限？max_turns 设置了吗？</p>
+<p><strong>讲解</strong>：<strong><code class="md-inline">max_turns</code> 兜底必须有</strong>（28.5.3 的 <code class="md-inline">for _ in range(max_turns)</code>）。真实项目还会记录调用次数、设置成本上限。</p>
+<h3 class="md-h">问题 4：Key 泄露进 Git</h3>
+<p><strong>问题描述</strong>：<code class="md-inline">git status</code> 里出现 <code class="md-inline">.env</code>，或代码里硬编码了 Key。</p>
+<p><strong>提示</strong>：第 19 章红线是什么？</p>
+<p><strong>讲解</strong>：<strong>立即从 .gitignore 排除、<code class="md-inline">git rm --cached</code> 移除已跟踪文件、去平台吊销重建 Key</strong>。Key = 钱，泄露 = 别人替你花钱——这不是技术问题，是事故。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 6, "28.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u56db\u4e2a\u573a\u666f\u8986\u76d6\"\u6b63\u5e38\u5de5\u5177\u3001\u6b63\u5e38\u8ba1\u7b97\u3001\u5b89\u5168\u62e6\u622a\u3001\u5faa\u73af\u515c\u5e95\"\u2014\u2014\u003cstrong\u003e\u6d4b\u8bd5\u667a\u80fd\u4f53\u8981\u6d4b\u5b83\u7684\"\u9632\u5446\"\u80fd\u529b\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6d4b\u8bd5\u573a\u666f\u4e0e\u9884\u671f\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e1. \u67e5\u5f85\u529e\uff1a\u0026quot;\u6211\u7684\u5f85\u529e\u91cc\u6709\u4ec0\u4e48\uff1f\u0026quot; \u2192 \u8c03\u7528 query_todo \u2192 \u5217\u51fa\u4e24\u6761\uff1b\n2. \u7b97\u6570\uff1a\u0026quot;12 * 13 \u7b49\u4e8e\u591a\u5c11\uff1f\u0026quot; \u2192 \u8c03\u7528 calculator \u2192 \u56de\u7b54 156\uff1b\n3. \u975e\u6cd5\u8868\u8fbe\u5f0f\uff1a\u8ba9\u6a21\u578b\u8c03\u7528 calculator(\u0026quot;12 + 13; rm -rf\u0026quot;) \u2192 \u767d\u540d\u5355\u62e6\u622a \u2192 \u0026quot;\u8868\u8fbe\u5f0f\u5305\u542b\u975e\u6cd5\u5b57\u7b26\u0026quot;\uff1b\n4. \u8fde\u7eed\u63d0\u95ee\uff1a\u9a8c\u8bc1\u4e0d\u8d85\u8fc7 max_turns\uff0c\u4e14\u6bcf\u6b21\u90fd\u80fd\u5f97\u5230\u6700\u7ec8\u56de\u7b54\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 6, '28.6 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 6, '28.6 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="28_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          28.7 Vibe Coding 任务卡（L3 主卡）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 生成工具调用代码，你 Review + 测试</p>
+<p><strong>任务内容</strong>：让 AI 生成一个"能查待办 + 算数"的工具调用智能体（参照 28.5.3），你按 Review 四步验收。</p>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请用 OpenAI SDK 生成一个工具调用智能体：
+1. 两个工具：query_todo（查待办）、calculator（四则运算）；
+2. 主循环：模型决定调用哪个工具 → 执行 → 结果回传 → 最终回答；
+3. 要有 max_turns 兜底。</pre></div>
+<p><strong>Review 清单（L3）</strong>：</p>
+<ul><li>[ ] <strong>读懂</strong>：tool_calls 判断、role="tool" 回传、参数解析都能解释；</li><li>[ ] <strong>运行</strong>：两个提问（查待办、算数）都能得到正确回答；</li><li>[ ] <strong>验证</strong>：测试边界——非法表达式（calculator 拒绝）、空待办、超过 max_turns 的情况；</li><li>[ ] <strong>修改</strong>：记录修改（如补安全校验、改 max_turns）及理由。</li></ul>
+<p><strong>微任务卡（M3 · 报错卡 · L2）</strong>：把 401 Unauthorized 报错发给 AI："请列出 API Key 相关的常见 401 原因，以及 Key 泄露后的处理步骤。"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 7, "28.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u8c03\u7528\u8ba1\u6570 + \u9608\u503c\u8b66\u544a = \u6210\u672c\u63a7\u5236\u7684\u4ee3\u7801\u843d\u5730\uff1b\u65e5\u5fd7\u91cc\u8bb0\u5f55\u5de5\u5177\u540d\u4e0e\u53c2\u6570\u65b9\u4fbf\u6392\u67e5\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6838\u5fc3\u6539\u52a8\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etool_calls_count = 0\n\nfor _ in range(max_turns):\n    resp = client.chat.completions.create(...)\n    msg = resp.choices[0].message\n    if msg.tool_calls:\n        tool_calls_count += len(msg.tool_calls)\n        print(f\u0026quot;[\u65e5\u5fd7] \u7b2c {tool_calls_count} \u6b21\u5de5\u5177\u8c03\u7528\u0026quot;)\n        if tool_calls_count \u0026gt; 3:\n            print(\u0026quot;[\u8b66\u544a] \u5de5\u5177\u8c03\u7528\u6b21\u6570\u8fc7\u591a\uff0c\u5df2\u505c\u6b62\u0026quot;)\n            return \u0026quot;\u64cd\u4f5c\u8fc7\u4e8e\u590d\u6742\uff0c\u8bf7\u7b80\u5316\u95ee\u9898\u0026quot;\n        ...\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(28, '0', "**\u7b2c 8 \u9898**\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 7, '28.7 Vibe Coding 任务卡（L3 主卡）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 7, '28.7 Vibe Coding 任务卡（L3 主卡）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="28_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          28.8 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">DeepSeek API 实战
+├── 准备：注册充值 / Key 管理（环境变量 + .gitignore + 泄露吊销）
+│   └── 成本控制：max_tokens / 控轮次 / 缓存
+├── 调用两种方式
+│   ├── requests：POST /chat/completions + Bearer 认证
+│   └── OpenAI SDK：base_url 指向 DeepSeek（推荐）
+├── 角色与多轮：system 定规则；messages 维护历史（记忆=传回）
+├── 流式输出：stream=True + delta.content（了解）
+└── 工具调用（最小智能体）
+    ├── tools 声明：name + description + parameters
+    ├── 主循环：tool_calls 判断 → 执行 → role=&quot;tool&quot; 回传 → 再问
+    ├── max_turns 兜底；工具代码自己负责安全
+    └── 这就是 LangChain 等框架的&quot;手写版&quot;</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>Key 放环境变量，绝不入库；泄露立即吊销重建；</li><li>解析响应固定路径：<code class="md-inline">choices[0].message.content</code>；</li><li>多轮对话 = 维护并传回 messages 历史；</li><li>工具调用四步：声明 → 模型决定 → 代码执行 → 结果回传；</li><li><code class="md-inline">max_turns</code> 兜底必须有，<code class="md-inline">eval</code> 必须加白名单——<strong>成本与安全由你负责</strong>。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 8, "28.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 8, '28.8 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 8, '28.8 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="28_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td><code class="md-inline">DEEPSEEK_API_KEY</code></td><td>环境变量存密钥（绝不入库）</td></tr><tr><td><code class="md-inline">OpenAI(api_key, base_url)</code></td><td>DeepSeek 兼容 OpenAI SDK</td></tr><tr><td><code class="md-inline">chat.completions.create(...)</code></td><td>发起对话</td></tr><tr><td><code class="md-inline">choices[0].message.content</code></td><td>取模型回答</td></tr><tr><td><code class="md-inline">temperature</code> / <code class="md-inline">max_tokens</code></td><td>随机性 / 输出上限（控成本）</td></tr><tr><td>system prompt</td><td>设定角色与规则</td></tr><tr><td><code class="md-inline">stream=True</code></td><td>流式输出</td></tr><tr><td><code class="md-inline">tools</code> / <code class="md-inline">tool_calls</code></td><td>工具声明 / 模型调用意图</td></tr><tr><td><code class="md-inline">max_turns</code></td><td>工具循环兜底（防死循环）</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 9, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="28_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(28, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(28, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(28, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="28_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(28, 9, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(28, 9, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 DeepSeek API 实战 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ DeepSeek API 实战 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># DeepSeek API 实战
+## 28.1 注册与成本控制
+### 语法掌握：注册与充值
+### 红线：API Key 安全
+## 28.2 第一次对话
+### 语法掌握：用 requests 调用（不装额外库）
+### 语法掌握：用 OpenAI SDK（推荐，功能全）
+## 28.3 系统提示词与多轮对话
+### 语法掌握：system prompt 设定角色
+### 语法掌握：多轮对话（维护 messages 历史）
+## 28.4 流式输出（了解）
+## 28.5 工具调用：让智能体&#34;有手有脚&#34;
+### 概念认知：Function Calling 是什么
+### 语法掌握：声明工具
+### 语法掌握：完整工具调用循环（最小智能体）
+## 28.6 本章 Debug 四件套
+### 问题 1：401 Unauthorized
+### 问题 2：模型名不存在
+### 问题 3：工具调用死循环
+### 问题 4：Key 泄露进 Git
+## 28.7 Vibe Coding 任务卡（L3 主卡）
+## 28.8 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 28;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["28.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236", "28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd", "28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd", "28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09", "28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"", "28.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "28.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "28.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "DeepSeek API \u5b9e\u6218";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(28, "DeepSeek API \u5b9e\u6218", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u6ce8\u518c DeepSeek \u5f00\u653e\u5e73\u53f0\u5e76\u7406\u89e3\u6210\u672c\u63a7\u5236\uff1b\n- \u7528\u73af\u5883\u53d8\u91cf\u7ba1\u7406 API Key\uff0c\u7edd\u4e0d\u5165\u5e93\uff1b\n- \u7528 requests \u548c OpenAI SDK \u4e24\u79cd\u65b9\u5f0f\u8c03\u7528 DeepSeek\uff1b\n- \u7528 system pr", ["28.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236", "28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd", "28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd", "28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09", "28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"", "28.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "28.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "28.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

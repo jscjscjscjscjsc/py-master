@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyMaster — 变量与数据类型</title>
+<title>PyMaster — 变量、数据类型与输入输出</title>
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/chapter_intro_3d.css">
 <link rel="stylesheet" href="static/css/star_map.css">
@@ -12,8 +12,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
 
 <link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
 </head>
-<body class="chapter-page" data-chapter-id="2" data-chapter-title="变量与数据类型" data-chapter-description="学习如何存储数据，认识 Python 中的数字、字符串、布尔值等基本数据类型">
+<body class="chapter-page" data-chapter-id="2" data-chapter-title="变量、数据类型与输入输出" data-chapter-description="学完本章，你应该能够：
+
+- 理解变量的本质（名字绑定到对象，而不是&#34;装数据的盒子&#34;），并遵循规范命名；
+- 掌握 Python 四种基本数据类型：整数 int、浮点数 float、字符串 str、布尔 bool；
+- 熟练使用算术运算符（">
 
 <div class="bg-grid"></div>
 <canvas id="particles-canvas"></canvas>
@@ -44,14 +54,14 @@
   <div class="chapter-hero">
     <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 02</p>
     <span class="hero-icon">📦</span>
-    <h2>第 2 章 · 变量与数据类型</h2>
-    <p class="hero-desc">学习如何存储数据，认识 Python 中的数字、字符串、布尔值等基本数据类型</p>
+    <h2>第 2 章 · 变量、数据类型与输入输出</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 理解变量的本质（名字绑定到对象，而不是&#34;装数据的盒子&#34;），并遵循规范命名；
+- 掌握 Python 四种基本数据类型：整数 int、浮点数 float、字符串 str、布尔 bool；
+- 熟练使用算术运算符（</p>
     <div class="hero-buttons">
       <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
-      
-      <a href="https://feishu.doubao.com/slides/EXbUs7Dpnl3rZsd97IucBo12nvh" target="_blank" class="btn-ppt-hero">
-        📊 查看本章 PPT 课件
-      </a>
       
       
       
@@ -80,7 +90,7 @@
           
           <span style="color:var(--cyan);font-weight:700;">01.</span>
           
-          什么是变量？
+          2.0 学习目标与前置知识
         </span>
         <span class="kp-indicator">
           ▼
@@ -90,39 +100,15 @@
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>变量的概念</h3><p>变量是一个<strong>存储数据的容器</strong>。想象你有一个贴了标签的盒子，标签叫 <code>name</code>，盒子里装着 <code>"Alice"</code>，以后提到 <code>name</code> 就知道里面是什么。</p><pre><code>name = "Alice"   # 把 "Alice" 放进贴了 name 标签的盒子
-age = 25          # 把 25 放进贴了 age 标签的盒子
-print(name)       # 输出盒子里的内容 → Alice</code></pre>
-<h3>Python 变量 vs 其他语言</h3><p>Python 不需要声明变量类型：</p><pre><code># Java/C++ 风格（Python 不需要这样做）
-int age = 25;      # 声明类型
-String name = "Tom";  # 声明类型
-
-# Python 风格（直接赋值，自动推断类型）
-age = 25           # Python 自动知道这是整数
-name = "Tom"       # Python 自动知道这是字符串</code></pre>
-<h3>变量命名规则（必记！）</h3><ul><li>只能包含<strong>字母、数字和下划线</strong>（_）</li><li><strong>不能以数字开头</strong></li><li><strong>区分大小写</strong>（name、Name、NAME 是三个不同变量）</li><li><strong>不能使用 Python 关键字</strong>（如 if、for、while、class、def 等）</li></ul><pre><code># ✅ 合法的变量名
-name = "Alice"
-age = 25
-user_name = "bob"
-_count = 100         # 下划线开头也合法（常用于私有变量）
-名字 = "小明"         # Python 3 支持中文变量名（但不推荐）
-
-# ❌ 不合法的变量名
-2name = "error"      # 不能以数字开头
-my-name = "error"    # 不能使用连字符
-if = 10              # 不能使用关键字</code></pre>
-<h3>命名规范（PEP 8 官方推荐）</h3><ul><li><strong>变量和函数</strong>：小写字母 + 下划线 <code>my_variable</code>、<code>calculate_score()</code></li><li><strong>类名</strong>：大驼峰 <code>StudentRecord</code>、<code>DataAnalyzer</code></li><li><strong>常量</strong>：全大写 + 下划线 <code>MAX_SIZE = 100</code>、<code>PI = 3.14</code></li><li><strong>见名知意</strong>：<code>student_name</code> 远好于 <code>sn</code> 或 <code>s</code></li></ul><h3>变量重新赋值与类型变化</h3><pre><code>x = 10        # x 是整数
-print(x)      # 10
-x = "hello"   # x 现在是字符串了（Python 允许这样做）
-print(x)      # hello
-x = [1,2,3]   # x 又变成列表了
-print(x)      # [1, 2, 3]</code></pre><p>这叫<strong>动态类型</strong>——同一个变量在不同时刻可以指向不同类型的数据。</p>
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>理解变量的本质（名字绑定到对象，而不是"装数据的盒子"），并遵循规范命名；</li><li>掌握 Python 四种基本数据类型：整数 <code class="md-inline">int</code>、浮点数 <code class="md-inline">float</code>、字符串 <code class="md-inline">str</code>、布尔 <code class="md-inline">bool</code>；</li><li>熟练使用算术运算符（<code class="md-inline">+ - * / // % **</code>）和增强赋值（<code class="md-inline">+=</code> 等），能从原理上解释整除的"向下取整"；</li><li>正确进行类型转换，知道哪些转换会报错、为什么，并区分"截断"与"四舍五入"；</li><li>用 <code class="md-inline">input()</code> 接收输入、<code class="md-inline">print()</code> 输出、f-string 格式化，完成"输入 → 处理 → 输出"的完整程序；</li><li>读懂本章涉及的四类报错：<code class="md-inline">TypeError</code>、<code class="md-inline">ValueError</code>、<code class="md-inline">NameError</code>、<code class="md-inline">SyntaxError</code>；</li><li>了解位运算（<code class="md-inline">&amp; | ^ ~ &lt;&lt; &gt;&gt;</code>）的用途，能看懂"用 <code class="md-inline">x &amp; 1</code> 判断奇偶"这类写法；</li><li>为每个练习提交 Git，提交信息符合规范。</li></ol>
+<p><strong>前置知识</strong>：第 1 章（运行方式、print 家族、报错阅读法、Git 提交）。</p>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 0, "\u4ec0\u4e48\u662f\u53d8\u91cf\uff1f", [{"answer": 2, "ex_idx": 0, "explanation": "\u003ccode\u003e_count\u003c/code\u003e \u4ee5\u4e0b\u5212\u7ebf\u5f00\u5934\u662f\u5408\u6cd5\u7684\u53d8\u91cf\u540d\u3002A \u4ee5\u6570\u5b57\u5f00\u5934\u4e0d\u5408\u6cd5\uff0cB \u5305\u542b\u8fde\u5b57\u7b26\u4e0d\u5408\u6cd5\uff0cD \u4e2d class \u662f Python \u5173\u952e\u5b57\uff0c\u4e0d\u80fd\u7528\u4f5c\u53d8\u91cf\u540d\u3002", "options": ["A. 2player", "B. my-name", "C. _count", "D. class"], "question": "\u4ee5\u4e0b\u54ea\u4e2a\u53d8\u91cf\u540d\u662f\u5408\u6cd5\u7684\uff1f", "type": "choice"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 0, "2.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003ef-string \u7684 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u91cc\u76f4\u63a5\u653e\u53d8\u91cf\u540d\uff0c\u81ea\u52a8\u66ff\u6362\u4e3a\u503c\u3002\u8981\u6c42\u4e0e\u9898\u76ee\u6587\u6848\u4e00\u81f4\u5373\u53ef\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49\u4e09\u4e2a\u53d8\u91cf `student_name = \"\u5f20\u4e09\"`\u3001`student_age = 19`\u3001`student_score = 88.5`\uff0c\u7528 f-string \u6253\u5370\uff1a\"\u5f20\u4e09\uff0c19 \u5c81\uff0c\u6210\u7ee9 88.5 \u5206\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003estudent_name = \u0026quot;\u5f20\u4e09\u0026quot;\nstudent_age = 19\nstudent_score = 88.5\n\nprint(f\u0026quot;{student_name}\uff0c{student_age} \u5c81\uff0c\u6210\u7ee9 {student_score} \u5206\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff0c19 \u5c81\uff0c\u6210\u7ee9 88.5 \u5206\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -135,70 +121,8 @@ print(x)      # [1, 2, 3]</code></pre><p>这叫<strong>动态类型</strong>—�
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(2, '0', "\u4ee5\u4e0b\u54ea\u4e2a\u53d8\u91cf\u540d\u662f\u5408\u6cd5\u7684\uff1f")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49\u4e09\u4e2a\u53d8\u91cf `student_name = \"\u5f20\u4e09\"`\u3001`student_age = 19`\u3001`student_score = 88.5`\uff0c\u7528 f-string \u6253\u5370\uff1a\"\u5f20\u4e09\uff0c19 \u5c81\uff0c\u6210\u7ee9 88.5 \u5206\"\u3002")" title="收藏">☆</button>
               </div>
-            </div>
-            
-            <!-- Multiple Choice -->
-            <div class="ex-question" style="font-size:14px;margin-bottom:12px;white-space:pre-wrap;font-family:monospace;background:var(--bg-secondary);padding:10px 12px;border-radius:6px;line-height:1.6;">以下哪个变量名是合法的？</div>
-            <div class="ex-options" data-ex-type="choice" data-correct="2">
-              
-              <label class="ex-option" data-opt="0">
-                <span class="opt-letter">A</span>
-                <span> 2player</span>
-              </label>
-              
-              <label class="ex-option" data-opt="1">
-                <span class="opt-letter">B</span>
-                <span> my-name</span>
-              </label>
-              
-              <label class="ex-option" data-opt="2">
-                <span class="opt-letter">C</span>
-                <span> _count</span>
-              </label>
-              
-              <label class="ex-option" data-opt="3">
-                <span class="opt-letter">D</span>
-                <span> class</span>
-              </label>
-              
-            </div>
-            <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-submit" onclick="submitChoiceEx(this, 2, 0, 0)">提交答案</button>
-              <button class="btn-show-answer" onclick="showExAnswer(this)">查看解析</button>
-              <button class="btn-jj small" onclick="askJJAboutExercise("\u4ee5\u4e0b\u54ea\u4e2a\u53d8\u91cf\u540d\u662f\u5408\u6cd5\u7684\uff1f")">请教 AI 助教</button>
-            </div>
-            <div class="ex-answer" style="display:none;">
-              <div class="answer-label">📝 答案解析</div>
-              <div class="answer-text"><code>_count</code> 以下划线开头是合法的变量名。A 以数字开头不合法，B 包含连字符不合法，D 中 class 是 Python 关键字，不能用作变量名。</div>
-            </div>
-            
-          </div>
-          
-          <div class="kp-exercise" data-ex-idx="1" data-kp-index="0">
-            <div class="kp-ex-header">
-              <span>练习 2</span>
-              <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u4ec0\u4e48\u662f\u53d8\u91cf\uff1f\u300d")" title="收藏">☆</button>
-              </div>
-            </div>
-            
-            <!-- Code Exercise -->
-            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
-            </div>
-            <div class="ex-code-hint">
-              💡 提示：创建几个变量并打印它们的值和类型。
-            </div>
-            <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(2, 0, 1, "\u521b\u5efa\u51e0\u4e2a\u53d8\u91cf\u5e76\u6253\u5370\u5b83\u4eec\u7684\u503c\u548c\u7c7b\u578b\u3002")'>
-                💻 打开编辑器作答
-              </button>
-            </div>
-            <div class="ex-answer code-result" style="display:none;">
-              <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
             </div>
             
           </div>
@@ -227,8 +151,11 @@ print(x)      # [1, 2, 3]</code></pre><p>这叫<strong>动态类型</strong>—�
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 0, '什么是变量？')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 0, '2.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 0, '2.0 学习目标与前置知识')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -249,7 +176,7 @@ print(x)      # [1, 2, 3]</code></pre><p>这叫<strong>动态类型</strong>—�
           
           <span style="color:var(--cyan);font-weight:700;">02.</span>
           
-          数字类型
+          2.1 变量：给数据起名字
         </span>
         <span class="kp-indicator">
           ▼
@@ -259,49 +186,152 @@ print(x)      # [1, 2, 3]</code></pre><p>这叫<strong>动态类型</strong>—�
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>整数（int）</h3><p>没有小数点的数字。Python 3 中整数可以<strong>任意大</strong>（不受 32 位或 64 位限制），只要内存够大：</p><pre><code>age = 25
-year = 2024
-population = 8_000_000_000  # 下划线作为千分位分隔符，更易读
-big = 123456789012345678901234567890  # Python 自动处理大整数</code></pre><h3>浮点数（float）</h3><p>带小数点的数字。计算机用 IEEE 754 标准存储浮点数，存在精度问题：</p><pre><code>pi = 3.1415926
-height = 1.75
-speed_of_light = 3e8  # 科学计数法：3 × 10⁸
+            <h3 class="md-h">2.1.1 概念认知：为什么需要变量</h3>
+<p>假设你要写一个"购物小票"程序，商品的单价和数量后面会反复用到。如果每次都重新输入一遍数字，代码会又长又乱；更关键的是——<strong>程序必须能处理不同的输入</strong>，而不是写死一份。</p>
+<p>变量解决这个问题：<strong>变量是一个有名字的存储单元，里面可以存放数据，并且可以随时更换</strong>。</p>
+<p>先看一段"没有变量"的程序有多痛苦：</p>
+<p><strong>代码案例 2.1</strong>：不用变量的"死代码"（❌ 反例，仅作对比）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(&quot;苹果 3.5 元 2 个 合计 7.0 元&quot;)
+print(&quot;牛奶 5.0 元 1 个 合计 5.0 元&quot;)
+print(&quot;苹果 3.5 元 3 个 合计 10.5 元&quot;)</code></pre></div>
+<p><strong>讲解</strong>：这段代码的问题——<strong>数字改一次，所有行都要重写</strong>；而且"合计"是人工算好的，程序不会算。这就是"写死（hardcode）"的坏处。下面用变量重写：</p>
+<p><strong>代码案例 2.2</strong>：用变量重写（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = &quot;苹果&quot;
+price = 3.5
+count = 2
+total = price * count
+print(f&quot;{name} {price} 元 {count} 个 合计 {total} 元&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">苹果 3.5 元 2 个 合计 7.0 元</pre></div>
+<p><strong>讲解</strong>：把"苹果""3.5""2"分别存进变量，<code class="md-inline">total</code> 由程序计算。以后改价格，只改 <code class="md-inline">price = 3.5</code> 这一行即可。<strong>第 2.5 节学了 <code class="md-inline">input()</code> 后，这些数字还能由用户输入</strong>——那时程序就彻底"活"了。</p>
+<h3 class="md-h">2.1.2 语法掌握：赋值语句</h3>
+<p>用 <code class="md-inline">=</code> 把数据存进变量，这叫<strong>赋值（assignment）</strong>。</p>
+<p><strong>代码案例 2.3</strong>：赋值的本质（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = &quot;小明&quot;
+age = 18
+print(name)
+print(age)
 
-# ⚠️ 浮点数精度问题
-print(0.1 + 0.2)       # 0.30000000000000004（不是精确的 0.3！）
-print(0.1 + 0.2 == 0.3)  # False！
+score = 80
+print(score)
+score = 95
+print(score)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">小明
+18
+80
+95</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">name = "小明"</code>：把字符串 <code class="md-inline">"小明"</code> 绑定到名字 <code class="md-inline">name</code>；</li><li><code class="md-inline">print(name)</code> 打印的是变量里存的<strong>值</strong>，不是字母 n-a-m-e；</li><li><code class="md-inline">score = 95</code> 把 80 换成了 95——<strong>变量最后一次被赋的值，才是当前值</strong>。</li></ul>
+<p><strong>交叉验证：<code class="md-inline">=</code> 不是数学等号</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>：把"数学等式"写进代码</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a + 1 = 2</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">  File &quot;demo.py&quot;, line 1
+    a + 1 = 2
+    ^^^^^
+SyntaxError: cannot assign to expression here. Maybe you meant &#x27;==&#x27; instead of &#x27;=&#x27;?</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">=</code> 左边<strong>必须是变量名</strong>，不能是表达式。Python 的 <code class="md-inline">=</code> 是"把右边的值存进左边的名字"，方向是<strong>从右到左</strong>——先计算右边，再绑定左边。报错信息甚至提示你"是不是想用 <code class="md-inline">==</code>"（判断相等，2.3 节讲）。<strong>记住：一个等号是赋值，两个等号才是判断。</strong></p>
+<h3 class="md-h">2.1.3 原理探秘：变量是"标签"而不是"盒子"</h3>
+<p>很多教材把变量比作"盒子"，够用但不够准确。更接近真相的模型是：<strong>变量是贴在对象上的标签</strong>。</p>
+<p><strong>代码案例 2.4</strong>：用 id() 观察绑定关系（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = 10
+b = a
+print(id(a))
+print(id(b))
 
-# 解决方案：用 round() 或 decimal 模块
-print(round(0.1 + 0.2, 1))  # 0.3 ✓</code></pre>
-<h3>复数（complex）</h3><p>Python 原生支持复数，数学和工程计算很方便：</p><pre><code>c = 3 + 4j
-print(c.real)    # 3.0（实部）
-print(c.imag)    # 4.0（虚部）
-print(abs(c))    # 5.0（模长 = sqrt(3²+4²)）
-print(c * c)     # (-7+24j)</code></pre>
-<h3>类型判断与转换</h3><pre><code># 判断类型
-print(type(42))        # &lt;class 'int'&gt;
-print(type(3.14))      # &lt;class 'float'&gt;
-print(isinstance(42, int))  # True
+b = 20
+print(&quot;a =&quot;, a, &quot;b =&quot;, b)
+print(id(a))
+print(id(b))</code></pre></div>
+<p><strong>运行结果</strong>（id 数值每次运行可能不同，但规律一致）：</p>
+<div class="md-figure"><pre class="md-diagram">140713664637656
+140713664637656
+a = 10 b = 20
+140713664637656
+140713664637976</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">id(x)</code> 返回对象在内存中的编号，可以理解为"对象的地址"；</li><li><code class="md-inline">b = a</code> 之后，<code class="md-inline">a</code> 和 <code class="md-inline">b</code> 的 id <strong>相同</strong>——它们指向<strong>同一个对象 10</strong>；</li><li>执行 <code class="md-inline">b = 20</code> 后，<code class="md-inline">b</code> 的 id 变了——它被贴到了<strong>另一个对象 20</strong> 上；<code class="md-inline">a</code> 纹丝不动，还是 10。</li></ul>
+<p><strong>结论</strong>：</p>
+<ol><li>整数等基本类型是<strong>不可变对象</strong>，"修改"实际上是换了一个新对象；</li><li><code class="md-inline">b = a</code> 复制的是<strong>标签</strong>，不是数据本身（对整数来说没有区别，但第 5 章列表这种可变类型会有大区别，到时候再展开）；</li><li>这个"绑定"模型能解释很多诡异现象，是 Python 面试的底层考点。</li></ol>
+<h3 class="md-h">2.1.4 语法掌握：动态类型</h3>
+<p><strong>代码案例 2.5</strong>：同一个变量可以换类型（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">x = 10
+print(x, type(x))
+x = &quot;现在是字符串了&quot;
+print(x, type(x))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">10 &lt;class &#x27;int&#x27;&gt;
+现在是字符串了 &lt;class &#x27;str&#x27;&gt;</pre></div>
+<p><strong>讲解</strong>：Python 是<strong>动态类型</strong>语言——变量不需要声明类型，存什么就是什么，甚至可以中途换类型。方便，但代价是：<strong>你要自己记住变量当前存的是什么</strong>。出现 <code class="md-inline">TypeError</code> 时，十有八九是"变量的类型和操作不匹配"。</p>
+<blockquote class="md-quote"><p><strong>原理探秘：动态类型 vs 静态类型</strong></p>
+<p>C、Java 是静态类型：<code class="md-inline">int x = 10;</code> 先声明类型，之后 <code class="md-inline">x</code> 只能存整数。Python 是动态类型：类型属于<strong>对象</strong>，不属于变量名。</p>
+<ul><li>动态类型的优势：写代码快、灵活，适合快速迭代（Python 在 AI 领域的统治地位与此有关）；</li><li>动态类型的代价：错误推迟到运行时才暴露，大型项目维护成本高（企业会用类型提示 <code class="md-inline">: int</code> 缓解，第 16 章讲）。</li></ul>
+<p>面试常问："Python 为什么慢？"答案之一就是动态类型——运行时每次都要做类型检查和分发。</p></blockquote>
+<h3 class="md-h">2.1.5 语法掌握：一次给多个变量赋值与交换</h3>
+<p><strong>代码案例 2.6</strong>：多变量赋值与交换（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a, b = 1, 2
+print(a, b)
 
-# 类型转换
-int("123")      # 123（字符串→整数）
-int(3.99)       # 3（浮点→整数，直接截断不四舍五入）
-float("3.14")   # 3.14
-float(10)       # 10.0
-str(100)        # "100"（数字→字符串）
-bool(0)         # False
-bool("hello")   # True（非空字符串为 True）</code></pre>
-<h3>常用数值运算</h3><pre><code>print(abs(-5))       # 5（绝对值）
-print(pow(2, 10))    # 1024（2的10次方，等价于 2**10）
-print(divmod(17, 5)) # (3, 2)（商和余数）
-print(max(1,5,3))    # 5（取最大值）
-print(min(1,5,3))    # 1（取最小值）
-print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
+a, b = b, a
+print(a, b)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1 2
+2 1</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">a, b = b, a</code> 是 Python 交换变量的优雅写法——<strong>右边的 <code class="md-inline">b, a</code> 先整体求值（得到 (2, 1)），再依次赋给左边的 <code class="md-inline">a, b</code></strong>。</p>
+<p><strong>交叉验证：传统写法为什么错？</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>（在其他语言里的惯性写法）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = 1
+b = 2
+a = b   # a 变成 2
+b = a   # b 变成 2（以为能交换，结果两个都是 2）
+print(a, b)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">2 2</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">a = b</code> 执行后，<code class="md-inline">a</code> 已经变成 2；下一步 <code class="md-inline">b = a</code> 拿到的是<strong>新</strong> a（2），所以两个都成了 2。<strong>赋值是"先算右边、再绑左边"，一步一步来</strong>——这是理解一切赋值 bug 的钥匙。</p>
+<h3 class="md-h">2.1.6 工程应用：命名规范</h3>
+<p><strong>代码案例 2.7</strong>：好命名 vs 坏命名（✅ 对比）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># 坏命名：看不懂
+n = &quot;小明&quot;
+a = 18
+x = 3.5
+
+# 好命名：见名知意
+student_name = &quot;小明&quot;
+student_age = 18
+apple_price = 3.5</code></pre></div>
+<p><strong>命名五规则</strong>（PEP 8）：</p>
+<ol><li><strong>只能包含字母、数字、下划线，不能以数字开头</strong>：<code class="md-inline">name_1</code> 合法，<code class="md-inline">1name</code> 报错；</li><li><strong>不能用 Python 关键字</strong>：<code class="md-inline">if</code>、<code class="md-inline">for</code>、<code class="md-inline">while</code>、<code class="md-inline">class</code>、<code class="md-inline">True</code>、<code class="md-inline">False</code>、<code class="md-inline">None</code> 等（第 3 章起逐个见到）；</li><li><strong>见名知意</strong>：<code class="md-inline">student_age</code> 比 <code class="md-inline">a</code> 好一万倍；</li><li><strong>小写字母 + 下划线</strong>（蛇形命名）：<code class="md-inline">total_price</code>；常量用全大写：<code class="md-inline">MAX_NUM = 100</code>；</li><li><strong>避免与内置函数重名</strong>：不要用 <code class="md-inline">print</code>、<code class="md-inline">type</code>、<code class="md-inline">len</code> 做变量名（后面会踩坑）。</li></ol>
+<p><strong>交叉验证：非法命名 vs 合法命名</strong></p>
+<p class="md-callout md-bad"><strong>❌ 非法</strong>：<code class="md-inline">1name</code>（数字开头）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">1name = &quot;小明&quot;</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">  File &quot;demo.py&quot;, line 1
+    1name = &quot;小明&quot;
+     ^
+SyntaxError: invalid decimal literal</pre></div>
+<p class="md-callout md-bad"><strong>❌ 非法</strong>：<code class="md-inline">my-name</code>（含连字符）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">my-name = &quot;小明&quot;</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">  File &quot;demo.py&quot;, line 1
+    my-name = &quot;小明&quot;
+         ^
+SyntaxError: cannot assign to expression here.</pre></div>
+<p class="md-callout md-bad"><strong>❌ 非法</strong>：<code class="md-inline">class = 1</code>（关键字）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class = 1</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">  File &quot;demo.py&quot;, line 1
+    class = 1
+          ^
+SyntaxError: invalid syntax</pre></div>
+<p class="md-callout md-good"><strong>✅ 合法</strong>：<code class="md-inline">my_name</code>、<code class="md-inline">name_1</code>、<code class="md-inline">_hidden</code>（下划线开头是内部约定，第 10 章讲）。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：企业代码评审第一条就是看命名。宁可名字长一点，也不要 <code class="md-inline">a</code>、<code class="md-inline">b</code>、<code class="md-inline">c</code> 满天飞。VSCode 的 Python 扩展会用波浪线提示命名问题（Pylint），第 16 章系统讲代码规范。</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 1, "\u6570\u5b57\u7c7b\u578b", [{"answer": 1, "ex_idx": 0, "explanation": "3.14 \u662f\u4e00\u4e2a\u5e26\u5c0f\u6570\u70b9\u7684\u6570\u5b57\uff0c\u5c5e\u4e8e \u003ccode\u003efloat\u003c/code\u003e\uff08\u6d6e\u70b9\u6570\uff09\u7c7b\u578b\u3002\u003ccode\u003etype()\u003c/code\u003e \u51fd\u6570\u7528\u4e8e\u67e5\u770b\u6570\u636e\u7684\u7c7b\u578b\u3002", "options": ["A. \u003cclass \u0027int\u0027\u003e", "B. \u003cclass \u0027float\u0027\u003e", "C. \u003cclass \u0027str\u0027\u003e", "D. \u003cclass \u0027bool\u0027\u003e"], "question": "\u6267\u884c print(type(3.14)) \u4f1a\u8f93\u51fa\u4ec0\u4e48\uff1f", "type": "choice"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 1, "2.1 \u53d8\u91cf\uff1a\u7ed9\u6570\u636e\u8d77\u540d\u5b57", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u91cd\u70b9\u4f53\u4f1a\u4e09\u4e2a\u6613\u9519\u70b9\uff1a\u003ccode class=\"md-inline\"\u003e/\u003c/code\u003e \u8fd4\u56de float\uff08\u7ed3\u679c\u5e26 \u003ccode class=\"md-inline\"\u003e.0\u003c/code\u003e \u6216\u5c0f\u6570\uff09\uff1b\u003ccode class=\"md-inline\"\u003e//\u003c/code\u003e \u4e0e\u6570\u5b66\u6574\u9664\u4e00\u81f4\uff08\u6b63\u6570\u573a\u666f\uff09\uff1b\u003ccode class=\"md-inline\"\u003e%\u003c/code\u003e \u662f\u4f59\u6570\u3002\u6ce8\u91ca\u5fc5\u987b\u5199\u6e05\u6bcf\u4e2a\u7ed3\u679c\u7684\u542b\u4e49\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5df2\u77e5 `a = 7`\u3001`b = 3`\uff0c\u7528 `print()` \u8f93\u51fa `a + b`\u3001`a - b`\u3001`a * b`\u3001`a / b`\u3001`a // b`\u3001`a % b`\u3001`a ** b` \u4e03\u4e2a\u7ed3\u679c\uff0c\u5e76\u5728\u4ee3\u7801\u91cc\u7528\u6ce8\u91ca\u6807\u6ce8\u6bcf\u4e2a\u7ed3\u679c\u7684\u542b\u4e49\uff08\u5982\"10 \u9664\u4ee5 3 \u7684\u7ed3\u679c\u662f 3.33\"\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ea = 7\nb = 3\n\nprint(a + b)    # 7 + 3 = 10\nprint(a - b)    # 7 - 3 = 4\nprint(a * b)    # 7 * 3 = 21\nprint(a / b)    # 7 / 3 = 2.3333333333333335\uff08\u9664\u6cd5\u8fd4\u56de\u6d6e\u70b9\u6570\uff09\nprint(a // b)   # 7 // 3 = 2\uff08\u6574\u9664\uff0c\u5411\u4e0b\u53d6\u6574\uff09\nprint(a % b)    # 7 % 3 = 1\uff08\u53d6\u4f59\uff09\nprint(a ** b)   # 7 ** 3 = 343\uff087 \u7684 3 \u6b21\u65b9\uff09\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -314,43 +344,8 @@ print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(2, '0', "\u6267\u884c print(type(3.14)) \u4f1a\u8f93\u51fa\u4ec0\u4e48\uff1f")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 2 \u9898**\uff1a\u5df2\u77e5 `a = 7`\u3001`b = 3`\uff0c\u7528 `print()` \u8f93\u51fa `a + b`\u3001`a - b`\u3001`a * b`\u3001`a / b`\u3001`a // b`\u3001`a % b`\u3001`a ** b` \u4e03\u4e2a\u7ed3\u679c\uff0c\u5e76\u5728\u4ee3\u7801\u91cc\u7528\u6ce8\u91ca\u6807\u6ce8\u6bcf\u4e2a\u7ed3\u679c\u7684\u542b\u4e49\uff08\u5982\"10 \u9664\u4ee5 3 \u7684\u7ed3\u679c\u662f 3.33\"\uff09\u3002")" title="收藏">☆</button>
               </div>
-            </div>
-            
-            <!-- Multiple Choice -->
-            <div class="ex-question" style="font-size:14px;margin-bottom:12px;white-space:pre-wrap;font-family:monospace;background:var(--bg-secondary);padding:10px 12px;border-radius:6px;line-height:1.6;">执行 print(type(3.14)) 会输出什么？</div>
-            <div class="ex-options" data-ex-type="choice" data-correct="1">
-              
-              <label class="ex-option" data-opt="0">
-                <span class="opt-letter">A</span>
-                <span> <class 'int'></span>
-              </label>
-              
-              <label class="ex-option" data-opt="1">
-                <span class="opt-letter">B</span>
-                <span> <class 'float'></span>
-              </label>
-              
-              <label class="ex-option" data-opt="2">
-                <span class="opt-letter">C</span>
-                <span> <class 'str'></span>
-              </label>
-              
-              <label class="ex-option" data-opt="3">
-                <span class="opt-letter">D</span>
-                <span> <class 'bool'></span>
-              </label>
-              
-            </div>
-            <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-submit" onclick="submitChoiceEx(this, 2, 1, 0)">提交答案</button>
-              <button class="btn-show-answer" onclick="showExAnswer(this)">查看解析</button>
-              <button class="btn-jj small" onclick="askJJAboutExercise("\u6267\u884c print(type(3.14)) \u4f1a\u8f93\u51fa\u4ec0\u4e48\uff1f")">请教 AI 助教</button>
-            </div>
-            <div class="ex-answer" style="display:none;">
-              <div class="answer-label">📝 答案解析</div>
-              <div class="answer-text">3.14 是一个带小数点的数字，属于 <code>float</code>（浮点数）类型。<code>type()</code> 函数用于查看数据的类型。</div>
             </div>
             
           </div>
@@ -359,7 +354,7 @@ print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u6570\u5b57\u7c7b\u578b\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.1 \u53d8\u91cf\uff1a\u7ed9\u6570\u636e\u8d77\u540d\u5b57\u300d")" title="收藏">☆</button>
               </div>
             </div>
             
@@ -368,10 +363,10 @@ print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
               请编写代码验证你对本知识点的理解
             </div>
             <div class="ex-code-hint">
-              💡 提示：定义整数、浮点数各一个，打印它们的和、差、积。
+              💡 提示：创建几个变量并打印它们的值和类型。
             </div>
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(2, 1, 1, "\u5b9a\u4e49\u6574\u6570\u3001\u6d6e\u70b9\u6570\u5404\u4e00\u4e2a\uff0c\u6253\u5370\u5b83\u4eec\u7684\u548c\u3001\u5dee\u3001\u79ef\u3002")'>
+              <button class="btn-code-ex" onclick='openCodeEx(2, 1, 1, "\u521b\u5efa\u51e0\u4e2a\u53d8\u91cf\u5e76\u6253\u5370\u5b83\u4eec\u7684\u503c\u548c\u7c7b\u578b\u3002")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -406,8 +401,11 @@ print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 1, '数字类型')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 1, '2.1 变量：给数据起名字')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 1, '2.1 变量：给数据起名字')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -428,7 +426,7 @@ print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
           
           <span style="color:var(--cyan);font-weight:700;">03.</span>
           
-          字符串类型（str）
+          2.2 数值类型：int 与 float
         </span>
         <span class="kp-indicator">
           ▼
@@ -438,57 +436,227 @@ print(round(3.14159, 2))  # 3.14（四舍五入保留2位）</code></pre>
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>创建字符串的四种方式</h3><pre><code>s1 = 'Hello'              # 单引号
-s2 = "Python"             # 双引号（效果相同）
-s3 = '''第一行
-第二行
-第三行'''                  # 三单引号：保留换行
-s4 = """也是多行
-字符串"""                  # 三双引号：常用于文档字符串(docstring)</code></pre><p><strong>引号的选择：</strong>单引号和双引号在 Python 中完全等价。当字符串内含引号时交替使用：<code>"I'm fine"</code> 或 <code>'他说"你好"'</code>。</p>
-<h3>转义字符</h3><table><tr><th>转义</th><th>含义</th><th>转义</th><th>含义</th></tr><tr><td>\n</td><td>换行</td><td>\t</td><td>制表符(Tab)</td></tr><tr><td>\\</td><td>反斜杠本身</td><td>\'</td><td>单引号</td></tr><tr><td>\"</td><td>双引号</td><td>\r</td><td>回车</td></tr></table>
-<pre><code>print("第一行\n第二行")   # 换行输出
-print("他说：\"你好\"")    # 在字符串中包含引号
-print("路径：C:\\\Users\\Admin")  # 路径中的反斜杠</code></pre>
-<h3>原始字符串（raw string）</h3><pre><code># 原始字符串中 \ 就是普通的 \，不用转义
-path = r"C:\Users\Admin\Documents"  # r 前缀
-print(path)  # C:\Users\Admin\Documents</code></pre>
-<h3>字符串基本操作</h3><pre><code>name = "Alice"
-# 拼接
-greeting = "Hello, " + name  # "Hello, Alice"
-# 重复
-print("Hi" * 3)       # "HiHiHi"
-# 长度
-print(len(name))      # 5
-# 索引（从 0 开始）
-print(name[0])        # "A"
-print(name[-1])       # "e"（倒数第一个）
-print(name[-2])       # "c"（倒数第二个）
-# 成员检查
-print("li" in name)   # True</code></pre>
-<h3>f-string 格式化（Python 3.6+，推荐！）</h3><pre><code>name = "Bob"
-age = 20
-score = 92.567
-# 基本用法
-print(f"我叫{name}，今年{age}岁")
-# 表达式直接嵌入
-print(f"明年{age + 1}岁")
-# 格式控制
-print(f"分数：{score:.1f}")     # 92.6（保留1位小数）
-print(f"{name:>10}")            # "      Bob"（右对齐，占10格）
-print(f"{name:*^10}")           # "***Bob****"（居中对齐，*填充）
-# 大数字千分位
-num = 1234567890
-print(f"{num:,}")               # 1,234,567,890</code></pre>
-<h3>字符串不可变性</h3><pre><code>s = "Hello"
-# s[0] = "h"   # ❌ 报错！字符串不能修改单个字符
-s = "h" + s[1:]  # ✅ 正确做法：创建新字符串
-print(s)         # "hello"</code></pre>
+            <h3 class="md-h">2.2.1 概念认知：整数与浮点数</h3>
+<ul><li><strong>int（整数）</strong>：<code class="md-inline">0</code>、<code class="md-inline">-5</code>、<code class="md-inline">100</code>、<code class="md-inline">2026</code>；</li><li><strong>float（浮点数）</strong>：带小数点的数，<code class="md-inline">3.14</code>、<code class="md-inline">-0.5</code>、<code class="md-inline">100.0</code>。</li></ul>
+<p>注意 <code class="md-inline">100</code> 是 int，<code class="md-inline">100.0</code> 是 float——<strong>数学上相等，但类型不同</strong>。</p>
+<p><strong>代码案例 2.8</strong>：用 type() 查看类型（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(type(100))
+print(type(3.14))
+print(type(&quot;hello&quot;))
+print(type(True))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">&lt;class &#x27;int&#x27;&gt;
+&lt;class &#x27;float&#x27;&gt;
+&lt;class &#x27;str&#x27;&gt;
+&lt;class &#x27;bool&#x27;&gt;</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">type()</code> 返回数据的类型，<code class="md-inline">&lt;class 'int'&gt;</code> 表示"这是 int 类型"。调试时用 <code class="md-inline">print(x, type(x))</code> 确认变量里到底是什么，极其实用。</p>
+<p><strong>交叉验证：类型不同，但可以相等？</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(100 == 100.0)
+print(type(100) == type(100.0))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True
+False</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">100</code> 和 <code class="md-inline">100.0</code> 数值相等（<code class="md-inline">==</code> 为 True），但类型不同（<code class="md-inline">type</code> 比较为 False）。<strong>"值相等"和"类型相同"是两个概念</strong>，后面学文件读写、JSON 时，类型错了会导致各种诡异问题。</p>
+<h3 class="md-h">2.2.2 语法掌握：算术运算符</h3>
+<p><strong>代码案例 2.9</strong>：七种运算（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(10 + 3)   # 加
+print(10 - 3)   # 减
+print(10 * 3)   # 乘
+print(10 / 3)   # 除
+print(10 // 3)  # 整除
+print(10 % 3)   # 取余
+print(2 ** 10)  # 幂</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">13
+7
+30
+3.3333333333333335
+3
+1
+1024</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">/</code>（除法）结果<strong>一定是 float</strong>：<code class="md-inline">10 / 3</code> 得到 <code class="md-inline">3.3333333333333335</code>；</li><li><code class="md-inline">//</code>（整除）：<code class="md-inline">10 // 3 = 3</code>；</li><li><code class="md-inline">%</code>（取余）：<code class="md-inline">10 % 3 = 1</code>（10 除以 3 商 3 余 1）；</li><li><code class="md-inline">**</code>（幂）：<code class="md-inline">2 ** 10 = 1024</code>。</li></ul>
+<p><strong>交叉验证：<code class="md-inline">/</code> 与 <code class="md-inline">//</code> 的隐藏差异</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(10 / 2)
+print(10 // 2)
+print(type(10 / 2))
+print(type(10 // 2))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">5.0
+5
+&lt;class &#x27;float&#x27;&gt;
+&lt;class &#x27;int&#x27;&gt;</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">10 / 2</code> 结果是 <strong>5.0（float）</strong>，不是 5；<code class="md-inline">10 // 2</code> 才是 5（int）。<strong>看到小数点了没？除法永远返回浮点数</strong>，这是 Python 与 C、Java 的重大区别（C 里 <code class="md-inline">10/2</code> 是 5）。后续写"平均分"等程序时，这个差异会直接决定结果对不对。</p>
+<h3 class="md-h">2.2.3 语法掌握：整除与取余的"坑"——向下取整</h3>
+<p><strong>代码案例 2.10</strong>：负数整除（✅ 正确，但结果反直觉）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(-10 // 3)
+print(-10 % 3)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">-4
+2</pre></div>
+<blockquote class="md-quote"><p><strong>原理探秘：为什么 -10 // 3 是 -4 而不是 -3？</strong></p>
+<p>Python 的 <code class="md-inline">//</code> 是<strong>向下取整（floor）</strong>：结果要满足"小于或等于真实商的最大整数"。<code class="md-inline">-10 / 3 ≈ -3.333</code>，向下取整就是 <strong>-4</strong>。</p>
+<p>对比：C、Java 的整除是"向零取整"，结果会是 -3。这是 Python 与其他语言的经典差异，<strong>面试高频题</strong>。</p>
+<p><code class="md-inline">%</code> 取余与 <code class="md-inline">//</code> 配套，永远满足公式：</p>
+<div class="md-figure"><pre class="md-diagram">a = (a // b) * b + (a % b)</pre></div>
+<p>验证：<code class="md-inline">-10 = (-4) × 3 + 2</code> ✅。所以 <code class="md-inline">-10 % 3 = 2</code>，而不是你可能猜的 -1。</p></blockquote>
+<p><strong>工程意义</strong>：处理"分页""取整分组"时，正负数边界最容易出 bug。例如"把 -7 秒转成分钟"这类计算，先想清楚你要的是"向下取整"还是"向零截断"。</p>
+<h3 class="md-h">2.2.4 语法掌握：运算优先级</h3>
+<p><strong>代码案例 2.11</strong>：优先级与括号（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(2 + 3 * 4)      # 先乘后加
+print((2 + 3) * 4)    # 括号优先
+print(2 + 3 * 4 ** 2) # 幂 &gt; 乘除 &gt; 加减
+print(2 ** 3 ** 2)    # 幂运算从右往左</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">14
+20
+50
+512</pre></div>
+<p><strong>讲解</strong>：优先级从高到低大致是：<strong>括号 &gt; 幂 <code class="md-inline">**</code> &gt; 乘除取余 <code class="md-inline">* / // %</code> &gt; 加减 <code class="md-inline">+ -</code></strong>。两条实用建议：</p>
+<ol><li>不确定优先级就加括号——可读性远大于"炫技"；</li><li><code class="md-inline">2 ** 3 ** 2</code> 等于 <code class="md-inline">2 ** (3 ** 2) = 2 ** 9 = 512</code>（幂运算是<strong>右结合</strong>：从右往左算），知道即可，平时别这么写。</li></ol>
+<p><strong>交叉验证：自以为的优先级 vs 实际优先级</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>：想算"平均分"却算错</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a, b, c = 80, 90, 70
+avg = a + b + c / 3
+print(avg)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">173.33333333333334</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">a + b + c / 3</code> 按优先级先算 <code class="md-inline">c / 3 = 23.33</code>，再加 80+90，得到 173.33——完全不是平均分。正确写法是 <code class="md-inline">avg = (a + b + c) / 3</code>。<strong>优先级错误不会报错，只会给错误结果，是最危险的 bug 类型</strong>。</p>
+<h3 class="md-h">2.2.5 语法掌握：增强赋值</h3>
+<p><strong>代码案例 2.12</strong>：+= 系列（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">score = 90
+score += 5
+print(score)
+score -= 10
+print(score)
+score *= 2
+print(score)
+score //= 3
+print(score)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">95
+85
+170
+56</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">x += y</code> 是 <code class="md-inline">x = x + y</code> 的简写，<code class="md-inline">-=</code>、<code class="md-inline">*=</code>、<code class="md-inline">/=</code>、<code class="md-inline">//=</code>、<code class="md-inline">%=</code> 同理。写循环计数器时高频使用。</p>
+<p><strong>交叉验证：<code class="md-inline">+=</code> 对字符串也有效——运算符"重载"的直觉</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">msg = &quot;Hello&quot;
+msg += &quot;, Python&quot;
+print(msg)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">Hello, Python</pre></div>
+<p><strong>讲解</strong>：同一个 <code class="md-inline">+</code>，对数字是加法，对字符串是拼接——这叫<strong>运算符重载</strong>（第 10 章面向对象时你会自己给类定义 <code class="md-inline">+</code> 的行为）。<strong>看到同一运算符对不同类型有不同行为，不要惊讶，这是 Python 的常规操作</strong>。但也正因如此，<code class="md-inline">str + int</code> 会报 <code class="md-inline">TypeError</code>——Python 允许重载，却不会替你偷偷转换类型。</p>
+<h3 class="md-h">2.2.6 语法掌握：浮点数的精度问题</h3>
+<p><strong>代码案例 2.13</strong>：0.1 + 0.2 不等于 0.3（✅ 正确，结果反直觉）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(0.1 + 0.2)
+print(0.1 + 0.2 == 0.3)
+print(round(0.1 + 0.2, 2))
+print(round(0.1 + 0.2, 2) == 0.3)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">0.30000000000000004
+False
+0.3
+True</pre></div>
+<blockquote class="md-quote"><p><strong>原理探秘：为什么 0.1 + 0.2 ≠ 0.3？</strong></p>
+<p>计算机用<strong>二进制</strong>存小数。十进制的 0.1 转成二进制是无限循环小数（就像十进制里 1/3 = 0.333... 写不完），float 只能存 53 位有效二进制位（IEEE 754 双精度标准），于是存的是一个<strong>近似值</strong>。两个近似值相加，误差就暴露出来了：<code class="md-inline">0.30000000000000004</code>。</p>
+<p>这不是 Python 的 bug，<strong>所有用二进制浮点数的语言（C、Java、JS）都一样</strong>。处理方式：</p>
+<ul><li>比较时不要直接 <code class="md-inline">==</code>，先 <code class="md-inline">round(x, n)</code> 再比；</li><li>涉及金额等精确计算，用 <code class="md-inline">round(..., 2)</code> 或第 6 章的 <code class="md-inline">Decimal</code>；</li><li>显示时用格式化 <code class="md-inline">:.2f</code>，把近似值"包装"成人类可读的样子。</li></ul></blockquote>
+<p><strong>交叉验证：显示正确 ≠ 存储精确</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(f&quot;{0.1 + 0.2:.2f}&quot;)
+print(f&quot;{0.1 + 0.2:.20f}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">0.30
+0.30000000000000004441</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">:.2f</code> 显示 0.30 很漂亮，但 <code class="md-inline">:.20f</code> 暴露了真相：存储的其实是 0.30000000000000004441。<strong>"显示正确"不等于"值精确"</strong>——企业里金额计算（如订单总额、对账）必须用精确类型，这是金融行业的红线，也是面试"为什么不用 float 存金额"的答案。</p>
+<h3 class="md-h">2.2.7 语法掌握：大整数——Python 的隐藏福利</h3>
+<p><strong>代码案例 2.14</strong>：2 的 100 次方（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(2 ** 100)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1267650600228229401496703205376</pre></div>
+<blockquote class="md-quote"><p><strong>原理探秘：Python 的 int 是"任意精度"</strong></p>
+<p>C 语言的 int 通常 32 位，最大约 21 亿，算 2 的 100 次方会<strong>溢出</strong>（结果错乱）。Python 的 int 是任意精度——需要多少位就分配多少位内存，所以多大多小的整数都能精确表示（前提是内存够）。这是 Python 做"大数运算、密码学、科学计算"时的天然优势。</p>
+<p>代价：大整数运算比固定精度慢，因为不再是一个机器指令能完成的事。<strong>面试可以这样回答"Python 的 int 和 C 的 int 有什么区别"</strong>：Python 任意精度不会溢出，C 固定精度会溢出但更快。</p></blockquote>
+<h3 class="md-h">2.2.8 语法掌握：类型转换</h3>
+<p><strong>代码案例 2.15</strong>：三种常用转换（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(int(&quot;123&quot;))
+print(float(&quot;3.14&quot;))
+print(str(100))
+print(int(3.99))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">123
+3.14
+100
+3</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">int("123")</code>：把数字字符串转成整数；</li><li><code class="md-inline">float("3.14")</code>：把数字字符串转成浮点数；</li><li><code class="md-inline">str(100)</code>：把整数转成字符串（字符串拼接时用）；</li><li><code class="md-inline">int(3.99)</code>：<strong>直接截断小数部分</strong>得到 3，不是四舍五入！</li></ul>
+<p><strong>交叉验证：截断（int）vs 向下取整（//）vs 四舍五入（round）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(int(-3.99))
+print(-3.99 // 1)
+print(round(-3.99))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">-3
+-4
+-4</pre></div>
+<p><strong>讲解</strong>：同一个数 -3.99，三种操作三种结果：</p>
+<ul><li><code class="md-inline">int(-3.99)</code> = <strong>-3</strong>：<strong>向零截断</strong>（丢掉小数部分，往 0 的方向走）；</li><li><code class="md-inline">-3.99 // 1</code> = <strong>-4</strong>：向下取整（往更小的方向走）；</li><li><code class="md-inline">round(-3.99)</code> = <strong>-4</strong>：四舍五入（按绝对值大小）。</li></ul>
+<p><strong>"截断"和"取整"不是一回事</strong>——这是面试爱考的区分点，也是数据处理常见的隐形 bug 来源。</p>
+<p><strong>交叉验证：什么字符串能转、什么不能转</strong></p>
+<p class="md-callout md-good"><strong>✅ 能转</strong>：<code class="md-inline">int("123")</code>、<code class="md-inline">int("-5")</code>、<code class="md-inline">float("3.14")</code>、<code class="md-inline">float("2")</code></p>
+<p class="md-callout md-bad"><strong>❌ 不能转</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(int(&quot;3.14&quot;))</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: invalid literal for int() with base 10: &#x27;3.14&#x27;</pre></div>
+<p class="md-callout md-bad"><strong>❌ 不能转</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(int(&quot;abc&quot;))</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: invalid literal for int() with base 10: &#x27;abc&#x27;</pre></div>
+<p class="md-callout md-bad"><strong>❌ 不能转</strong>（字符串里有空格也报错）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(int(&quot; 123 &quot;))</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: invalid literal for int() with base 10: &#x27; 123 &#x27;</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">int()</code> 只能转"长得像整数的字符串"；带小数点的、带字母的、带空格的都不行（空格要用 <code class="md-inline">strip()</code> 去掉，第 4 章讲）。<strong><code class="md-inline">ValueError</code> 的意思是"值不合法"——值存在，但不符合转换要求</strong>。</p>
+<p><strong>微任务卡（M1 · 报错卡 · L0）</strong>：把 <code class="md-inline">int("3.14")</code> 的 ValueError 报错发给 AI，提问："为什么这个转换会失败？什么字符串能转 int、什么不能？"一句话记录结论。</p>
+<h3 class="md-h">2.2.9 了解：位运算——直接操作二进制</h3>
+<p><strong>概念认知：为什么还要学位运算</strong></p>
+<p>计算机底层只有 0 和 1，所有运算最终都是"位运算"。Python 的 <code class="md-inline">&amp; | ^ ~ &lt;&lt; &gt;&gt;</code> 直接操作整数的<strong>二进制位</strong>，在某些场景比算术运算更简洁（权限标志、状态位、奇偶判断）。</p>
+<p><strong>代码案例 2.16</strong>：位运算全家（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a, b = 10, 6
+
+print(a &amp; b)    # 按位与：两个位都是 1 才为 1
+print(a | b)    # 按位或：有一个是 1 就为 1
+print(a ^ b)    # 按位异或：相同为 0，不同为 1
+print(~a)       # 按位取反
+print(10 &lt;&lt; 3)  # 左移 3 位
+print(121 &gt;&gt; 3) # 右移 3 位</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">2
+14
+12
+-11
+80
+15</pre></div>
+<p><strong>讲解</strong>（以 10 和 6 为例，二进制分别为 1010 和 0110）：</p>
+<div class="md-figure"><pre class="md-diagram">   1010        1010        1010
+ &amp; 0110      | 0110      ^ 0110
+   0010=2     1110=14     1100=12</pre></div>
+<p><strong>重点结论</strong>：</p>
+<ul><li><code class="md-inline">10 &lt;&lt; 3</code> = <code class="md-inline">10 × 2³</code> = 80：<strong>左移 n 位 = 乘 2ⁿ</strong>；</li><li><code class="md-inline">121 &gt;&gt; 3</code> = <code class="md-inline">121 // 2³</code> = 15：<strong>右移 n 位 = 整除 2ⁿ</strong>；</li><li><code class="md-inline">x &amp; 1</code> 判断奇偶：二进制最低位是 1 为奇数、0 为偶数。</li></ul>
+<p><strong>原理探秘：为什么 <code class="md-inline">~10</code> 是 -11</strong></p>
+<p>负数在计算机里用<strong>补码</strong>存储。取反运算 <code class="md-inline">~x</code> 把每一位 0 变 1、1 变 0，结果等价于 <strong><code class="md-inline">-(x+1)</code></strong>——这是补码表示的直接推论。<strong>记住 <code class="md-inline">~x == -(x+1)</code> 即可，不必深究补码细节</strong>。</p>
+<p><strong>交叉验证：位运算 vs 算术运算</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(10 &lt;&lt; 1, 10 * 2)     # 20 20：结果相同
+print(121 &gt;&gt; 2, 121 // 4)  # 30 30：结果相同
+print(5 &amp; 1, 6 &amp; 1)        # 1 0：奇偶判断</code></pre></div>
+<p><strong>讲解</strong>：位运算和算术运算在"乘 2/除 2/奇偶判断"上结果一致——<strong>位运算只是更接近底层的写法，日常代码优先用算术运算（可读性好）；在权限标志、底层协议等场景才用位运算</strong>。</p>
+<p><strong>工程应用：位运算的真实场景（了解）</strong></p>
+<ul><li><strong>权限标志</strong>：用一位表示一个权限（读=1、写=2、执行=4），<code class="md-inline">权限 &amp; 2</code> 判断"是否有写权限"；</li><li><strong>状态位</strong>：网络协议、硬件驱动里用位表示开关状态；</li><li><strong>优化</strong>：某些高频循环里用 <code class="md-inline">x &lt;&lt; 1</code> 替代 <code class="md-inline">x * 2</code>（现代解释器已自动优化，收益极小）。</li></ul>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：位运算属于"面试加分项"而非"必考项"。能看懂 <code class="md-inline">x &amp; 1</code>、<code class="md-inline">1 &lt;&lt; n</code> 这类写法即可；深挖留给对底层感兴趣的同学。</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 2, "\u5b57\u7b26\u4e32\u7c7b\u578b\uff08str\uff09", [{"code_prompt": "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u7c7b\u578b\uff08str\uff09\u300d", "type": "code"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 2, "2.2 \u6570\u503c\u7c7b\u578b\uff1aint \u4e0e float", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u9010\u6b65\u9a8c\u8bc1\uff1a10 \u2192 15 \u2192 30 \u2192 27 \u2192 9\uff0c\u6700\u540e\u7ed3\u679c\u786e\u5b9e\u662f 9\u3002\u6ce8\u610f \u003ccode class=\"md-inline\"\u003e//=\u003c/code\u003e \u662f\u6574\u9664\u8d4b\u503c\uff0c\u003ccode class=\"md-inline\"\u003e27 // 3 = 9\u003c/code\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `x = 10`\uff0c\u7528\u589e\u5f3a\u8d4b\u503c\u4f9d\u6b21\u6267\u884c `x += 5`\u3001`x *= 2`\u3001`x -= 3`\u3001`x //= 3`\uff0c\u6bcf\u4e00\u6b65\u540e\u90fd `print(x)`\uff0c\u6838\u5bf9\u6700\u540e\u7ed3\u679c\u662f\u5426\u4e3a 9\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ex = 10\nx += 5     # x = 15\nprint(x)\nx *= 2     # x = 30\nprint(x)\nx -= 3     # x = 27\nprint(x)\nx //= 3    # x = 9\nprint(x)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e15\n30\n27\n9\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -501,7 +669,17 @@ print(s)         # "hello"</code></pre>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(2, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5b57\u7b26\u4e32\u7c7b\u578b\uff08str\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 3 \u9898**\uff1a\u5b9a\u4e49 `x = 10`\uff0c\u7528\u589e\u5f3a\u8d4b\u503c\u4f9d\u6b21\u6267\u884c `x += 5`\u3001`x *= 2`\u3001`x -= 3`\u3001`x //= 3`\uff0c\u6bcf\u4e00\u6b65\u540e\u90fd `print(x)`\uff0c\u6838\u5bf9\u6700\u540e\u7ed3\u679c\u662f\u5426\u4e3a 9\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.2 \u6570\u503c\u7c7b\u578b\uff1aint \u4e0e float\u300d")" title="收藏">☆</button>
               </div>
             </div>
             
@@ -510,10 +688,10 @@ print(s)         # "hello"</code></pre>
               请编写代码验证你对本知识点的理解
             </div>
             <div class="ex-code-hint">
-              💡 提示：定义字符串，使用 f-string 拼接并输出。
+              💡 提示：用代码把「2.2 数值类型：int 与 float」的核心用法演示一遍，并打印出结果。
             </div>
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(2, 2, 0, "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002")'>
+              <button class="btn-code-ex" onclick='openCodeEx(2, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c2.2 \u6570\u503c\u7c7b\u578b\uff1aint \u4e0e float\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -548,8 +726,11 @@ print(s)         # "hello"</code></pre>
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 2, '字符串类型（str）')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 2, '2.2 数值类型：int 与 float')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 2, '2.2 数值类型：int 与 float')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -570,7 +751,7 @@ print(s)         # "hello"</code></pre>
           
           <span style="color:var(--cyan);font-weight:700;">04.</span>
           
-          布尔类型与 None
+          2.3 布尔类型与比较运算
         </span>
         <span class="kp-indicator">
           ▼
@@ -580,43 +761,82 @@ print(s)         # "hello"</code></pre>
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <h3>布尔值（bool）</h3><p>只有两个值：<strong>True</strong> 和 <strong>False</strong>。注意首字母必须<strong>大写</strong>！</p><pre><code>is_student = True
-is_raining = False
-print(10 > 5)     # True
-print(3 == 5)     # False</code></pre>
-<h3>哪些值被视为 False？</h3><p>在条件判断中，以下值等同于 False（称为 <strong>falsy</strong> 值）：</p><table><tr><th>类型</th><th>Falsy 值</th></tr><tr><td>数字</td><td>0, 0.0, 0j</td></tr><tr><td>字符串</td><td>""（空字符串）</td></tr><tr><td>容器</td><td>[]（空列表）、{}（空字典）、()（空元组）、set()（空集合）</td></tr><tr><td>None</td><td>None</td></tr><tr><td>布尔</td><td>False</td></tr></table><p>除此以外的所有值都视为 True（<strong>truthy</strong>）。</p>
-<pre><code># 利用 falsy/truthy 写的简洁条件
-name = ""          # 空字符串是 falsy
-if not name:       # 等价于 if name == ""
-    print("名字不能为空")
-
-items = []         # 空列表是 falsy
-if items:          # 等价于 if len(items) > 0
-    print("有内容")
-else:
-    print("列表为空")</code></pre>
-<h3>None 类型</h3><p><code>None</code> 代表「没有值」或「空」，是 Python 的<strong>空对象</strong>。常用于：</p><ul><li>函数的默认返回值（无 return 语句时返回 None）</li><li>表示变量尚未赋值</li><li>初始化占位</li></ul><pre><code>result = None  # 先占个位，后面再赋值
-if result is None:
-    print("还没有结果")
-# 判断 None 应该用 is，而不是 ==
-# None 是单例，is 更快且不会被自定义 __eq__ 干扰</code></pre>
-<h3>布尔运算</h3><pre><code># and: 两者都 True 才返回 True
-print(True and True)   # True
-print(True and False)  # False
-
-# or: 一个为 True 就返回 True
-print(True or False)   # True
-print(False or False)  # False
-
-# not: 取反
-print(not True)   # False
-print(not False)  # True</code></pre>
+            <h3 class="md-h">2.3.1 概念认知：True 与 False</h3>
+<p>布尔类型只有两个值：<code class="md-inline">True</code>（真）和 <code class="md-inline">False</code>（假）。它是第 3 章条件判断的地基——<code class="md-inline">if</code> 语句就是根据一个布尔值的真假决定走哪条路。</p>
+<h3 class="md-h">2.3.2 语法掌握：比较运算</h3>
+<p><strong>代码案例 2.17</strong>：六个比较运算符（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(10 &gt; 5)
+print(10 &lt; 5)
+print(10 &gt;= 10)
+print(10 &lt;= 9)
+print(10 == 10)
+print(10 != 9)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True
+False
+True
+False
+True
+True</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">==</code> 是"相等判断"（两个等号），<code class="md-inline">=</code> 是赋值（一个等号），<strong>混用是最经典的新手 bug</strong>；</li><li><code class="md-inline">!=</code> 表示"不相等"；</li><li>比较运算的结果就是布尔值。</li></ul>
+<p><strong>交叉验证：<code class="md-inline">==</code> 与 <code class="md-inline">=</code> 的后果完全不同</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>（把判断写成赋值）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">password = &quot;123456&quot;
+print(password = &quot;123456&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">  File &quot;demo.py&quot;, line 2
+    print(password = &quot;123456&quot;)
+             ^^^^^^^^
+SyntaxError: cannot assign to function call here. Maybe you meant &#x27;==&#x27; instead of &#x27;=&#x27;?</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">print()</code> 里不能做赋值（Python 3.8 以后更是直接语法错误）。报错信息直接提示你"Maybe you meant '==' instead of '='?"——<strong>再次印证：报错信息是老师</strong>。</p>
+<p class="md-callout md-good"><strong>✅ 正确</strong>：<code class="md-inline">print(password == "123456")</code> → <code class="md-inline">True</code>。</p>
+<h3 class="md-h">2.3.3 原理探秘：bool 是 int 的"子类"</h3>
+<p><strong>代码案例 2.18</strong>：布尔值参与算术（✅ 正确，反直觉）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(True == 1)
+print(False == 0)
+print(True + True)
+print(True + False + True)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True
+True
+2
+2</pre></div>
+<p><strong>讲解</strong>：在 Python 内部，<code class="md-inline">True</code> 就是 <code class="md-inline">1</code>，<code class="md-inline">False</code> 就是 <code class="md-inline">0</code>（bool 是 int 的子类）。所以 <code class="md-inline">True + True = 2</code>。这带来一个实用技巧：统计"满足条件的个数"时可以直接把布尔结果相加（第 3 章学完循环后回来体会）。也解释了为什么 <code class="md-inline">True</code>、<code class="md-inline">False</code> 是<strong>关键字</strong>（2.1.6 命名规则里提到过）。</p>
+<h3 class="md-h">2.3.4 语法掌握：bool() 与"假值"规则</h3>
+<p><strong>代码案例 2.19</strong>：什么会被当成 False（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(bool(0))
+print(bool(1))
+print(bool(&quot;&quot;))
+print(bool(&quot; &quot;))
+print(bool(&quot;0&quot;))
+print(bool(&quot;False&quot;))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">False
+True
+False
+True
+True
+True</pre></div>
+<p><strong>讲解</strong>：Python 的"假值（falsy）"清单：<code class="md-inline">0</code>、<code class="md-inline">0.0</code>、空字符串 <code class="md-inline">""</code>、<code class="md-inline">None</code>（第 5 章讲）以及后面学的空列表、空字典等；<strong>其余一切为真</strong>。所以：</p>
+<ul><li><code class="md-inline">bool("")</code> = False（空字符串）；</li><li><code class="md-inline">bool(" ")</code> = True（一个空格也是字符，非空）；</li><li><strong><code class="md-inline">bool("0")</code> = True</strong>——字符串"0"非空，是"真"！这跟数值 0 完全不同。</li></ul>
+<p><strong>交叉验证：判断"输入是否为 0"的两个版本</strong></p>
+<p class="md-callout md-bad"><strong>❌ 错误直觉</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">num = input(&quot;请输入数字：&quot;)
+if num:
+    print(&quot;你输入了东西&quot;)</code></pre></div>
+<p>（输入 <code class="md-inline">0</code> 时也会打印"你输入了东西"——因为 <code class="md-inline">"0"</code> 是字符串，非空，为真）</p>
+<p class="md-callout md-good"><strong>✅ 正确做法</strong>（第 3 章学 <code class="md-inline">if</code> 后完整理解）：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">num = int(input(&quot;请输入数字：&quot;))
+if num == 0:
+    print(&quot;你输入的是 0&quot;)</code></pre></div>
+<p><strong>讲解</strong>：<strong>先转换类型，再比较数值</strong>。把"字符串"和"数字"混在一起判断，是新手最常踩的隐形逻辑坑。</p>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 3, "\u5e03\u5c14\u7c7b\u578b\u4e0e None", [{"code_prompt": "\u6bd4\u8f83\u4e24\u4e2a\u6570\u5b57\uff0c\u6253\u5370\u6bd4\u8f83\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5e03\u5c14\u7c7b\u578b\u4e0e None\u300d", "type": "code"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 3, "2.3 \u5e03\u5c14\u7c7b\u578b\u4e0e\u6bd4\u8f83\u8fd0\u7b97", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u4f53\u6e29\u53ef\u80fd\u5e26\u5c0f\u6570\uff0c\u7528 \u003ccode class=\"md-inline\"\u003efloat\u003c/code\u003e \u8f6c\u6362\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e{temp:.1f}\u003c/code\u003e \u4fdd\u7559\u4e00\u4f4d\u5c0f\u6570\uff1b\u003c/li\u003e\u003cli\u003e\u672c\u9898\u4e0d\u505a\u8303\u56f4\u5224\u65ad\uff08\u7b2c 3 \u7ae0\u5b66\u5b8c \u003ccode class=\"md-inline\"\u003eif\u003c/code\u003e \u518d\u5347\u7ea7\uff09\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u4f53\u6e29\u8bb0\u5f55\"\u7a0b\u5e8f\uff1a\u7528 `input()` \u8f93\u5165\u4f53\u6e29\uff08\u6d6e\u70b9\u6570\uff09\uff0c\u7528 f-string \u8f93\u51fa\"\u4f60\u7684\u4f53\u6e29\u662f xx.x \u5ea6\uff0c\u6b63\u5e38\u4f53\u6e29\u8303\u56f4 36.0 - 37.2 \u5ea6\"\uff08\u5148\u4e0d\u505a\u5224\u65ad\uff0c\u7b2c 3 \u7ae0\u5347\u7ea7\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etemp = float(input(\u0026quot;\u8bf7\u8f93\u5165\u4f60\u7684\u4f53\u6e29\uff1a\u0026quot;))\nprint(f\u0026quot;\u4f60\u7684\u4f53\u6e29\u662f {temp:.1f} \u5ea6\uff0c\u6b63\u5e38\u4f53\u6e29\u8303\u56f4 36.0 - 37.2 \u5ea6\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u8f93\u5165 36.5\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u4f60\u7684\u4f53\u6e29\uff1a36.5\n\u4f60\u7684\u4f53\u6e29\u662f 36.5 \u5ea6\uff0c\u6b63\u5e38\u4f53\u6e29\u8303\u56f4 36.0 - 37.2 \u5ea6\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -629,7 +849,17 @@ print(not False)  # True</code></pre>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(2, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c\u5e03\u5c14\u7c7b\u578b\u4e0e None\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u4f53\u6e29\u8bb0\u5f55\"\u7a0b\u5e8f\uff1a\u7528 `input()` \u8f93\u5165\u4f53\u6e29\uff08\u6d6e\u70b9\u6570\uff09\uff0c\u7528 f-string \u8f93\u51fa\"\u4f60\u7684\u4f53\u6e29\u662f xx.x \u5ea6\uff0c\u6b63\u5e38\u4f53\u6e29\u8303\u56f4 36.0 - 37.2 \u5ea6\"\uff08\u5148\u4e0d\u505a\u5224\u65ad\uff0c\u7b2c 3 \u7ae0\u5347\u7ea7\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.3 \u5e03\u5c14\u7c7b\u578b\u4e0e\u6bd4\u8f83\u8fd0\u7b97\u300d")" title="收藏">☆</button>
               </div>
             </div>
             
@@ -641,7 +871,7 @@ print(not False)  # True</code></pre>
               💡 提示：比较两个数字，打印比较结果。
             </div>
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(2, 3, 0, "\u6bd4\u8f83\u4e24\u4e2a\u6570\u5b57\uff0c\u6253\u5370\u6bd4\u8f83\u7ed3\u679c\u3002")'>
+              <button class="btn-code-ex" onclick='openCodeEx(2, 3, 1, "\u6bd4\u8f83\u4e24\u4e2a\u6570\u5b57\uff0c\u6253\u5370\u6bd4\u8f83\u7ed3\u679c\u3002")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -676,8 +906,873 @@ print(not False)  # True</code></pre>
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 3, '布尔类型与 None')">
-            🎨 漫画讲解
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 3, '2.3 布尔类型与比较运算')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 3, '2.3 布尔类型与比较运算')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="2_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          2.4 字符串初识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">2.4.1 概念认知：字符串就是文本</h3>
+<p>字符串（str）是<strong>用引号包起来的一串字符</strong>。它是最常用的数据类型——用户名、商品名、报错信息、网页内容，全是字符串。</p>
+<p><strong>代码案例 2.20</strong>：三种引号（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(&#x27;单引号&#x27;)
+print(&quot;双引号&quot;)
+print(&quot;&quot;&quot;三引号
+可以
+换行&quot;&quot;&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">单引号
+双引号
+三引号
+可以
+换行</pre></div>
+<p><strong>讲解</strong>：三引号（<code class="md-inline">"""</code> 或 <code class="md-inline">'''</code>）可以包含多行文本，常用于写多行提示语和函数说明文档（第 7 章函数会用到）。</p>
+<p><strong>交叉验证：中文引号 vs 英文引号（复习第 1 章）</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>：<code class="md-inline">print(“Hello”)</code> → <code class="md-inline">SyntaxError: invalid character '“' (U+201C)</code></p>
+<p><strong>讲解</strong>：Python 只认英文半角引号。写代码时输入法切英文，这条纪律值得反复强调。</p>
+<h3 class="md-h">2.4.2 语法掌握：拼接、重复与长度</h3>
+<p><strong>代码案例 2.21</strong>：字符串运算（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">first = &quot;Py&quot;
+second = &quot;thon&quot;
+print(first + second)
+print(&quot;ab&quot; * 3)
+print(len(&quot;Python&quot;))
+print(len(&quot;你好&quot;))</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">Python
+ababab
+6
+2</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">+</code> 拼接：<code class="md-inline">"Py" + "thon"</code> 得到 <code class="md-inline">"Python"</code>；</li><li><code class="md-inline">*</code> 重复：<code class="md-inline">"ab" * 3</code> 得到 <code class="md-inline">"ababab"</code>；</li><li><code class="md-inline">len()</code> 返回字符个数：<code class="md-inline">"你好"</code> 是两个字符（Python 3 直接按字符计，UTF-8 编码细节第 4 章讲）。</li></ul>
+<p><strong>交叉验证：字符串和数字不能直接拼接</strong></p>
+<p class="md-callout md-bad"><strong>❌ 易错</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(&quot;我的年龄是&quot; + 18)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: can only concatenate str (not &quot;int&quot;) to str</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">TypeError</code> = "类型不匹配"。<code class="md-inline">+</code> 对两个字符串是拼接，但 <code class="md-inline">str + int</code> 时 Python 不知道你要干嘛，直接报错。两种正确写法：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">age = 18
+print(&quot;我的年龄是&quot; + str(age))   # 方式一：显式转换
+print(f&quot;我的年龄是{age}&quot;)         # 方式二：f-string（推荐）</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">我的年龄是18
+我的年龄是18</pre></div>
+<p><strong>讲解</strong>：方式二（f-string）更短、更不容易错，<strong>企业代码里 f-string 是主流</strong>。方式一在特定场景（如拼接非格式化内容）仍有用，都要会。</p>
+<h3 class="md-h">2.4.3 原理探秘：字符串是不可变的</h3>
+<p><strong>代码案例 2.22</strong>：尝试"修改"字符串会报错（✅ 观察）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">s = &quot;Python&quot;
+s[0] = &quot;J&quot;</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: &#x27;str&#x27; object does not support item assignment</pre></div>
+<p><strong>讲解</strong>：字符串是<strong>不可变（immutable）</strong>对象——创建后不能修改其中的字符。那 <code class="md-inline">s += "!"</code> 是怎么回事？它并不是"修改"了原字符串，而是<strong>创建了一个新字符串</strong>，再把变量 <code class="md-inline">s</code> 绑定到新对象上（回忆 2.1.3 的"标签"模型）。</p>
+<p><strong>工程意义</strong>：大量拼接字符串（如在循环里 <code class="md-inline">s += x</code>）会不断创建新对象，性能差。处理大量拼接时用 <code class="md-inline">join()</code>（第 4 章）或列表收集。<strong>记住：字符串操作产生的是新字符串，原字符串永远不变</strong>。</p>
+<h3 class="md-h">2.4.4 工程应用：f-string 格式化</h3>
+<p>f-string 是 Python 3.6 引入的格式化写法：字符串前加 <code class="md-inline">f</code>，用 <code class="md-inline">{}</code> 把变量或表达式"塞"进去。</p>
+<p><strong>代码案例 2.23</strong>：f-string 基础（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = &quot;小明&quot;
+age = 18
+print(f&quot;我叫{name}，今年{age}岁&quot;)
+print(f&quot;明年我{age + 1}岁&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">我叫小明，今年18岁
+明年我19岁</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">{name}</code> 被替换成变量值，<code class="md-inline">{age + 1}</code> 先计算再替换——<strong>花括号里可以是表达式</strong>。</p>
+<p><strong>交叉验证：f-string 的两种典型错误</strong></p>
+<p class="md-callout md-bad"><strong>❌ 错误 1</strong>：忘了写 <code class="md-inline">f</code> 前缀</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = &quot;小明&quot;
+print(&quot;{name}你好&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">{name}你好</pre></div>
+<p><strong>讲解</strong>：没有 <code class="md-inline">f</code>，<code class="md-inline">{name}</code> 只是普通文本原样输出，<strong>不报错但结果错误</strong>——这是"静默 bug"，比报错更危险。</p>
+<p class="md-callout md-bad"><strong>❌ 错误 2</strong>：花括号里用引号冲突</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = &quot;小明&quot;
+print(f&quot;{name}说：&quot;你好&quot;&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">SyntaxError: invalid syntax</pre></div>
+<p><strong>讲解</strong>：外层是双引号字符串，里面的 <code class="md-inline">"你好"</code> 直接"撞车"了。修复方式：外层用单引号，或内层用转义/单引号：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">print(f&#x27;{name}说：&quot;你好&quot;&#x27;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">小明说：&quot;你好&quot;</pre></div>
+<p><strong>代码案例 2.24</strong>：f-string 格式化说明符（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">price = 3.5
+count = 4
+total = price * count
+print(f&quot;单价：{price} 元，共 {count} 个&quot;)
+print(f&quot;总价：{total} 元&quot;)
+print(f&quot;总价保留两位：{total:.2f} 元&quot;)
+print(f&quot;圆周率：{3.1415926:.2f}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">单价：3.5 元，共 4 个
+总价：14.0 元
+总价保留两位：14.00 元
+圆周率：3.14</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">{}</code> 里可以直接放表达式：<code class="md-inline">{price * count}</code>；</li><li><code class="md-inline">{total:.2f}</code> 表示"保留两位小数"：冒号后是<strong>格式说明符</strong>，<code class="md-inline">.2</code> 是小数位数，<code class="md-inline">f</code> 表示浮点数；</li><li>打印金额、报表时，<code class="md-inline">:.2f</code> 是标配。</li></ul>
+<p><strong>代码案例 2.25</strong>：f-string 综合（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">city = &quot;上海&quot;
+temp = 28
+print(f&quot;欢迎来到{city}，今天气温{temp}度&quot;)
+print(f&quot;明天气温预计：{temp + 2}度&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">欢迎来到上海，今天气温28度
+明天气温预计：30度</pre></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 4, "2.4 \u5b57\u7b26\u4e32\u521d\u8bc6", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u9762\u79ef = \u957f \u00d7 \u5bbd\uff1b\u5468\u957f = (\u957f + \u5bbd) \u00d7 2\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e(length + width) * 2\u003c/code\u003e \u5fc5\u987b\u52a0\u62ec\u53f7\u2014\u2014\u8fd9\u6b63\u662f 2.2.4 \u4f18\u5148\u7ea7\u4ea4\u53c9\u9a8c\u8bc1\u91cc\u5f3a\u8c03\u7684\u5751\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e:.2f\u003c/code\u003e \u4fdd\u7559\u4e24\u4f4d\u5c0f\u6570\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u957f\u65b9\u5f62\u8ba1\u7b97\u5668\"\uff1a\u8f93\u5165\u957f\u548c\u5bbd\uff08\u6d6e\u70b9\u6570\uff09\uff0c\u8f93\u51fa\u9762\u79ef\u548c\u5468\u957f\uff0c\u5404\u4fdd\u7559\u4e24\u4f4d\u5c0f\u6570\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003elength = float(input(\u0026quot;\u8bf7\u8f93\u5165\u957f\uff08\u5398\u7c73\uff09\uff1a\u0026quot;))\nwidth = float(input(\u0026quot;\u8bf7\u8f93\u5165\u5bbd\uff08\u5398\u7c73\uff09\uff1a\u0026quot;))\n\narea = length * width\nperimeter = (length + width) * 2\n\nprint(f\u0026quot;\u9762\u79ef\uff1a{area:.2f} \u5e73\u65b9\u5398\u7c73\u0026quot;)\nprint(f\u0026quot;\u5468\u957f\uff1a{perimeter:.2f} \u5398\u7c73\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u957f 5.5\u3001\u5bbd 3.2\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u957f\uff08\u5398\u7c73\uff09\uff1a5.5\n\u8bf7\u8f93\u5165\u5bbd\uff08\u5398\u7c73\uff09\uff1a3.2\n\u9762\u79ef\uff1a17.60 \u5e73\u65b9\u5398\u7c73\n\u5468\u957f\uff1a17.40 \u5398\u7c73\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 5 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u957f\u65b9\u5f62\u8ba1\u7b97\u5668\"\uff1a\u8f93\u5165\u957f\u548c\u5bbd\uff08\u6d6e\u70b9\u6570\uff09\uff0c\u8f93\u51fa\u9762\u79ef\u548c\u5468\u957f\uff0c\u5404\u4fdd\u7559\u4e24\u4f4d\u5c0f\u6570\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.4 \u5b57\u7b26\u4e32\u521d\u8bc6\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：定义字符串，使用 f-string 拼接并输出。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(2, 4, 1, "\u5b9a\u4e49\u5b57\u7b26\u4e32\uff0c\u4f7f\u7528 f-string \u62fc\u63a5\u5e76\u8f93\u51fa\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="2_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(2, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(2, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(2, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="2_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 4, '2.4 字符串初识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 4, '2.4 字符串初识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="2_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          2.5 input() 输入与 print() 输出：让程序&#34;活&#34;起来
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">2.5.1 语法掌握：input() 接收输入</h3>
+<p><code class="md-inline">input()</code> 让程序停下来等用户输入，输入的内容会作为<strong>字符串</strong>返回。</p>
+<p><strong>代码案例 2.26</strong>：接收名字并打招呼（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = input(&quot;请输入你的名字：&quot;)
+print(f&quot;你好，{name}！&quot;)</code></pre></div>
+<p><strong>运行结果</strong>（<code class="md-inline">←</code> 表示用户输入）：</p>
+<div class="md-figure"><pre class="md-diagram">请输入你的名字：小明 ←
+你好，小明！</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">input("提示语")</code> 先显示提示语，等用户输入并按回车；</li><li>输入内容存进变量 <code class="md-inline">name</code>；</li><li><strong><code class="md-inline">input()</code> 永远返回字符串</strong>——哪怕用户输入的是数字。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：为什么 input 返回的是字符串？</strong></p>
+<p>命令行本质上是一个"文本通道"：用户敲的每一个键都是字符，回车代表"这一行结束"。<code class="md-inline">input()</code> 读取这一行文本并去掉末尾换行符，返回 <code class="md-inline">str</code>。它<strong>不知道</strong>你输入的是"18"还是"十八"——在没有额外信息的情况下，只能先按字符串处理。所以"数字运算前必须转换"，这不是设计缺陷，而是文本输入的必然结果。</p></blockquote>
+<p><strong>交叉验证：<code class="md-inline">"10" * 2</code> 与 <code class="md-inline">10 * 2</code> 完全不同</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">num = input(&quot;请输入一个数：&quot;)
+print(num * 2)</code></pre></div>
+<p><strong>运行结果</strong>（输入 10）：</p>
+<div class="md-figure"><pre class="md-diagram">1010</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">num</code> 是字符串 <code class="md-inline">"10"</code>，<code class="md-inline">"10" * 2</code> 是<strong>字符串重复</strong>，得到 <code class="md-inline">"1010"</code>。只有转换成 <code class="md-inline">int("10") * 2</code> 才是数字乘法 <code class="md-inline">20</code>。<strong>"看着像数字"和"是数字"是两回事</strong>。</p>
+<h3 class="md-h">2.5.2 综合运用：年龄计算器（错误版 vs 正确版）</h3>
+<p><strong>代码案例 2.27</strong>：错误版——不转换直接运算（❌ 易错）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">age = input(&quot;你今年几岁：&quot;)
+print(f&quot;十年后你{age + 10}岁&quot;)</code></pre></div>
+<p><strong>实际报错</strong>（输入 18）：</p>
+<div class="md-figure"><pre class="md-diagram">你今年几岁：18 ←
+Traceback (most recent call last):
+  File &quot;demo.py&quot;, line 2, in &lt;module&gt;
+    print(f&quot;十年后你{age + 10}岁&quot;)
+          ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: can only concatenate str (not &quot;int&quot;) to str</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">age</code> 是字符串 <code class="md-inline">"18"</code>，<code class="md-inline">"18" + 10</code> 类型不匹配，报 <code class="md-inline">TypeError</code>。<strong>f-string 里的 <code class="md-inline">{}</code> 只是"把表达式的结果转成字符串放进来"，表达式本身照样要遵守类型规则</strong>。</p>
+<p><strong>代码案例 2.28</strong>：正确版——先转换再运算（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">age = int(input(&quot;你今年几岁：&quot;))
+print(f&quot;十年后你{age + 10}岁&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">你今年几岁：18 ←
+十年后你28岁</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">int(input(...))</code> 是"取输入 → 转整数"的标准模板，后面所有项目都在用。<strong>多一层转换，就多一层出错可能（用户输入字母会 ValueError）——真实项目里还需要校验，第 3 章学完 <code class="md-inline">if</code> 后处理</strong>。</p>
+<h3 class="md-h">2.5.3 综合运用：购物小票 v2（完整程序）</h3>
+<p><strong>代码案例 2.29</strong>：输入商品信息并计算总价（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">name = input(&quot;商品名称：&quot;)
+price = float(input(&quot;单价（元）：&quot;))
+count = int(input(&quot;数量：&quot;))
+
+total = price * count
+
+print(&quot;=&quot; * 25)
+print(f&quot;商品：{name}&quot;)
+print(f&quot;单价：{price:.2f} 元&quot;)
+print(f&quot;数量：{count}&quot;)
+print(f&quot;合计：{total:.2f} 元&quot;)
+print(&quot;=&quot; * 25)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">商品名称：苹果 ←
+单价（元）：3.5 ←
+数量：4 ←
+=========================
+商品：苹果
+单价：3.50 元
+数量：4
+合计：14.00 元
+=========================</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li>单价用 <code class="md-inline">float</code> 转换（可能带小数），数量用 <code class="md-inline">int</code> 转换；</li><li><code class="md-inline">{price:.2f}</code> 让金额统一保留两位小数——真实小票的标准格式；</li><li>对比第 1 章"写死"的小票，现在程序能处理任意输入，这就是"活"的程序。</li></ul>
+<p><strong>交叉验证：用户输入不合法会怎样？</strong></p>
+<p class="md-callout md-bad"><strong>❌ 情况 1</strong>：数量输入了小数 <code class="md-inline">4.5</code></p>
+<div class="md-figure"><pre class="md-diagram">Traceback (most recent call last):
+  ...
+ValueError: invalid literal for int() with base 10: &#x27;4.5&#x27;</pre></div>
+<p class="md-callout md-bad"><strong>❌ 情况 2</strong>：单价输入了字母 <code class="md-inline">abc</code></p>
+<div class="md-figure"><pre class="md-diagram">ValueError: could not convert string to float: &#x27;abc&#x27;</pre></div>
+<p class="md-callout md-bad"><strong>❌ 情况 3</strong>：用户直接按回车（空字符串）</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: invalid literal for int() with base 10: &#x27;&#x27;</pre></div>
+<p><strong>讲解</strong>：三种情况都是 <code class="md-inline">ValueError</code>（值不合法），程序直接崩溃。<strong>真实软件绝不能这样</strong>——第 3 章学完异常处理前的过渡方案：先假设用户输入合法，本课程第 3 章讲 <code class="md-inline">if</code>、第 9 章讲 <code class="md-inline">try/except</code> 后，你会给这个程序加上"输入校验"。<strong>能预见崩溃场景，是程序员的职业敏感</strong>。</p>
+<p><strong>代码案例 2.30</strong>：数值计算器（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = float(input(&quot;第一个数：&quot;))
+b = float(input(&quot;第二个数：&quot;))
+print(f&quot;{a} + {b} = {a + b}&quot;)
+print(f&quot;{a} - {b} = {a - b}&quot;)
+print(f&quot;{a} * {b} = {a * b}&quot;)
+print(f&quot;{a} / {b} = {a / b}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">第一个数：10 ←
+第二个数：4 ←
+10.0 + 4.0 = 14.0
+10.0 - 4.0 = 6.0
+10.0 * 4.0 = 40.0
+10.0 / 4.0 = 2.5</pre></div>
+<p><strong>变式练习</strong>：如果第二个数输入 0，会报什么错？（提示：<code class="md-inline">ZeroDivisionError</code>）第 3 章学完 <code class="md-inline">if</code> 后，给程序加上"除数不能为 0"的判断。</p>
+<p><strong>微任务卡（M2 · 讲解卡 · L0）</strong>：把年龄计算器代码发给 AI，提问："请解释为什么 input() 返回的一定是字符串？不转换直接 age + 10 会怎样？"一句话记录理解。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 5, "2.5 input() \u8f93\u5165\u4e0e print() \u8f93\u51fa\uff1a\u8ba9\u7a0b\u5e8f\"\u6d3b\"\u8d77\u6765", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u91d1\u989d\u7528 \u003ccode class=\"md-inline\"\u003efloat\u003c/code\u003e \u8f6c\u6362\u3001\u003ccode class=\"md-inline\"\u003e:.2f\u003c/code\u003e \u8f93\u51fa\uff1b\u003c/li\u003e\u003cli\u003e\u6269\u5c55\u601d\u8003\uff08\u4e0d\u8ba1\u5206\uff09\uff1a\u5982\u679c\u4ed8\u6b3e\u5c11\u4e8e\u603b\u4ef7\uff0c\u627e\u96f6\u662f\u8d1f\u6570\u2014\u2014\u7b2c 3 \u7ae0\u5b66\u5b8c \u003ccode class=\"md-inline\"\u003eif\u003c/code\u003e \u540e\u53ef\u4ee5\u52a0\"\u4f59\u989d\u4e0d\u8db3\"\u63d0\u793a\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u627e\u96f6\u8ba1\u7b97\u5668\"\uff1a\u8f93\u5165\u5546\u54c1\u603b\u4ef7\u548c\u4ed8\u6b3e\u91d1\u989d\uff08\u5143\uff0c\u6d6e\u70b9\u6570\uff09\uff0c\u8f93\u51fa\u627e\u96f6\u91d1\u989d\uff0c\u4fdd\u7559\u4e24\u4f4d\u5c0f\u6570\u3002\u4f8b\u5982\uff1a\u603b\u4ef7 83.5 \u5143\u3001\u4ed8\u6b3e 100 \u5143\uff0c\u627e\u96f6 16.50 \u5143\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etotal = float(input(\u0026quot;\u5546\u54c1\u603b\u4ef7\uff08\u5143\uff09\uff1a\u0026quot;))\npaid = float(input(\u0026quot;\u4ed8\u6b3e\u91d1\u989d\uff08\u5143\uff09\uff1a\u0026quot;))\n\nchange = paid - total\n\nprint(f\u0026quot;\u627e\u96f6\uff1a{change:.2f} \u5143\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u603b\u4ef7 83.5\u3001\u4ed8\u6b3e 100\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5546\u54c1\u603b\u4ef7\uff08\u5143\uff09\uff1a83.5\n\u4ed8\u6b3e\u91d1\u989d\uff08\u5143\uff09\uff1a100\n\u627e\u96f6\uff1a16.50 \u5143\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 6 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u627e\u96f6\u8ba1\u7b97\u5668\"\uff1a\u8f93\u5165\u5546\u54c1\u603b\u4ef7\u548c\u4ed8\u6b3e\u91d1\u989d\uff08\u5143\uff0c\u6d6e\u70b9\u6570\uff09\uff0c\u8f93\u51fa\u627e\u96f6\u91d1\u989d\uff0c\u4fdd\u7559\u4e24\u4f4d\u5c0f\u6570\u3002\u4f8b\u5982\uff1a\u603b\u4ef7 83.5 \u5143\u3001\u4ed8\u6b3e 100 \u5143\uff0c\u627e\u96f6 16.50 \u5143\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.5 input() \u8f93\u5165\u4e0e print() \u8f93\u51fa\uff1a\u8ba9\u7a0b\u5e8f\"\u6d3b\"\u8d77\u6765\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「2.5 input() 输入与 print() 输出：让程序&#34;活&#34;起来」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(2, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c2.5 input() \u8f93\u5165\u4e0e print() \u8f93\u51fa\uff1a\u8ba9\u7a0b\u5e8f\"\u6d3b\"\u8d77\u6765\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="2_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(2, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(2, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(2, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="2_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 5, '2.5 input() 输入与 print() 输出：让程序&#34;活&#34;起来')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 5, '2.5 input() 输入与 print() 输出：让程序&#34;活&#34;起来')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="2_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          2.6 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <blockquote class="md-quote"><p>玩法：先看"问题代码"，自己运行并尝试修复，再对照"实际输出"与"提示"，最后看讲解。每题附"这类错误的真实场景"。</p></blockquote>
+<h3 class="md-h">问题 1：字符串与数字拼接</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">num = 5
+print(&quot;结果是&quot; + num)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">结果是5</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">TypeError: can only concatenate str (not &quot;int&quot;) to str</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">+</code> 两边类型不一致。怎么把整数变成字符串？或者，有没有更好的写法？</p>
+<p><strong>讲解</strong>：<code class="md-inline">str(num)</code> 可以，但首选 f-string：<code class="md-inline">print(f"结果是{num}")</code>。<strong>真实场景</strong>：拼 SQL、拼 URL、拼日志时，混用类型导致 <code class="md-inline">TypeError</code> 是家常便饭；现在开始养成"格式化优先"的习惯。</p>
+<h3 class="md-h">问题 2：input() 返回的是字符串</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">age = input(&quot;年龄：&quot;)
+print(age * 2)</code></pre></div>
+<p><strong>预期输出</strong>（输入 10 时）：</p>
+<div class="md-figure"><pre class="md-diagram">20</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">1010</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">"10" * 2</code> 等于什么？字符串重复和数字乘法是两回事。</p>
+<p><strong>讲解</strong>：<code class="md-inline">input()</code> 永远返回字符串，<code class="md-inline">"10" * 2</code> 是字符串重复得 <code class="md-inline">"1010"</code>。必须 <code class="md-inline">int(input(...))</code> 转换后才能得到 <code class="md-inline">20</code>。<strong>真实场景</strong>：做表单、计算器、订单金额时，忘转换是最高频 bug，没有之一。</p>
+<h3 class="md-h">问题 3：int() 转小数</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">price = int(input(&quot;单价：&quot;))
+print(price)</code></pre></div>
+<p><strong>预期输出</strong>（输入 3.5 时）：</p>
+<div class="md-figure"><pre class="md-diagram">3.5</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ValueError: invalid literal for int() with base 10: &#x27;3.5&#x27;</pre></div>
+<p><strong>提示</strong>：单价可能带小数，应该用什么转换？回忆 2.2.8 的转换规则表。</p>
+<p><strong>讲解</strong>：<code class="md-inline">int()</code> 只能转整数形式的字符串，带小数用 <code class="md-inline">float()</code>。<strong>选转换函数前先想清楚"这个数据可能是整数还是小数"</strong>——真实场景：价格、金额、温度一律 <code class="md-inline">float</code>，数量、人数、页数用 <code class="md-inline">int</code>。</p>
+<h3 class="md-h">问题 4：<code class="md-inline">=</code> 与 <code class="md-inline">==</code> 混用</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">password = &quot;123456&quot;
+print(password = &quot;123456&quot;)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">True</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">SyntaxError: cannot assign to function call here. Maybe you meant &#x27;==&#x27; instead of &#x27;=&#x27;?</pre></div>
+<p><strong>提示</strong>：报错信息已经给了答案——"Maybe you meant '==' instead of '='?"。一个等号和两个等号分别是什么？</p>
+<p><strong>讲解</strong>：<code class="md-inline">=</code> 赋值、<code class="md-inline">==</code> 判断相等。<strong>报错信息会直接告诉你修复方向，学会读它是程序员的基本功</strong>（呼应第 1 章 1.6 节）。</p>
+<h3 class="md-h">问题 5：优先级导致静默错误</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a, b, c = 80, 90, 70
+avg = a + b + c / 3
+print(f&quot;平均分：{avg}&quot;)</code></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">平均分：80.0</pre></div>
+<p><strong>实际输出</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">平均分：173.33333333333334</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">c / 3</code> 先算了，然后呢？平均分应该怎么算？</p>
+<p><strong>讲解</strong>：<code class="md-inline">a + b + c / 3</code> 先算 <code class="md-inline">c / 3</code> 再加前面的。正确写法 <code class="md-inline">avg = (a + b + c) / 3</code>。<strong>这类 bug 不报错、结果错，最难发现——养成"复杂表达式加括号"的习惯</strong>。真实场景：金额汇总、指标计算里全是这种坑。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 6, "2.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\uff08\u9010\u7ea7\u62c6\u89e3\uff09\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e1 \u5c0f\u65f6 = 3600 \u79d2\uff1a\u003ccode class=\"md-inline\"\u003e3725 // 3600 = 1\u003c/code\u003e\uff08\u5c0f\u65f6\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5269\u4e0b \u003ccode class=\"md-inline\"\u003e3725 % 3600 = 125\u003c/code\u003e \u79d2\uff1a\u003ccode class=\"md-inline\"\u003e125 // 60 = 2\u003c/code\u003e\uff08\u5206\u949f\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u518d\u5269 \u003ccode class=\"md-inline\"\u003e125 % 60 = 5\u003c/code\u003e \u79d2\uff1b\u003c/li\u003e\u003cli\u003e\u9a8c\u8bc1\uff1a\u003ccode class=\"md-inline\"\u003e1 \u00d7 3600 + 2 \u00d7 60 + 5 = 3725\u003c/code\u003e \u2705\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u79d2\u8f6c\u65f6\u5206\"\u7a0b\u5e8f\uff1a\u8f93\u5165\u4e00\u4e2a\u79d2\u6570\uff08\u6574\u6570\uff09\uff0c\u8f93\u51fa\"X \u5c0f\u65f6 X \u5206 X \u79d2\"\u3002\u63d0\u793a\uff1a\u7528 `//` \u548c `%` \u9010\u7ea7\u62c6\u89e3\u3002\u4f8b\u5982\u8f93\u5165 3725\uff0c\u8f93\u51fa\"1 \u5c0f\u65f6 2 \u5206 5 \u79d2\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eseconds = int(input(\u0026quot;\u8bf7\u8f93\u5165\u79d2\u6570\uff1a\u0026quot;))\n\nhours = seconds // 3600\nminutes = (seconds % 3600) // 60\nsecs = seconds % 60\n\nprint(f\u0026quot;{hours} \u5c0f\u65f6 {minutes} \u5206 {secs} \u79d2\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u8f93\u5165 3725\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u79d2\u6570\uff1a3725\n1 \u5c0f\u65f6 2 \u5206 5 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 7 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u79d2\u8f6c\u65f6\u5206\"\u7a0b\u5e8f\uff1a\u8f93\u5165\u4e00\u4e2a\u79d2\u6570\uff08\u6574\u6570\uff09\uff0c\u8f93\u51fa\"X \u5c0f\u65f6 X \u5206 X \u79d2\"\u3002\u63d0\u793a\uff1a\u7528 `//` \u548c `%` \u9010\u7ea7\u62c6\u89e3\u3002\u4f8b\u5982\u8f93\u5165 3725\uff0c\u8f93\u51fa\"1 \u5c0f\u65f6 2 \u5206 5 \u79d2\"\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「2.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(2, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c2.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="2_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(2, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(2, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(2, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="2_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 6, '2.6 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 6, '2.6 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="2_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          2.7 Vibe Coding 任务卡（L0）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 讲解"类型"与"转换"，不给代码</p>
+<p><strong>任务内容</strong>：把下面这段代码发给 AI，提问："请解释这段代码每一行的作用，特别说明为什么 <code class="md-inline">input()</code> 的结果要转成 <code class="md-inline">int</code>，不转会怎样。不要给我新代码。"</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">age = int(input(&quot;你今年几岁：&quot;))
+print(f&quot;十年后你{age + 10}岁&quot;)</code></pre></div>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请逐行解释下面这段 Python 代码。重点回答三个问题：
+1. 为什么 input() 的结果要包一层 int()？
+2. 如果不转，运行时会报什么类型的错误？为什么？
+3. 用户输入 &quot;18&quot; 和输入 18 有什么区别？
+只做讲解，不要修改代码，也不要生成新代码。</pre></div>
+<p><strong>Review 清单（L0）</strong>：</p>
+<ul><li>[ ] 我能用自己的话解释"input 返回字符串，数字运算前必须转换"；</li><li>[ ] 我知道 <code class="md-inline">TypeError</code> 出现时该往"类型不匹配"方向想；</li><li>[ ] 我能区分 <code class="md-inline">ValueError</code>（值不合法）和 <code class="md-inline">TypeError</code>（类型不匹配）；</li><li>[ ] AI 没有给我新代码（如果给了，我不复制，并记录）；</li><li>[ ] 我把今天的对话摘要写进了 Prompt 日志。</li></ul>
+<p><strong>L0 纪律自查</strong>：</p>
+<ul><li>今天 8 道练习题全部手写完成；</li><li>所有代码案例我都亲手敲了一遍（敲，不是复制）；</li><li>遇到报错先自己读，再让 AI 解释含义，最后自己修。</li></ul>
+<p><strong>微任务卡（M3 · 讲解卡 · L0）</strong>：把 <code class="md-inline">0.1 + 0.2</code> 发给 AI，提问："请解释为什么结果不是 0.3？金额计算应该怎么处理？"一句话记录理解。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 7, "2.7 Vibe Coding \u4efb\u52a1\u5361\uff08L0\uff09", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\u4e24\u4e2a\u95ee\u9898\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u4eca\u5929\u6700\u96be\u7684\u4e00\u9053\u9898\u662f\u54ea\u9053\uff1f\u5361\u5728\u4e86\u54ea\u91cc\uff1f\u4f60\u662f\u600e\u4e48\u60f3\u901a\u7684\uff1f\u003c/li\u003e\u003cli\u003e\u5982\u679c\u8ba9 AI \u76f4\u63a5\u5e2e\u4f60\u505a\u8fd9\u9053\u9898\uff08\u73b0\u5728\u88ab\u7981\u6b62\uff09\uff0c\u4f60\u89c9\u5f97\u4f60\u4f1a\u5931\u53bb\u4ec0\u4e48\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u6570\u636e\u4ea4\u6362\"\u7a0b\u5e8f\uff1a\u8f93\u5165\u4e24\u4e2a\u6570\u5b58\u8fdb `a`\u3001`b`\uff0c\u7528 `a, b = b, a` \u4ea4\u6362\u540e\u8f93\u51fa\uff1b\u7136\u540e\u5728\u6ce8\u91ca\u91cc\u56de\u7b54\uff1a\u5982\u679c\u4e0d\u501f\u52a9\u8fd9\u4e2a\u8bed\u6cd5\uff0c\u7528\"\u4e2d\u95f4\u53d8\u91cf\"\u600e\u4e48\u5199\uff1f\u4e3a\u4ec0\u4e48 `a = b; b = a` \u662f\u9519\u7684\uff1f", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ea = float(input(\u0026quot;\u8bf7\u8f93\u5165\u7b2c\u4e00\u4e2a\u6570\uff1a\u0026quot;))\nb = float(input(\u0026quot;\u8bf7\u8f93\u5165\u7b2c\u4e8c\u4e2a\u6570\uff1a\u0026quot;))\n\na, b = b, a\n\nprint(f\u0026quot;\u4ea4\u6362\u540e\uff1aa = {a}\uff0cb = {b}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u8f93\u5165 1.5\u30012.5\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u7b2c\u4e00\u4e2a\u6570\uff1a1.5\n\u8bf7\u8f93\u5165\u7b2c\u4e8c\u4e2a\u6570\uff1a2.5\n\u4ea4\u6362\u540e\uff1aa = 2.5\uff0cb = 1.5\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u6ce8\u91ca\u91cc\u8981\u56de\u7b54\u7684\u4e24\u4e2a\u95ee\u9898\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u95ee\u9898 1\uff1a\u7528\u4e2d\u95f4\u53d8\u91cf\u7684\u4f20\u7edf\u5199\u6cd5\uff1f\u003c/strong\u003e\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etemp = a\na = b\nb = temp\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u539f\u7406\uff1a\u5148\u628a \u003ccode class=\"md-inline\"\u003ea\u003c/code\u003e \u7684\u539f\u503c\u5b58\u5230 \u003ccode class=\"md-inline\"\u003etemp\u003c/code\u003e \u91cc\uff0c\u518d\u8ba9 \u003ccode class=\"md-inline\"\u003ea\u003c/code\u003e \u62ff\u8d70 \u003ccode class=\"md-inline\"\u003eb\u003c/code\u003e \u7684\u503c\uff0c\u6700\u540e\u8ba9 \u003ccode class=\"md-inline\"\u003eb\u003c/code\u003e \u4ece \u003ccode class=\"md-inline\"\u003etemp\u003c/code\u003e \u62ff\u56de \u003ccode class=\"md-inline\"\u003ea\u003c/code\u003e \u7684\u539f\u503c\u3002\u4e09\u4e2a\u676f\u5b50\u5012\u6c34\u7684\u7ecf\u5178\u6bd4\u55bb\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u95ee\u9898 2\uff1a\u4e3a\u4ec0\u4e48 \u003ccode class=\"md-inline\"\u003ea = b; b = a\u003c/code\u003e \u662f\u9519\u7684\uff1f\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003e\u56e0\u4e3a\u8d4b\u503c\u662f\"\u003cstrong\u003e\u5148\u7b97\u53f3\u8fb9\u3001\u518d\u7ed1\u5de6\u8fb9\u003c/strong\u003e\"\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ea = b   # a \u5148\u53d8\u6210 b \u7684\u503c\uff08\u6b64\u523b a \u7684\u539f\u503c\u5df2\u7ecf\u4e22\u4e86\uff09\nb = a   # b \u518d\u62ff a \u7684\u503c\u2014\u2014\u800c\u8fd9\u4e2a\u0026quot;\u65b0 a\u0026quot;\u5df2\u7ecf\u662f\u539f b \u7684\u503c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u7ed3\u679c\uff1a\u003ccode class=\"md-inline\"\u003ea\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eb\u003c/code\u003e \u90fd\u7b49\u4e8e\u003cstrong\u003e\u539f\u6765\u7684 b\u003c/strong\u003e\uff0c\u4ea4\u6362\u5931\u8d25\uff08\u4e24\u4e2a\u6570\u53d8\u6210\u540c\u4e00\u4e2a\u6570\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u6d89\u53ca\u77e5\u8bc6\u70b9\u003c/strong\u003e\uff1a\u8d4b\u503c\u6267\u884c\u987a\u5e8f\uff08\u5148\u53f3\u540e\u5de6\uff09\u3001\u591a\u53d8\u91cf\u8d4b\u503c\u3001\u4ea4\u6362\u7b97\u6cd5\u3002\u003c/p\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '0', "**\u7b2c 8 \u9898**\uff1a\u5199\u4e00\u4e2a\"\u6570\u636e\u4ea4\u6362\"\u7a0b\u5e8f\uff1a\u8f93\u5165\u4e24\u4e2a\u6570\u5b58\u8fdb `a`\u3001`b`\uff0c\u7528 `a, b = b, a` \u4ea4\u6362\u540e\u8f93\u51fa\uff1b\u7136\u540e\u5728\u6ce8\u91ca\u91cc\u56de\u7b54\uff1a\u5982\u679c\u4e0d\u501f\u52a9\u8fd9\u4e2a\u8bed\u6cd5\uff0c\u7528\"\u4e2d\u95f4\u53d8\u91cf\"\u600e\u4e48\u5199\uff1f\u4e3a\u4ec0\u4e48 `a = b; b = a` \u662f\u9519\u7684\uff1f")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(2, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c2.7 Vibe Coding \u4efb\u52a1\u5361\uff08L0\uff09\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「2.7 Vibe Coding 任务卡（L0）」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(2, 7, 1, "\u7528\u4ee3\u7801\u628a\u300c2.7 Vibe Coding \u4efb\u52a1\u5361\uff08L0\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="2_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(2, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(2, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(2, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="2_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 7, '2.7 Vibe Coding 任务卡（L0）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 7, '2.7 Vibe Coding 任务卡（L0）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="2_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          2.8 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">变量与数据类型
+├── 变量：赋值 =（先算右边）、绑定模型（标签）、动态类型、命名规范
+├── int 整数：+ - * / // % **、优先级（幂&gt;乘除&gt;加减）、增强赋值 +=
+│   ├── // 向下取整（-10//3 = -4）、% 配套公式、int(3.99) 向零截断
+│   └── 任意精度：2**100 不溢出
+├── float 浮点数：/ 永远返回 float、精度坑 0.1+0.2、round()、:.2f
+├── bool 布尔：True/False、== vs =、bool 是 int 子类（True==1）
+│   └── 假值清单：0 / 0.0 / &quot;&quot; / None（&quot;0&quot;字符串是真！）
+├── str 字符串：引号（英文半角）、拼接 +、重复 *、len()、不可变
+│   └── f-string：{表达式}、:.2f、忘 f 前缀=静默错误
+├── 类型转换：int() / float() / str()；ValueError vs TypeError
+└── input()：永远返回字符串 → 数字必须转换 → 完整程序（小票 v2）</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li><code class="md-inline">=</code> 是赋值（先算右边再绑左边），<code class="md-inline">==</code> 是判断相等；</li><li><code class="md-inline">input()</code> 返回<strong>字符串</strong>，数字运算前必须转换；<code class="md-inline">/</code> 永远返回 float，<code class="md-inline">//</code> 是向下取整；</li><li>f-string 是格式化首选：<code class="md-inline">f"总价：{total:.2f} 元"</code>；忘写 <code class="md-inline">f</code> 会静默错误；</li><li><code class="md-inline">int("3.14")</code> 报 ValueError；<code class="md-inline">int(3.99)=3</code>（向零截断）≠ <code class="md-inline">3.99//1=-3</code>（向下）≠ <code class="md-inline">round(3.99)=4</code>；</li><li>浮点数有精度问题，金额计算用 <code class="md-inline">round()</code>/<code class="md-inline">:.2f</code>，不要直接 <code class="md-inline">==</code> 比较。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 8, "2.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="2_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(2, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(2, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(2, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="2_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 8, '2.8 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 8, '2.8 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="2_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td><code class="md-inline">&amp;</code> `\</td><td><code class="md-inline"> </code>^<code class="md-inline"> </code>~<code class="md-inline"> </code>&lt;&lt;<code class="md-inline"> </code>&gt;&gt;`</td><td>位运算（了解）：<code class="md-inline">x &amp; 1</code> 判奇偶、<code class="md-inline">x &lt;&lt; n</code> 乘 2ⁿ</td></tr><tr><td>变量</td><td>给数据起名字（动态类型）</td></tr><tr><td><code class="md-inline">int</code> / <code class="md-inline">float</code> / <code class="md-inline">str</code> / <code class="md-inline">bool</code></td><td>整数 / 小数 / 字符串 / 布尔</td></tr><tr><td><code class="md-inline">+ - * / // % **</code></td><td>加 减 乘 除 整除 取余 幂</td></tr><tr><td><code class="md-inline">+=</code> <code class="md-inline">-=</code> <code class="md-inline">*=</code></td><td>增强赋值</td></tr><tr><td><code class="md-inline">int()</code> <code class="md-inline">float()</code> <code class="md-inline">str()</code></td><td>类型转换</td></tr><tr><td><code class="md-inline">input()</code></td><td>接收输入（永远返回字符串）</td></tr><tr><td><code class="md-inline">f"{x:.2f}"</code></td><td>格式化（保留两位小数）</td></tr><tr><td><code class="md-inline">==</code> <code class="md-inline">!=</code> <code class="md-inline">&gt;</code> <code class="md-inline">&lt;</code></td><td>比较运算（结果 True/False）</td></tr><tr><td><code class="md-inline">TypeError</code> / <code class="md-inline">ValueError</code></td><td>类型不匹配 / 值不合法</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(2, 9, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="2_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(2, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(2, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(2, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="2_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(2, 9, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(2, 9, '本章速查')">
+            🎨 角色对白
           </button>
           
         </div>
@@ -820,7 +1915,7 @@ print(not False)  # True</code></pre>
 <div id="mindmap-overlay" class="mindmap-overlay">
   <div class="mindmap-container">
     <div class="mindmap-toolbar">
-      <span class="mindmap-title">🧠 变量与数据类型 — 思维大纲</span>
+      <span class="mindmap-title">🧠 变量、数据类型与输入输出 — 思维大纲</span>
       <div class="mindmap-tools">
         <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
         <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
@@ -838,7 +1933,7 @@ print(not False)  # True</code></pre>
 <div id="my-mindmap-overlay" class="mindmap-overlay">
   <div class="mindmap-container" style="max-width:900px;">
     <div class="mindmap-toolbar">
-      <span class="mindmap-title">✏️ 变量与数据类型 — 我的思维导图</span>
+      <span class="mindmap-title">✏️ 变量、数据类型与输入输出 — 我的思维导图</span>
       <div class="mindmap-tools">
         <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
         <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
@@ -871,40 +1966,46 @@ print(not False)  # True</code></pre>
 </div>
 
 
-<script id="mindmap-data" type="text/markdown"># 变量与数据类型
-## 变量概念
-### 存储数据的容器(贴标签的盒子)
-### 命名规则
-#### 字母、数字、下划线组成
-#### 不能以数字开头
-#### 区分大小写(name != Name)
-#### 不能用关键字(if/for/while)
-### 命名规范(PEP 8)
-#### 小写+下划线: user_name
-#### 见名知意: student_name &gt; sn
-## 数字类型
-### int 整数: 无小数点
-### float 浮点数: 3.14, -5.5
-### complex 复数: 3+4j
-### 类型转换
-#### int(&#34;123&#34;) -&gt; 123
-#### float(&#34;3.14&#34;) -&gt; 3.14
-#### str(100) -&gt; &#34;100&#34;
-## 字符串 str
-### 创建方式
-#### 单引号 &#39;Hello&#39;
-#### 双引号 &#34;World&#34;
-#### 三引号 &#39;&#39;&#39;多行&#39;&#39;&#39;
-### 常用操作
-#### + 拼接, * 重复
-#### len() 长度
-#### 索引[0]/[-1] 取值
-### f-string 格式化
-#### f&#34;我叫{name}今年{age}岁&#34;
-## 布尔与None
-### True / False 首字母大写
-### False值: 0, &#34;&#34;, [], None
-### None 表示&#34;没有值&#34;</script>
+<script id="mindmap-data" type="text/markdown"># 变量、数据类型与输入输出
+## 2.1 变量：给数据起名字
+### 概念认知：为什么需要变量
+### 语法掌握：赋值语句
+### 原理探秘：变量是&#34;标签&#34;而不是&#34;盒子&#34;
+### 语法掌握：动态类型
+### 语法掌握：一次给多个变量赋值与交换
+### 工程应用：命名规范
+## 2.2 数值类型：int 与 float
+### 概念认知：整数与浮点数
+### 语法掌握：算术运算符
+### 语法掌握：整除与取余的&#34;坑&#34;——向下取整
+### 语法掌握：运算优先级
+### 语法掌握：增强赋值
+### 语法掌握：浮点数的精度问题
+### 语法掌握：大整数——Python 的隐藏福利
+### 语法掌握：类型转换
+### 了解：位运算——直接操作二进制
+## 2.3 布尔类型与比较运算
+### 概念认知：True 与 False
+### 语法掌握：比较运算
+### 原理探秘：bool 是 int 的&#34;子类&#34;
+### 语法掌握：bool() 与&#34;假值&#34;规则
+## 2.4 字符串初识
+### 概念认知：字符串就是文本
+### 语法掌握：拼接、重复与长度
+### 原理探秘：字符串是不可变的
+### 工程应用：f-string 格式化
+## 2.5 input() 输入与 print() 输出：让程序&#34;活&#34;起来
+### 语法掌握：input() 接收输入
+### 综合运用：年龄计算器（错误版 vs 正确版）
+### 综合运用：购物小票 v2（完整程序）
+## 2.6 本章 Debug 四件套
+### 问题 1：字符串与数字拼接
+### 问题 2：input() 返回的是字符串
+### 问题 3：int() 转小数
+### 问题 4：`=` 与 `==` 混用
+### 问题 5：优先级导致静默错误
+## 2.7 Vibe Coding 任务卡（L0）
+## 2.8 本章小结与知识树</script>
 
 
 <script>
@@ -912,9 +2013,9 @@ print(not False)  # True</code></pre>
   const USER_MODE = 'all_unlocked';
   const COMPLETED_KPS = [];
   const CHAPTER_COMPLETED = false;
-  const CHAPTER_KP_TITLES = ["\u4ec0\u4e48\u662f\u53d8\u91cf\uff1f", "\u6570\u5b57\u7c7b\u578b", "\u5b57\u7b26\u4e32\u7c7b\u578b\uff08str\uff09", "\u5e03\u5c14\u7c7b\u578b\u4e0e None"];
+  const CHAPTER_KP_TITLES = ["2.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "2.1 \u53d8\u91cf\uff1a\u7ed9\u6570\u636e\u8d77\u540d\u5b57", "2.2 \u6570\u503c\u7c7b\u578b\uff1aint \u4e0e float", "2.3 \u5e03\u5c14\u7c7b\u578b\u4e0e\u6bd4\u8f83\u8fd0\u7b97", "2.4 \u5b57\u7b26\u4e32\u521d\u8bc6", "2.5 input() \u8f93\u5165\u4e0e print() \u8f93\u51fa\uff1a\u8ba9\u7a0b\u5e8f\"\u6d3b\"\u8d77\u6765", "2.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "2.7 Vibe Coding \u4efb\u52a1\u5361\uff08L0\uff09", "2.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
   const CHAPTER_WRONG = [];
-  const CHAPTER_TITLE = "\u53d8\u91cf\u4e0e\u6570\u636e\u7c7b\u578b";
+  const CHAPTER_TITLE = "\u53d8\u91cf\u3001\u6570\u636e\u7c7b\u578b\u4e0e\u8f93\u5165\u8f93\u51fa";
 </script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
@@ -955,7 +2056,7 @@ print(not False)  # True</code></pre>
 <script src="static/js/chapter_challenge.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    ChapterIntro3D.open(2, "\u53d8\u91cf\u4e0e\u6570\u636e\u7c7b\u578b", "\u5b66\u4e60\u5982\u4f55\u5b58\u50a8\u6570\u636e\uff0c\u8ba4\u8bc6 Python \u4e2d\u7684\u6570\u5b57\u3001\u5b57\u7b26\u4e32\u3001\u5e03\u5c14\u503c\u7b49\u57fa\u672c\u6570\u636e\u7c7b\u578b", ["\u4ec0\u4e48\u662f\u53d8\u91cf\uff1f", "\u6570\u5b57\u7c7b\u578b", "\u5b57\u7b26\u4e32\u7c7b\u578b\uff08str\uff09", "\u5e03\u5c14\u7c7b\u578b\u4e0e None"], null);
+    ChapterIntro3D.open(2, "\u53d8\u91cf\u3001\u6570\u636e\u7c7b\u578b\u4e0e\u8f93\u5165\u8f93\u51fa", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7406\u89e3\u53d8\u91cf\u7684\u672c\u8d28\uff08\u540d\u5b57\u7ed1\u5b9a\u5230\u5bf9\u8c61\uff0c\u800c\u4e0d\u662f\"\u88c5\u6570\u636e\u7684\u76d2\u5b50\"\uff09\uff0c\u5e76\u9075\u5faa\u89c4\u8303\u547d\u540d\uff1b\n- \u638c\u63e1 Python \u56db\u79cd\u57fa\u672c\u6570\u636e\u7c7b\u578b\uff1a\u6574\u6570 int\u3001\u6d6e\u70b9\u6570 float\u3001\u5b57\u7b26\u4e32 str\u3001\u5e03\u5c14 bool\uff1b\n- \u719f\u7ec3\u4f7f\u7528\u7b97\u672f\u8fd0\u7b97\u7b26\uff08", ["2.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "2.1 \u53d8\u91cf\uff1a\u7ed9\u6570\u636e\u8d77\u540d\u5b57", "2.2 \u6570\u503c\u7c7b\u578b\uff1aint \u4e0e float", "2.3 \u5e03\u5c14\u7c7b\u578b\u4e0e\u6bd4\u8f83\u8fd0\u7b97", "2.4 \u5b57\u7b26\u4e32\u521d\u8bc6", "2.5 input() \u8f93\u5165\u4e0e print() \u8f93\u51fa\uff1a\u8ba9\u7a0b\u5e8f\"\u6d3b\"\u8d77\u6765", "2.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "2.7 Vibe Coding \u4efb\u52a1\u5361\uff08L0\uff09", "2.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
   });
 </script>
 

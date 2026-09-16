@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — Gitee 平台与远程协作</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="19" data-chapter-title="Gitee 平台与远程协作" data-chapter-description="学完本章，你应该能够：
+
+- 理解本地仓库与远程仓库的关系，区分 SSH 与 HTTPS 两种连接方式；
+- 在 Gitee 创建仓库，完成 remote add / push / pull / clone 全流程；
+- 编写规范的 REA">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 19</p>
+    <span class="hero-icon">☁️</span>
+    <h2>第 19 章 · Gitee 平台与远程协作</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 理解本地仓库与远程仓库的关系，区分 SSH 与 HTTPS 两种连接方式；
+- 在 Gitee 创建仓库，完成 remote add / push / pull / clone 全流程；
+- 编写规范的 REA</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="19_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          19.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>理解本地仓库与远程仓库的关系，区分 SSH 与 HTTPS 两种连接方式；</li><li>在 Gitee 创建仓库，完成 <code class="md-inline">remote add / push / pull / clone</code> 全流程；</li><li>编写规范的 README 与 .gitignore；</li><li>认识 Gitee 的 Issue / Pull Request / Release / 分支保护；</li><li>把 Day 8 的综合训练项目推送到 Gitee 形成作品集；</li><li>按 L3 规则使用 AI：生成 README/.gitignore 必须 Review。</li></ol>
+<p><strong>前置知识</strong>：第 18 章（分支、合并、冲突）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 0, "19.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u63a8\u9001\u6210\u529f\u540e\u5237\u65b0 Gitee \u9875\u9762\uff0c\u4ee3\u7801\u3001README\u3001\u63d0\u4ea4\u5386\u53f2\u90fd\u80fd\u770b\u5230\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 `python_work`\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"powershell\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epowershell\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-powershell\"\u003egit remote add origin git@gitee.com:\u7528\u6237\u540d/python_work.git\ngit branch -M main\ngit push -u origin main\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u9996\u6b21\u63a8\u9001\u8f93\u51fa\uff08\u524d 5 \u884c\u793a\u4f8b\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eEnumerating objects: 25, done.\nCounting objects: 100% (25/25), done.\nDelta compression using up to 8 threads\nCompressing objects: 100% (20/20), done.\nWriting objects: 100% (25/25), 2.0 KiB | 2.0 MiB/s, done.\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 1 \u9898**\uff1a\u5728 Gitee \u521b\u5efa\u4ed3\u5e93 `python_work`\uff0c\u628a Day 8 \u7efc\u5408\u8bad\u7ec3\u9879\u76ee\u63a8\u9001\u4e0a\u53bb\uff1b\u628a\u4ed3\u5e93\u5730\u5740\u548c\"\u7b2c\u4e00\u6b21 push \u7684\u8f93\u51fa\u524d 5 \u884c\"\u622a\u56fe/\u6587\u5b57\u8bb0\u5f55\u5230\u4f5c\u4e1a\u6ce8\u91ca\u91cc\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 0, '19.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 0, '19.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="19_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          19.1 远程仓库概念
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">19.1.1 概念认知：本地 vs 远程</h3>
+<p>到目前为止你的仓库都在自己电脑上（本地）。<strong>远程仓库（remote）</strong> 是托管在服务器上的副本（Gitee 的服务器），作用：</p>
+<ol><li><strong>备份</strong>：电脑坏了，代码不丢；</li><li><strong>协作</strong>：队友从同一仓库 clone/push/pull；</li><li><strong>作品集</strong>：面试官看的"代码门面"。</li></ol>
+<div class="md-figure"><pre class="md-diagram">你的电脑（本地）          Gitee 服务器（远程）
+  master ◄──push──────── master
+  master ──pull/clone──► master</pre></div>
+<h3 class="md-h">19.1.2 概念认知：SSH vs HTTPS</h3>
+<p>连接远程仓库有两种方式：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>方式</th><th>原理</th><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>HTTPS</td><td>每次推送要用户名 + 密码/令牌</td><td>配置简单</td><td>反复输密码（可缓存）</td></tr><tr><td>SSH</td><td>密钥对（公钥放 Gitee，私钥在自己电脑）</td><td>免密推送、更安全</td><td>首次配置稍麻烦</td></tr></tbody></table></div>
+<p><strong>本课程建议 SSH</strong>（配置一次，之后免密；企业里 SSH 是主流）。配置步骤：<code class="md-inline">ssh-keygen</code> 生成密钥 → 把公钥粘贴到 Gitee"设置 → SSH 公钥"。</p>
+<p><strong>原理探秘：SSH 为什么能免密</strong></p>
+<p>SSH 用一对密钥工作：<strong>公钥</strong>（可以公开，粘贴到 Gitee"SSH 公钥"设置）与<strong>私钥</strong>（必须保密，只存在自己电脑）。推送时，Gitee 服务器用你的公钥验证"你确实持有对应的私钥"——验证通过即放行，全程不用输密码。<strong>私钥 = 你的"数字身份证"，泄露私钥等于把仓库交出去</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 1, "19.1 \u8fdc\u7a0b\u4ed3\u5e93\u6982\u5ff5", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u9879\u76ee\u662f\u4ec0\u4e48 + \u80fd\u505a\u4ec0\u4e48 + \u600e\u4e48\u8dd1 + \u8c01\u5199\u7684\u2014\u2014\u56db\u8981\u7d20\u9f50\u4e86\u5c31\u5408\u683c\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff0810 \u884c\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"markdown\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003emarkdown\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-markdown\"\u003e# \u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u7cfb\u7edf\n\n\u4e00\u4e2a\u547d\u4ee4\u884c\u7248\u7684\u5b66\u751f\u6210\u7ee9\u7ba1\u7406\u5de5\u5177\uff08Day 8 \u7efc\u5408\u8bad\u7ec3\uff09\u3002\n\n## \u529f\u80fd\n- \u6dfb\u52a0\u5b66\u751f\uff08\u59d3\u540d\u3001\u5e74\u9f84\u3001\u6210\u7ee9\uff09\n- \u67e5\u770b\u5b66\u751f\u5217\u8868\n- \u6309\u59d3\u540d\u67e5\u627e/\u5220\u9664\n\n## \u8fd0\u884c\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003epython main.py\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"code\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003ecode\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-code\"\u003e\n## \u4f5c\u8005\n\u5f20\u4e09\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 2 \u9898**\uff1a\u5199\u4e00\u4e2a 10 \u884c\u7684 README.md\uff08\u9879\u76ee\u540d\u3001\u7b80\u4ecb\u3001\u529f\u80fd\u5217\u8868\u3001\u8fd0\u884c\u65b9\u5f0f\u3001\u4f5c\u8005\uff09\uff0c\u63a8\u9001\u540e\u5237\u65b0\u9875\u9762\u786e\u8ba4\u6e32\u67d3\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 1, '19.1 远程仓库概念')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 1, '19.1 远程仓库概念')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="19_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          19.2 Gitee 建仓与推送
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">19.2.1 语法掌握：创建仓库</h3>
+<ol><li>登录 &lt;https://gitee.com&gt;，右上角"+"→ 新建仓库；</li><li>填仓库名（如 <code class="md-inline">python_work</code>）、选择<strong>公开/私有</strong>；</li><li>勾选"初始化仓库"（生成 README 和 .gitignore）——或者<strong>不勾选</strong>，用命令行推已有仓库；</li><li>创建后页面会显示两种推送命令（HTTPS/SSH 各一套）。</li></ol>
+<h3 class="md-h">19.2.2 语法掌握：把本地仓库推上去</h3>
+<p><strong>代码案例 19.1</strong>：关联远程并推送（✅ 正确）</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git remote add origin git@gitee.com:你的用户名/python_work.git
+git branch -M main
+git push -u origin main</code></pre></div>
+<p><strong>运行结果</strong>（首次推送）：</p>
+<div class="md-figure"><pre class="md-diagram">Enumerating objects: 25, done.
+...
+ * [new branch]      main -&gt; main
+branch &#x27;main&#x27; set up to track &#x27;origin/main&#x27;.</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">git remote add origin 地址</code>：给远程仓库起名叫 <code class="md-inline">origin</code>（惯例名字）；</li><li><code class="md-inline">git branch -M main</code>：把默认分支改名为 <code class="md-inline">main</code>（现代惯例，原 master 也可）；</li><li><code class="md-inline">git push -u origin main</code>：推送并设置"跟踪"（<code class="md-inline">-u</code> 之后直接 <code class="md-inline">git push</code> 即可）；</li><li><strong>首次推送可能要求输入 SSH 密码/确认指纹</strong>，正常现象。</li></ul>
+<p><strong>微任务卡（M1 · 讲解卡 · L3）</strong>：把 remote add / push 的输出发给 AI："请解释 -u 参数的作用、origin 和 main 分别指什么。"一句话记录理解。</p>
+<h3 class="md-h">19.2.3 语法掌握：clone 与 pull</h3>
+<p><strong>代码案例 19.2</strong>：克隆别人的仓库（✅ 正确）</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git clone git@gitee.com:用户名/仓库名.git</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">Cloning into &#x27;仓库名&#x27;...
+remote: Enumerating objects: ...
+Receiving objects: 100% ...</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">clone</code> = 把远程仓库完整复制到本地（含全部历史），并自动设置好 origin。</p>
+<p><strong>代码案例 19.3</strong>：拉取远程更新（✅ 正确）</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git pull</code></pre></div>
+<p><strong>运行结果</strong>（远程有新提交时）：</p>
+<div class="md-figure"><pre class="md-diagram">Updating 90aca60..0546afe
+Fast-forward
+ app.py | 2 +-
+ 1 file changed</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">pull</code> = <code class="md-inline">fetch</code>（下载远程提交）+ <code class="md-inline">merge</code>（合并进当前分支）。<strong>推送前先 pull</strong>——远程有新东西时不 pull 就 push 会被拒绝。</p>
+<p><strong>交叉验证：push 被拒绝</strong></p>
+<div class="md-figure"><pre class="md-diagram">! [rejected]        main -&gt; main (fetch first)
+error: failed to push some refs to ...
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally.</pre></div>
+<p><strong>讲解</strong>：报错信息已经给了解法（fetch first）。<strong>先 <code class="md-inline">git pull</code> 合并远程更新，解决可能的冲突，再 push</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 2, "19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u53ea\u60f3\u770b\u770b\u8fdc\u7a0b\u6709\u4ec0\u4e48 \u2192 fetch\uff1b\u60f3\u540c\u6b65\u5230\u672c\u5730 \u2192 pull\u3002pull \u662f\u65e5\u5e38\u7528\u6cd5\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u89e3\u91ca `git pull` \u548c `git fetch` \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003egit fetch\u003c/code\u003e \u53ea\u003cstrong\u003e\u4e0b\u8f7d\u003c/strong\u003e\u8fdc\u7a0b\u7684\u63d0\u4ea4\u5230\u672c\u5730\uff08\u4e0d\u52a8\u4f60\u7684\u5de5\u4f5c\u533a\uff09\uff1b\u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e = \u003ccode class=\"md-inline\"\u003efetch\u003c/code\u003e + \u003ccode class=\"md-inline\"\u003emerge\u003c/code\u003e\uff08\u4e0b\u8f7d\u540e\u003cstrong\u003e\u5408\u5e76\u8fdb\u5f53\u524d\u5206\u652f\u003c/strong\u003e\uff09\u3002\u003c/p\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 3 \u9898**\uff1a\u89e3\u91ca `git pull` \u548c `git fetch` \u7684\u533a\u522b\uff08\u63d0\u793a\uff1apull = fetch + \u4ec0\u4e48\uff1f\uff09\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「19.2 Gitee 建仓与推送」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(19, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 2, '19.2 Gitee 建仓与推送')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 2, '19.2 Gitee 建仓与推送')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="19_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          19.3 gitignore：哪些文件不进仓库
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">19.3.1 概念认知：为什么要排除文件</h3>
+<p>有些文件<strong>不该进仓库</strong>：虚拟环境（venv）、缓存（<code class="md-inline">__pycache__</code>）、密钥（API Key）、IDE 配置（.idea）——体积大、机器相关、甚至泄露机密。</p>
+<p><strong>代码案例 19.4</strong>：Python 项目的 .gitignore（✅ 正确）</p>
+<div class="md-codeblock" data-lang="gitignore"><div class="md-codebar"><span class="md-codelang">gitignore</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-gitignore"># 虚拟环境
+venv/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# 密钥（绝对不提交！）
+.env
+*.key
+
+# IDE 配置
+.idea/
+.vscode/
+
+# 系统文件
+.DS_Store
+Thumbs.db</code></pre></div>
+<p><strong>交叉验证：不写 .gitignore 的后果</strong></p>
+<p class="md-callout md-bad"><strong>❌ 事故 1</strong>：<code class="md-inline">git add .</code> 把 <code class="md-inline">venv/</code> 整个提交了——几千个小文件，仓库膨胀到几十 MB，队友 clone 慢到怀疑人生； <strong>❌ 事故 2</strong>：<code class="md-inline">.env</code> 里的 API Key 被推送——<strong>密钥泄露，第三方可以刷爆你的账户</strong>（第 1 章红线：API Key 绝不入库）。</p>
+<p><strong>讲解</strong>：<strong><code class="md-inline">.gitignore</code> 要在第一次 add 之前就配好</strong>——已经入库的文件，再写 .gitignore 也不会自动移出（需要用 <code class="md-inline">git rm --cached</code>，第 19 章练习）。<strong>红线：密钥文件永远在 .gitignore 里</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 3, "19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a`git status` \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"gitignore\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003egitignore\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-gitignore\"\u003evenv/\n__pycache__/\n*.py[cod]\n.env\n*.key\n.idea/\n.vscode/\n.DS_Store\nThumbs.db\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u9a8c\u8bc1\u65b9\u6cd5\u003c/strong\u003e\uff1a\u003ccode class=\"md-inline\"\u003egit status\u003c/code\u003e \u4e2d\u4e0d\u518d\u51fa\u73b0 venv\u3001__pycache__ \u7b49\u76ee\u5f55\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1a\u5982\u679c\u4e4b\u524d\u5df2\u63d0\u4ea4\u8fc7\uff0c\u9700\u8981 \u003ccode class=\"md-inline\"\u003egit rm -r --cached venv\u003c/code\u003e \u624d\u80fd\u4ece\u8ddf\u8e2a\u4e2d\u79fb\u9664\u3002\u003c/p\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 4 \u9898**\uff1a\u4e3a\u4f60\u7684\u9879\u76ee\u7f16\u5199\u5b8c\u6574\u7684 .gitignore\uff08\u81f3\u5c11\u8986\u76d6 venv\u3001__pycache__\u3001.env\u3001IDE \u914d\u7f6e\uff09\uff0c\u9a8c\u8bc1\uff1a`git status` \u91cc\u4e0d\u518d\u51fa\u73b0\u8fd9\u4e9b\u76ee\u5f55\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「19.3 gitignore：哪些文件不进仓库」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(19, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 3, '19.3 gitignore：哪些文件不进仓库')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 3, '19.3 gitignore：哪些文件不进仓库')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="19_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          19.4 Gitee 协作功能
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">19.4.1 Issue：问题与需求追踪</h3>
+<p>Issue = 仓库里的"待办/问题单"，用于：</p>
+<ul><li>报 bug（"登录接口 500"）；</li><li>提需求（"希望支持导出 Excel"）；</li><li>分配任务（指派给某位成员）。</li></ul>
+<p><strong>规范写法</strong>：标题一句话 + 描述"复现步骤 / 期望结果 / 实际结果"——<strong>像写验收标准一样写 Issue</strong>（第 15 章）。</p>
+<h3 class="md-h">19.4.2 Pull Request：代码评审的入口</h3>
+<p><strong>Pull Request（PR）</strong>：你把你分支的改动"请求"合入主分支，合入前其他人可以<strong>评审</strong>（看 diff、提意见、讨论）。</p>
+<div class="md-figure"><pre class="md-diagram">你的分支 feature-x ──push──► 远程 feature-x
+                                    │ 发起 PR
+                                    ▼
+                              main（评审通过后合并）</pre></div>
+<p><strong>PR 是团队协作的核心流程</strong>：不是"直接 push 到 main"，而是"PR + 评审 + 合并"（第 20 章详讲）。</p>
+<h3 class="md-h">19.4.3 Release 与分支保护（了解）</h3>
+<ul><li><strong>Release</strong>：给某个提交打上版本号（v1.0.0），附发布说明——"正式版本"的标记；</li><li><strong>分支保护</strong>：设置"main 分支禁止直接 push，只能通过 PR 合并"——<strong>防止有人绕过评审</strong>（第 20 章工作坊启用）。</li></ul>
+<blockquote class="md-quote"><p><strong>了解级边界（就业提示）</strong>：Release 与分支保护这里只要求认识；<strong>协作/发布相关岗位</strong>（DevOps、团队负责人）要求会用 Release 管理版本、用分支保护落实"评审才能合入"。面试问"怎么防止有人绕过评审"，答"开启 main 分支保护 + 只允许 PR 合并"即可。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 4, "19.4 Gitee \u534f\u4f5c\u529f\u80fd", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540e\uff0c\u628a AI \u751f\u6210\u7684 README \u548c .gitignore \u53d1\u7ed9 AI \u590d\u5ba1\uff1a\"\u8bf7\u68c0\u67e5 .gitignore \u662f\u5426\u9057\u6f0f\u4e86\u5e38\u89c1\u98ce\u9669\u9879\uff08\u5bc6\u94a5\u3001\u7f13\u5b58\u3001\u865a\u62df\u73af\u5883\uff09\u3002\"\u8bb0\u5f55\u4f60\u8865\u5145\u7684\u6761\u76ee\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u7f51\u9875\u4e0a\u7684\u63d0\u4ea4\u88ab\u62c9\u53d6\u5e76\u5408\u5e76\u5230\u672c\u5730\u2014\u2014\u003cstrong\u003e\u8fdc\u7a0b\u548c\u672c\u5730\u53cc\u5411\u540c\u6b65\u003c/strong\u003e\u3002\u4e4b\u540e\u672c\u5730\u518d push \u5c31\u4e0d\u4f1a\u88ab\u62d2\u7edd\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u6b65\u9aa4\uff09\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u5728 Gitee \u7f51\u9875\u4e0a\u6253\u5f00 README.md \u2192 \u7f16\u8f91 \u2192 \u52a0\u4e00\u884c \u2192 \u63d0\u4ea4\uff1b\u003c/li\u003e\u003cli\u003e\u672c\u5730\u6267\u884c \u003ccode class=\"md-inline\"\u003egit pull\u003c/code\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u8fd0\u884c\u7ed3\u679c\u7c7b\u4f3c\uff1a\u003c/li\u003e\u003c/ol\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eremote: ...\nUpdating a1b2c3d..e4f5g6h\nFast-forward\n README.md | 1 +\n 1 file changed, 1 insertion(+)\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 5 \u9898**\uff1a\u6a21\u62df\"\u5148\u62c9\u540e\u63a8\"\uff1a\u5728 Gitee \u7f51\u9875\u4e0a\u76f4\u63a5\u7f16\u8f91 README \u52a0\u4e00\u884c\u5e76\u63d0\u4ea4\uff0c\u7136\u540e\u672c\u5730 `git pull`\uff0c\u89c2\u5bdf\u8f93\u51fa\u5e76\u8bb0\u5f55\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 4, '19.4 Gitee 协作功能')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 4, '19.4 Gitee 协作功能')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="19_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          19.5 工作坊：把 Day 8 项目推送到 Gitee
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>目标</strong>：形成你的第一个 Gitee 作品集仓库。</p>
+<p><strong>步骤</strong>：</p>
+<ol><li>确认 Day 8 的综合训练项目在本地仓库里、提交完整；</li><li>在项目目录创建/完善 <code class="md-inline">.gitignore</code>（按 19.3 模板）和 <code class="md-inline">README.md</code>；</li><li>Gitee 新建空仓库（不勾选初始化）；</li><li>执行 19.2.2 的三条命令推送；</li><li>打开 Gitee 页面确认：README 渲染、代码在线可看；</li><li>把仓库链接发到班级群——<strong>从今天起，你的每次提交都是"可展示的成长记录"</strong>。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 5, "19.5 \u5de5\u4f5c\u574a\uff1a\u628a Day 8 \u9879\u76ee\u63a8\u9001\u5230 Gitee", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003eL3 \u7684\"Review\"\u4e0d\u662f\u8d70\u5f62\u5f0f\u2014\u2014\u003cstrong\u003e\u81f3\u5c11\u6539 2 \u5904\u3001\u786e\u8ba4 1 \u6761\u7ea2\u7ebf\u003c/strong\u003e\uff0c\u624d\u7b97\u771f\u7684\u5ba1\u8fc7\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08Review \u8bb0\u5f55\u793a\u4f8b\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eAI \u751f\u6210\u7684\u5185\u5bb9\uff1a\n- README\uff1a\u7ed3\u6784\u5b8c\u6574\uff0c\u4f46\u0026quot;\u4f7f\u7528\u793a\u4f8b\u0026quot;\u91cc\u5199\u7684\u662f\u901a\u7528\u5360\u4f4d\u7b26\uff1b\n- .gitignore\uff1a\u8986\u76d6\u4e86 venv/__pycache__/.env/IDE\uff0c\u7b26\u5408\u9884\u671f\u3002\n\n\u6211\u7684\u4fee\u6539\uff1a\n1. README \u4f5c\u8005\u4fe1\u606f\u6539\u6210\u6211\u7684\u771f\u5b9e\u4fe1\u606f\uff1b\n2. \u4f7f\u7528\u793a\u4f8b\u6539\u6210\u6211\u9879\u76ee\u7684\u771f\u5b9e\u547d\u4ee4\uff08python main.py\uff09\uff1b\n3. .gitignore \u8ffd\u52a0\u4e86 data/tmp/\uff08\u6211\u7684\u9879\u76ee\u751f\u6210\u7684\u4e34\u65f6\u76ee\u5f55\uff09\uff1b\n4. \u786e\u8ba4 .env \u5728\u6e05\u5355\u91cc\uff08\u7ea2\u7ebf\uff09\u3002\n\n\u91c7\u7eb3/\u5426\u51b3\u7406\u7531\uff1a\u5360\u4f4d\u7b26\u5fc5\u987b\u66ff\u6362\u6210\u771f\u5b9e\u4fe1\u606f\uff08\u91c7\u7eb3\uff09\uff1b\nAI \u5efa\u8bae\u7684\u67d0\u4e2a\u65e0\u5173\u76ee\u5f55\u6ca1\u6709\u52a0\uff08\u5426\u51b3\uff0c\u7406\u7531\uff1a\u9879\u76ee\u4e0d\u9700\u8981\uff09\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "**\u7b2c 6 \u9898**\uff1a\u6309 19.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210 README \u548c .gitignore\uff0cReview \u5e76\u4fee\u6539\u540e\u4f7f\u7528\uff1b\u5199\u6e05\"AI \u751f\u6210\u7684\u5185\u5bb9\u91cc\u6211\u6539\u4e86\u54ea\u51e0\u5904\u3001\u4e3a\u4ec0\u4e48\u6539\"\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 5, '19.5 工作坊：把 Day 8 项目推送到 Gitee')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 5, '19.5 工作坊：把 Day 8 项目推送到 Gitee')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="19_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          19.6 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：remote 已存在</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">git remote add origin git@gitee.com:... </code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">fatal: remote origin already exists.</pre></div>
+<p><strong>提示</strong>：origin 已经存在，怎么改地址？</p>
+<p><strong>讲解</strong>：用 <code class="md-inline">git remote set-url origin 新地址</code> 修改，或 <code class="md-inline">git remote remove origin</code> 后重新 add。<strong>先 <code class="md-inline">git remote -v</code> 查看当前配置</strong>。</p>
+<h3 class="md-h">问题 2：push 被拒绝</h3>
+<p><strong>问题描述</strong>：<code class="md-inline">git push</code> 报 rejected（fetch first）。</p>
+<p><strong>提示</strong>：远程有你没有的提交，先做什么？</p>
+<p><strong>讲解</strong>：<code class="md-inline">git pull</code> 合并远程更新（有冲突就解决），再 push。<strong>"先拉后推"是铁律</strong>。</p>
+<h3 class="md-h">问题 3：把 venv 推上去了</h3>
+<p><strong>问题描述</strong>：发现仓库里有几千个 venv 文件，clone 很慢。</p>
+<p><strong>提示</strong>：.gitignore 能移除已跟踪的文件吗？需要什么命令？</p>
+<p><strong>讲解</strong>：<code class="md-inline">git rm -r --cached venv</code>（从 Git 跟踪中移除但保留本地文件），再写 .gitignore，提交推送。<strong>教训：.gitignore 早点配</strong>。</p>
+<h3 class="md-h">问题 4：密钥被推上去了</h3>
+<p><strong>问题描述</strong>：<code class="md-inline">.env</code> 文件不小心被推送，API Key 暴露。</p>
+<p><strong>提示</strong>：推送历史里还有密钥，只删文件够吗？</p>
+<p><strong>讲解</strong>：<strong>立即去 Gitee/DeepSeek 平台吊销并重新生成 Key</strong>（已泄露的 Key 视为不可信），删除文件 + <code class="md-inline">git rm --cached</code> + 提交；如需彻底清除历史需要 <code class="md-inline">git filter-repo</code>（本课程了解，老师协助处理）。<strong>红线的意思是：宁可多花 10 分钟配 .gitignore，不赌这一把</strong>。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 6, "19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(19, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「19.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(19, 6, 0, "\u7528\u4ee3\u7801\u628a\u300c19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 6, '19.6 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 6, '19.6 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="19_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          19.7 Vibe Coding 任务卡（L3 主卡）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 生成 README 和 .gitignore，你 Review 后使用</p>
+<p><strong>任务内容</strong>：把项目简介发给 AI，让它生成 README 模板和 Python 项目的 .gitignore（L3 首次生成任务）。</p>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">请为我的 Python 命令行项目生成：
+1. README.md 模板（包含：项目简介、功能列表、安装步骤、使用示例、作者信息）；
+2. Python 项目的 .gitignore（包含 venv、__pycache__、.env、IDE 配置）。</pre></div>
+<p><strong>Review 清单（L3）</strong>：</p>
+<ul><li>[ ] <strong>读懂</strong>：README 里每个段落我知道在说什么；</li><li>[ ] <strong>验证</strong>：.gitignore 的每一项我都能说出"这是排除了什么"；</li><li>[ ] <strong>修改</strong>：把"作者信息""使用示例"改成我的真实信息；.gitignore 补充我项目特有的文件（如 data/ 里的临时文件）；</li><li>[ ] 确认 <code class="md-inline">.env</code>/密钥相关条目在 .gitignore 里，然后提交推送。</li></ul>
+<p><strong>微任务卡（M2 · 审查卡 · L3）</strong>：把 AI 生成的 .gitignore 发给 AI："请审查这份 .gitignore 是否覆盖了 Python 项目的常见陷阱（venv、缓存、密钥）。"核对后记录你补充了哪些条目。</p>
+<p><strong>微任务卡（M3 · 报错卡 · L2）</strong>：把 push 被拒绝的报错发给 AI："请解释 'fetch first' 是什么意思，正确的处理顺序是什么？"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 7, "19.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 7, '19.7 Vibe Coding 任务卡（L3 主卡）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 7, '19.7 Vibe Coding 任务卡（L3 主卡）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="19_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          19.8 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">Gitee 平台与远程协作
+├── 远程仓库：备份 / 协作 / 作品集
+├── 连接方式：HTTPS（密码）vs SSH（密钥免密，推荐）
+├── 常用命令
+│   ├── remote add origin 地址 / remote -v 查看
+│   ├── push -u origin main（首次）→ push（之后）
+│   ├── clone 完整复制 / pull = fetch + merge
+│   └── 铁律：先 pull 再 push
+├── .gitignore：venv / __pycache__ / .env / IDE 配置
+│   └── 红线：密钥绝不入库；已跟踪文件用 git rm --cached
+├── Gitee 功能：Issue（问题单）/ PR（评审入口）/ Release / 分支保护
+└── 作品集：README + 代码 + 提交历史 = 面试门面</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>先 <code class="md-inline">pull</code> 再 <code class="md-inline">push</code>，被拒绝时读报错提示；</li><li>SSH 密钥配置一次，之后免密推送；</li><li><code class="md-inline">.gitignore</code> 在第一次 <code class="md-inline">add</code> 前配好；密钥文件永远排除；</li><li><code class="md-inline">git rm --cached</code> 移除已跟踪文件但保留本地；</li><li>README 是你的"门面"——项目是什么、怎么装、怎么用，三样必须有。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 8, "19.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 8, '19.8 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 8, '19.8 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="19_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td><code class="md-inline">git remote add origin 地址</code></td><td>关联远程仓库</td></tr><tr><td><code class="md-inline">git push -u origin main</code></td><td>首次推送（-u 设置跟踪）</td></tr><tr><td><code class="md-inline">git clone 地址</code></td><td>克隆仓库</td></tr><tr><td><code class="md-inline">git pull</code></td><td>拉取并合并（<strong>先拉后推</strong>）</td></tr><tr><td><code class="md-inline">.gitignore</code></td><td>排除不入库文件</td></tr><tr><td><code class="md-inline">git rm --cached</code></td><td>移除跟踪但保留本地</td></tr><tr><td>SSH 密钥</td><td>免密推送</td></tr><tr><td>Issue / PR / Release</td><td>问题单 / 评审入口 / 版本</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(19, 9, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="19_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(19, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(19, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(19, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="19_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(19, 9, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(19, 9, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 Gitee 平台与远程协作 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ Gitee 平台与远程协作 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># Gitee 平台与远程协作
+## 19.1 远程仓库概念
+### 概念认知：本地 vs 远程
+### 概念认知：SSH vs HTTPS
+## 19.2 Gitee 建仓与推送
+### 语法掌握：创建仓库
+### 语法掌握：把本地仓库推上去
+### 语法掌握：clone 与 pull
+## 19.3 gitignore：哪些文件不进仓库
+### 概念认知：为什么要排除文件
+## 19.4 Gitee 协作功能
+### Issue：问题与需求追踪
+### Pull Request：代码评审的入口
+### Release 与分支保护（了解）
+## 19.5 工作坊：把 Day 8 项目推送到 Gitee
+## 19.6 本章 Debug 四件套
+### 问题 1：remote 已存在
+### 问题 2：push 被拒绝
+### 问题 3：把 venv 推上去了
+### 问题 4：密钥被推上去了
+## 19.7 Vibe Coding 任务卡（L3 主卡）
+## 19.8 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 19;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["19.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "19.1 \u8fdc\u7a0b\u4ed3\u5e93\u6982\u5ff5", "19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001", "19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93", "19.4 Gitee \u534f\u4f5c\u529f\u80fd", "19.5 \u5de5\u4f5c\u574a\uff1a\u628a Day 8 \u9879\u76ee\u63a8\u9001\u5230 Gitee", "19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "19.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "19.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "Gitee \u5e73\u53f0\u4e0e\u8fdc\u7a0b\u534f\u4f5c";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(19, "Gitee \u5e73\u53f0\u4e0e\u8fdc\u7a0b\u534f\u4f5c", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7406\u89e3\u672c\u5730\u4ed3\u5e93\u4e0e\u8fdc\u7a0b\u4ed3\u5e93\u7684\u5173\u7cfb\uff0c\u533a\u5206 SSH \u4e0e HTTPS \u4e24\u79cd\u8fde\u63a5\u65b9\u5f0f\uff1b\n- \u5728 Gitee \u521b\u5efa\u4ed3\u5e93\uff0c\u5b8c\u6210 remote add / push / pull / clone \u5168\u6d41\u7a0b\uff1b\n- \u7f16\u5199\u89c4\u8303\u7684 REA", ["19.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "19.1 \u8fdc\u7a0b\u4ed3\u5e93\u6982\u5ff5", "19.2 Gitee \u5efa\u4ed3\u4e0e\u63a8\u9001", "19.3 gitignore\uff1a\u54ea\u4e9b\u6587\u4ef6\u4e0d\u8fdb\u4ed3\u5e93", "19.4 Gitee \u534f\u4f5c\u529f\u80fd", "19.5 \u5de5\u4f5c\u574a\uff1a\u628a Day 8 \u9879\u76ee\u63a8\u9001\u5230 Gitee", "19.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "19.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "19.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

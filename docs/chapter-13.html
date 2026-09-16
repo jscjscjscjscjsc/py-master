@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 第三方库、并发与异步</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="13" data-chapter-title="第三方库、并发与异步" data-chapter-description="学完本章，你应该能够：
+
+- 用 pip 安装第三方库，用 requests 发送 HTTP 请求并解析 JSON；
+- 用 datetime 计算日期差、用 re 提取文本中的关键信息；
+- 理解进程/线程/协程的概念与区别；
+- 用 t">
+
+<div class="bg-grid"></div>
+<canvas id="particles-canvas"></canvas>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 13</p>
+    <span class="hero-icon">⚡</span>
+    <h2>第 13 章 · 第三方库、并发与异步</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 用 pip 安装第三方库，用 requests 发送 HTTP 请求并解析 JSON；
+- 用 datetime 计算日期差、用 re 提取文本中的关键信息；
+- 理解进程/线程/协程的概念与区别；
+- 用 t</p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="13_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          13.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>用 pip 安装第三方库，用 requests 发送 HTTP 请求并解析 JSON；</li><li>用 datetime 计算日期差、用 re 提取文本中的关键信息；</li><li>理解进程/线程/协程的概念与区别；</li><li>用 threading 实现简单并发，理解 GIL 的含义；</li><li>用 asyncio 编写协程，理解 async/await 与事件循环；</li><li>完成"同步 vs 异步"耗时对比实验，能说出何时用哪个；</li><li>了解正则的分组、修饰符与贪婪/非贪婪匹配（了解级进阶）；</li><li>用 httpx 异步客户端写真实并发请求，用 <code class="md-inline">wait_for</code> 控制超时、用 <code class="md-inline">to_thread</code> 适配同步库；</li><li>用 multiprocessing 处理 CPU 密集任务，能说出线程/进程/协程的选型；</li><li>继续遵守 L2 纪律。</li></ol>
+<p><strong>前置知识</strong>：第 1-12 章全部内容（尤其函数、异常、生成器）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 0, "13.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003erequests.__version__\u003c/code\u003e \u67e5\u770b\u7248\u672c\uff08\u8bf4\u660e\u5b89\u88c5\u6210\u529f\uff09\uff1b\u003ccode class=\"md-inline\"\u003eresp.json()\u003c/code\u003e \u628a\u54cd\u5e94\u4f53\u89e3\u6790\u4e3a\u5b57\u5178\uff1b\u003ccode class=\"md-inline\"\u003edata[\"url\"]\u003c/code\u003e \u662f httpbin \u56de\u663e\u7684\u8bf7\u6c42\u5730\u5740\u3002\u003cstrong\u003e\u5982\u679c\u62a5 ModuleNotFoundError\uff0c\u5148 \u003ccode class=\"md-inline\"\u003epip install requests\u003c/code\u003e\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1a`import requests` \u540e\u6253\u5370 `requests.__version__`\uff0c\u7136\u540e GET \u8bf7\u6c42 `https://httpbin.org/get`\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d `url` \u5b57\u6bb5\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport requests\n\nprint(\u0026quot;requests \u7248\u672c\uff1a\u0026quot;, requests.__version__)\n\nresp = requests.get(\u0026quot;https://httpbin.org/get\u0026quot;)\nprint(\u0026quot;\u72b6\u6001\u7801\uff1a\u0026quot;, resp.status_code)\n\ndata = resp.json()\nprint(\u0026quot;url \u5b57\u6bb5\uff1a\u0026quot;, data[\u0026quot;url\u0026quot;])\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08url \u5185\u5bb9\u968f\u8bf7\u6c42\u53d8\u5316\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003erequests \u7248\u672c\uff1a 2.34.2\n\u72b6\u6001\u7801\uff1a 200\nurl \u5b57\u6bb5\uff1a https://httpbin.org/get\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="0">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1a`import requests` \u540e\u6253\u5370 `requests.__version__`\uff0c\u7136\u540e GET \u8bf7\u6c42 `https://httpbin.org/get`\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d `url` \u5b57\u6bb5\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 0, '13.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 0, '13.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="13_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          13.1 第三方库：pip 与 requests
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">13.1.1 概念认知：为什么用第三方库</h3>
+<p>Python 标准库之外，还有几十万个由社区贡献的<strong>第三方库</strong>，集中在 PyPI（Python 包索引）上。<strong>不重复造轮子</strong>：HTTP 请求有 requests、数据分析有 pandas、爬虫有 BeautifulSoup——装好就能用。</p>
+<h3 class="md-h">13.1.2 语法掌握：pip 安装</h3>
+<p><strong>代码案例 13.1</strong>：安装 requests（✅ 正确，PowerShell）</p>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">pip install requests</code></pre></div>
+<p><strong>运行结果</strong>（版本号以实际为准）：</p>
+<div class="md-figure"><pre class="md-diagram">Collecting requests
+...
+Successfully installed requests-2.34.2</pre></div>
+<p><strong>交叉验证：没装就 import</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import requests</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ModuleNotFoundError: No module named &#x27;requests&#x27;</pre></div>
+<p><strong>讲解</strong>：第三方的库必须先 <code class="md-inline">pip install</code> 才能 import。<strong>排查顺序</strong>：拼写 → 是否安装（<code class="md-inline">pip list</code>）→ 是否在正确的虚拟环境（第 8 章的教训在这里又用上了）。</p>
+<h3 class="md-h">13.1.3 语法掌握：requests 发送 GET 请求</h3>
+<p><strong>代码案例 13.2</strong>：GET 请求与 JSON 解析（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import requests
+
+resp = requests.get(&quot;https://httpbin.org/get&quot;)
+
+print(f&quot;状态码：{resp.status_code}&quot;)
+print(f&quot;返回文本类型：{type(resp.text).__name__}&quot;)
+data = resp.json()
+print(f&quot;JSON 里的键：{list(data.keys())}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>（httpbin 的具体内容会变化）：</p>
+<div class="md-figure"><pre class="md-diagram">状态码：200
+返回文本类型：str
+JSON 里的键：[&#x27;args&#x27;, &#x27;headers&#x27;, &#x27;origin&#x27;, &#x27;url&#x27;]</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">requests.get(网址)</code> 发出 GET 请求，返回<strong>响应对象</strong>；</li><li><code class="md-inline">resp.status_code</code>：状态码（200 成功、404 找不到、500 服务器错误）；</li><li><code class="md-inline">resp.text</code>：响应正文（字符串）；<code class="md-inline">resp.json()</code>：把 JSON 正文解析成 Python 字典/列表；</li><li><code class="md-inline">httpbin.org</code> 是一个"回显测试站"，把请求原样返回——<strong>教学专用</strong>，也可以换成课堂提供的本地接口。</li></ul>
+<p><strong>交叉验证：网址连不上</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">resp = requests.get(&quot;https://不存在的地址.example.com&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">requests.exceptions.ConnectionError: ...</pre></div>
+<p><strong>讲解</strong>：网络不通、域名不存在、服务器拒绝，都会抛 <code class="md-inline">ConnectionError</code>。<strong>真实代码里请求必须包 try/except</strong>——这正是第 12 章 @retry 装饰器的用武之地。</p>
+<p><strong>微任务卡（M1 · 报错卡 · L2）</strong>：把 ConnectionError 报错发给 AI，提问："网络请求失败的原因一般有哪些？生产代码应该怎么处理（提示：try/except + @retry）？"一句话记录结论。</p>
+<h3 class="md-h">13.1.4 语法掌握：requests 发送 POST 请求</h3>
+<p><strong>代码案例 13.3</strong>：POST + JSON 数据（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import requests
+
+payload = {&quot;name&quot;: &quot;张三&quot;, &quot;score&quot;: 88}
+resp = requests.post(&quot;https://httpbin.org/post&quot;, json=payload)
+
+data = resp.json()
+print(f&quot;服务器收到的数据：{data[&#x27;json&#x27;]}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">服务器收到的数据：{&#x27;name&#x27;: &#x27;张三&#x27;, &#x27;score&#x27;: 88}</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">requests.post(网址, json=字典)</code>：把字典自动转成 JSON 发送（<strong>json= 参数帮你做了序列化</strong>）；</li><li>服务器把数据回显在 <code class="md-inline">data['json']</code> 里；</li><li><strong>真实场景</strong>：注册登录、提交订单、调用大模型 API——全是 POST + JSON。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：一次 HTTP 请求的四要素 / 响应三要素</strong></p>
+<p>客户端发请求时包含四件事：<strong>方法</strong>（GET/POST/PUT/DELETE）、<strong>URL</strong>（给谁）、<strong>请求头</strong>（身份、格式）、<strong>请求体</strong>（数据，GET 通常没有）。</p>
+<p>服务器响应包含三件事：<strong>状态码</strong>（200 成功 / 404 找不到 / 500 服务器出错 / 401 未登录）、<strong>响应头</strong>、<strong>响应体</strong>（通常是 JSON）。</p>
+<p><strong>就业提示</strong>：后端面试必考"HTTP 状态码"——记住 200、404、500、401 四个就够起步。第 21 章系统讲 REST API 时会再深入。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 1, "13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests", [{"body": "", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u65e5\u671f\u76f8\u51cf\u5f97\u5230 timedelta\uff0c\u003ccode class=\"md-inline\"\u003e.days\u003c/code\u003e \u53d6\u5929\u6570\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1adate(y, m, d) \u7684\u6708\u4efd\u548c\u65e5\u671f\u4e0d\u80fd\u586b 0 \u6216\u8d85\u8303\u56f4\uff0c\u5426\u5219 ValueError\uff08\u53ef\u81ea\u884c\u52a0 try/except \u5347\u7ea7\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom datetime import date\n\ny = int(input(\u0026quot;\u51fa\u751f\u5e74\u4efd\uff1a\u0026quot;))\nm = int(input(\u0026quot;\u51fa\u751f\u6708\u4efd\uff1a\u0026quot;))\nd = int(input(\u0026quot;\u51fa\u751f\u65e5\u671f\uff1a\u0026quot;))\n\nbirthday = date(y, m, d)\ntoday = date.today()\n\nprint(f\u0026quot;\u4f60\u5df2\u7ecf\u6d3b\u4e86 {(today - birthday).days} \u5929\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u793a\u4f8b 2006-05-01\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u51fa\u751f\u5e74\u4efd\uff1a2006\n\u51fa\u751f\u6708\u4efd\uff1a5\n\u51fa\u751f\u65e5\u671f\uff1a1\n\u4f60\u5df2\u7ecf\u6d3b\u4e86 7398 \u5929\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 2 \u9898**\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「13.1 第三方库：pip 与 requests」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(13, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 1, '13.1 第三方库：pip 与 requests')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 1, '13.1 第三方库：pip 与 requests')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="13_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          13.2 datetime 与 re 综合应用
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">13.2.1 语法掌握：datetime 日期计算</h3>
+<p><strong>代码案例 13.4</strong>：出生天数计算器（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from datetime import date
+
+birthday = date(2006, 5, 1)
+today = date.today()
+
+days = (today - birthday).days
+age = today.year - birthday.year
+
+print(f&quot;你已经活了 {days} 天&quot;)
+print(f&quot;今年约 {age} 岁&quot;)</code></pre></div>
+<p><strong>运行结果</strong>（以 2026-08-06 为准）：</p>
+<div class="md-figure"><pre class="md-diagram">你已经活了 7398 天
+今年约 20 岁</pre></div>
+<p><strong>讲解</strong>：<strong>日期可以直接相减，结果是 timedelta 对象，<code class="md-inline">.days</code> 取天数</strong>。真实场景：计算会员到期、合同剩余天数、订单超时。</p>
+<h3 class="md-h">13.2.2 语法掌握：re 提取信息</h3>
+<p><strong>代码案例 13.5</strong>：提取手机号（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import re
+
+text = &quot;客服电话：13812345678，值班手机：13987654321，座机 010-12345678&quot;
+
+phones = re.findall(r&quot;1[3-9]\d{9}&quot;, text)
+print(phones)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;13812345678&#x27;, &#x27;13987654321&#x27;]</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">re.findall(模式, 文本)</code>：找出所有匹配；</li><li><code class="md-inline">r"1[3-9]\d{9}"</code> 的含义：以 1 开头，第二位是 3-9，后面 9 个数字——共 11 位（大陆手机号格式）；</li><li><code class="md-inline">r</code> 是原始字符串（反斜杠不转义），<code class="md-inline">\d</code> 表示数字，<code class="md-inline">{9}</code> 表示重复 9 次；</li><li>座机"010-12345678"不匹配（第二位是 1，不在 3-9），<strong>正则按模式精确匹配</strong>。</li></ul>
+<blockquote class="md-quote"><p><strong>原理探秘：正则的三个基础构件</strong></p>
+<ol><li><strong>字符类</strong>：<code class="md-inline">\d</code> 数字、<code class="md-inline">\w</code> 字母数字下划线、<code class="md-inline">\s</code> 空白；<code class="md-inline">[3-9]</code> 指定范围；</li><li><strong>量词</strong>：<code class="md-inline">*</code> 0 次或多次、<code class="md-inline">+</code> 1 次或多次、<code class="md-inline">{9}</code> 恰好 9 次；</li><li><strong>锚点</strong>：<code class="md-inline">^</code> 开头、<code class="md-inline">$</code> 结尾（本章了解即可，第 13 章之前说过第 4 章是入门——这里把它用起来）。</li></ol></blockquote>
+<h3 class="md-h">13.2.3 更多标准库：time / calendar / hashlib</h3>
+<p><strong>time：时间戳与格式化（✅ 正确，实测过）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import time
+
+print(time.time())                       # 时间戳：1970 年至今的秒数
+local = time.localtime()                 # 结构化时间对象
+print(time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;, local))   # 时间 → 字符串
+
+t = time.strptime(&quot;2008-8-8 20:08:08&quot;, &quot;%Y-%m-%d %H:%M:%S&quot;)  # 字符串 → 时间
+print(t.tm_year)</code></pre></div>
+<p><strong>运行结果</strong>（时间戳随运行时刻变化，格式化结果示例）：</p>
+<div class="md-figure"><pre class="md-diagram">1789538447.0
+2026-08-06 16:40:47
+2008</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">time.time()</code> 返回<strong>时间戳</strong>（适合计算耗时，13.3 节会用到）；<code class="md-inline">strftime</code> 时间转字符串、<code class="md-inline">strptime</code> 字符串转时间（格式码与 13.2.1 的 datetime 一致）；<code class="md-inline">time.sleep(秒)</code> 暂停程序（倒计时、模拟耗时）。</p>
+<p><strong>calendar：日历展示（✅ 正确，了解）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import calendar
+
+print(calendar.month(2026, 8))   # 2026 年 8 月的日历
+print(calendar.isleap(2024))     # 是否闰年</code></pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">calendar.month(年, 月)</code> 输出整月日历；<code class="md-inline">isleap</code> 判断闰年。<strong>真实场景</strong>：排课系统、考勤表、报表日期生成。</p>
+<p><strong>hashlib：哈希与密码存储（✅ 正确，了解）</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import hashlib
+
+def hash_password(password, salt=&quot;&quot;):
+    &quot;&quot;&quot;把密码转成固定长度的哈希值；加盐防撞库&quot;&quot;&quot;
+    data = (password + salt).encode(&quot;utf-8&quot;)
+    return hashlib.sha256(data).hexdigest()
+
+pwd = &quot;123456&quot;
+print(hash_password(pwd))
+print(hash_password(pwd) == hash_password(pwd))          # 同一输入 → 同一输出
+print(hash_password(pwd, &quot;salt!&quot;) != hash_password(pwd)) # 加盐 → 结果不同</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3
+True
+True</pre></div>
+<p><strong>原理探秘：哈希为什么能保护密码？</strong></p>
+<p>哈希是<strong>单向函数</strong>：能算过去、不能算回来。数据库存的是"哈希值"而不是明文——即使数据库泄露，攻击者拿到的也只是哈希。<strong>加盐（salt）</strong> 是在密码后拼接一段随机字符串再哈希，让"相同密码"在不同用户处产生不同哈希，防止撞库攻击。</p>
+<p><strong>交叉验证：哈希 vs 加密</strong></p>
+<div class="md-figure"><pre class="md-diagram">哈希（单向）：密码 → 哈希值，算不回去 → 用于存储密码、校验文件完整性
+加密（双向）：明文 → 密文，可以解密 → 用于传输数据（如 HTTPS）</pre></div>
+<p><strong>讲解</strong>：<strong>哈希不是加密</strong>——加密能解密，哈希不能。这是安全面试的经典区分题。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：后端面试必考"密码怎么存"——标准答法：<strong>绝不存明文，用加盐哈希（如 bcrypt/argon2 或 SHA-256 + 盐）</strong>。能用这个思路回答，就已经超过大多数应届生。</p></blockquote>
+<p><strong>微任务卡（M2 · 讲解卡 · L3）</strong>：把 hashlib 加盐代码发给 AI："请解释为什么相同密码加盐后哈希不同？数据库泄露时加盐能保护什么？"一句话记录理解。</p>
+<h3 class="md-h">13.2.4 了解：正则进阶——分组、修饰符与贪婪</h3>
+<p>13.2.2 只用了 <code class="md-inline">findall</code> 提取。真实场景还常用三样：<strong>分组</strong>（把匹配结果拆成几块）、<strong>修饰符</strong>（改变匹配规则）、<strong>贪婪/非贪婪</strong>（控制匹配长度）。</p>
+<p><strong>代码案例 13.6</strong>：分组提取（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import re
+
+text = &quot;今天是2025-08-01 明天是2025-08-02&quot;
+pattern = r&quot;(\d{4})-(\d{2})-(\d{2})&quot;
+
+for match in re.finditer(pattern, text):
+    print(f&quot;完整：{match.group()}，年：{match.group(1)}，月：{match.group(2)}，日：{match.group(3)}&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">完整：2025-08-01，年：2025，月：08，日：01
+完整：2025-08-02，年：2025，月：08，日：02</pre></div>
+<p><strong>讲解</strong>：<code class="md-inline">()</code> 括起来的部分成为<strong>分组</strong>；<code class="md-inline">finditer</code> 逐个返回匹配对象，<code class="md-inline">group()</code> 完整匹配、<code class="md-inline">group(1)</code> 第一个分组……<strong>分组让"提取"变成"结构化提取"</strong>。</p>
+<p><strong>代码案例 13.7</strong>：修饰符与贪婪/非贪婪（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import re
+
+# re.I：忽略大小写
+print(re.findall(r&quot;python&quot;, &quot;Python PYTHON python&quot;, re.I))
+
+# 贪婪 vs 非贪婪
+html = &quot;&lt;a&gt;1&lt;/a&gt;&lt;a&gt;2&lt;/a&gt;&quot;
+print(re.findall(r&quot;&lt;a&gt;(.*)&lt;/a&gt;&quot;, html))    # 贪婪：尽量多匹配
+print(re.findall(r&quot;&lt;a&gt;(.*?)&lt;/a&gt;&quot;, html))   # 非贪婪：尽量少匹配</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;Python&#x27;, &#x27;PYTHON&#x27;, &#x27;python&#x27;]
+[&#x27;1&lt;/a&gt;&lt;a&gt;2&#x27;]
+[&#x27;1&#x27;, &#x27;2&#x27;]</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">re.I</code> 让匹配忽略大小写（还有 <code class="md-inline">re.M</code> 多行、<code class="md-inline">re.S</code> 让 <code class="md-inline">.</code> 匹配换行，了解即可）；</li><li><strong><code class="md-inline">.*</code> 贪婪</strong>：尽量匹配到最远（一次吞掉 <code class="md-inline">1&lt;/a&gt;&lt;a&gt;2</code>）；<strong><code class="md-inline">.*?</code> 非贪婪</strong>：匹配到最近就停（分别得到 <code class="md-inline">1</code> 和 <code class="md-inline">2</code>）；</li><li><strong>解析 HTML 时贪婪匹配是经典 bug 源</strong>——这正是"不要用正则解析 HTML、用解析器（第 26 章 BeautifulSoup）"的原因之一。</li></ul>
+<blockquote class="md-quote"><p><strong>就业红线（了解级边界）</strong>：正则这里只是进阶了解；<strong>数据清洗/爬虫/后端岗位</strong>要求能写常见模式（邮箱、URL、日期），并会用分组提取。面试问"贪婪与懒惰匹配"，答"<code class="md-inline">.*</code> 尽量多、<code class="md-inline">.*?</code> 尽量少"即可。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 2, "13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e1[3-9]\\d{9}\u003c/code\u003e = \u4ee5 1 \u5f00\u5934 + \u7b2c\u4e8c\u4f4d 3-9 + 9 \u4e2a\u6570\u5b57\uff0c\u5171 11 \u4f4d\u3002\u5ea7\u673a\"028-88888888\"\u7b2c\u4e8c\u4f4d\u662f 2\uff0c\u4e0d\u5339\u914d\u2014\u2014\u003cstrong\u003e\u6b63\u5219\u6309\u6a21\u5f0f\u7cbe\u786e\u5339\u914d\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 re \u4ece `\"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\"` \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport re\n\ntext = \u0026quot;\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\u0026quot;\n\nphones = re.findall(r\u0026quot;1[3-9]\\d{9}\u0026quot;, text)\nprint(phones)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[\u0026#x27;13812345678\u0026#x27;, \u0026#x27;15800001111\u0026#x27;]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 3 \u9898**\uff1a\u7528 re \u4ece `\"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\"` \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「13.2 datetime 与 re 综合应用」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(13, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 2, '13.2 datetime 与 re 综合应用')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 2, '13.2 datetime 与 re 综合应用')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="13_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          13.3 并发：线程与 GIL
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">13.3.1 概念认知：顺序、并发、并行</h3>
+<p>程序执行任务的方式有三种：</p>
+<ul><li><strong>顺序</strong>：一件做完再做下一件；</li><li><strong>并发（concurrency）</strong>：多个任务<strong>交替进行</strong>（宏观上同时，微观上轮流）；</li><li><strong>并行（parallelism）</strong>：多个任务<strong>真正同时</strong>执行（多核 CPU）。</li></ul>
+<p><strong>代码案例 13.8</strong>：顺序执行两个耗时任务（✅ 对比基准）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import time
+
+def work(name, seconds):
+    time.sleep(seconds)
+    print(f&quot;{name} 完成&quot;)
+
+start = time.time()
+work(&quot;任务A&quot;, 0.2)
+work(&quot;任务B&quot;, 0.2)
+print(f&quot;顺序总耗时：{time.time() - start:.2f} 秒&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">任务A 完成
+任务B 完成
+顺序总耗时：0.40 秒</pre></div>
+<h3 class="md-h">13.3.2 语法掌握：threading 线程</h3>
+<p><strong>代码案例 13.9</strong>：两个线程并发执行（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import threading
+import time
+
+def work(name, seconds):
+    time.sleep(seconds)
+    print(f&quot;{name} 完成&quot;)
+
+start = time.time()
+
+t1 = threading.Thread(target=work, args=(&quot;任务A&quot;, 0.2))
+t2 = threading.Thread(target=work, args=(&quot;任务B&quot;, 0.2))
+
+t1.start()
+t2.start()
+
+t1.join()      # 等 t1 结束
+t2.join()      # 等 t2 结束
+
+print(f&quot;并发总耗时：{time.time() - start:.2f} 秒&quot;)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">任务A 完成
+任务B 完成
+并发总耗时：0.20 秒</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">threading.Thread(target=函数, args=(参数,))</code> 创建线程；<code class="md-inline">start()</code> 启动；<code class="md-inline">join()</code> 等待结束；</li><li>两个 0.2 秒的任务<strong>并行等待</strong>，总耗时约 0.2 秒（顺序要 0.4 秒）——<strong>耗时减半</strong>；</li><li><strong>注意</strong>：<code class="md-inline">print</code> 的输出顺序可能变（A/B 谁先完成不保证），这是并发的基本特征。</li></ul>
+<h3 class="md-h">13.3.3 原理探秘：GIL 一句话说清</h3>
+<p><strong>GIL（全局解释器锁）</strong>：CPython 规定<strong>同一时刻只有一个线程能执行 Python 字节码</strong>。</p>
+<blockquote class="md-quote"><p>为什么？CPython 的内存管理（引用计数）不是线程安全的，加锁最简单可靠。</p>
+<p>影响：<strong>多线程对"计算密集"任务没有加速</strong>（都在抢同一把锁）；但对"等待密集"（网络、磁盘、睡眠）任务有用——因为等待时线程会释放 GIL，让其他线程跑。</p>
+<p>对策：</p>
+<ul><li>IO 密集（请求、读写）→ <strong>多线程 / asyncio</strong>；</li><li>CPU 密集（大量计算）→ <strong>多进程</strong>（multiprocessing，每进程一个解释器）或 C 扩展。</li></ul></blockquote>
+<p><strong>面试标准答法</strong>："GIL 是 CPython 的全局解释器锁，同一时刻只允许一个线程执行字节码；它限制的是 CPU 密集型的并行，不影响 IO 密集型的并发。"——<strong>背下来，这是 Python 面试最高频的问题之一</strong>。</p>
+<h3 class="md-h">13.3.4 语法掌握：多进程——CPU 密集的正确姿势</h3>
+<p>GIL 让多线程对"纯计算"无效，但 <strong>multiprocessing 给每个进程一个独立解释器</strong>——每个进程都有自己的 GIL，多个 CPU 核可以真正同时算。</p>
+<p><strong>代码案例 13.10</strong>：ProcessPoolExecutor（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from concurrent.futures import ProcessPoolExecutor
+
+def cpu_heavy(n):
+    &quot;&quot;&quot;模拟 CPU 密集：计算 1 到 n 的平方和&quot;&quot;&quot;
+    total = 0
+    for i in range(1, n + 1):
+        total += i * i
+    return total
+
+if __name__ == &quot;__main__&quot;:
+    with ProcessPoolExecutor(max_workers=4) as pool:
+        results = list(pool.map(cpu_heavy, [1000000] * 4))
+    print(results)</code></pre></div>
+<p><strong>运行结果</strong>（4 个进程各算一份，结果相同）：</p>
+<div class="md-figure"><pre class="md-diagram">[333333833333500000, 333333833333500000, 333333833333500000, 333333833333500000]</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">ProcessPoolExecutor</code>：进程池——把任务分给多个进程并行执行；</li><li><strong><code class="md-inline">if __name__ == "__main__":</code> 在 Windows 上必须写</strong>：多进程用"导入方式"启动子进程，没有主进程保护会无限递归启动；</li><li>每个子进程<strong>独立内存</strong>（不共享变量），结果通过返回值传回——<strong>和线程共享内存的模型完全不同</strong>。</li></ul>
+<p><strong>交叉验证：线程/进程/协程选型表</strong></p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>方案</th><th>适合</th><th>特点</th></tr></thead><tbody><tr><td>多线程 threading</td><td>IO 密集、任务少</td><td>共享内存方便，但受 GIL 限制</td></tr><tr><td>多进程 multiprocessing</td><td>CPU 密集</td><td>真正并行，但进程间通信成本高</td></tr><tr><td>协程 asyncio</td><td>IO 密集、任务多</td><td>最轻量、可开上万个，但要求异步写法</td></tr></tbody></table></div>
+<p><strong>口诀：CPU 密集用多进程，IO 密集任务少用线程、任务多用协程</strong>。</p>
+<p><strong>微任务卡（M3 · 讲解卡 · L2）</strong>：把 GIL 相关问题发给 AI，提问："请解释 GIL 为什么让多线程对 CPU 密集任务没有加速？IO 密集任务为什么不受影响？"一句话记录理解。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 3, "13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 `time.sleep(0.2)` \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport threading\nimport time\n\ndef work(name, seconds):\n    time.sleep(seconds)\n    print(f\u0026quot;{name} \u5b8c\u6210\u0026quot;)\n\n# \u987a\u5e8f\u6267\u884c\nstart = time.time()\nwork(\u0026quot;\u4efb\u52a1A\u0026quot;, 0.2)\nwork(\u0026quot;\u4efb\u52a1B\u0026quot;, 0.2)\nprint(f\u0026quot;\u987a\u5e8f\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\n\n# \u5e76\u53d1\u6267\u884c\nstart = time.time()\nt1 = threading.Thread(target=work, args=(\u0026quot;\u4efb\u52a1C\u0026quot;, 0.2))\nt2 = threading.Thread(target=work, args=(\u0026quot;\u4efb\u52a1D\u0026quot;, 0.2))\nt1.start()\nt2.start()\nt1.join()\nt2.join()\nprint(f\u0026quot;\u5e76\u53d1\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4efb\u52a1A \u5b8c\u6210\n\u4efb\u52a1B \u5b8c\u6210\n\u987a\u5e8f\u603b\u8017\u65f6\uff1a0.40 \u79d2\n\u4efb\u52a1C \u5b8c\u6210\n\u4efb\u52a1D \u5b8c\u6210\n\u5e76\u53d1\u603b\u8017\u65f6\uff1a0.20 \u79d2\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u6ce8\u91ca\u91cc\u8981\u5199\u7684\u7ed3\u8bba\u003c/strong\u003e\uff1a\u4e24\u4e2a 0.2 \u79d2\u7684\u4efb\u52a1\uff0c\u987a\u5e8f\u6267\u884c\u8981 0.4 \u79d2\uff0c\u7ebf\u7a0b\u5e76\u53d1\u53ea\u8981 0.2 \u79d2\u2014\u2014\u003cstrong\u003e\u7b49\u5f85\u65f6\u95f4\u88ab\u5e76\u884c\u5229\u7528\u4e86\u003c/strong\u003e\u3002\u6ce8\u610f\u4efb\u52a1 C/D \u7684\u8f93\u51fa\u987a\u5e8f\u53ef\u80fd\u4e92\u6362\uff0c\u8fd9\u662f\u5e76\u53d1\u7684\u6b63\u5e38\u73b0\u8c61\u3002\u003c/p\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 4 \u9898**\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 `time.sleep(0.2)` \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「13.3 并发：线程与 GIL」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(13, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 3, '13.3 并发：线程与 GIL')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 3, '13.3 并发：线程与 GIL')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="13_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          13.4 异步：asyncio 协程
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">13.4.1 概念认知：协程 vs 线程</h3>
+<p>线程由<strong>操作系统</strong>调度，切换有开销；<strong>协程（coroutine）</strong>由<strong>程序自己</strong>调度——遇到等待（<code class="md-inline">await</code>）就主动让出控制权，让别的任务先跑。asyncio 就是 Python 的协程框架。</p>
+<h3 class="md-h">13.4.2 语法掌握：async / await 基础</h3>
+<p><strong>代码案例 13.11</strong>：第一个协程（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
+
+async def hello():
+    print(&quot;开始&quot;)
+    await asyncio.sleep(0.1)
+    print(&quot;结束&quot;)
+
+asyncio.run(hello())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">开始
+结束</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">async def</code> 定义协程函数；调用它<strong>不执行</strong>，而是返回协程对象；</li><li><code class="md-inline">await asyncio.sleep(0.1)</code>：遇到等待就"挂起"，把控制权交回事件循环；</li><li><code class="md-inline">asyncio.run(协程)</code>：启动事件循环并运行协程（入口函数）。</li></ul>
+<h3 class="md-h">13.4.3 语法掌握：gather 并发执行</h3>
+<p><strong>代码案例 13.12</strong>：并发执行多个协程（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
+import time
+
+async def task(name, seconds):
+    await asyncio.sleep(seconds)
+    return f&quot;{name} 完成&quot;
+
+async def main():
+    start = time.time()
+    results = await asyncio.gather(
+        task(&quot;任务A&quot;, 0.2),
+        task(&quot;任务B&quot;, 0.2),
+    )
+    print(results)
+    print(f&quot;异步总耗时：{time.time() - start:.2f} 秒&quot;)
+
+asyncio.run(main())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">[&#x27;任务A 完成&#x27;, &#x27;任务B 完成&#x27;]
+异步总耗时：0.20 秒</pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">asyncio.gather(协程1, 协程2)</code> 把多个协程<strong>并发调度</strong>，一起等待完成；</li><li>两个 0.2 秒任务总耗时约 0.2 秒——和 threading 效果类似，但<strong>没有线程切换开销</strong>，能开的任务数量大得多（轻松上万）；</li><li><strong>真实场景</strong>：同时请求多个 API、同时下载多个文件、Web 服务处理大量并发连接。</li></ul>
+<h3 class="md-h">13.4.4 原理探秘：事件循环</h3>
+<p>asyncio 的核心是<strong>事件循环（event loop）</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">事件循环：
+1. 取出一个就绪任务 → 执行到 await（等待点）
+2. 挂起它，换下一个就绪任务
+3. 等待完成的事件回来了 → 继续执行对应协程</pre></div>
+<p><strong>关键认识</strong>：异步不是"更快"，而是<strong>不浪费等待时间</strong>——任务在等待网络/磁盘时，CPU 去干别的活了。<strong>选型口诀</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>场景</th><th>方案</th></tr></thead><tbody><tr><td>IO 密集（网络请求、读写文件）</td><td>asyncio 协程（首选）或 threading</td></tr><tr><td>CPU 密集（大量计算）</td><td>multiprocessing 多进程</td></tr><tr><td>简单脚本</td><td>顺序执行就够</td></tr></tbody></table></div>
+<h3 class="md-h">13.4.5 就业实战：并发请求、超时与同步库适配</h3>
+<p>学完基础，看三个<strong>真实后端场景</strong>的写法。</p>
+<p><strong>场景一：并发请求多个接口（httpx 异步客户端）</strong></p>
+<p><strong>代码案例 13.13</strong>：AsyncClient + gather（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
+import httpx          # 需要 pip install httpx
+
+async def fetch(client, i):
+    resp = await client.get(f&quot;https://api.example.com/data/{i}&quot;)
+    return resp.json()
+
+async def main():
+    async with httpx.AsyncClient(timeout=10) as client:
+        results = await asyncio.gather(
+            *[fetch(client, i) for i in range(5)]
+        )
+    print(results)
+
+asyncio.run(main())</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li><code class="md-inline">httpx.AsyncClient</code> 是<strong>支持异步的 HTTP 客户端</strong>（requests 是同步的，在协程里会阻塞事件循环）；</li><li><code class="md-inline">async with</code> 管理客户端连接池（自动关闭）；</li><li><code class="md-inline">gather</code> 并发发起 5 个请求——<strong>总耗时取决于服务器能否并行处理</strong>，但客户端绝不串行等待；</li><li><strong>就业提示</strong>：后端接口并发调多个上游服务时，这就是标准写法。</li></ul>
+<p><strong>场景二：控制超时（wait_for）</strong></p>
+<p><strong>代码案例 13.14</strong>：防止接口卡死（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">async def slow_request():
+    await asyncio.sleep(2)
+    return &quot;完成&quot;
+
+async def main():
+    try:
+        await asyncio.wait_for(slow_request(), timeout=5)
+    except asyncio.TimeoutError:
+        print(&quot;请求超时，已取消&quot;)</code></pre></div>
+<p><strong>讲解</strong>：真实网络随时可能卡住——<strong><code class="md-inline">wait_for(协程, timeout)</code> 超时后自动取消任务</strong>，是"请求必须有超时"（13.6 节 Debug 问题 2）的异步版。</p>
+<p><strong>场景三：适配同步库（to_thread）</strong></p>
+<p><strong>代码案例 13.15</strong>：把 requests 丢进线程池（✅ 正确，实测过）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">async def main():
+    results = await asyncio.gather(
+        asyncio.to_thread(requests.get, &quot;https://api.example.com/a&quot;),
+        asyncio.to_thread(requests.get, &quot;https://api.example.com/b&quot;),
+    )
+    print([r.status_code for r in results])</code></pre></div>
+<p><strong>讲解</strong>：没有异步版的库（如 requests）不能直接 <code class="md-inline">await</code>——<code class="md-inline">asyncio.to_thread(函数, 参数)</code> 把它放到<strong>线程池</strong>里执行，事件循环不被阻塞。<strong>这是"老库 + 新异步"的桥梁</strong>。</p>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：三个场景合起来就是"生产级并发接口"的骨架：<strong>AsyncClient 并发 + wait_for 超时 + to_thread 兼容旧库</strong>。后端面试问"异步怎么落地"，能说出这三个就是实战经验。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 4, "13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b", [{"body": "", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003easync def\u003c/code\u003e \u5b9a\u4e49\u534f\u7a0b\u3001\u003ccode class=\"md-inline\"\u003eawait\u003c/code\u003e \u6302\u8d77\u7b49\u5f85\u3001\u003ccode class=\"md-inline\"\u003easyncio.gather\u003c/code\u003e \u5e76\u53d1\u8c03\u5ea6\u3001\u003ccode class=\"md-inline\"\u003easyncio.run\u003c/code\u003e \u542f\u52a8\u4e8b\u4ef6\u5faa\u73af\u3002\u003cstrong\u003e\u5173\u952e\u003c/strong\u003e\uff1a\u7b49\u5f85\u65f6\u4e8b\u4ef6\u5faa\u73af\u5207\u6362\u53bb\u6267\u884c\u53e6\u4e00\u4e2a\u4efb\u52a1\uff0c\u6240\u4ee5\u603b\u8017\u65f6\u7ea6\u7b49\u4e8e\u5355\u4e2a\u4efb\u52a1\u7684\u8017\u65f6\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 `await asyncio.sleep(0.2)`\uff09\uff0c\u7528 `gather` \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport asyncio\nimport time\n\nasync def task(name, seconds):\n    await asyncio.sleep(seconds)\n    print(f\u0026quot;{name} \u5b8c\u6210\u0026quot;)\n\nasync def main():\n    start = time.time()\n    await asyncio.gather(\n        task(\u0026quot;\u4efb\u52a1A\u0026quot;, 0.2),\n        task(\u0026quot;\u4efb\u52a1B\u0026quot;, 0.2),\n    )\n    print(f\u0026quot;\u5f02\u6b65\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\n\nasyncio.run(main())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4efb\u52a1A \u5b8c\u6210\n\u4efb\u52a1B \u5b8c\u6210\n\u5f02\u6b65\u603b\u8017\u65f6\uff1a0.20 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 5 \u9898**\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 `await asyncio.sleep(0.2)`\uff09\uff0c\u7528 `gather` \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="4">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「13.4 异步：asyncio 协程」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(13, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 4, '13.4 异步：asyncio 协程')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 4, '13.4 异步：asyncio 协程')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="13_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          13.5 工作坊：同步 vs 异步耗时对比实验
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>代码案例 13.16</strong>：完整对比实验（✅ 正确）</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
+import time
+
+async def fetch(url):
+    await asyncio.sleep(0.2)        # 模拟网络请求耗时
+    return f&quot;{url} 数据&quot;
+
+async def async_fetch_all():
+    start = time.time()
+    results = await asyncio.gather(*[fetch(f&quot;url{i}&quot;) for i in range(5)])
+    print(f&quot;异步：5 个请求总耗时 {time.time() - start:.2f} 秒&quot;)
+    return results
+
+def sync_fetch_all():
+    start = time.time()
+    results = []
+    for i in range(5):
+        results.append(fetch_sync(f&quot;url{i}&quot;))
+    print(f&quot;同步：5 个请求总耗时 {time.time() - start:.2f} 秒&quot;)
+    return results
+
+def fetch_sync(url):
+    time.sleep(0.2)
+    return f&quot;{url} 数据&quot;
+
+sync_fetch_all()
+asyncio.run(async_fetch_all())</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">同步：5 个请求总耗时 1.00 秒
+异步：5 个请求总耗时 0.20 秒</pre></div>
+<p><strong>实验任务</strong>：</p>
+<ol><li>运行对比代码，记录两组耗时；</li><li>把请求数从 5 改成 20，再跑一次——观察差距如何拉大；</li><li>在 Prompt 日志里用一句话总结："同步 5 秒级任务，异步为什么能压缩到 1 秒级？"（提示：等待时不空闲）</li></ol>
+<blockquote class="md-quote"><p><strong>就业提示</strong>：后端接口要并发调 3 个上游服务，同步写法 3 秒，asyncio 写法 1 秒——<strong>"异步接口"是后端岗位的加分项</strong>。第 24 章 FastAPI 天然支持 async，这里的基础直接复用。</p></blockquote>
+<p><strong>微任务卡（M4 · 审查卡 · L2）</strong>：把你手写的 threading 并发代码发给 AI："请评审 start/join 时机、共享数据风险。只给建议，不要重写。"记录采纳/否决理由。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 5, "13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u540c\u6b65\uff1a10 \u00d7 0.2 = 2.0 \u79d2\uff08\u4e00\u4e2a\u4e2a\u7b49\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5f02\u6b65\uff1a\u003ccode class=\"md-inline\"\u003egather(*[ ... for ...])\u003c/code\u003e \u628a 10 \u4e2a\u534f\u7a0b\u540c\u65f6\u8c03\u5ea6\uff0c\u603b\u8017\u65f6\u7ea6 0.2 \u79d2\u2014\u2014\u003cstrong\u003e\u5dee\u8ddd\u968f\u8bf7\u6c42\u6570\u7ebf\u6027\u62c9\u5927\u003c/strong\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e*[...]\u003c/code\u003e \u662f\u7b2c 12 \u7ae0\u7684\u89e3\u5305\uff1a\u628a\u5217\u8868\u62c6\u6210 gather \u7684\u591a\u4e2a\u4f4d\u7f6e\u53c2\u6570\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u7ed3\u8bba\u003c/strong\u003e\uff1a\u7b49\u5f85\u578b\u4efb\u52a1\uff08\u7f51\u7edc/\u78c1\u76d8\uff09\u8d8a\u591a\uff0c\u5f02\u6b65\u6536\u76ca\u8d8a\u5927\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport asyncio\nimport time\n\ndef fetch_sync(url):\n    time.sleep(0.2)\n    return f\u0026quot;{url} \u6570\u636e\u0026quot;\n\nasync def fetch_async(url):\n    await asyncio.sleep(0.2)\n    return f\u0026quot;{url} \u6570\u636e\u0026quot;\n\nasync def main():\n    start = time.time()\n    results = await asyncio.gather(*[fetch_async(f\u0026quot;url{i}\u0026quot;) for i in range(10)])\n    print(f\u0026quot;\u5f02\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 {time.time() - start:.2f} \u79d2\u0026quot;)\n\nstart = time.time()\nfor i in range(10):\n    fetch_sync(f\u0026quot;url{i}\u0026quot;)\nprint(f\u0026quot;\u540c\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 {time.time() - start:.2f} \u79d2\u0026quot;)\n\nasyncio.run(main())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u540c\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 2.00 \u79d2\n\u5f02\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 0.20 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 6 \u9898**\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「13.5 工作坊：同步 vs 异步耗时对比实验」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(13, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 5, '13.5 工作坊：同步 vs 异步耗时对比实验')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 5, '13.5 工作坊：同步 vs 异步耗时对比实验')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="13_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          13.6 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：requests 没安装</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import requests
+resp = requests.get(&quot;https://httpbin.org/get&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">ModuleNotFoundError: No module named &#x27;requests&#x27;</pre></div>
+<p><strong>提示</strong>：第三方库要装吗？装到哪个环境了？</p>
+<p><strong>讲解</strong>：<code class="md-inline">pip install requests</code>，且确保在正确的虚拟环境（激活后命令行有 <code class="md-inline">(venv)</code> 前缀）。<strong>"import 失败"先问"装了没、装对地方没"</strong>。</p>
+<h3 class="md-h">问题 2：网络请求失败</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">resp = requests.get(&quot;https://httpbin.org/get&quot;)</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">requests.exceptions.ConnectionError: ...</pre></div>
+<p><strong>提示</strong>：网络通吗？网址拼对了吗？服务器在维护吗？</p>
+<p><strong>讲解</strong>：网络请求的失败原因千奇百怪（断网、DNS、服务器 5xx、被墙）。<strong>生产代码必须 try/except 包住请求</strong>，并配合第 12 章的 @retry 重试。<strong>"请求可能失败"是网络编程的第一假设</strong>。</p>
+<h3 class="md-h">问题 3：接口返回的不是 JSON</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">resp = requests.get(&quot;https://httpbin.org/html&quot;)
+data = resp.json()</code></pre></div>
+<p><strong>实际报错</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)</pre></div>
+<p><strong>提示</strong>：<code class="md-inline">/html</code> 返回的是什么类型的内容？所有接口都返回 JSON 吗？</p>
+<p><strong>讲解</strong>：<code class="md-inline">resp.json()</code> 只对 JSON 内容有效。<strong>先确认接口的 Content-Type</strong>：<code class="md-inline">resp.headers["Content-Type"]</code> 是 <code class="md-inline">application/json</code> 才用 <code class="md-inline">.json()</code>；其他情况用 <code class="md-inline">.text</code> 处理。真实场景：接口升级后返回格式变了，是生产事故的高发点。</p>
+<h3 class="md-h">问题 4：在协程里用 time.sleep</h3>
+<p><strong>问题代码</strong>：</p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio, time
+
+async def task(name):
+    time.sleep(0.2)          # 阻塞式等待！
+    return name
+
+async def main():
+    results = await asyncio.gather(task(&quot;A&quot;), task(&quot;B&quot;), task(&quot;C&quot;))
+
+asyncio.run(main())</code></pre></div>
+<p><strong>实际表现</strong>：三个任务仍然串行执行（总耗时 0.6 秒），异步"失效"了。</p>
+<p><strong>提示</strong>：<code class="md-inline">time.sleep</code> 会阻塞整个事件循环吗？异步等待应该用什么？</p>
+<p><strong>讲解</strong>：<code class="md-inline">time.sleep</code> 是<strong>阻塞</strong>等待，会让事件循环卡住，其他协程根本没法跑。<strong>异步代码里必须用 <code class="md-inline">await asyncio.sleep()</code></strong>。真实场景：把同步库（如 requests）放进协程也会阻塞——解决方法是 <code class="md-inline">await asyncio.to_thread(...)</code>（了解）或换异步库。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 6, "13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ecount = tmp + 1\u003c/code\u003e \u770b\u8d77\u6765\u662f\u4e00\u884c\uff0c\u5b9e\u9645\u662f\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\uff1a\u5148\u8bfb\u65e7\u503c\uff0c\u518d\u8ba1\u7b97\uff0c\u6700\u540e\u5199\u56de\u3002\u003ccode class=\"md-inline\"\u003etime.sleep(0)\u003c/code\u003e \u8ba9\u7ebf\u7a0b\u5728\"\u8bfb\u5b8c\u4e4b\u540e\u3001\u5199\u56de\u4e4b\u524d\"\u88ab\u5207\u6362\u8d70\uff0c\u5176\u4ed6\u7ebf\u7a0b\u4e5f\u5b8c\u6210\u4e86\u4e00\u6b21\"\u8bfb-\u6539-\u5199\"\u2014\u2014\u7b49\u539f\u7ebf\u7a0b\u56de\u6765\u5199\u56de\u65f6\uff0c\u003cstrong\u003e\u8986\u76d6\u4e86\u522b\u4eba\u521a\u5199\u597d\u7684\u503c\u003c/strong\u003e\uff0c\u8fd9\u5c31\u662f\"\u4e22\u5931\u66f4\u65b0\"\uff08race condition\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u5173\u952e\u8ba4\u77e5\u003c/strong\u003e\uff1aGIL \u53ea\u4fdd\u8bc1\"\u540c\u4e00\u65f6\u523b\u53ea\u6709\u4e00\u4e2a\u7ebf\u7a0b\u6267\u884c\u5b57\u8282\u7801\"\uff0c\u003cstrong\u003e\u4e0d\u4fdd\u8bc1\u8fd9\u4e09\u6b65\u4f5c\u4e3a\u4e00\u4e2a\u6574\u4f53\u4e0d\u88ab\u5207\u6362\u003c/strong\u003e\u3002\u6240\u4ee5 GIL \u89e3\u51b3\u4e0d\u4e86\u5171\u4eab\u6570\u636e\u7ade\u4e89\uff0c\u003cstrong\u003e\u51e1\u662f\u88ab\u591a\u4e2a\u7ebf\u7a0b\u4fee\u6539\u7684\u5171\u4eab\u53d8\u91cf\u90fd\u5fc5\u987b\u989d\u5916\u4fdd\u62a4\u003c/strong\u003e\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u90e8\u5206\u53c2\u8003\u7b54\u6848\uff08\u8fdb\u7a0b\u9694\u79bb\u4fee\u590d\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom concurrent.futures import ProcessPoolExecutor\n\ndef add_local(times):\n    local = 0\n    for _ in range(times):\n        local += 1\n    return local\n\nif __name__ == \u0026quot;__main__\u0026quot;:\n    with ProcessPoolExecutor(max_workers=8) as pool:\n        results = list(pool.map(add_local, [500] * 8))\n    print(f\u0026quot;\u8fdb\u7a0b\u6c60\u6c42\u548c\u7ed3\u679c\uff1a{sum(results)}\uff08\u9884\u671f 4000\uff09\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8fdb\u7a0b\u6c60\u6c42\u548c\u7ed3\u679c\uff1a4000\uff08\u9884\u671f 4000\uff09\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u89e3\u6790\u003c/strong\u003e\uff1a\u6bcf\u4e2a\u8fdb\u7a0b\u90fd\u6709\u003cstrong\u003e\u72ec\u7acb\u5185\u5b58\u003c/strong\u003e\uff0c\u5404\u81ea\u5728\u003cstrong\u003e\u5c40\u90e8\u53d8\u91cf\u003c/strong\u003e \u003ccode class=\"md-inline\"\u003elocal\u003c/code\u003e \u4e0a\u7d2f\u52a0 500 \u6b21\uff0c\u4e0d\u5b58\u5728\u5171\u4eab\u53d8\u91cf\uff0c\u6700\u540e\u901a\u8fc7\u8fd4\u56de\u503c\u5728\u4e3b\u8fdb\u7a0b\u6c47\u603b\u2014\u2014\u4ece\u6839\u6e90\u4e0a\u907f\u514d\u7ade\u4e89\u3002\u5bf9\u6bd4\u7ed3\u8bba\uff1a\u003cstrong\u003e\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\uff08\u65b9\u4fbf\u4f46\u5371\u9669\uff0c\u9700\u8981\u9501\u7b49\u4fdd\u62a4\uff09\uff0c\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\uff08\u5b89\u5168\uff0c\u4f46\u901a\u4fe1\u6210\u672c\u9ad8\uff09\u003c/strong\u003e\u3002\u672c\u9898\u6ca1\u6709\u8981\u6c42\u5199 \u003ccode class=\"md-inline\"\u003ethreading.Lock\u003c/code\u003e\uff08\u4e86\u89e3\u5373\u53ef\uff0c\u7b2c 14 \u7ae0\u7efc\u5408\u8bad\u7ec3\u53ef\u81ea\u884c\u63a2\u7d22\uff09\uff1a\u52a0\u9501\u7684\u672c\u8d28\u5c31\u662f\u8ba9\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\u53d8\u6210\u539f\u5b50\u64cd\u4f5c\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf `count` \u7d2f\u52a0 500 \u6b21\uff0c\u4f46**\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65**\uff1a\u5148 `tmp = count`\uff0c\u518d `time.sleep(0)`\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e `count = tmp + 1`\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf `count` \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 `ProcessPoolExecutor` \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728**\u5c40\u90e8\u53d8\u91cf**\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u90e8\u5206\u53c2\u8003\u7b54\u6848\uff08\u53d7\u63a7\u7ade\u4e89\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport threading\nimport time\n\ncount = 0\n\ndef add():\n    global count\n    for _ in range(500):\n        tmp = count        # \u2460 \u8bfb\n        time.sleep(0)      # \u2461 \u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\n        count = tmp + 1    # \u2462 \u5199\u56de\n\nfor run in range(3):\n    count = 0\n    threads = [threading.Thread(target=add) for _ in range(8)]\n    for t in threads:\n        t.start()\n    for t in threads:\n        t.join()\n    print(f\u0026quot;\u7b2c {run + 1} \u6b21\u8fd0\u884c\uff1acount = {count}\uff08\u9884\u671f 4000\uff09\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u6bcf\u6b21\u8fd0\u884c\u7684\u6570\u503c\u4e0d\u56fa\u5b9a\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u7b2c 1 \u6b21\u8fd0\u884c\uff1acount = 2093\uff08\u9884\u671f 4000\uff09\n\u7b2c 2 \u6b21\u8fd0\u884c\uff1acount = 784\uff08\u9884\u671f 4000\uff09\n\u7b2c 3 \u6b21\u8fd0\u884c\uff1acount = 707\uff08\u9884\u671f 4000\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 7 \u9898**\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf `count` \u7d2f\u52a0 500 \u6b21\uff0c\u4f46**\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65**\uff1a\u5148 `tmp = count`\uff0c\u518d `time.sleep(0)`\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e `count = tmp + 1`\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf `count` \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 `ProcessPoolExecutor` \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728**\u5c40\u90e8\u53d8\u91cf**\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+          <div class="kp-exercise" data-ex-idx="1" data-kp-index="6">
+            <div class="kp-ex-header">
+              <span>练习 2</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              请编写代码验证你对本知识点的理解
+            </div>
+            <div class="ex-code-hint">
+              💡 提示：用代码把「13.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+            </div>
+            <div class="ex-actions" style="margin-top:12px;">
+              <button class="btn-code-ex" onclick='openCodeEx(13, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 6, '13.6 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 6, '13.6 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="13_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          13.7 Vibe Coding 任务卡（L2）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务名称</strong>：让 AI 评审你的并发代码</p>
+<p><strong>任务内容</strong>：先自己手写"用 threading 并发执行两个任务"的代码，然后发给 AI 提问："请评审我的线程代码：start/join 用对了吗？共享数据有没有问题？请只给建议，不要重写。"</p>
+<p><strong>参考提问句式</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">这是我手写的 threading 并发代码。请按这个清单评审：
+1. start() 和 join() 的时机对不对？
+2. 两个线程如果同时修改同一个列表，会有什么问题？怎么避免？
+3. 我的代码有什么改进空间？
+请给出具体建议和理由。不要重写我的代码。</pre></div>
+<p><strong>Review 清单（L2）</strong>：</p>
+<ul><li>[ ] 我理解了"启动线程后要 join"；</li><li>[ ] 我了解了"多个线程同时改共享数据"的风险（线程安全）；</li><li>[ ] AI 没有输出完整替代代码；</li><li>[ ] 改进后的代码提交了 Git。</li></ul>
+<p><strong>L2 纪律自查</strong>：</p>
+<ul><li>练习题全部手写完成；</li><li>AI 只当评审员；</li><li>Prompt 日志记录了"评审 → 判断 → 修改"。</li></ul>
+<p><strong>微任务卡（M5 · 对比卡 · L2）</strong>：把线程和协程的代码发给 AI："请对比 threading 和 asyncio 的适用场景，为什么'IO 密集、任务多'时协程更合适？"一句话记录结论。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 7, "13.7 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", [{"body": "\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "explanation": "\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003eAsyncClient\u003c/code\u003e + \u003ccode class=\"md-inline\"\u003egather\u003c/code\u003e\uff1a3 \u4e2a\u8bf7\u6c42\u5e76\u53d1\u53d1\u51fa\uff0c\u4e0d\u4e32\u884c\u7b49\u5f85\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ewait_for(\u6162\u534f\u7a0b, timeout=1)\u003c/code\u003e\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u003cstrong\u003e1 \u79d2\u540e\u5c31\u88ab\u53d6\u6d88\u5e76\u629b\u51fa \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e\u003c/strong\u003e\u2014\u2014\"\u8bf7\u6c42\u5fc5\u987b\u6709\u8d85\u65f6\"\u5728\u751f\u4ea7\u73af\u5883\u662f\u786c\u8981\u6c42\uff0c\u9632\u6b62\u63a5\u53e3\u5361\u6b7b\u62d6\u57ae\u6574\u4e2a\u670d\u52a1\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003eto_thread(requests.get, ...)\u003c/code\u003e\uff1arequests \u662f\u540c\u6b65\u5e93\uff0c\u653e\u8fdb\u7ebf\u7a0b\u6c60\u540e\u4e8b\u4ef6\u5faa\u73af\u4e0d\u4f1a\u88ab\u963b\u585e\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u7ed3\u8bba\u003c/strong\u003e\uff1a\u5f02\u6b65\u7684\u4ef7\u503c\u4e0d\u662f\"\u5feb\"\uff0c\u800c\u662f\"\u003cstrong\u003e\u4e0d\u8ba9\u4efb\u4f55\u4e00\u6bb5\u7b49\u5f85\u62d6\u4f4f\u6574\u4e2a\u7a0b\u5e8f\u003c/strong\u003e\"\u3002\u65e5\u5fd7\u7b2c 4 \u9898\u8981\u5199\u7684\u5c31\u662f\uff1a\u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u8d1f\u8d23\"\u780d\u6389\u8d85\u65f6\u7b49\u5f85\"\uff0c\u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u8d1f\u8d23\"\u517c\u5bb9\u6ca1\u6709\u5f02\u6b65\u7248\u7684\u65e7\u5e93\"\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport asyncio\nimport time\nimport httpx\nimport requests\n\nasync def fetch(client, i):\n    resp = await client.get(f\u0026quot;https://httpbin.org/get?id={i}\u0026quot;)\n    return resp.json()[\u0026quot;args\u0026quot;][\u0026quot;id\u0026quot;]\n\nasync def slow_request():\n    await asyncio.sleep(3)      # \u6a21\u62df\u4e00\u4e2a 3 \u79d2\u624d\u8fd4\u56de\u7684\u6162\u63a5\u53e3\n    return \u0026quot;\u6162\u63a5\u53e3\u6570\u636e\u0026quot;\n\ndef sync_fetch():\n    resp = requests.get(\u0026quot;https://httpbin.org/get?source=sync\u0026quot;)\n    return resp.json()[\u0026quot;args\u0026quot;][\u0026quot;source\u0026quot;]\n\nasync def main():\n    start = time.time()\n\n    # \u573a\u666f\u4e00\uff1aAsyncClient \u5e76\u53d1\n    async with httpx.AsyncClient(timeout=10) as client:\n        results = await asyncio.gather(*[fetch(client, i) for i in range(3)])\n    print(\u0026quot;\u5e76\u53d1\u7ed3\u679c\uff1a\u0026quot;, results)\n\n    # \u573a\u666f\u4e8c\uff1await_for \u8d85\u65f6\u63a7\u5236\n    try:\n        await asyncio.wait_for(slow_request(), timeout=1)\n    except asyncio.TimeoutError:\n        print(\u0026quot;\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\u0026quot;)\n\n    # \u573a\u666f\u4e09\uff1ato_thread \u9002\u914d\u540c\u6b65\u5e93\n    sync_result = await asyncio.to_thread(sync_fetch)\n    print(\u0026quot;\u540c\u6b65\u5e93\u9002\u914d\u7ed3\u679c\uff1a\u0026quot;, sync_result)\n    print(f\u0026quot;\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\n\nasyncio.run(main())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u7f51\u7edc\u8017\u65f6\u4e0d\u540c\uff0c\u6570\u503c\u4f1a\u6709\u6ce2\u52a8\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5e76\u53d1\u7ed3\u679c\uff1a [\u0026#x27;0\u0026#x27;, \u0026#x27;1\u0026#x27;, \u0026#x27;2\u0026#x27;]\n\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\n\u540c\u6b65\u5e93\u9002\u914d\u7ed3\u679c\uff1a sync\n\u603b\u8017\u65f6\uff1a3.47 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="7">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(13, '0', "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 7, '13.7 Vibe Coding 任务卡（L2）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 7, '13.7 Vibe Coding 任务卡（L2）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="13_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          13.8 本章小结与知识树
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>知识树</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">第三方库、并发与异步
+├── 第三方库：pip install → import；PyPI 生态；ModuleNotFoundError 排查
+├── requests
+│   ├── GET：resp.status_code / resp.text / resp.json()
+│   ├── POST：json= 自动序列化
+│   ├── HTTP 四要素：方法/URL/头/体；响应三要素：状态码/头/体
+│   └── 失败：ConnectionError → try/except + @retry
+├── datetime：日期相减 → timedelta.days；生日天数/到期计算
+├── re：findall(模式, 文本)；\d 数字、{9} 次数、[3-9] 范围
+├── 并发
+│   ├── 顺序 vs 并发 vs 并行
+│   ├── threading：Thread(target, args) / start() / join()
+│   ├── GIL：同一时刻一个线程执行字节码；IO 密集有用、CPU 密集没用
+│   └── multiprocessing：ProcessPoolExecutor（CPU 密集真并行，Windows 要主进程保护）
+├── asyncio
+│   ├── async def / await / asyncio.run / gather
+│   ├── 事件循环：遇到 await 挂起，等待时不浪费 CPU
+│   ├── 就业实战：httpx.AsyncClient 并发 / wait_for 超时 / to_thread 适配同步库
+│   └── 坑：协程里用 time.sleep 会阻塞事件循环
+└── 选型：IO 密集任务多 → asyncio；IO 密集任务少 → 线程；CPU 密集 → 多进程；简单脚本 → 顺序</pre></div>
+<p><strong>必须记住的 5 件事</strong>：</p>
+<ol><li>第三方库先 <code class="md-inline">pip install</code> 再 <code class="md-inline">import</code>，环境要对应；</li><li><code class="md-inline">resp.json()</code> 只对 JSON 内容有效；网络请求必须 try/except；</li><li>GIL：同一时刻一个线程执行字节码——IO 密集用线程/协程，CPU 密集用多进程；</li><li>异步代码里用 <code class="md-inline">await asyncio.sleep()</code>，不要用 <code class="md-inline">time.sleep</code>；</li><li>生产级异步三件套：<code class="md-inline">AsyncClient</code> 并发 + <code class="md-inline">wait_for</code> 超时 + <code class="md-inline">to_thread</code> 适配旧库；</li><li>并发不是"更快"，而是"等待时不空闲"——这就是异步的核心价值。</li></ol>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 8, "13.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 8, '13.8 本章小结与知识树')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 8, '13.8 本章小结与知识树')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="13_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>术语/命令</th><th>一句话</th></tr></thead><tbody><tr><td>正则分组 <code class="md-inline">()</code> / <code class="md-inline">.*?</code></td><td>结构化提取；非贪婪 <code class="md-inline">.*?</code> vs 贪婪 <code class="md-inline">.*</code>（了解）</td></tr><tr><td><code class="md-inline">time</code> / <code class="md-inline">calendar</code></td><td>时间戳/格式化/日历（了解）</td></tr><tr><td><code class="md-inline">hashlib.sha256</code></td><td>加盐哈希存密码（了解，安全红线）</td></tr><tr><td><code class="md-inline">pip install requests</code></td><td>安装第三方库</td></tr><tr><td><code class="md-inline">requests.get/post(url)</code></td><td>HTTP 请求</td></tr><tr><td><code class="md-inline">resp.json()</code></td><td>解析 JSON</td></tr><tr><td><code class="md-inline">Thread(target=, args=)</code></td><td>创建线程</td></tr><tr><td><code class="md-inline">start()</code> / <code class="md-inline">join()</code></td><td>启动 / 等待线程</td></tr><tr><td>GIL</td><td>同一时刻一个线程执行字节码</td></tr><tr><td><code class="md-inline">async def</code> / <code class="md-inline">await</code></td><td>定义协程 / 等待</td></tr><tr><td><code class="md-inline">asyncio.run</code> / <code class="md-inline">gather</code></td><td>启动 / 并发调度</td></tr><tr><td><code class="md-inline">httpx.AsyncClient</code></td><td>异步 HTTP 客户端</td></tr><tr><td><code class="md-inline">asyncio.to_thread</code> / <code class="md-inline">wait_for</code></td><td>适配同步库 / 超时控制</td></tr><tr><td><code class="md-inline">ProcessPoolExecutor</code></td><td>多进程（CPU 密集）</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 9, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="13_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(13, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(13, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(13, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="13_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(13, 9, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(13, 9, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 第三方库、并发与异步 — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 第三方库、并发与异步 — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 第三方库、并发与异步
+## 13.1 第三方库：pip 与 requests
+### 概念认知：为什么用第三方库
+### 语法掌握：pip 安装
+### 语法掌握：requests 发送 GET 请求
+### 语法掌握：requests 发送 POST 请求
+## 13.2 datetime 与 re 综合应用
+### 语法掌握：datetime 日期计算
+### 语法掌握：re 提取信息
+### 更多标准库：time / calendar / hashlib
+### 了解：正则进阶——分组、修饰符与贪婪
+## 13.3 并发：线程与 GIL
+### 概念认知：顺序、并发、并行
+### 语法掌握：threading 线程
+### 原理探秘：GIL 一句话说清
+### 语法掌握：多进程——CPU 密集的正确姿势
+## 13.4 异步：asyncio 协程
+### 概念认知：协程 vs 线程
+### 语法掌握：async / await 基础
+### 语法掌握：gather 并发执行
+### 原理探秘：事件循环
+### 就业实战：并发请求、超时与同步库适配
+## 13.5 工作坊：同步 vs 异步耗时对比实验
+## 13.6 本章 Debug 四件套
+### 问题 1：requests 没安装
+### 问题 2：网络请求失败
+### 问题 3：接口返回的不是 JSON
+### 问题 4：在协程里用 time.sleep
+## 13.7 Vibe Coding 任务卡（L2）
+## 13.8 本章小结与知识树</script>
+
+
+<script>
+  const CHAPTER_ID = 13;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["13.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests", "13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528", "13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL", "13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b", "13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c", "13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "13.7 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", "13.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u7b2c\u4e09\u65b9\u5e93\u3001\u5e76\u53d1\u4e0e\u5f02\u6b65";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/ambient_music.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(13, "\u7b2c\u4e09\u65b9\u5e93\u3001\u5e76\u53d1\u4e0e\u5f02\u6b65", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7528 pip \u5b89\u88c5\u7b2c\u4e09\u65b9\u5e93\uff0c\u7528 requests \u53d1\u9001 HTTP \u8bf7\u6c42\u5e76\u89e3\u6790 JSON\uff1b\n- \u7528 datetime \u8ba1\u7b97\u65e5\u671f\u5dee\u3001\u7528 re \u63d0\u53d6\u6587\u672c\u4e2d\u7684\u5173\u952e\u4fe1\u606f\uff1b\n- \u7406\u89e3\u8fdb\u7a0b/\u7ebf\u7a0b/\u534f\u7a0b\u7684\u6982\u5ff5\u4e0e\u533a\u522b\uff1b\n- \u7528 t", ["13.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests", "13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528", "13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL", "13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b", "13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c", "13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "13.7 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", "13.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+</body>
+</html>

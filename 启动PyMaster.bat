@@ -1,23 +1,47 @@
 @echo off
-chcp 65001 >nul
+chcp 936 >nul
 cd /d "%~dp0"
+title PyMaster ½ÌÑ§Æ½Ì¨ (ĞÂ°æ ¡¤ 39 ÕÂ)
+
 echo.
-echo   ========================================
-echo      PyMaster - Python ç¼–ç¨‹å­¦ä¹ å¹³å°
-echo   ========================================
+echo   ================================================
+echo      PyMaster ½ÌÑ§Æ½Ì¨    ĞÂ°æ ¡¤ 39 ÕÂ / 400 ÖªÊ¶µã
+echo   ================================================
 echo.
-echo   [1/3] æ£€æŸ¥ä¾èµ–åº“...
-python -m pip install -r requirements.txt -q
-if errorlevel 1 goto :error
-echo   [2/3] æ£€æŸ¥ AI é…ç½®...
+echo   Æô¶¯Ä¿Â¼: %CD%
+echo.
+echo   [ÌáÊ¾] ĞÂ°æÔÚÕâÀï¡£Ô­°æ×Ü°üÊÇ¾ÉµÄ 9 ÕÂ°æ±¾£¬±ğÆô¶¯ÄÇ¸ö¡£
+echo.
+
+REM ÒÀÀµ¼ì²é£º¿âÆëÁË¾Í²»ÁªÍøÅÜ pip£¬Æô¶¯¸ü¿ì
+python -c "import flask, edge_tts" 2>nul
+if errorlevel 1 (
+  echo   [1/3] È±ÉÙÒÀÀµ¿â£¬ÕıÔÚ°²×°...
+  python -m pip install -r requirements.txt -q
+  if errorlevel 1 goto error
+) else (
+  echo   [1/3] ÒÀÀµ¿âÒÑ¾ÍĞ÷
+)
+
+echo   [2/3] ¼ì²é AI ÅäÖÃ...
 python setup_api.py
-if errorlevel 1 goto :error
-echo   [3/3] å¯åŠ¨ http://127.0.0.1:5000
-start "" http://127.0.0.1:5000
+if errorlevel 1 goto error
+
+REM ÏÈÆğ·şÎñ£¬6 ÃëºóÔÙ¿ªä¯ÀÀÆ÷¡£
+REM Ë³ĞòºÜÖØÒª£ºÏÈ¿ªä¯ÀÀÆ÷µÄ»°£¬5000 ¶Ë¿ÚÉÏ¿ÉÄÜ»¹¹Ò×ÅÉÏ´ÎµÄ¾É½ø³Ì£¬
+REM ä¯ÀÀÆ÷»áÏÈäÖÈ¾³ö¾ÉÒ³Ãæ£¬¿´ÆğÀ´Ïñ"¸Ä¶¯Ã»ÉúĞ§"¡£
+echo   [3/3] Æô¶¯·şÎñ http://127.0.0.1:5000
+echo.
+echo   Æô¶¯Íê³Éºóä¯ÀÀÆ÷»á×Ô¶¯´ò¿ª¡£°´ Ctrl+C Í£Ö¹·şÎñ¡£
+echo.
+start "" /min cmd /c "timeout /t 6 /nobreak >nul & start http://127.0.0.1:5000"
 python app.py
-goto :end
+goto end
+
 :error
 echo.
-echo   å¯åŠ¨å¤±è´¥ï¼Œè¯·æ£€æŸ¥ä¸Šæ–¹é”™è¯¯ä¿¡æ¯ã€‚
+echo   [´íÎó] Æô¶¯Ê§°Ü£¬Çë²é¿´ÉÏ·½±¨´íĞÅÏ¢¡£
+echo.
+
 :end
 pause

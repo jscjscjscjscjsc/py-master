@@ -32,3 +32,18 @@ data/.secret_key
 
 
 .env.before-ark
+
+# ── 图文讲解的生成产物 ──────────────────────────────────
+# 讲解脚本（data/narrations.json）要入库：它只有几百 KB，却把每节课的
+# 分镜、字幕、代码、作图规格全带上了，别人克隆后本地跑一次渲染器
+# 就能把几千张配图重新生成出来，不需要任何外部接口。
+# 配图与音频是纯产物，体积大（全量约 200MB / 76MB），不入库。
+static/narrations/
+logs/
+data/.build_narrations.lock
+tools/render/build-plan.json
+tools/render/node_modules/
+tools/render/preview/
+
+# 临时文件
+.git-token.tmp
