@@ -174,7 +174,71 @@ python tools/fetch_music.py --check
   那看起来就像平台坏了（这个 bug 真实发生过：学生没登录，做题一路 0 星，以为坏了）。
   刷题页也有 `.wb-guest-banner` 横幅，登录状态要在页面上看得见。
 
-## 八、待办
+## 八、在线演示站与分发包（2026-09-18）
+
+### 在线演示站（GitHub Pages）
+
+`docs/` 由 `python build_static_docs.py --samples N` 导出，Pages 源是 `main` 分支 `/docs`。
+
+静态站没有后端，靠 `static/js/static_mode.js` 兜住：
+
+- 所有 `/api/*` 请求被 fetch 钩子接住，返回人话提示（AI 类、判题类、数据类分别有不同文案），
+  页面不会停在"加载中"，也不会满屏 404
+- 指向后端路由的 `<a href="/coach">` 之类在捕获阶段被拦下并弹提示
+- 术语表走导出的 `data/glossary.json`，在线可查
+- 页尾说明条写清"在线能看什么、什么要本地部署"
+
+**踩过的两个坑**（改静态站时容易再犯）：
+
+1. **判断"是不是静态站"不能猜 URL 后缀**。首页在 Pages 上是 `/py-master/`，
+   既不以 `.html` 结尾也不是后端路由，原来的 `location.pathname.endsWith('.html')`
+   会跳到不存在的 `/chapter/1`——这正是"子页面全打不开"的根因。
+   现在认 `window.PYMASTER_STATIC` 或路径里有没有 `docs`。
+2. **图片、音频不能写绝对路径**。`/static/...` 在 Pages 上 404，
+   讲解样例会变成一片白框。统一走 `assetUrl()` / `staticAsset()` 按模式拼前缀。
+
+导出的静态资源：`docs/static/narrations/`（样例配图）与 `docs/static/narration-audio/`
+（样例口播）要入库，否则线上样例没声音没图。
+
+### 分发包（发给学生本地跑）
+
+```bash
+python tools/make_release.py            # → dist/PyMaster_教学平台.zip（约 72MB）
+python tools/make_release.py --lite     # 不含 pandas/matplotlib，体积小一半
+```
+
+包里有嵌入式 Python（`runtime/python-embed.zip`）与 `vendor/wheels/`，
+用户解压后**只需要双击 `启动PyMaster.bat`**（唯一入口，别再引入第二个）：
+
+- `tools/bootstrap_runtime.py` 首次运行解压随包 Python、补 pip、离线装依赖
+- 嵌入式发行版有两个坑，都在这个脚本里处理了：
+  1. 默认禁用 `site`、不带 pip → 装不了库；
+  2. 有 `._pth` 时进入隔离模式，**不会**把脚本目录加进 `sys.path`
+     → `python app.py` 报 `ModuleNotFoundError: comic_engine`。
+     所以脚本每次启动都按当前路径重写 `._pth`，文件夹被搬走也能自愈。
+- 代码运行器必须用 `sys.executable`（已修）：写死 `'python'` 在随包环境下
+  找不到解释器，或悄悄跑到系统里另一个 Python 上。
+
+实测：全新解压 → 自举 79 秒（全程不联网）→ 随包 Python 起服务 → 学生代码跑通。
+
+### 推到 GitHub
+
+直连不通时走镜像（已验证可用，`ghproxy.net` 与 `ghfast.top` 都能读能推）：
+
+```bash
+git -c http.https://github.com.proxy= \
+  push "https://ghproxy.net/https://github.com/jscjscjscjscjsc/py-master.git" main
+```
+
+报 "Bypassed rule violations ... must be made through a pull request" 是仓库
+开了分支保护，owner 账号能直接推，忽略即可。
+
+### 上线
+
+见 `上线部署方案.md`；`deploy/` 里有现成的 Dockerfile、docker-compose 与 Caddyfile。
+**判题无沙箱，公网开放前必须读那篇的第二节。**
+
+## 九、待办
 
 - [ ] 讲解全量生产（进行中）
 - [ ] 章节开场 3D 动画目前只有 9 套分镜
