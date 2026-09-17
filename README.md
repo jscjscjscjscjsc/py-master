@@ -40,25 +40,47 @@ python -c "from setup_api import prompt_setup; prompt_setup(force=True)"
 
 ## 主要功能
 
-- 9 章 Python 课程与 40 个知识点
-- 每章独立的四幕 3D CG 与概念实验
-- AI Master 风格的双层 3D 知识星海
-- 火山方舟 SSE 流式 AI 助教与备用模型切换
-- 代码练习场、练习解析、错题本和收藏
-- 思维导图、章节进度和语音讲解
-- 桌面端与移动端自适应
+- 39 章 Python 课程（基础 → 数据分析 → Web → AI 应用）、400 个知识点
+- 212 道教材练习 + 256 道刷题题库（含 86 道西科大 823 考研与操作系统专项）
+- 每个知识点一节 5 分钟图文讲解（大模型写分镜、本地程序化作图、edge-tts 配音）
+- 星辰教练多会话答疑、刷题中心的 Jupyter 式分块运行与在线判题
+- AI Master 风格的双层 3D 知识星海、每章四幕 3D CG
+- 修为等级体系、学习仪表盘、错题分类、思维导图
+- 桌面端与移动端自适应，断网可用（前端库已全部本地化）
 
-## GitHub Pages
+## 在线演示站
 
-Pages 是无需后端的静态作品展示版，展示首页、章节内容、3D CG 和知识星海。AI 问答、账号数据和代码执行需要下载源码后在本机运行。
+<https://jscjscjscjscjsc.github.io/py-master/>
 
-静态站点位于 `docs/`。更新方式：
+课程正文、练习与解析、讲解样例（有图有声）、星海图、术语表都能直接看。
+AI 答疑、账号进度、在线判题需要后端，演示站会给出明确提示——不会假装能用。
+
+静态站点位于 `docs/`，由平台自身页面导出：
 
 ```bash
-python build_static_docs.py
+python build_static_docs.py            # 默认带 8 节讲解样例
+python build_static_docs.py --samples 20
 ```
 
-仓库 Pages 来源应设置为 `main` 分支的 `/docs` 目录。
+仓库 Pages 来源设置为 `main` 分支的 `/docs` 目录。
+绑定自定义域名见 [上线部署方案.md](上线部署方案.md)。
+
+## 分发给别人用（本地完整版）
+
+```bash
+python tools/make_release.py           # 产出 dist/PyMaster_教学平台.zip
+```
+
+压缩包自带嵌入式 Python 与全部依赖 wheel，对方**不需要装 Python、不需要联网**：
+解压 → 双击 `启动PyMaster.bat` → 浏览器自动打开。首次启动约 1 分钟，之后秒开。
+
+## 部署上线
+
+- 只上线演示站：买域名指向 GitHub Pages，¥60/年左右
+- 上线完整平台（含 AI 与判题）：见 [上线部署方案.md](上线部署方案.md)，
+  里面有 `deploy/` 下现成的 Dockerfile、docker-compose 与 Caddy 配置
+
+⚠️ 判题会无沙箱执行任意代码，公网开放前请务必读该文档第二节。
 
 ## 安全说明
 

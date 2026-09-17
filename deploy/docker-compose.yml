@@ -1,0 +1,49 @@
+# 一台服务器同时跑 PyMaster 和自动 HTTPS 的入口。
+#
+#   1. 买好域名，把 A 记录指到这台服务器的公网 IP
+#   2. cp deploy/.env.example deploy/.env 并填好 DOMAIN / BASIC_USER / BASIC_HASH
+#      BASIC_HASH 用：docker run --rm caddy:2 caddy hash-password --plaintext '你的密码'
+#   3. docker compose -f deploy/docker-compose.yml up -d --build
+#
+# 想直接公网开放就别加 basic_auth，但请先读 上线部署方案.md 里的安全说明：
+# 判题功能会执行任意 Python 代码。
+services:
+  pymaster:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: pymaster:latest
+    restart: unless-stopped
+    environment:
+      PORT: "5000"
+      PYMASTER_OPEN_BROWSER: "0"
+    volumes:
+      # 账号、进度、题库记录、生成好的讲解都落在这里，容器重建不丢
+      - ./data:/srv/pymaster/data
+      - ./static-narrations:/srv/pymaster/static/narrations
+      - ./logs:/srv/pymaster/logs
+      - ./env:/srv/pymaster/.env:ro
+    # 判题会 fork 子进程，内存给足；1G 内存的机器请把 matplotlib 从镜像里去掉
+    mem_limit: 1500m
+    cpus: 1.5
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - pymaster
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?请先设置 DOMAIN}
+      BASIC_USER: ${BASIC_USER:?请先设置 BASIC_USER}
+      BASIC_HASH: ${BASIC_HASH:?请先设置 BASIC_HASH}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

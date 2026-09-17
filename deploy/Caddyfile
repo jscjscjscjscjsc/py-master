@@ -1,0 +1,28 @@
+# Caddy 自动申请并续期 HTTPS 证书，不用自己折腾 certbot。
+# 默认套一层账号密码：判题接口能执行任意 Python 代码，公网裸奔等于把服务器送人。
+{$DOMAIN} {
+	basic_auth {
+		{$BASIC_USER} {$BASIC_HASH}
+	}
+
+	encode gzip
+
+	reverse_proxy pymaster:5000 {
+		# AI 答疑是 SSE 流式输出，必须关掉响应缓冲，否则要等整段生成完才显示
+		flush_interval -1
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	log {
+		output file /data/access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+	}
+}

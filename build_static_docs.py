@@ -55,6 +55,10 @@ CHAPTER_HREF_RE = re.compile(r'href="/chapter/(\d+)"')
 # 静态站适配层必须最先执行：它要在 main.js 之前接管 fetch 与站内跳转
 STATIC_MODE_SCRIPT = '<script src="static/js/static_mode.js"></script>\n'
 
+# 绑定自定义域名后填这里（例如 'pymaster.example.com'）：
+# GitHub Pages 认的是发布目录里的 CNAME 文件，放在这里才不会被下次导出冲掉
+CNAME_DOMAIN = ''
+
 
 def static_html(text):
     for old, new in STATIC_HTML_REPLACEMENTS.items():
@@ -231,6 +235,9 @@ def build(samples=8):
     shutil.copytree(ROOT / 'static', DOCS / 'static', dirs_exist_ok=True,
                     ignore=shutil.ignore_patterns('narrations'))
     (DOCS / '.nojekyll').touch()
+    if CNAME_DOMAIN:
+        (DOCS / 'CNAME').write_text(CNAME_DOMAIN.strip() + '\n', encoding='utf-8')
+        print(f'已写入 docs/CNAME -> {CNAME_DOMAIN.strip()}')
 
     client = pymaster.app.test_client()
     write_page(client, '/dashboard', 'index.html')
