@@ -63,3 +63,10 @@ tools/render/preview/
 
 # 临时文件
 .git-token.tmp
+
+# 分发包构建产物（体积大，用 tools/make_release.py 重新生成）
+runtime/
+vendor/wheels/
+requirements-bundle.txt
+dist/
+*.bak

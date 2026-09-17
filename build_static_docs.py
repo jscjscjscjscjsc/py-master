@@ -44,14 +44,22 @@ STATIC_HTML_REPLACEMENTS = {
     'href="/dashboard"': 'href="index.html"',
     'href="/playground"': 'href="playground.html"',
     'href="/canvas"': 'href="canvas.html"',
+    'href="/stars"': 'href="stars.html"',
     "window.location.href='/canvas'": "window.location.href='canvas.html'",
 }
+
+# 章节互链要带 .html 后缀（/chapter/12 → chapter-12.html），
+# 字符串替换做不到补后缀，所以单独走正则
+CHAPTER_HREF_RE = re.compile(r'href="/chapter/(\d+)"')
+
+# 静态站适配层必须最先执行：它要在 main.js 之前接管 fetch 与站内跳转
+STATIC_MODE_SCRIPT = '<script src="static/js/static_mode.js"></script>\n'
 
 
 def static_html(text):
     for old, new in STATIC_HTML_REPLACEMENTS.items():
         text = text.replace(old, new)
-    return text
+    return CHAPTER_HREF_RE.sub(lambda m: f'href="chapter-{m.group(1)}.html"', text)
 
 
 def write_page(client, route, destination):
@@ -59,8 +67,9 @@ def write_page(client, route, destination):
     if response.status_code != 200:
         raise RuntimeError(f'{route} 返回 {response.status_code}')
     body = static_html(response.get_data(as_text=True))
-    # 打开静态模式：播放器改为读 data/narrations/*.json，而不是打后端接口
-    body = body.replace('</head>',
+    # 打开静态模式：播放器改为读 data/narrations/*.json，不再打后端接口；
+    # 适配层负责接住其余后端请求，避免在线演示站上满屏 404
+    body = body.replace('</head>', STATIC_MODE_SCRIPT +
                         '<script>window.PYMASTER_STATIC = true;</script>\n</head>', 1)
     (DOCS / destination).write_text(body, encoding='utf-8')
 
@@ -249,6 +258,11 @@ def build(samples=8):
     (DOCS / 'data').mkdir(exist_ok=True)
     (DOCS / 'data' / 'knowledge-universe.json').write_text(
         json.dumps(universe, ensure_ascii=False, indent=2), encoding='utf-8')
+
+    # 术语表是纯静态数据，导出后在线站也能查（static_mode.js 会转到这个文件）
+    (DOCS / 'data' / 'glossary.json').write_text(
+        json.dumps(client.get('/api/glossary').get_json(), ensure_ascii=False),
+        encoding='utf-8')
 
     star_script = DOCS / 'static' / 'js' / 'knowledge_stars.js'
     source = star_script.read_text(encoding='utf-8')

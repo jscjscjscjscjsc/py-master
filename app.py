@@ -848,7 +848,9 @@ def run_code():
         # Run with timeout and capture output
         start = time.time()
         proc = subprocess.run(
-            ['python', '-X', 'utf8', tmp_path],
+            # 必须用 sys.executable：随包 Python 不在 PATH 上，写死 'python' 会
+            # 找不到解释器，或者悄悄跑到系统里另一个 Python 上（装没装库全看运气）
+            [sys.executable, '-X', 'utf8', tmp_path],
             capture_output=True,
             # 超时放宽到 20 秒：导入 pandas/matplotlib 在忙的机器上会明显变慢
             timeout=20,
@@ -3596,16 +3598,62 @@ def training_question(question_id):
 
 @app.route('/api/training/run-cell', methods=['POST'])
 def training_run_cell():
-    """运行某一个代码块（Jupyter 那种独立运行）。"""
+    """运行某一个代码块（Jupyter 那种独立运行）。
+
+    带上 question_id 且跑的是最后一块时，会顺手执行题目断言：**跑通了当场结算
+    积分**（等同于点一次「提交判题」），不用让学生再点一次才发现自己已经做对了。
+    """
     data = request.get_json(silent=True) or {}
     cells = data.get('cells') or []
     if not isinstance(cells, list) or not cells:
         return jsonify({'success': False, 'error': '还没有代码可以运行。'})
     if sum(len(str(c)) for c in cells) > 60000:
         return jsonify({'success': False, 'error': '代码太长了（合计上限 60000 字符）。'})
-    result = training.run_cells(cells, active=data.get('active', 0),
-                                stdin_text=str(data.get('stdin', ''))[:4000], timeout=20)
-    return jsonify({'success': result.get('ok', False), **result})
+
+    active = max(0, min(int(data.get('active', 0) or 0), len(cells) - 1))
+    username = _who()
+    question = training.bank_index().get(str(data.get('question_id', '') or ''))
+    # 只有「跑的是最后一块」才顺带判题：只跑了半截代码时断言必然不过，
+    # 白白回一个「没通过」的结论只会误导学生。
+    checks = (question or {}).get('checks') or []
+    if not (question and active == len(cells) - 1):
+        checks = []
+
+    result = training.run_cells(cells, active=active,
+                                stdin_text=str(data.get('stdin', ''))[:4000],
+                                timeout=20, checks=checks)
+    settle = None
+    if question and result.get('checks_passed'):
+        settle = _settle_successful_run(username, question, cells,
+                                        used_ai=bool(data.get('used_ai')))
+    return jsonify({'success': result.get('ok', False), **result, 'settle': settle,
+                    'guest': username == 'guest'})
+
+
+def _settle_successful_run(username, question, cells, used_ai=False):
+    """「运行就跑通了」的结算。
+
+    只有这道题**还没通关**时才自动发分：否则反复点运行就能一次次拿递减分，
+    把账本刷花。已经通关的题想再练，仍然走「提交判题」——那里的递减系数是
+    有意设计的，不是漏洞。
+    """
+    if username == 'guest':
+        return None
+    state = training.load_state(username)
+    if ((state.get('attempts') or {}).get(question['id']) or {}).get('solved'):
+        return None
+
+    box = {}
+
+    def mutate(state):
+        settle_result = training.record_attempt(
+            state, question, cells, {'passed': True},
+            mode='practice', used_ai=used_ai)
+        state.setdefault('drafts', {})[question['id']] = [str(c) for c in cells]
+        box['settle'] = settle_result
+        return True
+    training.mutate_state(username, mutate)
+    return box.get('settle')
 
 
 @app.route('/api/training/draft', methods=['POST'])
@@ -3668,7 +3716,10 @@ def training_judge():
                     'error': result.get('error', ''), 'stdout': result.get('detail', ''),
                     'figures': result.get('figures', []),
                     'check_failed': result.get('check_failed', False),
-                    'settle': settle})
+                    'settle': settle,
+                    # 游客判题是真判（对错是准的），但没有账本可写。把身份显式回给
+                    # 前端，前端才能说清「做得对，只是不记分」，而不是显示 0 星 +0。
+                    'guest': username == 'guest'})
 
 
 @app.route('/api/training/exam', methods=['POST'])
@@ -4248,4 +4299,9 @@ if __name__ == '__main__':
             print(f'[PyMaster] 端口清理失败：{exc}')
 
     print(f'[PyMaster] Started at http://127.0.0.1:{port_to_use}')
+    # 一键启动脚本靠这个开关让服务自己开浏览器：比在 bat 里盲等几秒再 open 可靠，
+    # 至少能确定端口已经在监听
+    if os.environ.get('PYMASTER_OPEN_BROWSER') == '1':
+        import webbrowser
+        threading.Timer(1.2, lambda: webbrowser.open(f'http://127.0.0.1:{port_to_use}')).start()
     app.run(debug=False, host='0.0.0.0', port=port_to_use)

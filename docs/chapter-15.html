@@ -14,10 +14,13 @@
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/narration.css">
 <link rel="stylesheet" href="static/css/md_content.css">
+<link rel="stylesheet" href="static/css/cultivation.css">
+<link rel="stylesheet" href="static/css/music.css">
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
 <script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script src="static/js/static_mode.js"></script>
 <script>window.PYMASTER_STATIC = true;</script>
 </head>
 <body class="chapter-page" data-chapter-id="15" data-chapter-title="软件工程导论与需求分析" data-chapter-description="学完本章，你应该能够：
@@ -41,6 +44,9 @@
     <div class="nav-user">
       <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
       <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="/coach" class="btn-playground-nav" style="margin-right:8px;" title="带哲思追问的 AI 教练">星辰教练</a>
+      <a href="/training" class="btn-playground-nav" style="margin-right:8px;">刷题中心</a>
+      <a href="/progress" class="btn-playground-nav" style="margin-right:8px;">学习仪表盘</a>
       <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
         练习场
       </a>
@@ -1311,7 +1317,8 @@ Vibe 闭环：  描述需求 → AI 生成 → 你验证 → 再描述</pre></di
 <script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
 <script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
 <script src="static/js/main.js"></script>
-<script src="static/js/ambient_music.js"></script>
+<script src="static/js/cultivation.js"></script>
+<script src="static/js/music_player.js"></script>
 <script src="static/js/star_map.js"></script>
 <script src="static/vendor/three.min.js"></script>
 <script src="static/js/chapter_intro_3d.js"></script>
@@ -1325,5 +1332,8 @@ Vibe 闭环：  描述需求 → AI 生成 → 你验证 → 再描述</pre></di
 
 <!-- Interactive Component Modals for Chapter 8 -->
 
+<script>
+document.addEventListener('DOMContentLoaded', function(){ if (window.Cultivation) Cultivation.mount(); });
+</script>
 </body>
 </html>

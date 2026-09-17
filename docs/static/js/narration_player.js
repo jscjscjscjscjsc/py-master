@@ -145,6 +145,9 @@
   // 页面里只要设置 window.PYMASTER_STATIC = true 即可切换，不必维护两份代码。
   function isStatic() { return Boolean(window.PYMASTER_STATIC); }
 
+  // 静态站是平铺在 docs/ 下的，绝对路径 /static/... 在 GitHub Pages 上会 404
+  function assetUrl(path) { return (isStatic() ? 'static/' : '/static/') + path; }
+
   function narrationUrl(chapterId, kpIndex) {
     return isStatic()
       ? 'data/narrations/' + chapterId + '_' + kpIndex + '.json'
@@ -277,8 +280,8 @@
   function renderStrip() {
     el.strip.innerHTML = state.data.scenes.map(function (scene, index) {
       return '<div class="nr-thumb" data-index="' + index + '" title="' +
-        escapeHtml(scene.title) + '"><img loading="lazy" src="/static/' +
-        escapeHtml(scene.image) + '" alt=""><span>' + (index + 1) + '</span></div>';
+        escapeHtml(scene.title) + '"><img loading="lazy" src="' +
+        escapeHtml(assetUrl(scene.image)) + '" alt=""><span>' + (index + 1) + '</span></div>';
     }).join('');
     el.strip.querySelectorAll('.nr-thumb').forEach(function (node) {
       node.addEventListener('click', function () {
@@ -348,7 +351,7 @@
       el.image.src = preload.src;
       el.scene.classList.remove('is-swapping');
     };
-    preload.src = '/static/' + scene.image;
+    preload.src = assetUrl(scene.image);
     if (preload.complete) { el.image.src = preload.src; el.scene.classList.remove('is-swapping'); }
 
     el.kind.textContent = KIND_LABEL[scene.type] || '讲解';
@@ -453,7 +456,26 @@
       state.playing = false;
       syncPlayButton();
       updateTime(state.scene, state.data.scenes[state.scene].audio_seconds || 0);
+      awardCompletion();
     }
+  }
+
+  // 整节讲解播完给一次修为奖励。服务端按 (章节, 知识点) 去重，
+  // 反复看同一节不会重复刷分，所以这里放心每次都报。
+  function awardCompletion() {
+    if (state.awarded) { return; }
+    state.awarded = true;
+    fetch('/api/cultivation/award', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason: 'narration', ref: state.chapterId + '_' + state.kpIndex })
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (!data || !data.success) { return; }
+      if (window.Cultivation) {
+        if (data.awarded) Cultivation.applySettlement(data);
+        else if (data.profile) { Cultivation.profile = data.profile; Cultivation.render({}); }
+      }
+    }).catch(function () {});
   }
 
   function updateTime(index, offset) {

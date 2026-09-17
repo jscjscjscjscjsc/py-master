@@ -607,7 +607,8 @@ function checkChapterComplete(chapterId) {
   if (isLastKpCompleted) {
     showToast('🌌 最后一题完成！即将进入星辰启示...', 'success');
     setTimeout(() => {
-      window.location.href = '/static/revelation_cg.html?ch=' + chapterId;
+      var isStatic = window.PYMASTER_STATIC || location.pathname.endsWith('.html');
+      window.location.href = (isStatic ? 'static/' : '/static/') + 'revelation_cg.html?ch=' + chapterId;
     }, 1500);
   }
 }

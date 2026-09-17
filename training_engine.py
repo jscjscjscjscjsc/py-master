@@ -553,24 +553,34 @@ def _run_python(cells, stdin_text='', timeout=20, checks=None):
         _shutil.rmtree(workdir, ignore_errors=True)
 
 
-def run_cells(cells, active=0, stdin_text='', timeout=20):
+def run_cells(cells, active=0, stdin_text='', timeout=20, checks=None):
     """执行到第 active 个代码块，返回该块的输出（前序块的输出会被压掉，
-    因为用户关心的是「我这一块跑出什么」，不是前面块重复打印的内容）。"""
+    因为用户关心的是「我这一块跑出什么」，不是前面块重复打印的内容）。
+
+    `checks` 不为空时，用户代码全部跑通后会再执行一遍题目断言，并把结论放在
+    `checks_run` / `checks_passed` / `check_error` 里。这样「运行」这一步就能顺带
+    回答「我这次是不是已经做对了」，不必让学生再点一次提交判题。
+    """
     cells = [str(c) for c in (cells or [])]
     if not cells:
         return {'ok': False, 'error': '还没有代码可以运行。', 'stdout': '', 'results': []}
     active = max(0, min(int(active), len(cells) - 1))
-    run = _run_python(cells[:active + 1], stdin_text=stdin_text, timeout=timeout)
+    ran = cells[:active + 1]
+    checks = [str(c) for c in (checks or []) if str(c).strip()]
+    run = _run_python(ran, stdin_text=stdin_text, timeout=timeout, checks=checks)
     if not run['ok']:
         return {'ok': False, 'error': run['error'], 'stdout': '',
                 'elapsed': run.get('elapsed'), 'results': run.get('results', []),
                 'timeout': run.get('timeout')}
 
     results = run['results']
-    last = results[-1] if results else {'index': active, 'stdout': '', 'error': '', 'ok': True}
-    has_error_earlier = any(not r['ok'] for r in results[:-1])
+    # 断言块是挂在用户代码块后面的，要按长度切出来，否则会被当成「最后一块代码」，
+    # 把断言的空输出当成用户这次的运行结果回显出去。
+    head, tail = results[:len(ran)], results[len(ran):]
+    last = head[-1] if head else {'index': active, 'stdout': '', 'error': '', 'ok': True}
+    has_error_earlier = any(not r['ok'] for r in head[:-1])
     stdout = last.get('stdout', '') + (('\n' + last['stderr']) if last.get('stderr', '').strip() else '')
-    return {
+    out = {
         'ok': last.get('ok', True) and not has_error_earlier,
         'error': last.get('error', '') or ('前面有代码块报错，先修好它再运行这一块。' if has_error_earlier else ''),
         'stdout': stdout,
@@ -579,6 +589,18 @@ def run_cells(cells, active=0, stdin_text='', timeout=20):
         'cell_ok': last.get('ok', True),
         'results': results,
     }
+    if checks:
+        check_cell = tail[0] if tail else None
+        if check_cell is None:
+            # 用户代码自己就报错了，断言根本没轮到执行
+            out['checks_run'] = False
+            out['checks_passed'] = False
+        else:
+            out['checks_run'] = True
+            out['checks_passed'] = bool(check_cell.get('ok'))
+            if not check_cell.get('ok'):
+                out['check_error'] = check_cell.get('error', '')
+    return out
 
 
 def judge(question, cells, stdin_text='', timeout=25):

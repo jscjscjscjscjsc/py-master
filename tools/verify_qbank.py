@@ -23,7 +23,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import training_engine as te  # noqa: E402
 
-MODULES = ['qbank_basic', 'qbank_pro', 'qbank_algo', 'qbank_408', 'qbank_leetcode']
+MODULES = ['qbank_basic', 'qbank_pro', 'qbank_algo', 'qbank_408', 'qbank_leetcode',
+           'qbank_xust823a', 'qbank_xust823b', 'qbank_xust823c', 'qbank_xust823d',
+           'qbank_os_exam', 'qbank_osa', 'qbank_osb']
 
 
 def load_questions(only_module=None, only_id=None):

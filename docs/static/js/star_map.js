@@ -1,5 +1,9 @@
 (function () {
-  window.openStarMap = function () { window.location.assign(location.pathname.endsWith('.html') ? 'stars.html' : '/stars'); };
+  // 在线演示站与本地部署的星海图路径不同；静态站由 static_mode.js 标记
+  window.openStarMap = function () {
+    var isStatic = window.PYMASTER_STATIC || location.pathname.endsWith('.html');
+    window.location.assign(isStatic ? 'stars.html' : '/stars');
+  };
   window.closeStarMap = function () { window.history.back(); };
   return;
   const chapters = [
@@ -32,7 +36,10 @@
       const angle = (-Math.PI / 2) + i * (Math.PI * 2 / chapters.length);
       btn.style.left = (50 + Math.cos(angle) * 38) + '%'; btn.style.top = (50 + Math.sin(angle) * 34) + '%';
       btn.innerHTML = '<b>' + ch[0] + '</b><span>' + ch[1] + '</span><small>' + ch[2] + '</small>';
-      btn.onclick = () => { window.location.href = '/chapter/' + (i + 1); };
+      btn.onclick = () => {
+        const isStatic = window.PYMASTER_STATIC || location.pathname.endsWith('.html');
+        window.location.href = isStatic ? 'chapter-' + (i + 1) + '.html' : '/chapter/' + (i + 1);
+      };
       nodes.appendChild(btn);
     });
     window.addEventListener('keydown', e => { if (e.key === 'Escape') closeStarMap(); }, { once: true });

@@ -1,0 +1,129 @@
+/* ============================================================
+   学习背景音乐：右下角小控件
+   ============================================================ */
+
+.pymusic-dock {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 82;
+  font-family: var(--font-sans);
+}
+
+.pymusic-glyph {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-glow);
+  background: rgba(12, 17, 28, 0.94);
+  color: var(--text-secondary);
+  font-size: 19px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: var(--transition-fast);
+}
+
+.pymusic-glyph:hover { border-color: rgba(0, 212, 255, 0.6); }
+
+.pymusic-dock.playing .pymusic-glyph {
+  border-color: rgba(0, 212, 255, 0.7);
+  box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+  animation: pymusicPulse 2.6s infinite;
+}
+
+@keyframes pymusicPulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.35), 0 8px 24px rgba(0, 0, 0, 0.45); }
+  70% { box-shadow: 0 0 0 12px rgba(0, 212, 255, 0), 0 8px 24px rgba(0, 0, 0, 0.45); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0), 0 8px 24px rgba(0, 0, 0, 0.45); }
+}
+
+.pymusic-panel {
+  position: absolute;
+  right: 0;
+  bottom: 54px;
+  width: 258px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glow);
+  background: linear-gradient(160deg, rgba(12, 17, 28, 0.97), rgba(8, 11, 20, 0.97));
+  padding: 12px 13px 13px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  transform: translateY(6px) scale(0.98);
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-normal);
+}
+
+.pymusic-panel.open { transform: none; opacity: 1; pointer-events: auto; }
+
+.pymusic-head { display: flex; align-items: center; gap: 8px; }
+.pymusic-title { font-size: 13.5px; font-weight: 700; color: var(--text-primary); flex: 1; }
+.pymusic-close {
+  border: none; background: none; color: var(--text-muted); cursor: pointer; font-size: 12px;
+}
+.pymusic-close:hover { color: var(--cyan); }
+
+.pymusic-meta { margin-top: 3px; font-size: 11px; color: var(--text-muted); min-height: 15px; }
+
+.pymusic-bar {
+  margin-top: 9px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.pymusic-bar > i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00d4ff, #a371f7);
+}
+
+.pymusic-controls {
+  margin-top: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pymusic-controls button {
+  border: 1px solid var(--border-glow);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  min-width: 34px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: var(--transition-fast);
+}
+
+.pymusic-controls button:hover { color: var(--cyan); border-color: rgba(0, 212, 255, 0.5); }
+.pymusic-controls button.primary {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.22), rgba(163, 113, 247, 0.22));
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.pymusic-vol-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pymusic-vol-wrap input[type="range"] { width: 62px; accent-color: #00d4ff; }
+
+/* 音乐栏歌词式的跑马灯：曲名太长时不撑破面板 */
+.pymusic-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+@media (max-width: 720px) {
+  .pymusic-dock { right: 10px; bottom: 68px; }
+  .pymusic-panel { width: 224px; }
+}

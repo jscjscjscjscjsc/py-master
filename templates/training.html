@@ -27,6 +27,14 @@
   </div>
 </header>
 
+{% if is_guest %}
+<div class="wb-guest-banner">
+  🧪 当前是<strong>游客模式</strong>：题目能正常做、判题也会告诉你对错，
+  但<strong>成绩不会保存</strong>——不计积分、不涨修为，换页就没了。
+  <a href="/login">登录 / 注册</a> 后再做一遍就能记上。
+</div>
+{% endif %}
+
 <div class="wb-layout">
   <aside class="wb-side" id="wb-side"></aside>
   <main>

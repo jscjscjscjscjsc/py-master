@@ -21,7 +21,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-MODULES = ['qbank_basic', 'qbank_pro', 'qbank_algo', 'qbank_408', 'qbank_leetcode']
+MODULES = ['qbank_basic', 'qbank_pro', 'qbank_algo', 'qbank_408', 'qbank_leetcode',
+           'qbank_xust823a', 'qbank_xust823b', 'qbank_xust823c', 'qbank_xust823d',
+           'qbank_os_exam', 'qbank_osa', 'qbank_osb']
 
 # 算法专题的章节号从 101 起，避免与课程章节（1–40）冲突
 ALGO_TOPICS = {
@@ -51,6 +53,28 @@ ALGO_TOPICS = {
     124: '动态规划进阶',
     125: '数据结构高频题',
     126: '位运算与数学',
+    # 西安科技大学 823《数据结构与算法》专项（按考纲章节顺序）
+    127: '823·绪论与复杂度',
+    128: '823·线性表',
+    129: '823·栈和队列',
+    130: '823·串数组与广义表',
+    131: '823·树与二叉树',
+    132: '823·图',
+    133: '823·查找',
+    134: '823·内部排序',
+    # 操作系统专项
+    135: '操作系统·进程调度',
+    136: '操作系统·内存管理',
+    137: '操作系统·文件与磁盘',
+    138: '操作系统·死锁与银行家算法',
+    139: '操作系统·进程与线程进阶',
+    140: '操作系统·进程调度进阶',
+    141: '操作系统·内存管理与地址转换',
+    142: '操作系统·页面置换与缺页',
+    # 823 补充专题（同一考纲点的加练题与图算法强化）
+    143: '823·线性表与串（提高）',
+    144: '823·栈与队列（提高）',
+    145: '823·图算法强化',
 }
 
 REQUIRED = ['id', 'chapter_id', 'title', 'difficulty', 'statement', 'solution']

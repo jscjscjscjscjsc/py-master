@@ -171,11 +171,19 @@
 <script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
 <script src="{{ url_for('static', filename='js/star_map.js') }}"></script>
 <script>
+// 在线演示站（docs/ 导出）里章节是 chapter-N.html，判据不能只看 URL 后缀：
+// GitHub Pages 的首页是 /py-master/，既不以 .html 结尾也不是后端路由。
+function isStaticSite() {
+  return Boolean(window.PYMASTER_STATIC) ||
+         /(^|\/)docs(\/|$)/.test(location.pathname) ||
+         /\/(chapter-\d+|index|update)\.html$/.test(location.pathname);
+}
 function goToChapter(id) {
-  window.location.href = location.pathname.endsWith('.html') ? 'chapter-' + id + '.html' : '/chapter/' + id;
+  window.location.href = isStaticSite() ? 'chapter-' + id + '.html' : '/chapter/' + id;
 }
 function logout() {
-  window.location.href = location.pathname.endsWith('.html') ? 'index.html' : '/logout';
+  if (isStaticSite()) { pmStaticNotice('账号系统在本地版里'); return; }
+  window.location.href = '/logout';
 }
 
 // Load AI quota on dashboard

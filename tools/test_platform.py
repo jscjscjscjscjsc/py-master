@@ -33,6 +33,13 @@ TEST_USER = '__selftest__'
 TEST_PASS = 'selftest123'
 VERBOSE = '-v' in sys.argv
 
+# 题库规模从编译产物里读，别在断言里写死数字——一加题这份自测就会跟着红，
+# 而它红的原因跟「功能坏了」完全无关，只会淹没真正的失败。
+with open(os.path.join(ROOT, 'data', 'question_bank.json'), 'r', encoding='utf-8') as _f:
+    _BANK = json.load(_f)
+BANK_TOTAL = len(_BANK)
+BANK_ALGO_TOPICS = len({q['chapter_id'] for q in _BANK if q.get('track') == 'algorithm'})
+
 PASSED, FAILED = [], []
 
 
@@ -125,11 +132,11 @@ def main():
     section('2. 题库与目录接口')
     data = client.get('/api/training/catalog').get_json()
     check('目录接口可用', data.get('success'))
-    check('题库共 170 题（120 基础 + 50 扩容）', data.get('total') == 170, f"实际 {data.get('total')}")
+    check(f'题库共 {BANK_TOTAL} 题', data.get('total') == BANK_TOTAL, f"实际 {data.get('total')}")
     course = data.get('by_track', {}).get('course', [])
     algo = data.get('by_track', {}).get('algorithm', [])
     check('课程配套章节有题', len(course) >= 20, f'{len(course)} 章')
-    check('算法专题 26 个', len(algo) == 26, f'{len(algo)} 个')
+    check(f'算法专题 {BANK_ALGO_TOPICS} 个', len(algo) == BANK_ALGO_TOPICS, f'{len(algo)} 个')
 
     data = client.get('/api/training/questions?track=course&limit=10').get_json()
     check('题目列表可用', data.get('success') and len(data['questions']) == 10,
@@ -352,12 +359,12 @@ def main():
     data = client.get('/api/progress/overview').get_json()
     check('仪表盘接口可用', data.get('success'))
     totals = data.get('totals', {})
-    check('题目总数 170', totals.get('questions') == 170, str(totals.get('questions')))
+    check(f'题目总数 {BANK_TOTAL}', totals.get('questions') == BANK_TOTAL, str(totals.get('questions')))
     check('统计到已通关题目', totals.get('solved', 0) >= 2, str(totals.get('solved')))
     check('统计到错题', totals.get('wrong', 0) >= 1, str(totals.get('wrong')))
     check('课程章节列表非空', len(data.get('course_chapters', [])) > 20,
           str(len(data.get('course_chapters', []))))
-    check('算法专题列表 26 个', len(data.get('algo_chapters', [])) == 26,
+    check(f'算法专题列表 {BANK_ALGO_TOPICS} 个', len(data.get('algo_chapters', [])) == BANK_ALGO_TOPICS,
           str(len(data.get('algo_chapters', []))))
     check('错题按章节分组', isinstance(data.get('wrong_groups'), list))
     check('实战记录已进入列表', len(data.get('exams', [])) >= 1, str(len(data.get('exams', []))))

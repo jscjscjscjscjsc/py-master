@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="static/css/style.css">
 <link rel="stylesheet" href="static/css/star_map.css">
 <link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/cultivation.css">
+<link rel="stylesheet" href="static/css/music.css">
+<script src="static/js/static_mode.js"></script>
 <script>window.PYMASTER_STATIC = true;</script>
 </head>
 <body class="dashboard-page">
@@ -24,6 +27,9 @@
     <div class="nav-user">
       <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
       <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="/training" class="btn-playground-nav" style="margin-right:4px;">刷题中心</a>
+      <a href="/progress" class="btn-playground-nav" style="margin-right:4px;">学习仪表盘</a>
+      <a href="/coach" class="btn-playground-nav" style="margin-right:4px;">星辰教练</a>
       <a href="playground.html" class="btn-playground-nav" style="margin-right:4px;">
         练习场
       </a>
@@ -1136,14 +1142,23 @@ AgentResult 中的运行数据 | State | Day 21 |
 </div>
 
 <script src="static/js/main.js"></script>
-<script src="static/js/ambient_music.js"></script>
+<script src="static/js/cultivation.js"></script>
+<script src="static/js/music_player.js"></script>
 <script src="static/js/star_map.js"></script>
 <script>
+// 在线演示站（docs/ 导出）里章节是 chapter-N.html，判据不能只看 URL 后缀：
+// GitHub Pages 的首页是 /py-master/，既不以 .html 结尾也不是后端路由。
+function isStaticSite() {
+  return Boolean(window.PYMASTER_STATIC) ||
+         /(^|\/)docs(\/|$)/.test(location.pathname) ||
+         /\/(chapter-\d+|index|update)\.html$/.test(location.pathname);
+}
 function goToChapter(id) {
-  window.location.href = location.pathname.endsWith('.html') ? 'chapter-' + id + '.html' : '/chapter/' + id;
+  window.location.href = isStaticSite() ? 'chapter-' + id + '.html' : '/chapter/' + id;
 }
 function logout() {
-  window.location.href = location.pathname.endsWith('.html') ? 'index.html' : '/logout';
+  if (isStaticSite()) { pmStaticNotice('账号系统在本地版里'); return; }
+  window.location.href = '/logout';
 }
 
 // Load AI quota on dashboard
@@ -1157,5 +1172,6 @@ fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
 <script src="static/vendor/three.min.js"></script>
 <script src="static/js/chapter_intro_3d.js"></script>
 <script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
+<script>Cultivation.mount();</script>
 </body>
 </html>
