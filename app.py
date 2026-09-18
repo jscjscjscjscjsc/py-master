@@ -305,6 +305,12 @@ def require_ai_config():
     path = request.path or '/'
     if path.startswith(SETUP_EXEMPT_PREFIXES):
         return None
+    # 会话里记着的账号可能已经不存在了（用户按使用说明清过 users.json、
+    # 或换了 data 目录）。这种"幽灵登录"要退回游客，否则界面显示着一个
+    # 已经不存在的账号，进度却怎么都不保存
+    username = session.get('username')
+    if username and username != 'guest' and username not in load_json(USERS_FILE):
+        session.pop('username', None)
     if ai_config_status()['configured']:
         return None
     return redirect(url_for('setup_wizard'))
@@ -635,6 +641,8 @@ def api_accounts():
     accounts = [_public_account(name, info) for name, info in users.items()]
     accounts.sort(key=lambda item: item.get('last_login') or '', reverse=True)
     current = session.get('username', '')
+    if current and current not in users:
+        current = ''          # 账号已被删掉，别再当成"当前账号"回给前端
     return jsonify({'success': True, 'accounts': accounts, 'current': current})
 
 
