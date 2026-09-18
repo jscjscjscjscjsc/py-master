@@ -73,3 +73,9 @@ dist/
 
 # 用户头像（私人数据，和 users.json 一样不进版本库）
 data/avatars/
+
+# 宣传物料与分发包产物（体积大，不属于代码）
+PyMaster_产品介绍片_*.mp4
+PyMaster_产品介绍片_*.srt
+视频制作说明.md
+.video-build/

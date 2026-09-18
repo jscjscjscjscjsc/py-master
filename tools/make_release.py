@@ -7,9 +7,9 @@
 
   · runtime/python-embed.zip   嵌入式 Python 3.12（约 11MB，不需要用户装）
   · vendor/wheels/*.whl        全部依赖的 wheel，离线安装
-  · 启动PyMaster.bat           唯一入口，首次运行自动铺好环境
+  · 0-启动PyMaster.bat         唯一入口，首次运行自动铺好环境
 
-用户拿到压缩包只需要：解压 → 双击「启动PyMaster.bat」。
+用户拿到压缩包只需要：解压 → 双击「0-启动PyMaster.bat」。
 
 用法
 ----
@@ -29,7 +29,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_DIR = ROOT.parent / 'dist'
+OUT_DIR = ROOT / 'dist'
 WHEELS = ROOT / 'vendor' / 'wheels'
 RUNTIME_ZIP = ROOT / 'runtime' / 'python-embed.zip'
 PY_VERSION = '3.12.10'
@@ -49,6 +49,7 @@ EXCLUDE_DIRS = {
     'tools/render/preview', 'tools/render/build-plan.json', '.video-build', '.workbuddy',
 }
 EXCLUDE_FILES = {
+    '视频制作说明.md',
     'data/users.json', 'data/whitelist.json', 'data/daily_usage.json', 'data/.secret_key',
     'data/comic_memory.json', 'data/.build_narrations.lock',
     '更新说明-客户版.md', 'HANDOFF.md', 'PROGRESS.md', 'trend.png',
@@ -63,7 +64,7 @@ README = """PyMaster 教学平台 · 使用说明
 
 【怎么启动】
   1. 把整个文件夹解压到任意目录（路径带中文、空格都没问题）
-  2. 双击「启动PyMaster.bat」
+  2. 双击「0-启动PyMaster.bat」
   3. 首次启动会自动准备运行环境（约 1 分钟，不需要你安装 Python）
   4. 浏览器会自动打开 http://127.0.0.1:5000
      —— 没自动打开就手动访问这个地址
@@ -173,7 +174,7 @@ def should_keep(path: Path) -> bool:
         return False
     if path.name.startswith('.env.') and path.name != '.env.example':
         return False                                   # 密钥备份一律不进包
-    if path.suffix.lower() not in KEEP_SUFFIX and path.name not in {'启动PyMaster.bat'}:
+    if path.suffix.lower() not in KEEP_SUFFIX and path.name not in {'0-启动PyMaster.bat'}:
         return False
     return True
 
@@ -191,7 +192,7 @@ def stage(stage_dir: Path, lite=False):
         shutil.copy2(path, target)
         count += 1
     # 只留一个入口
-    for extra in ('启动新版PyMaster.bat',):
+    for extra in ('启动PyMaster.bat', '启动新版PyMaster.bat'):
         leftover = stage_dir / extra
         if leftover.exists():
             leftover.unlink()
@@ -252,7 +253,7 @@ def main():
     size = archive.stat().st_size / 1024 / 1024
     say(f'  → {archive}')
     say(f'  → 压缩包 {size:.1f} MB')
-    say('  用户拿到后：解压 → 双击「启动PyMaster.bat」')
+    say('  用户拿到后：解压 → 双击「0-启动PyMaster.bat」')
 
 
 if __name__ == '__main__':

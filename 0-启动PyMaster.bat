@@ -1,6 +1,18 @@
 @echo off
 chcp 936 >nul
 cd /d "%~dp0"
+
+REM 兜底：万一项目还放在子目录里（老版本的 发布版\），也照样能启动。
+REM 正常情况下 app.py 就在本文件旁边，这一步会被跳过。
+if not exist "app.py" if exist "%~dp0发布版\app.py" cd /d "%~dp0发布版"
+if not exist "app.py" (
+  echo   [错误] 这个启动脚本必须和 app.py 放在同一个文件夹里。
+  echo          请把它放回 PyMaster 教学平台 目录下再双击。
+  echo.
+  pause
+  exit /b 1
+)
+
 title PyMaster 教学平台
 
 echo.

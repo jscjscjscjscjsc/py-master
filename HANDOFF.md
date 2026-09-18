@@ -11,19 +11,23 @@
 每个知识点配一节 5 分钟图文讲解，另有星辰教练、刷题中心、修为等级与学习仪表盘。
 
 ```
-桌面/Vibe oding/PyMaster 教学平台/
-├── 启动 PyMaster.bat        ← 双击启动（顶层，最省事）
-├── 发布版/                  ← 新版，所有开发都在这里
-│   ├── 启动PyMaster.bat
-│   ├── app.py              Flask 主程序（约 4000 行）
-│   ├── training_engine.py  刷题引擎：题库 / 判题沙箱 / 积分 / 等级曲线
-│   ├── coach_engine.py     星辰教练：会话存储与提示词
-│   ├── PROGRESS.md         演进记录（历史）
-│   ├── HANDOFF.md          本文件（当前状态）
-│   ├── data/question_bank.json   256 道题库（编译产物）
-│   └── tools/render/       程序化作图引擎
-└── 原版总包/                ← 旧版 9 章，仅备份，别启动
+桌面/Vibe oding/PyMaster 教学平台/     ← 这个文件夹就是项目根，也是一个 git 仓库
+├── 0-启动PyMaster.bat    ← 唯一的启动脚本（名字带 0- 是为了排在文件列表最前面）
+├── app.py                Flask 主程序（约 4900 行）
+├── training_engine.py    刷题引擎：题库 / 判题沙箱 / 积分 / 等级曲线
+├── coach_engine.py       星辰教练：会话存储与提示词
+├── PROGRESS.md           演进记录（历史）
+├── HANDOFF.md            本文件（当前状态）
+├── data/question_bank.json   256 道题库（编译产物）
+├── tools/render/         程序化作图引擎
+├── runtime/              随包 Python 与虚拟环境（gitignore，首启自动生成）
+└── dist/                 分发包产物（gitignore）
 ```
+
+> 2026-09-18 做过一次整理：项目根从 `发布版/` 上移一层，
+> `原版总包/`（旧版 9 章项目、exe、旧 zip）已删除——旧教材内容仍在
+> 仓库的 `data/courses_legacy_9ch.json` 里留档。
+> 现在全机器只有 `0-启动PyMaster.bat` 一个启动脚本。
 
 ## 二、当前在跑什么
 
@@ -208,7 +212,7 @@ python tools/make_release.py --lite     # 不含 pandas/matplotlib，体积小�
 ```
 
 包里有嵌入式 Python（`runtime/python-embed.zip`）与 `vendor/wheels/`，
-用户解压后**只需要双击 `启动PyMaster.bat`**（唯一入口，别再引入第二个）：
+用户解压后**只需要双击 `0-启动PyMaster.bat`**（唯一入口，别再引入第二个）：
 
 - `tools/bootstrap_runtime.py` 首次运行解压随包 Python、补 pip、离线装依赖
 - 嵌入式发行版有两个坑，都在这个脚本里处理了：

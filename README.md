@@ -6,7 +6,7 @@ PyMaster 是面向 Python 初学者的本地互动学习平台，包含 9 个章
 
 ## 本地启动
 
-**Windows 用户双击 `启动PyMaster.bat` 就够了**——这是唯一的入口。
+**Windows 用户双击 `0-启动PyMaster.bat` 就够了**——这是唯一的入口。
 首次启动会自动准备运行环境（约 1 分钟），之后秒开，浏览器自动打开
 <http://127.0.0.1:5000>。
 
@@ -66,7 +66,7 @@ python tools/make_release.py --lite    # 不含 pandas/matplotlib，体积小一
 ```
 
 压缩包自带嵌入式 Python 与全部依赖 wheel，对方**不需要装 Python、不需要联网**：
-解压 → 双击 `启动PyMaster.bat` → 浏览器自动打开。首次启动约 1 分钟，之后秒开。
+解压 → 双击 `0-启动PyMaster.bat` → 浏览器自动打开。首次启动约 1 分钟，之后秒开。
 
 第一次启动时批处理会自己解开随包 Python（用 Windows 自带的 tar / PowerShell，
 不依赖系统里有没有 Python），再用 `vendor/wheels` 离线装好依赖。
