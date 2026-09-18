@@ -102,6 +102,38 @@ function showToast(message, type) {
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
 
+  // 本机账号列表：单机版把"这台电脑上有谁"直接摆出来，点一下就填好用户名
+  fetch('/api/accounts').then(r => r.json()).then(res => {
+    const list = (res && res.accounts) || [];
+    if (!list.length) return;
+    const box = document.getElementById('local-accounts');
+    const wrap = document.getElementById('local-list');
+    box.style.display = '';
+    list.forEach(acc => {
+      const card = document.createElement('div');
+      card.className = 'local-card';
+      const face = document.createElement('div');
+      face.className = 'local-face';
+      if (acc.avatar_url) {
+        const img = document.createElement('img');
+        img.src = acc.avatar_url; img.alt = '';
+        face.appendChild(img);
+      } else {
+        face.textContent = acc.emoji || (acc.username[0] || '?').toUpperCase();
+      }
+      const name = document.createElement('span');
+      name.className = 'local-name';
+      name.textContent = acc.username;
+      card.append(face, name);
+      card.addEventListener('click', () => {
+        tabBtns[0].click();
+        document.getElementById('login-username').value = acc.username;
+        document.getElementById('login-password').focus();
+      });
+      wrap.appendChild(card);
+    });
+  }).catch(() => {});
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', function() {
       tabBtns.forEach(b => b.classList.remove('active'));
@@ -135,7 +167,7 @@ function showToast(message, type) {
     const password = document.getElementById('reg-password').value;
     const confirm = document.getElementById('reg-password-confirm').value;
     if (!username || !password || !confirm) { showToast('请填写所有字段', 'error'); return; }
-    if (username.length < 3) { showToast('用户名至少3个字符', 'error'); return; }
+    if (username.length < 2) { showToast('用户名至少2个字符', 'error'); return; }
     if (password.length < 6) { showToast('密码至少6个字符', 'error'); return; }
     if (password !== confirm) { showToast('两次输入的密码不一致', 'error'); return; }
     try {
@@ -144,11 +176,198 @@ function showToast(message, type) {
         body: JSON.stringify({ username, password })
       });
       const data = await res.json();
-      if (data.success) { showToast('注册成功！请登录', 'success'); tabBtns[0].click(); document.getElementById('login-username').value = username; registerForm.reset(); }
+      // 注册接口本身就把人登进去了，直接进站，不用再登一次
+      if (data.success) { showToast('账号已创建，正在进入…', 'success'); setTimeout(() => { window.location.href = '/dashboard'; }, 500); }
       else showToast(data.message, 'error');
     } catch (err) { showToast('网络错误，请稍后重试', 'error'); }
   });
 })();
+
+// ==================== 本地账号：头像 / 切换账号 ====================
+// 单机版把账号做在本地：这台电脑上有哪些账号、每个账号的头像，都在 data/ 里。
+const AVATAR_EMOJI = ['🐍', '🚀', '🐼', '🦊', '🐳', '🌟', '🎯', '🧠'];
+
+function paintAvatar(el, account) {
+  if (!el || !account) return;
+  el.textContent = '';
+  if (account.avatar_url) {
+    const img = document.createElement('img');
+    img.src = account.avatar_url; img.alt = '';
+    el.appendChild(img);
+  } else {
+    el.textContent = account.emoji || (account.username[0] || '?').toUpperCase();
+  }
+}
+
+async function loadLocalAccount() {
+  try {
+    const res = await fetch('/api/accounts');
+    const data = await res.json();
+    if (!data.success) return null;
+    const me = (data.accounts || []).find(a => a.username === data.current);
+    if (me) {
+      paintAvatar(document.getElementById('user-avatar'), me);
+      const nameEl = document.querySelector('#user-chip .user-name');
+      if (nameEl) nameEl.textContent = me.username;
+    }
+    return data;
+  } catch (e) { return null; }
+}
+
+// 上传前先在浏览器里缩到 256×256：原图常常好几 MB，直接传既慢又占地方
+function shrinkImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('读取图片失败'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('这不是一张能识别的图片'));
+      img.onload = () => {
+        const size = 256;
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const scale = Math.max(size / img.width, size / img.height);
+        const w = img.width * scale, h = img.height * scale;
+        ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.9));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function saveAvatar(payload) {
+  const res = await fetch('/api/avatar', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.message || '保存失败');
+  paintAvatar(document.getElementById('user-avatar'),
+              { avatar_url: data.avatar_url, emoji: data.emoji, username: '' });
+  return data;
+}
+
+async function openAccountPanel() {
+  const data = await loadLocalAccount();
+  const accounts = (data && data.accounts) || [];
+  const current = (data && data.current) || '';
+  const me = accounts.find(a => a.username === current);
+
+  let modal = document.getElementById('account-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'account-modal';
+    modal.className = 'modal-overlay';
+    modal.innerHTML =
+      '<div class="modal-container modal-sm">' +
+      '  <div class="modal-header"><span>👤 我的账号</span>' +
+      '    <button class="modal-close" onclick="closeModal(\'account-modal\')">✕</button></div>' +
+      '  <div class="modal-body" id="account-body"></div>' +
+      '</div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal('account-modal'); });
+  }
+
+  const body = modal.querySelector('#account-body');
+  body.innerHTML = '';
+
+  if (!current || !me) {
+    body.innerHTML = '<div style="text-align:center;padding:26px 10px;color:var(--text-muted);">' +
+      '当前是游客模式，账号数据不会保存。<br><br>' +
+      '<a class="btn btn-primary" style="display:inline-block;padding:8px 18px;border-radius:8px;" href="/login">去注册 / 登录</a></div>';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    return;
+  }
+
+  const face = document.createElement('div');
+  face.className = 'account-face';
+  paintAvatar(face, me);
+  const title = document.createElement('div');
+  title.className = 'account-title';
+  title.textContent = current;
+  const sub = document.createElement('div');
+  sub.className = 'account-sub';
+  sub.textContent = me.created_at ? '创建于 ' + me.created_at.slice(0, 10) : '本地账号';
+  body.append(face, title, sub);
+
+  const emojiRow = document.createElement('div');
+  emojiRow.className = 'avatar-emoji-row';
+  AVATAR_EMOJI.forEach(ch => {
+    const b = document.createElement('button');
+    b.className = 'avatar-emoji';
+    b.textContent = ch;
+    b.title = '用这个表情当头像';
+    b.onclick = async () => {
+      try { await saveAvatar({ emoji: ch }); openAccountPanel(); showToast('头像已更新', 'success'); }
+      catch (err) { showToast(err.message, 'error'); }
+    };
+    emojiRow.appendChild(b);
+  });
+  body.appendChild(emojiRow);
+
+  const upload = document.createElement('label');
+  upload.className = 'account-btn';
+  upload.textContent = '📷 上传一张照片';
+  const file = document.createElement('input');
+  file.type = 'file';
+  file.accept = 'image/*';
+  file.style.display = 'none';
+  file.onchange = async () => {
+    if (!file.files || !file.files[0]) return;
+    try {
+      showToast('正在处理图片…', 'info');
+      await saveAvatar({ image: await shrinkImage(file.files[0]) });
+      showToast('头像已更新', 'success');
+      openAccountPanel();
+    } catch (err) { showToast(err.message, 'error'); }
+    file.value = '';
+  };
+  upload.appendChild(file);
+  body.appendChild(upload);
+
+  if (accounts.length > 1) {
+    const other = accounts.filter(a => a.username !== current);
+    const label = document.createElement('div');
+    label.className = 'account-section';
+    label.textContent = '切换账号（这台电脑上还有 ' + other.length + ' 个）';
+    body.appendChild(label);
+    other.forEach(acc => {
+      const row = document.createElement('button');
+      row.className = 'account-row';
+      const f = document.createElement('span');
+      f.className = 'user-avatar';
+      paintAvatar(f, acc);
+      const n = document.createElement('span');
+      n.textContent = acc.username;
+      row.append(f, n);
+      row.onclick = () => { window.location.href = '/login'; };
+      body.appendChild(row);
+    });
+  }
+
+  const addRow = document.createElement('a');
+  addRow.className = 'account-row';
+  addRow.href = '/login';
+  addRow.innerHTML = '<span class="user-avatar">＋</span><span>新建 / 登录其它账号</span>';
+  body.appendChild(addRow);
+
+  const out = document.createElement('button');
+  out.className = 'account-btn account-danger';
+  out.textContent = '退出登录';
+  out.onclick = () => { window.location.href = '/logout'; };
+  body.appendChild(out);
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.getElementById('user-chip')) loadLocalAccount();
+});
 
 // ==================== Chapter Page Logic ====================
 (function() {

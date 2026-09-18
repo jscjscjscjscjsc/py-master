@@ -15,43 +15,59 @@ echo.
 
 set "PY="
 
-REM ① 上次已经准备过：runtime\python-path.txt 里记着当时选定的解释器
-if exist "runtime\python-path.txt" set /p PY=<"runtime\python-path.txt"
-if defined PY if not exist "%PY%" set "PY="
+REM 解释器只认这两个固定相对路径，全部用 %~dp0 拼出来。
+REM 不要用 for /f 去"捕获" python 的路径：中文用户名下，命令输出会经过
+REM 代码页转换，捕回来的路径是乱码，cmd 就会报"系统找不到指定的路径"。
 
-REM ② 随包 Python（完整压缩包自带，用户不必自己装 Python）
-if not defined PY if exist "runtime\python\python.exe" set "PY=%~dp0runtime\python\python.exe"
+REM ① 随包 Python（完整压缩包自带）
+if exist "runtime\python\python.exe" set "PY=%~dp0runtime\python\python.exe"
+if defined PY goto ready
 
-REM ③ 系统 Python：交给 bootstrap 建虚拟环境
-if not defined PY (
-  where py >nul 2>nul && set "PY=py -3"
+REM ② 上次用系统 Python 建好的虚拟环境
+if exist "runtime\venv\Scripts\python.exe" set "PY=%~dp0runtime\venv\Scripts\python.exe"
+if defined PY goto ready
+
+REM ③ 包里有 Python 压缩包但还没解开：自己解，不依赖系统 Python
+REM    （这是完整包的关键一步：用户机器上可以完全没有 Python）
+if exist "runtime\python-embed.zip" (
+  echo   [1/3] 正在解压随包 Python（只需一次）...
+  if not exist "runtime\python" mkdir "runtime\python"
+  tar -xf "runtime\python-embed.zip" -C "runtime\python" 2>nul
+  if not exist "runtime\python\python.exe" powershell -NoProfile -Command "Expand-Archive -LiteralPath 'runtime\python-embed.zip' -DestinationPath 'runtime\python' -Force" >nul 2>nul
 )
-if not defined PY (
-  where python >nul 2>nul && set "PY=python"
-)
+if exist "runtime\python\python.exe" set "PY=%~dp0runtime\python\python.exe"
+if defined PY goto ready
 
-if not defined PY (
-  echo   [错误] 没有找到 Python，而且这个压缩包里也没有附带运行环境。
-  echo.
-  echo   两个办法，任选其一：
-  echo     1. 重新下载完整版压缩包（自带 Python，不需要你装任何东西）
-  echo     2. 自己装 Python 3.12：https://www.python.org/downloads/
-  echo        安装时务必勾选 "Add python.exe to PATH"，装完重新双击本文件
-  echo.
-  goto end
-)
+REM ④ 精简包（不含 Python）：只能用系统 Python 建虚拟环境
+echo   [1/3] 没有随包 Python，改用系统 Python 准备环境...
+py -3 "tools\bootstrap_runtime.py"
+if not errorlevel 1 goto system_ready
+python "tools\bootstrap_runtime.py"
+if not errorlevel 1 goto system_ready
+goto need_python
 
-echo   [1/2] 检查运行环境...
+:system_ready
+if exist "runtime\venv\Scripts\python.exe" set "PY=%~dp0runtime\venv\Scripts\python.exe"
+if not defined PY goto need_python
+goto launch
+
+:need_python
+echo.
+echo   [错误] 这台电脑上没有可用的 Python，这个压缩包里也没有附带。
+echo.
+echo   两个办法，任选其一：
+echo     1. 下载"完整版"压缩包（自带 Python，不需要你装任何东西）
+echo     2. 自己装 Python 3.12：https://www.python.org/downloads/
+echo        安装时务必勾选 "Add python.exe to PATH"，装完重新双击本文件
+goto end
+
+:ready
+echo   [1/3] 检查运行环境...
 "%PY%" "tools\bootstrap_runtime.py"
-if errorlevel 1 (
-  echo.
-  echo   [错误] 运行环境没有准备好，请把上面的提示截图反馈。
-  goto end
-)
+if errorlevel 1 goto failed
 
-if exist "runtime\python-path.txt" set /p PY=<"runtime\python-path.txt"
-
-echo   [2/2] 正在启动服务 http://127.0.0.1:5000
+:launch
+echo   [2/3] 环境就绪，正在启动服务 http://127.0.0.1:5000
 echo.
 echo   浏览器没自动打开的话，手动访问 http://127.0.0.1:5000 即可。
 echo   首次使用请在网页里完成：注册账号 - 填写模型密钥 - 开始学习。
@@ -70,6 +86,11 @@ if not "%EXITCODE%"=="0" (
 ) else (
   echo   服务已停止。
 )
+goto end
+
+:failed
+echo.
+echo   [错误] 运行环境没有准备好，请把上面的提示截图反馈。
 
 :end
 echo.

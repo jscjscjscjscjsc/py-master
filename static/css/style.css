@@ -460,12 +460,92 @@ a:hover { color: #5ee0ff; }
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
+  overflow: hidden;
+  flex: none;
+}
+.nav-user .user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .nav-user .user-name {
   color: var(--text-primary);
   font-weight: 600;
   font-size: 14px;
 }
+
+/* 头像 + 用户名合成一个可点入口：点开是账号面板（换头像 / 切账号 / 退出） */
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 12px 3px 3px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.user-chip:hover {
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+}
+.user-chip .user-avatar {
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: #08121b;
+}
+.user-chip .user-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 14px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 账号面板 ── */
+.account-face {
+  width: 84px; height: 84px; margin: 4px auto 12px;
+  border-radius: 50%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; font-weight: 700; color: #08121b;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+}
+.account-face img { width: 100%; height: 100%; object-fit: cover; }
+.account-title { text-align: center; font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.account-sub { text-align: center; font-size: 12px; color: var(--text-muted); margin: 4px 0 16px; }
+.avatar-emoji-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 14px; }
+.avatar-emoji {
+  width: 38px; height: 38px; border-radius: 50%; font-size: 19px; cursor: pointer;
+  border: 1px solid var(--border-subtle); background: var(--bg-card);
+  transition: transform .12s, border-color .12s;
+}
+.avatar-emoji:hover { transform: translateY(-2px); border-color: var(--cyan); }
+.account-btn {
+  display: block; width: 100%; text-align: center; cursor: pointer;
+  padding: 11px; border-radius: 10px; margin-bottom: 10px;
+  border: 1px solid var(--border-subtle); background: var(--bg-card);
+  color: var(--text-primary); font-size: 14px;
+}
+.account-btn:hover { border-color: var(--cyan); }
+.account-danger { color: #ff6b6b; }
+.account-section { font-size: 12.5px; color: var(--text-muted); margin: 14px 0 8px; }
+.account-row {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 8px 10px; margin-bottom: 6px; border-radius: 10px; cursor: pointer;
+  border: 1px solid transparent; background: transparent;
+  color: var(--text-primary); font-size: 14px; text-align: left;
+  text-decoration: none;
+}
+.account-row:hover { background: var(--bg-card); border-color: var(--border-subtle); }
+.account-row .user-avatar {
+  width: 30px; height: 30px; border-radius: 50%; flex: none; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #08121b;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+}
+.account-row .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .btn-logout {
   padding: 6px 16px;
   font-size: 13px;

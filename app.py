@@ -2,6 +2,8 @@ import json
 import os
 import sys
 import ast
+import base64
+import binascii
 import hashlib
 import secrets
 import subprocess
@@ -15,10 +17,11 @@ import urllib.parse
 import threading
 import socket
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
+from urllib.parse import quote
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from flask import Response
+from flask import Response, send_file
 
 # Lightweight .env loading keeps local one-click launches configured without
 # adding a runtime dependency. Values already present in the process win.
@@ -87,6 +90,11 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.template_folder = os.path.join(BUNDLE_DIR, 'templates')
 app.static_folder = os.path.join(BUNDLE_DIR, 'static')
 
+# 单机版没有"登录页"这一步的耐心：注册一次之后，下次打开就应该还是自己。
+# 会话 Cookie 默认随浏览器关闭就失效，这里改成一年，实现"记住我"的效果。
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
 # Writable data: next to exe (or project root for dev)
 DATA_DIR = os.path.join(WRITE_ROOT, 'data')
 USERS_FILE = os.path.join(DATA_DIR, 'users.json')
@@ -127,7 +135,29 @@ def save_json(filepath, data):
 
 
 def hash_password(password):
+    """旧格式：裸 sha256。仅用于兼容老账号，新密码一律走下面的 PBKDF2。"""
     return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+
+def hash_password_new(password, salt=None):
+    """加盐慢哈希。本地版账号密码就存在用户自己电脑上，但也别明文等价保存。
+
+    返回 (算法标记, 盐, 摘要)；老账号没有这些字段时按 hash_password 校验。
+    """
+    salt = salt or secrets.token_hex(16)
+    digest = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 120_000)
+    return 'pbkdf2', salt, digest.hex()
+
+
+def verify_password(record, password):
+    """兼容两种存法：新的 PBKDF2 与老账号的裸 sha256。"""
+    if not isinstance(record, dict):
+        return False
+    stored = record.get('password') or ''
+    if record.get('password_salt'):
+        _, _, digest = hash_password_new(password, record['password_salt'])
+        return secrets.compare_digest(digest, stored)
+    return secrets.compare_digest(hash_password(password), stored)
 
 
 def login_required(f):
@@ -263,7 +293,10 @@ def login_page():
 # 这些以前只能在终端里靠 setup_api.py 问答完成，现在改成网页向导。
 
 SETUP_EXEMPT_PREFIXES = ('/setup', '/api/setup', '/static', '/login', '/api/login',
-                         '/api/register', '/logout', '/favicon.ico', '/oauth')
+                         '/api/register', '/logout', '/favicon.ico', '/oauth',
+                         # 配置向导第一步要列出本机账号、第二步要设置头像，
+                         # 这两个接口被重定向到 /setup 的话，向导自己就先坏了
+                         '/api/accounts', '/api/avatar', '/avatar')
 
 
 @app.before_request
@@ -438,6 +471,7 @@ def oauth_wechat_callback():
         }
         save_json(USERS_FILE, users)
 
+    session.permanent = True
     session['username'] = account
     return redirect(url_for('dashboard'))
 
@@ -472,8 +506,8 @@ def register():
 
     if not username or not password:
         return jsonify({'success': False, 'message': '账号和密码不能为空'})
-    if len(username) < 3:
-        return jsonify({'success': False, 'message': '账号至少 3 个字符'})
+    if len(username) < 2:
+        return jsonify({'success': False, 'message': '用户名至少 2 个字符'})
     if len(password) < 6:
         return jsonify({'success': False, 'message': '密码至少 6 个字符'})
     if email and not EMAIL_RE.match(email):
@@ -483,15 +517,29 @@ def register():
         return jsonify({'success': False, 'message': '注册失败：该账号不在白名单中，请联系管理员'})
 
     users = load_json(USERS_FILE)
-    if username in users:
+    if username in users and users[username].get('password'):
         return jsonify({'success': False, 'message': '该账号已注册，直接登录即可'})
     if email and any(u.get('email') == email for u in users.values()):
         return jsonify({'success': False, 'message': '该邮箱已注册，直接登录即可'})
 
+    _, salt, digest = hash_password_new(password)
+    if username in users:
+        # 密码被清空的旧账号：允许用同一个用户名重新设密码，学习记录原样保留。
+        # 单机版没有"找回密码"通道，这是留给忘记密码的人的唯一出口（见使用说明）。
+        users[username].update({'password': digest, 'password_salt': salt,
+                                'last_login': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+        save_json(USERS_FILE, users)
+        session.permanent = True
+        session['username'] = username
+        return jsonify({'success': True, 'message': '已为这个账号重设密码并登录', 'username': username})
+
     users[username] = {
-        'password': hash_password(password),
+        'password': digest,
+        'password_salt': salt,
         'email': email,
         'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'last_login': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'avatar': '',
         'mode': 'explore',
         'progress': {},
         'completed_kps': [],
@@ -501,8 +549,9 @@ def register():
         'notes': {}
     }
     save_json(USERS_FILE, users)
+    session.permanent = True           # 自己电脑上不用每次登录
     session['username'] = username
-    return jsonify({'success': True, 'message': '注册成功，已自动登录'})
+    return jsonify({'success': True, 'message': '注册成功，已自动登录', 'username': username})
 
 
 @app.route('/api/login', methods=['POST'])
@@ -524,20 +573,137 @@ def login():
     if username not in users:
         return jsonify({'success': False, 'message': '账号不存在，请先注册'})
 
-    if users[username]['password'] != hash_password(password):
+    if not users[username].get('password'):
+        return jsonify({'success': False, 'message': '这个账号还没有密码，请到注册页用同一个用户名设置一个新密码'})
+    if not verify_password(users[username], password):
         return jsonify({'success': False, 'message': '密码错误'})
 
     if not _account_allowed(username):
         return jsonify({'success': False, 'message': '登录失败：账号未在白名单中或已过期，请联系管理员'})
 
+    # 老账号第一次成功登录后顺手升级成加盐哈希
+    if not users[username].get('password_salt'):
+        _, salt, digest = hash_password_new(password)
+        users[username]['password'] = digest
+        users[username]['password_salt'] = salt
+    users[username]['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    save_json(USERS_FILE, users)
+
+    session.permanent = True           # 下次打开自动还是这个账号
     session['username'] = username
-    return jsonify({'success': True, 'message': '登录成功'})
+    return jsonify({'success': True, 'message': '登录成功', 'username': username})
 
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('dashboard'))
+
+
+# ── 本地账号：多账号切换与头像 ────────────────────────────
+# 单机版的数据都在用户自己电脑上，所以"这台机器上有哪些账号"可以放心列出来，
+# 让登录页直接点头像切换，而不是每次手打用户名。
+
+AVATAR_DIR = os.path.join(DATA_DIR, 'avatars')
+AVATAR_MAX_BYTES = 2 * 1024 * 1024
+AVATAR_EXT = {'image/png': 'png', 'image/jpeg': 'jpg', 'image/jpg': 'jpg',
+              'image/webp': 'webp', 'image/gif': 'gif'}
+
+
+def _avatar_filename(username):
+    """头像文件名用用户名哈希：避开中文名在 Windows 上的编码坑，也防止路径穿越。"""
+    return hashlib.sha1(username.encode('utf-8')).hexdigest()
+
+
+def _public_account(username, info):
+    """给前端用的账号摘要，绝不带密码字段。"""
+    has_file = bool(info.get('avatar')) and os.path.exists(
+        os.path.join(AVATAR_DIR, info['avatar']))
+    return {
+        'username': username,
+        'avatar_url': f'/avatar/{quote(username)}' if has_file else '',
+        'emoji': info.get('avatar_emoji', ''),
+        'created_at': info.get('created_at', ''),
+        'last_login': info.get('last_login', ''),
+    }
+
+
+@app.route('/api/accounts')
+def api_accounts():
+    """本机已有的账号列表，按最近登录排序，供登录页/切换账号使用。"""
+    users = load_json(USERS_FILE)
+    accounts = [_public_account(name, info) for name, info in users.items()]
+    accounts.sort(key=lambda item: item.get('last_login') or '', reverse=True)
+    current = session.get('username', '')
+    return jsonify({'success': True, 'accounts': accounts, 'current': current})
+
+
+@app.route('/avatar/<path:username>')
+def avatar_file(username):
+    """头像文件。没有就 404，前端会退回到"首字母 + 颜色"的头像。"""
+    users = load_json(USERS_FILE)
+    info = users.get(username) or {}
+    name = info.get('avatar') or ''
+    path = os.path.join(AVATAR_DIR, name) if name else ''
+    if not path or not os.path.exists(path):
+        return ('', 404)
+    response = send_file(path, max_age=3600)
+    response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
+
+
+@app.route('/api/avatar', methods=['POST'])
+def api_set_avatar():
+    """换头像：支持上传图片（data URL）或选一个 emoji。"""
+    data = request.get_json(silent=True) or {}
+    username = session.get('username')
+    if not username:
+        return jsonify({'success': False, 'message': '请先登录再设置头像'})
+
+    users = load_json(USERS_FILE)
+    if username not in users:
+        return jsonify({'success': False, 'message': '账号不存在'})
+
+    emoji = (data.get('emoji') or '').strip()
+    data_url = data.get('image') or ''
+
+    if emoji:
+        users[username]['avatar_emoji'] = emoji[:8]
+        users[username]['avatar'] = ''
+        save_json(USERS_FILE, users)
+        return jsonify({'success': True, 'emoji': users[username]['avatar_emoji'], 'avatar_url': ''})
+
+    match = re.match(r'^data:(image/[a-z+]+);base64,(.+)$', data_url, flags=re.S | re.I)
+    if not match:
+        return jsonify({'success': False, 'message': '图片格式不对，请换一张'})
+    mime, payload = match.group(1).lower(), match.group(2)
+    ext = AVATAR_EXT.get(mime)
+    if not ext:
+        return jsonify({'success': False, 'message': '只支持 PNG / JPG / WEBP / GIF'})
+    try:
+        blob = base64.b64decode(payload, validate=True)
+    except (ValueError, binascii.Error):
+        return jsonify({'success': False, 'message': '图片数据损坏，请重新选择'})
+    if len(blob) > AVATAR_MAX_BYTES:
+        return jsonify({'success': False, 'message': '图片太大了，请选 2MB 以内的'})
+
+    os.makedirs(AVATAR_DIR, exist_ok=True)
+    filename = f'{_avatar_filename(username)}.{ext}'
+    # 换了格式就把旧文件删掉，免得同一账号留两份
+    for old in os.listdir(AVATAR_DIR):
+        if old.startswith(_avatar_filename(username) + '.'):
+            try:
+                os.remove(os.path.join(AVATAR_DIR, old))
+            except OSError:
+                pass
+    with open(os.path.join(AVATAR_DIR, filename), 'wb') as f:
+        f.write(blob)
+
+    users[username]['avatar'] = filename
+    users[username]['avatar_emoji'] = ''
+    save_json(USERS_FILE, users)
+    return jsonify({'success': True, 'avatar_url': f'/avatar/{quote(username)}',
+                    'emoji': ''})
 
 
 @app.route('/dashboard')
@@ -786,6 +952,7 @@ def chapter(chapter_id):
                           chapter_completed=chapter_completed,
                           chapter_kp_titles=chapter_kp_titles,
                           chapter_wrong=chapter_wrong,
+                          username=username,
                           total_chapters=len(courses))
 
 
@@ -2216,7 +2383,8 @@ def get_user():
         'completed_exercises': user.get('completed_exercises', []),
         'favorites': user.get('favorites', []),
         'wrong_answers': user.get('wrong_answers', []),
-        'notes': _migrate_notes(user.get('notes', {}))
+        'notes': _migrate_notes(user.get('notes', {})),
+        **_public_account(username, user),
     })
 
 

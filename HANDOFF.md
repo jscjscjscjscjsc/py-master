@@ -221,6 +221,33 @@ python tools/make_release.py --lite     # 不含 pandas/matplotlib，体积小�
 
 实测：全新解压 → 自举 79 秒（全程不联网）→ 随包 Python 起服务 → 学生代码跑通。
 
+### 本地账号体系（2026-09-18 起）
+
+面向"下载到自己电脑上用"的用户，去掉了 QQ 邮箱注册与微信扫码（那套留给将来上线版），
+换成纯本地账号。**改动点散在四处，改账号相关代码时一起看**：
+
+| 位置 | 作用 |
+|---|---|
+| `app.py` `register/login` | 用户名 + 密码；注册即登录；老账号登录时自动升级为 PBKDF2 加盐哈希 |
+| `app.py` `/api/accounts` | 列出本机账号（用户名 / 头像 / 上次登录），**不带密码字段** |
+| `app.py` `/api/avatar` + `/avatar/<name>` | 头像上传（data URL，≤2MB）与读取；文件名是用户名哈希，防中文编码坑与路径穿越 |
+| `templates/setup.html` 第一步、`login.html` | 有账号就摆成头像卡片点选；没有就显示注册表单 |
+| `static/js/main.js` `openAccountPanel()` | 导航栏头像点开的账号面板：换头像（8 个 emoji + 上传照片，前端先缩到 256×256）/ 切账号 / 退出 |
+
+两个必须记住的约定：
+
+- **记住登录靠 `session.permanent` + `PERMANENT_SESSION_LIFETIME = 365 天`**。
+  Flask 默认的会话 Cookie 一关浏览器就失效，单机版用户会以为"又要我登录"。
+- **`/api/accounts`、`/api/avatar`、`/avatar` 必须在 `SETUP_EXEMPT_PREFIXES` 里**。
+  否则 AI 没配置时 before_request 会把它们重定向到 `/setup`，向导第一步自己就坏了。
+
+忘记密码没有找回通道（密码只在本机），出口是：编辑 `data/users.json` 把该账号的
+`password` 清空，再用同一个用户名"注册"一次即可重设密码，**学习记录与头像原样保留**
+（`register` 里专门处理了这条路径，别顺手把它当重复注册拦掉）。
+
+用户数据都在 `data/`：`users.json`（账号+进度+错题+笔记）、`avatars/`、`training/`、
+`coach/`。整个 data 目录拷走即完成迁移。
+
 ### 推到 GitHub
 
 直连不通时走镜像（已验证可用，`ghproxy.net` 与 `ghfast.top` 都能读能推）：

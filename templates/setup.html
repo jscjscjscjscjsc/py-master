@@ -86,8 +86,22 @@ input::placeholder{color:var(--tx3)}
 /* 登录方式 */
 .or{display:flex;align-items:center;gap:14px;margin:22px 0;color:var(--tx3);font-size:12px}
 .or::before,.or::after{content:'';flex:1;height:1px;background:var(--line)}
-.oauth{display:flex;gap:10px}
-.oauth .btn{flex:1}
+.who-title{color:var(--tx2);font-size:13.5px;margin:6px 0 12px}
+.who-list{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.who-card{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 10px;border-radius:12px;
+  border:1px solid var(--line);background:var(--card);cursor:pointer;transition:.15s}
+.who-card:hover{border-color:var(--cyan);transform:translateY(-1px)}
+.who-card.on{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,212,255,.18)}
+.who-face{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;
+  justify-content:center;font-weight:700;font-size:16px;color:#08121b;overflow:hidden;
+  background:linear-gradient(135deg,#00d4ff,#2e6f68)}
+.who-face img{width:100%;height:100%;object-fit:cover}
+.who-meta{line-height:1.35}
+.who-meta b{display:block;font-size:14.5px;color:var(--tx)}
+.who-meta span{font-size:11.5px;color:var(--tx3)}
+.who-alt{display:flex;gap:18px;font-size:13px;margin-top:4px}
+.who-alt a{color:var(--cyan);text-decoration:none}
+.who-alt a:hover{text-decoration:underline}
 .wx{color:#5fd08a}
 .wx.off{opacity:.5;cursor:not-allowed}
 details{margin-top:14px;font-size:12.5px;color:var(--tx2)}
@@ -121,7 +135,7 @@ details li{margin:5px 0}
     <div class="steps">
       <div class="step active" id="side-1">
         <span class="no">1</span>
-        <div><div class="t">创建账号</div><div class="d">QQ 邮箱注册，或登录已有账号</div></div>
+        <div><div class="t">创建账号</div><div class="d">本地账号，只存在这台电脑上</div></div>
       </div>
       <div class="step" id="side-2">
         <span class="no">2</span>
@@ -139,18 +153,30 @@ details li{margin:5px 0}
     <!-- ── 第一步：账号 ── -->
     <div class="pane active" id="pane-1">
       <h1>欢迎使用 PyMaster</h1>
-      <p class="lead">第一次打开需要两步：先建一个账号，再接入你自己的大模型。</p>
+      <p class="lead">第一次打开需要两步：先建一个账号，再接入你自己的大模型。
+        账号密码只保存在这台电脑的 <code>data/users.json</code> 里，不会上传到任何地方。</p>
 
-      <div class="tabs">
-        <button class="tab active" data-tab="reg">QQ 邮箱注册</button>
-        <button class="tab" data-tab="login">已有账号登录</button>
+      <!-- 这台电脑上已经有账号：直接点头像切换，不用手打用户名 -->
+      <div id="who-box" style="display:none">
+        <div class="who-title">这台电脑上已有这些账号，选一个继续：</div>
+        <div class="who-list" id="who-list"></div>
+        <div class="field" id="who-pass-box" style="display:none">
+          <label>密码</label>
+          <input type="password" id="who-pass" placeholder="输入该账号的密码" autocomplete="current-password">
+        </div>
+        <button class="btn btn-main" id="btn-who-login" style="display:none">用这个账号登录</button>
+        <div class="or">没有你要的账号？</div>
+        <div class="who-alt">
+          <a href="#" id="link-new-account">＋ 创建一个新账号</a>
+          <a href="#" id="link-type-login">用用户名密码登录</a>
+        </div>
       </div>
 
       <div id="form-reg">
         <div class="field">
-          <label>QQ 邮箱</label>
-          <input type="text" id="reg-email" placeholder="123456@qq.com" autocomplete="username">
-          <div class="hint">用 QQ 邮箱当账号，方便记。其他邮箱也可以。</div>
+          <label>用户名</label>
+          <input type="text" id="reg-user" placeholder="起一个名字，2–20 个字符" autocomplete="username">
+          <div class="hint">中文、英文、数字都行。之后登录、进度、错题、笔记都记在这个账号下。</div>
         </div>
         <div class="field">
           <label>设置密码</label>
@@ -160,13 +186,13 @@ details li{margin:5px 0}
           <label>确认密码</label>
           <input type="password" id="reg-pass2" placeholder="再输一遍" autocomplete="new-password">
         </div>
-        <button class="btn btn-main" id="btn-reg">注册并继续</button>
+        <button class="btn btn-main" id="btn-reg">创建账号并继续</button>
       </div>
 
       <div id="form-login" style="display:none">
         <div class="field">
-          <label>账号（QQ 邮箱）</label>
-          <input type="text" id="log-user" placeholder="123456@qq.com" autocomplete="username">
+          <label>用户名</label>
+          <input type="text" id="log-user" placeholder="你的用户名" autocomplete="username">
         </div>
         <div class="field">
           <label>密码</label>
@@ -174,29 +200,6 @@ details li{margin:5px 0}
         </div>
         <button class="btn btn-main" id="btn-login">登录并继续</button>
       </div>
-
-      <div class="or">或者</div>
-      <div class="oauth">
-        <button class="btn wx {{ '' if wechat_ready else 'off' }}" id="btn-wx"
-                {{ '' if wechat_ready else 'title="需要先配置微信开放平台参数"' }}>
-          <span>💬</span> 微信扫码进入
-        </button>
-      </div>
-
-      <details>
-        <summary>微信扫码登录为什么还不能用？</summary>
-        <p>微信扫码需要「微信开放平台 → 网站应用」的 AppID 与 AppSecret，
-           并且回调地址必须是<b>已备案的公网域名</b>。本程序运行在你自己的电脑上（127.0.0.1），
-           微信服务器无法回调进来，所以单机版默认关闭。</p>
-        <p>要开启的话，在 <code>.env</code> 里补上三项后重启即可，界面会自动放行：</p>
-        <ul>
-          <li><code>WECHAT_APP_ID=</code> 开放平台网站应用的 AppID</li>
-          <li><code>WECHAT_APP_SECRET=</code> 对应的 AppSecret</li>
-          <li><code>OAUTH_CALLBACK_BASE=</code> 公网可访问的地址，例如 <code>https://your.domain</code></li>
-        </ul>
-        <p>另外，即使没有微信登录，你也可以先在手机浏览器打开本机地址使用
-           （同一局域网下访问 <code>http://电脑IP:5000</code>）。</p>
-      </details>
     </div>
 
     <!-- ── 第二步：接入大模型 ── -->
@@ -303,17 +306,6 @@ details li{margin:5px 0}
     step(2);
   }
 
-  // 注册 / 登录切换
-  document.querySelectorAll('.tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      var isReg = tab.dataset.tab === 'reg';
-      $('form-reg').style.display = isReg ? '' : 'none';
-      $('form-login').style.display = isReg ? 'none' : '';
-    });
-  });
-
   function post(url, body) {
     return fetch(url, {
       method: 'POST',
@@ -322,47 +314,116 @@ details li{margin:5px 0}
     }).then(function (r) { return r.json(); });
   }
 
+  // ── 本机账号列表：有账号就先让人点头像，不用手打用户名 ──
+  var picked = '';
+  function faceHtml(acc) {
+    if (acc.avatar_url) return '<img src="' + acc.avatar_url + '" alt="">';
+    return acc.emoji || (acc.username[0] || '?').toUpperCase();
+  }
+  function loadAccounts() {
+    fetch('/api/accounts').then(function (r) { return r.json(); }).then(function (res) {
+      var list = (res && res.accounts) || [];
+      if (!list.length) return;                 // 全新机器：直接显示注册表单
+      $('who-box').style.display = '';
+      $('form-reg').style.display = 'none';
+      $('who-list').innerHTML = list.map(function (acc) {
+        return '<div class="who-card" data-name="' + acc.username + '">' +
+          '<div class="who-face">' + faceHtml(acc) + '</div>' +
+          '<div class="who-meta"><b></b><span></span></div></div>';
+      }).join('');
+      // 用户名走 textContent，避免中文名/特殊字符破坏 HTML
+      $('who-list').querySelectorAll('.who-card').forEach(function (card, i) {
+        var acc = list[i];
+        card.querySelector('b').textContent = acc.username;
+        card.querySelector('span').textContent = acc.last_login
+          ? '上次登录 ' + acc.last_login.slice(0, 16) : '还没登录过';
+        card.addEventListener('click', function () {
+          $('who-list').querySelectorAll('.who-card').forEach(function (c) { c.classList.remove('on'); });
+          card.classList.add('on');
+          picked = acc.username;
+          $('who-pass-box').style.display = '';
+          $('btn-who-login').style.display = '';
+          $('who-pass').focus();
+        });
+      });
+      if (list.length) {
+        $('who-list').querySelector('.who-card').click();
+      }
+    }).catch(function () { /* 拿不到就当全新机器，走注册 */ });
+  }
+  loadAccounts();
+
+  $('link-new-account').addEventListener('click', function (e) {
+    e.preventDefault();
+    $('who-box').style.display = 'none';
+    $('form-reg').style.display = '';
+    $('form-login').style.display = 'none';
+    $('reg-user').focus();
+  });
+  $('link-type-login').addEventListener('click', function (e) {
+    e.preventDefault();
+    $('who-box').style.display = 'none';
+    $('form-reg').style.display = 'none';
+    $('form-login').style.display = '';
+    $('log-user').focus();
+  });
+
+  function finish(name) {
+    username = name;
+    step(2);
+  }
+
+  $('btn-who-login').addEventListener('click', function () {
+    var pass = $('who-pass').value;
+    if (!picked) { alert('请先选一个账号'); return; }
+    if (!pass) { alert('请输入密码'); return; }
+    this.disabled = true; this.textContent = '登录中…';
+    var self = this;
+    post('/api/login', { username: picked, password: pass }).then(function (res) {
+      self.disabled = false; self.textContent = '用这个账号登录';
+      if (res.success) { finish(picked); }
+      else { alert(res.message || '登录失败'); $('who-pass').select(); }
+    }).catch(function () {
+      self.disabled = false; self.textContent = '用这个账号登录';
+      alert('网络异常，请重试');
+    });
+  });
+  $('who-pass').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { $('btn-who-login').click(); }
+  });
+
   $('btn-reg').addEventListener('click', function () {
-    var email = $('reg-email').value.trim();
+    var name = $('reg-user').value.trim();
     var p1 = $('reg-pass').value, p2 = $('reg-pass2').value;
-    var box = $('msg-2');
-    if (!email) { alert('请填 QQ 邮箱'); return; }
+    if (!name) { alert('请填用户名'); return; }
+    if (name.length < 2) { alert('用户名至少 2 个字符'); return; }
     if (p1.length < 6) { alert('密码至少 6 位'); return; }
     if (p1 !== p2) { alert('两次输入的密码不一致'); return; }
-    this.disabled = true; this.textContent = '注册中…';
+    this.disabled = true; this.textContent = '创建中…';
     var self = this;
-    post('/api/register', { username: email, email: email, password: p1 }).then(function (res) {
-      self.disabled = false; self.textContent = '注册并继续';
-      if (res.success) { username = email; step(2); }
-      else { alert(res.message || '注册失败'); }
+    post('/api/register', { username: name, password: p1 }).then(function (res) {
+      self.disabled = false; self.textContent = '创建账号并继续';
+      if (res.success) { finish(name); }
+      else { alert(res.message || '创建失败'); }
     }).catch(function () {
-      self.disabled = false; self.textContent = '注册并继续';
+      self.disabled = false; self.textContent = '创建账号并继续';
       alert('网络异常，请重试');
     });
   });
 
   $('btn-login').addEventListener('click', function () {
     var user = $('log-user').value.trim(), pass = $('log-pass').value;
-    if (!user || !pass) { alert('请填账号和密码'); return; }
+    if (!user || !pass) { alert('请填用户名和密码'); return; }
     this.disabled = true; this.textContent = '登录中…';
     var self = this;
     post('/api/login', { username: user, password: pass }).then(function (res) {
       self.disabled = false; self.textContent = '登录并继续';
-      if (res.success) { username = user; step(2); }
+      if (res.success) { finish(user); }
       else { alert(res.message || '登录失败'); }
     }).catch(function () {
       self.disabled = false; self.textContent = '登录并继续';
       alert('网络异常，请重试');
     });
-  });
-
-  $('btn-wx').addEventListener('click', function () {
-    if (this.classList.contains('off')) {
-      alert('微信扫码需要先配置微信开放平台的 AppID / AppSecret 与公网回调地址，\n' +
-            '具体见下方说明。');
-      return;
-    }
-    location.href = '/oauth/wechat/start';
   });
 
   // 服务商预设

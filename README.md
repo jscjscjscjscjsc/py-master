@@ -6,37 +6,30 @@ PyMaster 是面向 Python 初学者的本地互动学习平台，包含 9 个章
 
 ## 本地启动
 
-Windows 用户双击 `启动PyMaster.bat`。脚本会安装依赖，并在第一次运行时依次询问：
+**Windows 用户双击 `启动PyMaster.bat` 就够了**——这是唯一的入口。
+首次启动会自动准备运行环境（约 1 分钟），之后秒开，浏览器自动打开
+<http://127.0.0.1:5000>。
 
-1. 模型名称
-2. API Base URL
-3. API Key
-4. 可选备用模型
+然后分两步完成初始化：
 
-配置只会写入本机 `.env`，该文件已被 `.gitignore` 排除，不会上传到 GitHub。默认推荐火山方舟配置：
+1. **创建本地账号**：用户名 + 密码。不需要邮箱、不联网，密码只存在
+   `data/users.json`；登录一次后一年内自动记住，一台电脑可以存多个账号
+   （点头像即可切换），头像可上传照片或选表情。
+2. **接入大模型**：在向导第二步填 Base URL / 模型名 / API Key，点「测试连接」。
+   支持任何 OpenAI 兼容接口（火山方舟、DeepSeek、硅基流动、通义千问、本地 Ollama）。
+   不填也能用：课程正文、练习、刷题、判题都能离线跑，只有 AI 答疑与讲解生成需要模型。
 
-```text
-模型：doubao-seed-2-0-code-preview-260215
-Base URL：https://ark.cn-beijing.volces.com/api/v3
-```
+配置写入本机 `.env`，账号数据在 `data/`，两者都已被 `.gitignore` 排除，不会上传 GitHub。
+**不要把 Key 写进源码、截图、Issue 或提交记录。**
 
-API Key 需要用户在自己的火山方舟账号中创建。不要把 Key 写进源码、截图、Issue 或提交记录。
-
-也可以从命令行启动：
+从命令行启动（开发用）：
 
 ```bash
 python -m pip install -r requirements.txt
-python setup_api.py
 python app.py
 ```
 
-打开 <http://127.0.0.1:5000>。
-
-需要重新配置时，删除本机 `.env` 后再次启动，或运行：
-
-```bash
-python -c "from setup_api import prompt_setup; prompt_setup(force=True)"
-```
+需要重新配置模型时，删掉本机 `.env` 后重启，会在向导第二步重新填写。
 
 ## 主要功能
 
@@ -68,11 +61,16 @@ python build_static_docs.py --samples 20
 ## 分发给别人用（本地完整版）
 
 ```bash
-python tools/make_release.py           # 产出 dist/PyMaster_教学平台.zip
+python tools/make_release.py           # 产出 dist/PyMaster_教学平台.zip（约 72MB）
+python tools/make_release.py --lite    # 不含 pandas/matplotlib，体积小一半
 ```
 
 压缩包自带嵌入式 Python 与全部依赖 wheel，对方**不需要装 Python、不需要联网**：
 解压 → 双击 `启动PyMaster.bat` → 浏览器自动打开。首次启动约 1 分钟，之后秒开。
+
+第一次启动时批处理会自己解开随包 Python（用 Windows 自带的 tar / PowerShell，
+不依赖系统里有没有 Python），再用 `vendor/wheels` 离线装好依赖。
+所以哪怕对方电脑上一个 Python 都没有，也能跑起来。
 
 ## 部署上线
 

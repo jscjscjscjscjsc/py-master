@@ -40,8 +40,10 @@
         </label>
         <span class="mode-label" id="mode-label">🔓 全部解锁</span>
       </div>
-      <div class="user-avatar">G</div>
-      <span class="user-name">guest</span>
+      <button class="user-chip" id="user-chip" onclick="openAccountPanel()" title="账号、头像与切换">
+        <span class="user-avatar" id="user-avatar">G</span>
+        <span class="user-name">guest</span>
+      </button>
       <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
       <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
       <button class="btn-logout" onclick="logout()">退出登录</button>

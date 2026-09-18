@@ -70,3 +70,6 @@ vendor/wheels/
 requirements-bundle.txt
 dist/
 *.bak
+
+# 用户头像（私人数据，和 users.json 一样不进版本库）
+data/avatars/
