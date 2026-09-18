@@ -3,10 +3,19 @@
 #   1. 买好域名，把 A 记录指到这台服务器的公网 IP
 #   2. cp deploy/.env.example deploy/.env 并填好 DOMAIN / BASIC_USER / BASIC_HASH
 #      BASIC_HASH 用：docker run --rm caddy:2 caddy hash-password --plaintext '你的密码'
-#   3. docker compose -f deploy/docker-compose.yml up -d --build
+#   3. 准备三个卷目录（属主不用管，容器入口会自己理顺）：
+#        mkdir -p deploy/runtime-data deploy/static-narrations deploy/logs
+#        touch deploy/env && chmod 600 deploy/env     # 里面填模型密钥
+#      把讲解产物放到位（不搬的话讲解是空的）：
+#        cp -r data/audio_cache deploy/runtime-data/
+#        cp -r static/narrations deploy/static-narrations/
+#   4. docker compose -f deploy/docker-compose.yml up -d --build
 #
-# 想直接公网开放就别加 basic_auth，但请先读 上线部署方案.md 里的安全说明：
+# 想直接公网开放就别加 basic_auth，但请先读 上线操作手册.md 第三节的安全说明：
 # 判题功能会执行任意 Python 代码。
+#
+# 也可以什么都不准备直接起：runtime-data 是空卷时，应用启动会把随包的
+# 课程、题库、讲解索引自己播种进去（见 app.py 的 _seed_data_dir）。
 services:
   pymaster:
     build:
@@ -17,15 +26,19 @@ services:
     environment:
       PORT: "5000"
       PYMASTER_OPEN_BROWSER: "0"
+      # 可写数据（账号 / 进度 / 笔记 / 音频缓存）全部落在挂载卷里。
+      # 用这个变量而不是直接把 ./data 挂到 /srv/pymaster/data —— 后者会把镜像里
+      # data/ 的课程与题库一起盖掉，表现是首页报错、刷题页空白。
+      PYMASTER_DATA_DIR: /var/pymaster-data
     volumes:
-      # 账号、进度、题库记录、生成好的讲解都落在这里，容器重建不丢
-      - ./data:/srv/pymaster/data
+      - ./runtime-data:/var/pymaster-data
       - ./static-narrations:/srv/pymaster/static/narrations
       - ./logs:/srv/pymaster/logs
+      # 模型密钥放这里，别写进镜像
       - ./env:/srv/pymaster/.env:ro
     # 判题会 fork 子进程，内存给足；1G 内存的机器请把 matplotlib 从镜像里去掉
-    mem_limit: 1500m
-    cpus: 1.5
+    mem_limit: 2500m
+    cpus: 2.0
 
   caddy:
     image: caddy:2

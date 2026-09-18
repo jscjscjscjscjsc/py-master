@@ -50,6 +50,37 @@ else:
     BUNDLE_DIR = os.path.dirname(os.path.abspath(__file__))
     WRITE_ROOT = BUNDLE_DIR
 
+# 可写数据目录：账号、进度、笔记、讲解音频缓存都落在这里。
+#   本地版：项目根下的 data/，与以前完全一致。
+#   容器版：用 PYMASTER_DATA_DIR 指向挂载卷。这样做而不是"把整个 data/ 挂上去"，
+#          是因为一挂上去就会把镜像里 data/ 的课程与题库一起盖掉，
+#          表现是首页直接报错、刷题页空白 —— 一个很贵的坑。
+DATA_DIR = os.environ.get('PYMASTER_DATA_DIR', '').strip() or os.path.join(WRITE_ROOT, 'data')
+
+# 可写目录里缺了"随包数据"就补一份进来。空卷挂载时靠这一步做到开箱即用；
+# 也顺带让"老师换了课程数据"这种场景可以直接替换可写目录里的那份。
+SEED_FILES = ('courses.json', 'question_bank.json', 'narrations.json',
+              'glossary_py.json', 'comics.json', 'courses_legacy_9ch.json')
+
+
+def _seed_data_dir():
+    src_dir = Path(BUNDLE_DIR) / 'data'
+    dst_dir = Path(DATA_DIR)
+    try:
+        dst_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        print(f'[data] 无法创建数据目录 {dst_dir}：{exc}')
+        return
+    for name in SEED_FILES:
+        src, dst = src_dir / name, dst_dir / name
+        if src.exists() and not dst.exists():
+            try:
+                shutil.copy2(src, dst)
+                print(f'[data] 已初始化 {name}')
+            except OSError as exc:
+                print(f'[data] 初始化 {name} 失败：{exc}')
+
+
 from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
 import narration_engine
@@ -58,25 +89,27 @@ import game_engine as game          # 修行阁：修为的成长系统（纯推
 import coach_engine as coach
 from pathlib import Path
 
+_seed_data_dir()
+
 # 讲解产物的读写位置跟随 PyInstaller 的 BUNDLE/WRITE 约定：
 # 生成的 json/音频要写到可写目录，静态插画随包分发。
 narration_engine.ROOT = Path(WRITE_ROOT)
-narration_engine.DATA_DIR = Path(WRITE_ROOT) / 'data'
+narration_engine.DATA_DIR = Path(DATA_DIR)
 narration_engine.AUDIO_CACHE = narration_engine.DATA_DIR / 'audio_cache'
 narration_engine.STATIC_NARR_DIR = Path(BUNDLE_DIR) / 'static' / 'narrations'
-for _candidate in (Path(WRITE_ROOT) / 'data' / 'narrations.json',
+for _candidate in (Path(DATA_DIR) / 'narrations.json',
                    Path(BUNDLE_DIR) / 'data' / 'narrations.json'):
     if _candidate.exists():
         narration_engine.NARRATIONS_FILE = _candidate
         break
 else:
-    narration_engine.NARRATIONS_FILE = Path(WRITE_ROOT) / 'data' / 'narrations.json'
+    narration_engine.NARRATIONS_FILE = Path(DATA_DIR) / 'narrations.json'
 narration_engine.AUDIO_CACHE.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 # 持久化 secret key：存到 data 目录，重启后 session 不失效（否则每次重启所有用户被登出，
 # 所有需登录的 API 都会 302 重定向，前端表现为"接口报错/转圈"）
-SECRET_KEY_FILE = os.path.join(WRITE_ROOT, 'data', '.secret_key')
+SECRET_KEY_FILE = os.path.join(DATA_DIR, '.secret_key')
 if os.path.exists(SECRET_KEY_FILE):
     with open(SECRET_KEY_FILE, 'r', encoding='utf-8') as _f:
         _persistent_secret = _f.read().strip()
@@ -97,12 +130,13 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Writable data: next to exe (or project root for dev)
-DATA_DIR = os.path.join(WRITE_ROOT, 'data')
 USERS_FILE = os.path.join(DATA_DIR, 'users.json')
 WHITELIST_FILE = os.path.join(DATA_DIR, 'whitelist.json')
 DAILY_USAGE_FILE = os.path.join(DATA_DIR, 'daily_usage.json')
-# Read-only course data: bundled with exe
-COURSES_FILE = os.path.join(BUNDLE_DIR, 'data', 'courses.json')
+# Read-only course data: bundled with exe（可写目录里有就用可写目录那份）
+COURSES_FILE = os.path.join(DATA_DIR, 'courses.json')
+if not os.path.exists(COURSES_FILE):
+    COURSES_FILE = os.path.join(BUNDLE_DIR, 'data', 'courses.json')
 
 # Admin credentials (change these in production)
 ADMIN_USERNAME = "admin"
@@ -274,6 +308,28 @@ def increment_daily_usage(username):
         usage[today] = {}
     usage[today][username] = usage[today].get(username, 0) + 1
     _save_daily_usage(usage)
+
+
+# ── 在线运行代码的安全开关 ─────────────────────────────────
+# 判题与"运行代码"是把学生提交的 Python 在子进程里真跑一遍，没有沙箱
+# （详见 上线操作手册.md 第三节）。本地版这样最省事，但一旦有公网地址，
+# 等于把机器借给任何人执行代码。所以线上部署时设：
+#
+#   PYMASTER_ALLOW_CODE_EXEC=0
+#
+# 生效后这几条链路会返回一句人话，其余功能（课程正文、练习解析、AI 答疑、
+# 星海图、术语表）完全不受影响。语法检查走 ast.parse，不执行代码，保持可用。
+
+CODE_EXEC_OFF_MESSAGE = (
+    '这台服务器没有开启「在线运行代码」：它会把提交的 Python 真实跑一遍，'
+    '没有沙箱隔离，所以公网部署默认关闭。课程正文、练习解析、AI 答疑都能照常用；'
+    '要动手写代码，请下载本地完整版，解压后双击启动脚本即可。'
+)
+
+
+def code_exec_enabled():
+    return os.environ.get('PYMASTER_ALLOW_CODE_EXEC', '1').strip().lower() \
+        not in ('0', 'false', 'no', 'off')
 
 
 @app.route('/')
@@ -1050,6 +1106,9 @@ def run_code():
 
     if len(code) > 50000:
         return jsonify({'success': False, 'output': '', 'error': '代码过长（最大50000字符）'})
+
+    if not code_exec_enabled():
+        return jsonify({'success': False, 'output': '', 'error': CODE_EXEC_OFF_MESSAGE})
 
     # Write code to temp file
     tmp_path = None
@@ -2413,8 +2472,9 @@ def _platform_get_doc_path():
         documents = os.path.join(os.path.expanduser('~'), 'Documents')
         if os.path.isdir(documents):
             return documents
-    # On Linux/cloud, use a 'notes' subdirectory in the app root
-    notes_dir = os.path.join(WRITE_ROOT, 'user_notes')
+    # On Linux/cloud, use a 'notes' subdirectory in the writable data dir
+    # （放可写目录而不是应用目录：容器重建后笔记还在）
+    notes_dir = os.path.join(DATA_DIR, 'user_notes')
     os.makedirs(notes_dir, exist_ok=True)
     return notes_dir
 
@@ -3837,6 +3897,8 @@ def training_run_cell():
         return jsonify({'success': False, 'error': '还没有代码可以运行。'})
     if sum(len(str(c)) for c in cells) > 60000:
         return jsonify({'success': False, 'error': '代码太长了（合计上限 60000 字符）。'})
+    if not code_exec_enabled():
+        return jsonify({'success': False, 'error': CODE_EXEC_OFF_MESSAGE})
 
     active = max(0, min(int(data.get('active', 0) or 0), len(cells) - 1))
     username = _who()
@@ -3928,6 +3990,8 @@ def training_judge():
     cells = [str(c) for c in (data.get('cells') or [])]
     if not cells or sum(len(c) for c in cells) > 60000:
         return jsonify({'success': False, 'error': '还没有写代码，或代码过长（上限 60000 字符）。'})
+    if not code_exec_enabled():
+        return jsonify({'success': False, 'error': CODE_EXEC_OFF_MESSAGE})
 
     exam_id = str(data.get('exam_id', '') or '')
     used_ai = bool(data.get('used_ai'))

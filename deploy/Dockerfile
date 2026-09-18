@@ -22,14 +22,15 @@ RUN pip install -r requirements.txt edge_tts \
 
 COPY . .
 
-# 不用 root 跑服务：判题会执行用户提交的代码，能少一分权限就少一分
+# 建服务用户，但容器本身仍以 root 启动 —— deploy/entrypoint.py 要 root 才能
+# 把挂载卷的属主交给它，然后再 setuid 降权。真正的 Flask 进程不是 root。
 RUN useradd -m -u 10001 pymaster \
- && mkdir -p data logs static/narrations \
+ && mkdir -p data logs static/narrations user_notes \
  && chown -R pymaster:pymaster /srv/pymaster
-USER pymaster
 
+# 平台（云托管 / PaaS）一般用 PORT 环境变量指定端口，入口会读它；本机 compose 走 5000
 EXPOSE 5000
-# 用 gunicorn 而不是 flask 自带的开发服务器；
-# AI 答疑是 SSE 流式返回，所以要给足线程，否则会互相阻塞
-CMD ["gunicorn", "--workers", "1", "--threads", "8", "--timeout", "180", \
-     "--graceful-timeout", "30", "-b", "0.0.0.0:5000", "app:app"]
+
+# 入口负责三件事：理顺挂载卷属主 → 降权到 pymaster → 用 gunicorn 起服务。
+# 不用 flask 自带的开发服务器：AI 答疑是 SSE 流式返回，要给足线程才不会互相阻塞。
+CMD ["python", "deploy/entrypoint.py"]
