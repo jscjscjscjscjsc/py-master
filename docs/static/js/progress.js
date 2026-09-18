@@ -57,6 +57,91 @@ const ProgressPage = {
     return `<tr><td class="name">${this.esc(c.title)}</td>${cells.join('')}</tr>`;
   },
 
+  /**
+   * 修行卡：仪表盘上的「用户画像」区域。
+   * 左边是这一境的神识画像，右边是等级 / 战力 / 突破进度 / 试炼，
+   * 下面一排是可点开的境界阶梯——点任一境都能看到那一境的肖像与神功。
+   */
+  renderCultivationCard(profile) {
+    if (!profile) return '';
+    const art = profile.art || {};
+    const trial = profile.trial;
+    const ladder = (profile.levels || []).map((lv) => {
+      const realmArt = (profile.realm_art || {})[lv.name.split('·')[0]] || {};
+      const color = realmArt.primary || '#00d4ff';
+      const state = lv.level === profile.level ? ' current' : (lv.level < profile.level ? ' done' : '');
+      const seal = window.Portrait
+        ? window.Portrait.sigil(realmArt.glyph || 'seed', { size: 20, className: 'pm-sigil' })
+        : '';
+      return `<button class="cult-step${state}" data-level="${lv.level}" title="${this.esc(lv.name)}"
+        style="--pm-primary:${color}">${seal}<span>${this.esc(lv.name)}</span></button>`;
+    }).join('');
+
+    return `
+      <div class="profile-card" style="--pm-primary:${art.primary || '#00d4ff'};--pm-aura:${art.aura || '#fff'}">
+        <div class="profile-portrait" id="dash-portrait" title="点击放大法相">
+          ${window.Portrait ? window.Portrait.render({
+            seed: this.data.user || '', art, level: profile.level,
+            label: '神识画像', className: 'dash-portrait-svg',
+          }) : ''}
+          <div class="zoom-hint">点击放大</div>
+        </div>
+        <div class="profile-main">
+          <div class="profile-title">
+            <span class="seal">${window.Portrait ? window.Portrait.sigil(art.glyph || 'seed', { size: 30, className: 'pm-sigil is-current' }) : ''}</span>
+            <span class="nm" style="color:${art.primary || 'var(--cyan)'}">${this.esc(profile.name)}</span>
+            <span class="tag">第 ${profile.level} / ${profile.max_level} 境</span>
+          </div>
+          <div class="profile-whisper">${this.esc(art.whisper || '')}</div>
+          <div class="profile-power">
+            <b>${profile.power || 0}</b><span>战力</span>
+            <span class="sep">·</span>
+            <span>${profile.points} 修为</span>
+            <span class="sep">·</span>
+            <span>装备 ${profile.equipment_unlocked || 0}/${profile.equipment_total || 0}</span>
+          </div>
+          <div class="cult-bar" style="margin-top:10px">
+            <i style="width:${Math.round(profile.progress)}%"></i></div>
+          <div class="cult-next">
+            ${profile.is_max ? '<span>已至巅峰</span>'
+              : `<span>下一境：${this.esc(profile.next_name)}</span><span>还差 <b>${profile.to_next}</b> 点</span>`}
+          </div>
+          ${trial ? `
+          <div class="profile-trial">
+            <span>${this.esc(trial.realm)}·试炼</span>
+            <div class="mini-bar"><i style="width:${trial.progress}%"></i></div>
+            <span class="num">${trial.progress}%</span>
+          </div>` : ''}
+          <div class="profile-actions">
+            <a class="cult-btn primary" href="/cultivation">进入修行阁</a>
+            <button class="cult-btn" id="dash-open-level">查看本境详情</button>
+          </div>
+        </div>
+        <div class="profile-ladder">${ladder}</div>
+      </div>`;
+  },
+
+  bindCultivationCard() {
+    const profile = this.data && this.data.profile;
+    if (!profile) return;
+    const open = (level) => {
+      if (window.CultivationGame) {
+        window.CultivationGame.load().then((data) => {
+          if (data) window.CultivationGame.openLevel(level);
+        });
+      } else {
+        window.location.href = '/cultivation';
+      }
+    };
+    const detail = document.getElementById('dash-open-level');
+    if (detail) detail.addEventListener('click', () => open(profile.level));
+    const portrait = document.getElementById('dash-portrait');
+    if (portrait) portrait.addEventListener('click', () => open(profile.level));
+    document.querySelectorAll('.cult-step[data-level]').forEach((el) => {
+      el.addEventListener('click', () => open(parseInt(el.dataset.level, 10)));
+    });
+  },
+
   render() {
     const d = this.data;
     const t = d.totals;
@@ -64,8 +149,8 @@ const ProgressPage = {
 
     root.innerHTML = `
       <div class="section-title">修为等级 <span class="line"></span>
-        <span class="sub">做题、看讲解、读漫画都会提升修为</span></div>
-      <div id="cult-inline"></div>
+        <span class="sub">刷题升境界、拿神功；较难题解锁装备；十境试炼全通再给突破奖励</span></div>
+      <div id="cult-inline">${this.renderCultivationCard(d.profile)}</div>
 
       <div class="section-title">总览 <span class="line"></span></div>
       <div class="dash-grid">
@@ -191,8 +276,11 @@ const ProgressPage = {
           </div>`).join('') : '<div class="empty-note">还没有加分记录。去刷一道题试试。</div>'}
       </div>`;
 
-    if (window.Cultivation) {
+    // 修行卡自带画像与等级信息，只有画像脚本缺席时才退回旧的等级条
+    if (window.Cultivation && (!window.Portrait || !d.profile.art)) {
       Cultivation.renderInline(document.getElementById('cult-inline'), d.profile);
+    } else {
+      this.bindCultivationCard();
     }
   },
 };

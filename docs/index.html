@@ -9,13 +9,14 @@
 <link rel="stylesheet" href="static/css/atlas.css">
 <link rel="stylesheet" href="static/css/cultivation.css">
 <link rel="stylesheet" href="static/css/music.css">
+  <link rel="stylesheet" href="static/css/atmosphere.css">
 <script src="static/js/static_mode.js"></script>
 <script>window.PYMASTER_STATIC = true;</script>
 </head>
 <body class="dashboard-page">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <!-- Top Navigation -->
 <nav class="top-nav">
@@ -29,6 +30,7 @@
       <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
       <a href="/training" class="btn-playground-nav" style="margin-right:4px;">刷题中心</a>
       <a href="/progress" class="btn-playground-nav" style="margin-right:4px;">学习仪表盘</a>
+      <a href="/cultivation" class="btn-playground-nav" style="margin-right:4px;">修行阁</a>
       <a href="/coach" class="btn-playground-nav" style="margin-right:4px;">星辰教练</a>
       <a href="playground.html" class="btn-playground-nav" style="margin-right:4px;">
         练习场
@@ -1144,6 +1146,7 @@ AgentResult 中的运行数据 | State | Day 21 |
 </div>
 
 <script src="static/js/main.js"></script>
+<script src="static/js/portrait.js"></script>
 <script src="static/js/cultivation.js"></script>
 <script src="static/js/music_player.js"></script>
 <script src="static/js/star_map.js"></script>
@@ -1175,5 +1178,6 @@ fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
 <script src="static/js/chapter_intro_3d.js"></script>
 <script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
 <script>Cultivation.mount();</script>
+<script src="static/js/atmosphere.js"></script>
 </body>
 </html>

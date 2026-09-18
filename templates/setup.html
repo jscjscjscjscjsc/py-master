@@ -123,6 +123,7 @@ details li{margin:5px 0}
 .kv span:first-child{color:var(--tx3)}
 .kv span:last-child{color:var(--tx);font-weight:600;word-break:break-all;text-align:right}
 </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body>
 <div class="shell">
@@ -495,5 +496,6 @@ details li{margin:5px 0}
   $('btn-go').addEventListener('click', function () { location.href = '/dashboard'; });
 })();
 </script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

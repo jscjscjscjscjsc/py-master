@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#030510">
   <title>知识星海 · PyMaster</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/knowledge_stars.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
-<body data-view="universe" data-universe-url="{{ url_for('knowledge_universe') }}" data-dashboard-url="{{ url_for('dashboard') }}">
+<body data-atm="nebula" data-view="universe" data-universe-url="{{ url_for('knowledge_universe') }}" data-dashboard-url="{{ url_for('dashboard') }}">
   <canvas id="space" aria-label="可交互知识星海"></canvas>
   <div class="nebula nebula-a" aria-hidden="true"></div><div class="nebula nebula-b" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div>
@@ -43,5 +44,6 @@
   <div class="toast" id="toast" role="status"></div>
   <script src="{{ url_for('static', filename='vendor/three.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/knowledge_stars.js') }}"></script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

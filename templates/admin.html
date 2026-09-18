@@ -57,11 +57,12 @@ td .actions button { padding: 4px 10px; font-size: 12px; }
 .usage-chart .day:last-child { border-bottom: none; }
 @media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } .add-form { flex-direction: column; } .add-form .field { width: 100%; } .modal-box { min-width: auto; margin: 0 16px; } }
 </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="admin-page">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <nav class="top-nav">
   <div class="nav-inner">
@@ -230,5 +231,6 @@ async function deleteUser(username) {
 loadWhitelist();
 loadStats();
 </script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/coach.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/coach_scene.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="coach-page" data-scene="soft">
 
@@ -104,5 +105,6 @@
     if (menu && window.matchMedia('(max-width: 860px)').matches) menu.style.display = 'inline-block';
   });
 </script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,835 @@
+/* ============================================================
+   修行阁 · 绢本卷轴
+   ------------------------------------------------------------
+   这个文件把 game_engine 推导出来的成长数据，画成一间「看得见自己」的修行阁。
+   视觉上走的是**深色绢本上的白描**，不是霓虹控制台：
+
+     · 衣纹与飘带用墨线画（粗细分三档），配色用传统颜料
+     · 背景是绢地（极淡的经纬纹）+ 淡墨晕，不是径向霓虹
+     · 分隔用云纹与界栏，标题用楷/宋，印章用朱砂
+
+   三条不动摇的规矩：
+     1. **线是主角**。所有描边都细而偏亮，装饰靠线不靠发光。发光只留给
+        「丹田」与「未解锁」两处。
+     2. **颜料色只从 --pm-primary / --pm-aura 进来**（服务端 REALM_ART 下发），
+        这里绝不写死任何一个境界的具体颜色，否则换配色表就散了。
+     3. 动效只用 transform / opacity。画像上的元素已经有十来个动画，
+        再多会和大面积重绘一起把帧时间吃掉。
+   ============================================================ */
+
+/* ── 神识画像：白描人物 ───────────────────────────────── */
+.pm-portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* 衣纹与轮廓一律走「墨线」：细、有起收、随境界变色 */
+.pm-garment,
+.pm-sleeve,
+.pm-hem {
+  /* 淡墨底：白描本来不填色，但下面有一层墨晕，中间不隔一层就会整幅泛色 */
+  fill: rgba(7, 10, 13, 0.62);
+  stroke: var(--pm-primary, #c9a961);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.92;
+}
+.pm-sleeve { fill: rgba(7, 10, 13, 0.62); }
+.pm-hem { fill: none; stroke-width: 1.3; opacity: 0.78; }
+
+.pm-lapel,
+.pm-belt,
+.pm-neck,
+.pm-hands { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1.1; stroke-linecap: round; opacity: 0.62; }
+.pm-belt { stroke: var(--pm-primary, #c9a961); stroke-width: 1.6; opacity: 0.8; }
+
+/* 衣纹：更细、更淡，是「笔意」的层次所在 */
+.pm-fold { fill: none; stroke: var(--pm-primary, #c9a961); stroke-width: 1; opacity: 0.62; stroke-linecap: round; }
+.pm-fold.sleeve { stroke: var(--pm-aura, #e8eef5); opacity: 0.38; }
+.pm-finger { fill: var(--pm-aura, #e8eef5); opacity: 0.6; }
+
+/* 飘带：长弧线，慢慢摆。摆动幅度要小——仙人不是旗子 */
+.pm-ribbon {
+  fill: none;
+  stroke: var(--pm-aura, #e8eef5);
+  stroke-width: 1.2;
+  opacity: 0.5;
+  stroke-linecap: round;
+  animation: pm-sway var(--pm-sway, 10s) ease-in-out infinite;
+  animation-delay: var(--pm-sway-delay, 0s);
+}
+@keyframes pm-sway {
+  0%, 100% { transform: translateX(-3px) rotate(-0.4deg); }
+  50% { transform: translateX(4px) rotate(0.5deg); }
+}
+
+/* 头面：发髻、冠、眉眼须。线最细，像毛笔的小楷 */
+/* .pm-face 必须有显式的浅填色：不写就是 SVG 默认的黑，整张脸会糊成一块面具 */
+.pm-face { fill: rgba(232, 238, 245, 0.045); stroke: var(--pm-primary, #c9a961); stroke-width: 1.2; }
+.pm-cuff { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1; opacity: 0.42; stroke-linecap: round; }
+.pm-hair { fill: rgba(255, 255, 255, 0.05); stroke: var(--pm-primary, #c9a961); stroke-width: 1.2; }
+.pm-pin { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1.1; opacity: 0.75; stroke-linecap: round; }
+.pm-crown { fill: rgba(255, 255, 255, 0.06); stroke: var(--pm-primary, #c9a961); stroke-width: 1.2; opacity: 0.9; }
+.pm-brow,
+.pm-brow-long { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 0.9; opacity: 0.6; stroke-linecap: round; }
+.pm-brow-long { stroke-width: 1.2; opacity: 0.85; }
+.pm-eye { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1.5; opacity: 0.92; stroke-linecap: round; }
+.pm-nose,
+.pm-mouth { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 0.9; opacity: 0.5; stroke-linecap: round; }
+.pm-ear { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 0.9; opacity: 0.4; }
+.pm-beard { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1.1; opacity: 0.72; stroke-linecap: round; }
+
+/* 器：葫芦 / 剑 / 丹炉。不发光，只描线——它们是「修仙」最好认的记号 */
+.pm-gourd, .pm-sword, .pm-cauldron {
+  fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1.2;
+  opacity: 0.68; stroke-linecap: round; stroke-linejoin: round;
+}
+.pm-sword { stroke: var(--pm-primary, #c9a961); opacity: 0.62; }
+.pm-cauldron { opacity: 0.44; }
+
+/* 丹田：唯一允许发光的地方。内丹 = 修仙的核 */
+.pm-dantian-ring { stroke: var(--pm-aura, #e8eef5); stroke-width: 1; opacity: 0.5; }
+.pm-core { animation: pm-core 7s ease-in-out infinite; transform-origin: center; }
+@keyframes pm-core {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* 背景：淡墨晕（不是光）、云气、远山、云纹法环 */
+.pm-halo { animation: pm-breathe 11s ease-in-out infinite; transform-origin: 160px 240px; }
+@keyframes pm-breathe {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+.pm-cloud {
+  fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 0.8; opacity: 0.16;
+  stroke-linecap: round;
+  animation: pm-drift var(--pm-drift, 18s) ease-in-out infinite;
+  animation-delay: var(--pm-drift-delay, 0s);
+}
+@keyframes pm-drift {
+  0%, 100% { transform: translateX(-8px); opacity: 0.11; }
+  50% { transform: translateX(10px); opacity: 0.24; }
+}
+.pm-mountain { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 1; opacity: 0.2; }
+.pm-mountain.faint { opacity: 0.1; stroke-width: 0.8; }
+.pm-ring { transform-origin: 160px 240px; animation: pm-spin var(--pm-spin, 90s) linear infinite; }
+@keyframes pm-spin {
+  from { transform: rotate(var(--pm-from, 0deg)); }
+  to { transform: rotate(var(--pm-to, 360deg)); }
+}
+.pm-cloud-ticks path { fill: none; stroke: var(--pm-primary, #c9a961); stroke-width: 0.9; opacity: 0.35; stroke-linecap: round; }
+
+.pm-particle { fill: var(--pm-aura, #e8eef5); animation: pm-float var(--pm-dur, 9s) ease-in-out infinite; animation-delay: var(--pm-delay, 0s); }
+@keyframes pm-float {
+  0%, 100% { opacity: 0.1; transform: translateY(0); }
+  50% { opacity: 0.6; transform: translateY(-12px); }
+}
+
+/* 界栏：两条细竖线，像卷轴的天头地脚 */
+.pm-frame { fill: none; stroke: var(--pm-aura, #e8eef5); stroke-width: 0.7; opacity: 0.14; }
+
+/* 未解锁的画像：整幅褪成灰，但形状看得清（全黑成剪影就没有念想了） */
+.pm-portrait.is-locked { filter: saturate(0.06) brightness(0.92); }
+.pm-portrait.is-locked .pm-particle { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-ring, .pm-halo, .pm-cloud, .pm-core, .pm-ribbon, .pm-particle { animation: none; }
+}
+
+/* ── 页面骨架：一张摊在暗桌上的绢本 ────────────────────── */
+body.cultivation-page {
+  background:
+    /* 绢地的经纬：两组极细的斜纹，比纯色底多一层「织物」的暗示 */
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.008) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 50% -20%, rgba(201, 169, 97, 0.07), transparent 62%),
+    radial-gradient(ellipse at 92% 12%, rgba(91, 143, 196, 0.05), transparent 52%),
+    linear-gradient(180deg, #0c1215, #0a0f12 46%, #080c0f);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.cult-wrap { max-width: 1080px; margin: 0 auto; padding: 22px 34px 90px; position: relative; }
+
+/* 界栏：内容两侧各一道细线，卷轴的「界行」 */
+.cult-wrap::before,
+.cult-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 70px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(226, 232, 240, 0.14) 12%,
+    rgba(226, 232, 240, 0.14) 88%, transparent);
+  pointer-events: none;
+}
+.cult-wrap::before { left: 12px; }
+.cult-wrap::after { right: 12px; }
+
+.cult-section { margin-top: 40px; }
+
+.cult-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cult-section-head h2 {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  margin: 0;
+  padding-left: 12px;
+  position: relative;
+}
+/* 段首的一小方朱印：卷轴上每段起头都盖一枚 */
+.cult-section-head h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 17px;
+  background: linear-gradient(180deg, #c0553f, #8f3a2a);
+  border-radius: 1px;
+}
+
+.cult-section-head .rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(226, 232, 240, 0.2), transparent);
+}
+.cult-section-head .sub { font-size: 12px; color: var(--text-muted); font-family: var(--font-serif); letter-spacing: 0.04em; }
+
+
+/* ── 主像区：画像 + 身份 + 突破进度 ───────────────────── */
+.cult-hero {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: 30px;
+  align-items: center;
+  border: 1px solid rgba(226, 232, 240, 0.12);
+  border-radius: 3px;
+  padding: 22px 26px;
+  background:
+    linear-gradient(120deg, rgba(12, 18, 22, 0.92), rgba(9, 13, 16, 0.94)),
+    radial-gradient(circle at 16% 30%, color-mix(in srgb, var(--pm-primary, #c9a961) 5%, transparent), transparent 58%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cult-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+.cult-hero-portrait { position: relative; z-index: 1; cursor: zoom-in; }
+
+.cult-hero-portrait .zoom-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+.cult-hero-portrait:hover .zoom-hint { opacity: 1; }
+
+.cult-hero-body { position: relative; z-index: 1; }
+
+.cult-kicker {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.cult-title { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 8px 0 4px; }
+.cult-title .name { font-size: 30px; font-weight: 800; letter-spacing: 1px; }
+.cult-title .realm-tag {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+.cult-whisper { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+
+.cult-power {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-mono);
+}
+.cult-power b { font-size: 26px; color: var(--pm-primary, #c9a961); }
+.cult-power span { font-size: 12px; color: var(--text-muted); }
+
+.cult-power-why {
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 1px dashed var(--border-glow);
+  display: inline-block;
+}
+
+.cult-power-parts {
+  margin-top: 8px;
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cult-power-parts.show { display: flex; }
+.cult-power-parts .chip {
+  font-size: 11.5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+}
+.cult-power-parts .chip b { color: var(--text-primary); font-family: var(--font-mono); }
+
+.cult-bar-row { margin-top: 16px; }
+.cult-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+.cult-bar-label b { color: var(--pm-primary, #c9a961); font-family: var(--font-mono); }
+
+.cult-bar {
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+.cult-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--pm-primary, #c9a961), var(--pm-aura, #a8d4ff));
+  transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cult-hero-actions { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.cult-btn {
+  font-size: 12.5px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-glow);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+.cult-btn:hover { color: var(--text-primary); border-color: var(--pm-primary, #c9a961); }
+.cult-btn.primary {
+  background: linear-gradient(135deg, rgba(192, 85, 63, 0.2), rgba(201, 169, 97, 0.16));
+  color: #f0e6d8;
+  border-color: rgba(201, 169, 97, 0.5);
+}
+
+/* ── 数值条（画像下的四个小统计）───────────────────────── */
+.cult-metrics {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.cult-metric {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.cult-metric .k { font-size: 11.5px; color: var(--text-muted); }
+.cult-metric .v { font-size: 20px; font-weight: 700; font-family: var(--font-mono); margin-top: 3px; }
+.cult-metric .v small { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+
+/* ── 境界法印（等级条 / 地图 / 卡片共用）───────────────── */
+.pm-sigil { color: var(--text-secondary); }
+.pm-sigil.is-current { color: var(--pm-primary, #c9a961); }
+.pm-sigil.is-locked { color: #3a4552; }
+
+/* ── 试炼 ─────────────────────────────────────────────── */
+.cult-trials { display: grid; gap: 12px; }
+
+.trial-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  background: linear-gradient(150deg, rgba(12, 17, 28, 0.86), rgba(8, 11, 20, 0.86));
+}
+.trial-card.is-current { border-color: color-mix(in srgb, var(--pm-primary, #c9a961) 55%, transparent);
+  background: color-mix(in srgb, var(--pm-primary, #c9a961) 5%, transparent); }
+.trial-card.is-done { opacity: 0.72; }
+
+.trial-head { display: flex; align-items: center; gap: 10px; }
+.trial-head .realm { font-size: 15px; font-weight: 700; }
+.trial-head .pm-sigil { color: var(--pm-primary, #c9a961); }
+.trial-head .reward { margin-left: auto; font-size: 12px; color: var(--orange); font-family: var(--font-mono); }
+.trial-head .state { font-size: 11.5px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border-glow); color: var(--text-muted); }
+
+.trial-objectives { margin-top: 12px; display: grid; gap: 9px; }
+.objective { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; font-size: 12.5px; }
+.objective .text { color: var(--text-secondary); }
+.objective.done .text { color: var(--green); }
+.objective .count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); }
+.objective .bar { grid-column: 1 / -1; height: 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.objective .bar > i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--green), #7ee787); transition: width 0.6s ease; }
+
+/* ── 神功 ─────────────────────────────────────────────── */
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px; }
+
+.skill-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+.skill-card:hover { border-color: var(--border-glow); background: rgba(255, 255, 255, 0.04); }
+.skill-card .lv {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.skill-card .nm { font-size: 15px; font-weight: 700; margin: 6px 0 3px; }
+.skill-card .tm { font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono); }
+.skill-card.is-locked { opacity: 0.5; }
+.skill-card.is-locked .nm { color: var(--text-muted); }
+.skill-card.is-current { border-color: color-mix(in srgb, var(--pm-primary, #c9a961) 55%, transparent); }
+.skill-card .stamp {
+  position: absolute;
+  right: 10px; top: 10px;
+  font-size: 10.5px;
+  color: var(--pm-primary, #c9a961);
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 1px 5px;
+  opacity: 0.85;
+}
+
+/* ── 装备 ─────────────────────────────────────────────── */
+.equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 12px; }
+
+.equip-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 14px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  position: relative;
+  transition: var(--transition-fast);
+}
+.equip-card:hover { border-color: var(--border-glow); }
+
+.equip-card .glyph {
+  width: 46px; height: 46px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-subtle);
+  color: #46505d;
+  background: rgba(255, 255, 255, 0.02);
+}
+.equip-card.on .glyph {
+  color: var(--pm-primary, #c9a961);
+  border-color: color-mix(in srgb, var(--pm-primary, #c9a961) 45%, transparent);
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.06), transparent 70%);
+}
+.equip-card .nm { font-size: 14px; font-weight: 700; display: flex; align-items: baseline; gap: 6px; }
+.equip-card .slot { font-size: 10.5px; color: var(--text-muted); }
+.equip-card .hint { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+.equip-card .why { font-size: 11px; color: var(--text-muted); font-style: normal; }
+.equip-card .prog { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.equip-card .prog > i { display: block; height: 100%; background: linear-gradient(90deg, var(--pm-primary, #c9a961), var(--pm-aura, #fff)); }
+.equip-card .meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+.equip-card.on { border-color: color-mix(in srgb, var(--pm-primary, #c9a961) 30%, var(--border-subtle)); }
+.equip-card .badge {
+  position: absolute; right: 10px; top: 12px;
+  font-size: 10.5px; letter-spacing: 1px;
+  color: var(--pm-primary, #c9a961);
+}
+
+/* ── 修行地图 ─────────────────────────────────────────── */
+.map-scroll { overflow-x: auto; padding-bottom: 8px; }
+.cult-map { display: flex; gap: 0; min-width: 1080px; align-items: stretch; }
+
+.map-node {
+  flex: 1;
+  position: relative;
+  padding: 0 6px;
+  cursor: pointer;
+  text-align: center;
+}
+.map-node .rail {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 34px 0 0;
+  position: relative;
+}
+.map-node .rail > i { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--pm-primary, #c9a961); }
+.map-node.reached .rail > i { width: 100%; }
+
+.map-node .disc {
+  width: 58px; height: 58px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  display: grid;
+  place-items: center;
+  background: rgba(8, 12, 20, 0.9);
+  color: #46505d;
+  position: relative;
+  z-index: 2;
+  transition: var(--transition-fast);
+}
+.map-node.reached .disc { color: var(--pm-primary, #c9a961); border-color: color-mix(in srgb, var(--pm-primary, #c9a961) 45%, transparent); }
+.map-node.current .disc {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pm-primary, #c9a961) 16%, transparent);
+  animation: map-pulse 3.4s ease-in-out infinite;
+}
+@keyframes map-pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.map-node .label { margin-top: 10px; font-size: 12.5px; font-weight: 600; }
+.map-node .need { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 3px; }
+.map-node .flag { font-size: 10.5px; margin-top: 6px; color: var(--text-muted); min-height: 14px; }
+.map-node .flag.ok { color: var(--green); }
+.map-node.current .label { color: var(--pm-primary, #c9a961); }
+.map-node:hover .disc { border-color: var(--pm-primary, #c9a961); }
+
+/* ── 攻略 ─────────────────────────────────────────────── */
+.guide-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 14px; align-items: start; }
+
+.guide-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  background: linear-gradient(150deg, rgba(12, 17, 28, 0.86), rgba(8, 11, 20, 0.86));
+}
+.guide-card h3 { margin: 0 0 6px; font-size: 14px; }
+.guide-card p { margin: 0; font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; }
+.guide-steps { display: grid; gap: 12px; }
+
+.pick-list { margin-top: 10px; display: grid; gap: 8px; }
+.pick {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 9px 11px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+  background: rgba(255, 255, 255, 0.02);
+}
+.pick:hover { border-color: rgba(201, 169, 97, 0.5); background: rgba(201, 169, 97, 0.06); }
+.pick .diff { font-size: 10.5px; padding: 2px 6px; border-radius: 4px; border: 1px solid currentColor; }
+.pick .diff.d1 { color: var(--green); }
+.pick .diff.d2 { color: var(--orange); }
+.pick .diff.d3 { color: var(--red); }
+.pick .ttl { flex: 1; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pick .gain { font-family: var(--font-mono); font-size: 12px; color: rgba(201, 169, 97, 0.85); }
+
+.tips { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 8px; }
+.tips li { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 14px; position: relative; }
+.tips li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 7px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--pm-primary, #c9a961);
+}
+
+/* ── 等级详情（点开一境，看到这一境的自己）─────────────── */
+.cult-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(3, 6, 12, 0.78);
+  backdrop-filter: blur(6px);
+}
+.cult-modal.show { display: flex; }
+
+.cult-modal-box {
+  width: min(880px, 100%);
+  max-height: 88vh;
+  overflow: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glow);
+  background: linear-gradient(160deg, #0b1220, #05080f);
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 22px;
+  padding: 22px;
+  position: relative;
+}
+
+.cult-modal-box .close {
+  position: absolute;
+  right: 14px; top: 12px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+.cult-modal-box .close:hover { color: var(--text-primary); }
+
+.modal-body h3 { margin: 2px 0 2px; font-size: 22px; font-weight: 800; }
+.modal-body .tagline { font-size: 12.5px; color: var(--text-muted); font-family: var(--font-mono); }
+.modal-body .whisper { margin-top: 12px; font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.modal-block { margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 12px; }
+.modal-block .k { font-size: 11.5px; color: var(--text-muted); letter-spacing: 1px; }
+.modal-block .v { font-size: 14px; margin-top: 4px; }
+.modal-block .v.term { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-secondary); }
+.modal-locked-note { margin-top: 12px; font-size: 12.5px; color: var(--orange); }
+.modal-actions { margin-top: 18px; display: flex; gap: 10px; }
+
+.cult-modal-box .preview-tag {
+  position: absolute;
+  left: 22px; top: 12px;
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── 解锁提示 ─────────────────────────────────────────── */
+.cult-unlock-toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 220;
+  display: grid;
+  gap: 8px;
+  pointer-events: none;
+}
+.unlock-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(210, 153, 34, 0.5);
+  background: linear-gradient(135deg, rgba(38, 28, 8, 0.96), rgba(14, 11, 6, 0.96));
+  color: #ffd980;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  transform: translateY(14px);
+  opacity: 0;
+  animation: unlock-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.unlock-item .t { font-size: 13px; font-weight: 700; }
+.unlock-item .s { font-size: 11.5px; color: #e8d6a8; }
+@keyframes unlock-in { to { transform: translateY(0); opacity: 1; } }
+
+/* ── 仪表盘上的修行卡（profile.js 渲染）───────────────── */
+.profile-card {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  background:
+    radial-gradient(circle at 8% 40%, color-mix(in srgb, var(--pm-primary, #c9a961) 12%, transparent), transparent 55%),
+    linear-gradient(150deg, rgba(12, 17, 28, 0.9), rgba(8, 11, 20, 0.9));
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-portrait { position: relative; cursor: zoom-in; }
+.profile-portrait .zoom-hint {
+  position: absolute; left: 50%; bottom: 2px; transform: translateX(-50%);
+  font-size: 11px; color: var(--text-muted); opacity: 0;
+  transition: var(--transition-fast); white-space: nowrap;
+}
+.profile-portrait:hover .zoom-hint { opacity: 1; }
+
+.profile-main { min-width: 0; }
+
+.profile-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.profile-title .seal { display: grid; place-items: center; line-height: 0; }
+.profile-title .nm { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
+.profile-title .tag {
+  font-size: 11.5px; padding: 2px 9px; border-radius: 999px;
+  border: 1px solid var(--border-glow); color: var(--text-muted);
+}
+
+.profile-whisper { font-size: 12.5px; color: var(--text-secondary); margin-top: 5px; }
+
+.profile-power {
+  margin-top: 10px; display: flex; align-items: baseline; gap: 8px;
+  font-size: 12.5px; color: var(--text-muted); font-family: var(--font-mono);
+}
+.profile-power b { font-size: 22px; color: var(--pm-primary, #c9a961); }
+.profile-power .sep { opacity: 0.4; }
+
+.profile-trial { margin-top: 10px; display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--text-muted); }
+.profile-trial .mini-bar { flex: 1; height: 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+.profile-trial .mini-bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--pm-primary, #c9a961), var(--pm-aura, #fff)); }
+.profile-trial .num { font-family: var(--font-mono); color: var(--text-secondary); }
+
+.profile-actions { margin-top: 14px; display: flex; gap: 9px; flex-wrap: wrap; }
+
+.profile-ladder {
+  grid-column: 1 / -1;
+  display: flex; flex-wrap: wrap; gap: 7px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+}
+
+.cult-step {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.015);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: var(--transition-fast);
+}
+.cult-step:hover { color: var(--text-primary); border-color: var(--pm-primary, #c9a961); }
+.cult-step .pm-sigil { color: #46505d; }
+.cult-step.done { color: var(--text-secondary); }
+.cult-step.done .pm-sigil { color: var(--pm-primary, #c9a961); }
+.cult-step.current {
+  color: var(--text-primary);
+  border-color: var(--pm-primary, #c9a961);
+  background: color-mix(in srgb, var(--pm-primary, #c9a961) 12%, transparent);
+  font-weight: 700;
+}
+.cult-step.current .pm-sigil { color: var(--pm-primary, #c9a961); }
+
+@media (max-width: 720px) {
+  .profile-card { grid-template-columns: 1fr; }
+  .profile-portrait { max-width: 220px; }
+}
+
+/* ── 小屏适配 ─────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .cult-hero { grid-template-columns: 1fr; gap: 18px; padding: 18px; }
+  .cult-hero-portrait { max-width: 280px; margin: 0 auto; }
+  .cult-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .guide-grid { grid-template-columns: 1fr; }
+  .cult-modal-box { grid-template-columns: 1fr; }
+}
+
+
+/* ============================================================
+   卷轴：天头、朱文印、云纹分隔
+   ------------------------------------------------------------
+   这三样是「这是一轴卷子，不是一块屏」的全部依据。都是纯 CSS，
+   不引图片：云纹用一条内联 SVG 的 data URI（几十字节，不用额外请求）。
+   ============================================================ */
+
+.scroll-head {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 30px 34px 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.scroll-head .title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  color: #e8e2d6;
+  line-height: 1;
+}
+
+/* 朱文印：竖排两字，朱砂底、留白字。印是卷轴上唯一允许「实」的东西 */
+.scroll-head .seal {
+  writing-mode: vertical-rl;
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  letter-spacing: 0.3em;
+  padding: 10px 6px;
+  color: #f6ece2;
+  background: linear-gradient(160deg, #b8452f, #8f3222);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  line-height: 1.25;
+}
+
+.scroll-head .sub {
+  margin-left: auto;
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding-bottom: 4px;
+}
+
+.scroll-rule {
+  max-width: 1080px;
+  margin: 0 auto 6px;
+  padding: 0 34px;
+}
+.scroll-rule i {
+  display: block;
+  height: 3px;
+  border-top: 1px solid rgba(226, 232, 240, 0.26);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.12);
+}
+
+/* 段与段之间压一道云纹 —— 卷轴的分段靠纹样，不靠留白 */
+.cult-section + .cult-section { position: relative; }
+.cult-section + .cult-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -22px;
+  height: 12px;
+  opacity: 0.2;
+  background-repeat: repeat-x;
+  background-size: 92px 12px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='12'><path d='M0 6 C10 0 18 0 26 6 C34 12 42 12 50 6 C58 0 66 0 74 6 C82 12 90 12 92 6' fill='none' stroke='%23dfe4e8' stroke-width='1'/></svg>");
+}
+
+@media (max-width: 860px) {
+  .scroll-head { padding: 20px 20px 12px; }
+  .scroll-head .title { font-size: 23px; letter-spacing: 0.3em; }
+  .scroll-head .sub { display: none; }
+}

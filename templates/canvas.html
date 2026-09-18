@@ -139,11 +139,12 @@
   .presets-panel { position: relative; top: auto; right: auto; flex-direction: row; flex-wrap: wrap; margin-top: 8px; }
 }
 </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="canvas-page">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <!-- Top Navigation -->
 <nav class="top-nav">
@@ -420,5 +421,6 @@
   resize();
 })();
 </script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

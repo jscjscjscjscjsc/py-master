@@ -371,8 +371,20 @@ git -c http.https://github.com.proxy= \
 
 ### 上线
 
-见 `上线部署方案.md`；`deploy/` 里有现成的 Dockerfile、docker-compose 与 Caddyfile。
-**判题无沙箱，公网开放前必须读那篇的第二节。**
+见 `上线操作手册.md`；`deploy/` 里有现成的 Dockerfile、docker-compose 与 Caddyfile。
+**30 人以内买什么配置、出问题怎么排查，都在那份手册里**；
+一条命令推送用 `python tools/deploy_server.py --host root@IP --domain 域名`。
+
+上线相关的三个约定（改部署配置时必须一起看）：
+
+- **可写数据走 `PYMASTER_DATA_DIR`**，不要把 `data/` 整个挂到容器里 ——
+  那样会盖掉镜像 `data/` 里的课程与题库，表现是首页报错、刷题页空白。
+  空卷也安全：`app.py` 的 `_seed_data_dir()` 会把随机数据补齐。
+- **容器入口是 `deploy/entrypoint.py`**，负责修挂载卷属主 → 降权到
+  `pymaster` → 读 `PORT` 起 gunicorn。别把 CMD 换回裸 gunicorn，
+  否则 bind mount 的属主问题会让注册账号报 500。
+- **判题无沙箱**，公网必须有访问口令；只给低年级用可以直接设
+  `PYMASTER_ALLOW_CODE_EXEC=0`，见手册第三节。
 
 ## 十、开场 CG 与登录页（2026-09-18）
 

@@ -1,0 +1,84 @@
+/* ============================================================
+   atmosphere.css — 全站氛围层
+   ------------------------------------------------------------
+   把开场 CG 的"层次配方"做成全站通用的一层：星云 → 星野 → 孢子 →
+   指针水波 → 暗角 → 噪点。所有层都是 fixed + pointer-events:none，
+   z-index 压到内容之下，只负责把画面垫厚，不参与任何交互与布局。
+
+   具体颜色由 atmosphere.js 按页面主题往 canvas 上画；这里只管
+   叠层、噪点、暗角与"旧背景层退场"。
+   ============================================================ */
+
+.atm-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+
+/* 暗角与噪点跟在 canvas 之后、内容之前：只压背景，不压正文，
+   免得把 12px 的正文压出脏边。 */
+.atm-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 32%, rgba(1, 4, 8, 0.42) 78%, rgba(1, 3, 6, 0.82) 100%),
+    linear-gradient(180deg, rgba(1, 4, 8, 0.35), transparent 18%, transparent 78%, rgba(1, 3, 6, 0.5));
+}
+
+.atm-grain {
+  position: fixed;
+  inset: -40%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: atmGrain 0.9s steps(3) infinite;
+}
+@keyframes atmGrain {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(-2%, 1.4%); }
+  66%  { transform: translate(1.4%, -1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 「绢本」主题（修行阁）：不压黑，改成压暖墨，像旧绢的边角 */
+body[data-atm="silk"] .atm-vignette {
+  background:
+    radial-gradient(ellipse at 50% 44%, transparent 34%, rgba(10, 8, 5, 0.40) 80%, rgba(8, 6, 4, 0.78) 100%),
+    linear-gradient(180deg, rgba(12, 9, 5, 0.42), transparent 20%, transparent 76%, rgba(10, 7, 4, 0.55));
+}
+body[data-atm="silk"] .atm-grain { opacity: 0.09; }
+
+/* 干活用的页面（刷题 / 教练 / 仪表盘）：氛围只当底色，别抢注意力 */
+body[data-atm="workbench"] .atm-vignette { opacity: 0.55; }
+body[data-atm="workbench"] .atm-grain { opacity: 0.035; }
+
+/* 知识星海自带两层模糊星云、暗角与噪点，而且星图本身是主角。
+   这里只补一块更厚的底 —— 垫到那两层模糊之下，其余的层让位，
+   免得叠两次把画面压死，也免得盖住原本的星云辉光。 */
+body[data-atm="nebula"] .atm-canvas { z-index: -3; }
+body[data-atm="nebula"] .atm-vignette,
+body[data-atm="nebula"] .atm-grain { display: none; }
+
+/* ── 旧背景层退场 ──────────────────────────────────────
+   原来是 .bg-grid（CSS 动画网格）+ #particles-canvas（main.js 里那套
+   升腾粒子）。新的氛围层把它们替代掉了：留着不但重复，而且 main.js
+   的粒子循环还会继续空转烧 CPU。这里兜底隐藏，防止有页面漏删元素。 */
+.bg-grid,
+#particles-canvas { display: none !important; }
+
+/* 页面主容器要在氛围层之上 */
+.container,
+.chapters-grid,
+.workbench-page > .wb-shell,
+.cultivation-page > .wb-shell { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .atm-grain { animation: none; }
+}

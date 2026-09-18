@@ -22,19 +22,33 @@
 .cultivation-dock.collapsed { width: 56px; padding: 9px; cursor: pointer; }
 .cultivation-dock.collapsed .cult-body { display: none; }
 
-.cult-head { display: flex; align-items: center; gap: 8px; }
+.cult-head { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 
+/* 法印容器：不再用 emoji 圆点，改为随境界变色的矢量印记 */
 .cult-orb {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  font-size: 14px;
-  background: radial-gradient(circle at 32% 28%, #6ff0ff, #1170c9 58%, #0a2a52);
-  box-shadow: 0 0 14px rgba(0, 212, 255, 0.45);
+  border: 1px solid color-mix(in srgb, var(--pm-primary, #00d4ff) 40%, transparent);
+  background: radial-gradient(circle at 34% 30%,
+    color-mix(in srgb, var(--pm-primary, #00d4ff) 22%, transparent), rgba(6, 10, 18, 0.9) 72%);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--pm-primary, #00d4ff) 22%, transparent);
 }
+
+.cult-sigil { display: grid; place-items: center; line-height: 0; }
+.cult-sigil svg { display: block; }
+
+.cult-trial {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+.cult-trial b { color: var(--text-secondary); font-family: var(--font-mono); }
 
 .cult-name { font-size: 13px; font-weight: 700; line-height: 1.25; }
 .cult-points { font-size: 11px; color: var(--text-muted); }

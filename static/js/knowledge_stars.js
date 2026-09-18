@@ -15,7 +15,7 @@
   function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2400);}
   function texture(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'#fff');g.addColorStop(.12,'rgba(210,238,255,.9)');g.addColorStop(.42,'rgba(125,163,255,.28)');g.addColorStop(1,'rgba(72,107,255,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);}
   function init(){
-    renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setClearColor(0x030510,1);renderer.setPixelRatio(Math.min(devicePixelRatio||1,QUALITY[quality]));
+    renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});renderer.setClearColor(0x030510,0);renderer.setPixelRatio(Math.min(devicePixelRatio||1,QUALITY[quality]));
     scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,1000);raycaster=new THREE.Raycaster();clock=new THREE.Clock();glowTexture=texture();
     scene.add(new THREE.AmbientLight(0x9fb7ff,1.15));const keyLight=new THREE.PointLight(0x72f6e4,2.6,180);keyLight.position.set(18,26,42);scene.add(keyLight);
     sky=new THREE.Group();universe=new THREE.Group();galaxy=new THREE.Group();scene.add(sky,universe,galaxy);buildSky();resize();

@@ -94,11 +94,12 @@
   .playground-wrap { grid-template-columns: 1fr; grid-template-rows: auto 1fr 1fr; }
 }
 </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="playground-page">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <nav class="top-nav">
   <div class="nav-inner">
@@ -437,5 +438,6 @@ function openJJChat() {
   </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

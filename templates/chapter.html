@@ -20,11 +20,12 @@
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="{{ url_for('static', filename='js/narration_player.js') }}"></script>
 <script>window.PYMASTER_TOTAL_CHAPTERS = {{ total_chapters|default(9) }};</script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="chapter-page" data-chapter-id="{{ chapter.id }}" data-chapter-title="{{ chapter.title|e }}" data-chapter-description="{{ chapter.description|e }}">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <!-- Top Navigation -->
 <nav class="top-nav">
@@ -656,5 +657,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){ if (window.Cultivation) Cultivation.mount(); });
 </script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

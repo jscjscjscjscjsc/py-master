@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/lib/codemirror.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/codemirror/theme/material-darker.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/training.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="workbench-page">
 
@@ -65,5 +66,6 @@
     Cultivation.mount();
   });
 </script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

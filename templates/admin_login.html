@@ -8,11 +8,12 @@
 <style>
 .admin-badge { color: var(--purple); font-size: 12px; margin-top: 4px; display: block; }
 </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="auth-page">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <div class="auth-container">
   <div class="auth-logo">
@@ -62,5 +63,6 @@ document.getElementById('admin-login-form').addEventListener('submit', async fun
 });
 </script>
 
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

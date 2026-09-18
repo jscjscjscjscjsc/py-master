@@ -9,11 +9,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/atlas.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/music.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="dashboard-page">
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+
+
 
 <!-- Top Navigation -->
 <nav class="top-nav">
@@ -202,5 +203,6 @@ fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
 <script src="{{ url_for('static', filename='js/chapter_intro_3d.js') }}"></script>
 <script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
 <script>Cultivation.mount();</script>
+<script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>
