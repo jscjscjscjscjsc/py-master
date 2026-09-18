@@ -7,8 +7,18 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cultivation.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/coach.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/coach_scene.css') }}">
 </head>
-<body class="coach-page">
+<body class="coach-page" data-scene="soft">
+
+{# 星海背景层：画布 + 身后那尊法相 + 压暗层。
+   三档由 body[data-scene] 决定（soft 微光 / full 星海 / off 纯净），
+   选了哪档记在 localStorage，下次进来还是它。#}
+<div class="coach-scene" id="coach-scene" aria-hidden="true">
+  <canvas class="coach-scene-canvas" id="coach-scene-canvas"></canvas>
+  <div class="coach-scene-figure" id="coach-scene-figure"></div>
+  <div class="coach-scene-veil"></div>
+</div>
 
 <div class="coach-shell">
   <!-- 左侧：会话列表 -->
@@ -37,6 +47,8 @@
       </div>
       <div class="coach-head-actions">
         <span class="compose-quota" id="coach-quota"></span>
+        <button class="coach-tool" id="coach-forms-open" title="看星辰教练的十一尊法相">☯ 法相</button>
+        <button class="coach-tool" id="coach-scene-toggle" title="背景：微光（点击切到星海）">✦ 微光</button>
         <button class="coach-tool" id="coach-copy" title="把整段对话复制成 Markdown">⧉ 复制对话</button>
         <button class="coach-tool" id="coach-rename">✎ 重命名</button>
         <button class="coach-tool" id="coach-clear">🧹 清空</button>
@@ -71,14 +83,21 @@
 
 <div class="coach-toast" id="coach-toast"></div>
 
+<script src="{{ url_for('static', filename='js/portrait.js') }}"></script>
 <script src="{{ url_for('static', filename='js/cultivation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ui_confirm.js') }}"></script>
 <script src="{{ url_for('static', filename='js/md_lite.js') }}"></script>
+<script src="{{ url_for('static', filename='js/star_coach.js') }}"></script>
+<script src="{{ url_for('static', filename='js/starfield.js') }}"></script>
+<script src="{{ url_for('static', filename='js/coach_scene.js') }}"></script>
 <script src="{{ url_for('static', filename='js/coach.js') }}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', async function () {
     Coach.init({ isGuest: {{ 'true' if is_guest else 'false' }}, limit: {{ max_sessions }} });
+    // 背景法相先挂上（它决定空态长什么样），再拉图鉴数据；
+    // 拿不到数据时 CoachScene 会静默降级，聊天不受影响。
+    if (window.CoachScene) await CoachScene.mount();
     if (window.Cultivation) Cultivation.mount({ compact: true });
     if (window.PyMusic) PyMusic.init();
     const menu = document.getElementById('coach-menu');

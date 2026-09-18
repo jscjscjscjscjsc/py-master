@@ -1,0 +1,849 @@
+/* ============================================================
+   星辰教练 · 星海背景与法相
+   ------------------------------------------------------------
+   这个文件负责三块，彼此独立，改一块不用管另外两块：
+
+     · 背景层      .coach-scene*       —— 星海画布 + 身后那尊法相
+     · 法相动画    .sc-*               —— star_coach.js 画出来的图形的呼吸
+     · 空态与图鉴  .coach-hero* / .coach-gallery* —— 教练的自我介绍与形象谱系
+
+   三条约定：
+     1. 背景分三档，由 body[data-scene] 决定（soft 微光 / full 星海 / off 纯净）。
+        纯净档要把画布、法相、星空粒子全部真正撤掉，而不是留一层透明的空转。
+     2. 正文的可读性优先。所有背景元素都压在 .coach-scene-veil 之下，
+        任何「加个更好看的背景」的改动都不能让气泡里的代码变得难读。
+     3. 动效只用 transform / opacity，且集中在 .sc-* 上——
+        SVG 里大面积重绘会把同页的星海画布一起拖慢。
+   ============================================================ */
+
+/* ── 背景：画布 + 法相 + 压暗层 ─────────────────────────── */
+.coach-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-slow);
+}
+
+.coach-scene-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 身后那尊法相：靠右、贴底、大。它是一道气息，但**必须看得见**——
+   淡到只剩一个影子，玩家根本不知道自己身边一直站着谁，
+   「随你升境换形象」这条最重要的反馈就白做了。 */
+.coach-scene-figure {
+  position: absolute;
+  right: -6vw;
+  bottom: -5vh;
+  width: min(56vw, 760px);
+  height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0.72;
+  /* 指针视差：位移由 coach_scene.js 写进 transform，平滑交给这条 transition——
+     比在 JS 里跑补间省一个 rAF 循环。慢起慢收，才像"有质量的东西被推动"。 */
+  transition: opacity var(--transition-slow), transform 900ms cubic-bezier(0.22, 0.7, 0.3, 1);
+  will-change: transform;
+}
+.coach-scene-figure svg { width: 100%; height: 100%; }
+
+/* 法相脚下的一团灵光：把它从星海里「托」起来。
+   没有这层，深色法相会直接糊进深色背景，看着像脏了一块。 */
+.coach-scene-figure::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  width: 128%;
+  height: 78%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    color-mix(in srgb, var(--sc-aura, #dce8f4) 26%, transparent) 0%,
+    color-mix(in srgb, var(--sc-primary, #7ee1ff) 16%, transparent) 38%,
+    color-mix(in srgb, var(--sc-primary, #7ee1ff) 6%, transparent) 62%,
+    transparent 100%);
+  filter: blur(8px);
+  animation: sc-figure-breathe 11s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sc-figure-breathe {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+}
+
+/* 头顶落下的一道光柱：整个画面里唯一一道直线条，
+   它一在，法相就从「背景装饰」变成了「显圣」。
+   用 clip-path 切一个上窄下宽的锥形，不用滤镜——滤镜在这台机器上是要付帧的。 */
+.coach-scene-figure::after {
+  content: '';
+  position: absolute;
+  left: 60%;
+  top: -8%;
+  width: 92%;
+  height: 74%;
+  transform: translateX(-50%);
+  clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--sc-aura, #dce8f4) 13%, transparent) 0%,
+    color-mix(in srgb, var(--sc-primary, #7ee1ff) 6%, transparent) 42%,
+    transparent 86%);
+  mix-blend-mode: screen;
+  opacity: 0.26;
+  animation: sc-shaft 13s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sc-shaft {
+  0%, 100% { opacity: 0.18; transform: translateX(-50%) scaleX(1); }
+  50% { opacity: 0.3; transform: translateX(-50%) scaleX(1.05); }
+}
+
+/* 压暗层。
+   这一层是「背景有多好看」和「正文有多好读」之间的那根弦，改它要谨慎：
+   上一版这里压得太狠（右下角 0.88、顶部 0.7），再叠上半透明的正文面板，
+   星海基本被抹干净了，于是整个背景看起来只是"黑底加了几个点"。
+   现在的分法：中部偏左给正文垫一层（字压得住），四角交给暗角，
+   顶部给顶栏、底部给输入区，其余都留给星海和法相。 */
+.coach-scene-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 60% at 40% 46%, rgba(3, 5, 10, 0.42) 0%, rgba(3, 5, 10, 0.12) 60%, rgba(3, 5, 10, 0) 100%),
+    radial-gradient(118% 96% at 52% 48%, rgba(3, 5, 10, 0) 46%, rgba(3, 5, 10, 0.4) 100%),
+    linear-gradient(180deg, rgba(3, 5, 10, 0.62) 0%, rgba(3, 5, 10, 0.08) 17%,
+                    rgba(3, 5, 10, 0.1) 62%, rgba(3, 5, 10, 0.62) 100%);
+}
+
+body[data-scene="full"] .coach-scene-figure { opacity: 0.8; }
+body[data-scene="off"] .coach-scene { opacity: 0; visibility: hidden; }
+body[data-scene="off"] .coach-scene-figure::after { display: none; }
+
+/* 内容层要浮在背景之上 */
+body.coach-page .coach-shell { position: relative; z-index: 2; }
+
+/* ── 两种非纯净档下，左右两块玻璃要半透明 ─────────────── */
+/* 侧栏里有会话列表，要压得住字，所以留给它的透光最少。 */
+body[data-scene="soft"] .coach-side,
+body[data-scene="full"] .coach-side {
+  background: linear-gradient(180deg, rgba(9, 13, 26, 0.88), rgba(6, 9, 18, 0.92));
+  border-right-color: rgba(120, 160, 220, 0.14);
+}
+
+/* 正文面板：**横向渐变**而不是整块半透明。
+   正文靠左，右半边是法相待的地方——整块均匀压暗就等于把法相也一起灭了。
+   但压暗的边界不能一路往右收：正文列最远伸到面板的八成宽，
+   压暗必须在那个位置之前都还立着，只把最右边那一溜让给法相。
+   气泡自己有底色（.bubble 是 0.92 的实底），所以面板变淡不会让字糊。 */
+body[data-scene="soft"] .coach-main,
+body[data-scene="full"] .coach-main {
+  background:
+    radial-gradient(900px 380px at 78% -10%, rgba(0, 212, 255, 0.05), transparent 65%),
+    radial-gradient(700px 320px at 10% 0%, rgba(163, 113, 247, 0.05), transparent 60%),
+    linear-gradient(100deg,
+      rgba(5, 7, 15, 0.8) 0%,
+      rgba(5, 7, 15, 0.68) 24%,
+      rgba(5, 7, 15, 0.6) 68%,
+      rgba(5, 7, 15, 0.24) 86%,
+      rgba(5, 7, 15, 0.1) 100%);
+}
+body[data-scene="full"] .coach-main {
+  background:
+    radial-gradient(900px 380px at 78% -10%, rgba(0, 212, 255, 0.05), transparent 65%),
+    radial-gradient(700px 320px at 10% 0%, rgba(163, 113, 247, 0.05), transparent 60%),
+    linear-gradient(100deg,
+      rgba(5, 7, 15, 0.72) 0%,
+      rgba(5, 7, 15, 0.58) 24%,
+      rgba(5, 7, 15, 0.48) 68%,
+      rgba(5, 7, 15, 0.18) 86%,
+      rgba(5, 7, 15, 0.06) 100%);
+}
+
+body[data-scene="soft"] .coach-head,
+body[data-scene="full"] .coach-head {
+  background: rgba(6, 9, 18, 0.6);
+}
+
+body[data-scene="soft"] .bubble,
+body[data-scene="full"] .bubble { backdrop-filter: none; }
+
+/* 输入区在星空上要更实一点，否则打字时字会飘 */
+body[data-scene="soft"] .coach-compose,
+body[data-scene="full"] .coach-compose {
+  background: linear-gradient(180deg, rgba(5, 7, 15, 0), rgba(5, 7, 15, 0.9) 38%);
+}
+
+/* ── 构图上把"文"和"像"分开 ──────────────────────────────
+   正文列停在正中间的话，法相的脑袋刚好压在「再进元婴期…」那几行上，
+   再亮的星海也救不回来。这里把正文列左移收窄，右边一整条让给法相——
+   这正是想要的那张构图：左文右像，中间留一口气。 */
+body[data-scene="soft"] .thread-inner,
+body[data-scene="full"] .thread-inner {
+  max-width: 760px;
+  margin-left: 5%;
+  margin-right: auto;
+}
+body[data-scene="soft"] .coach-empty,
+body[data-scene="full"] .coach-empty {
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 760px;
+}
+body[data-scene="soft"] .coach-compose .compose-box,
+body[data-scene="full"] .coach-compose .compose-box,
+body[data-scene="soft"] .coach-compose .guest-banner,
+body[data-scene="full"] .coach-compose .guest-banner {
+  max-width: 760px;
+  margin-left: 5%;
+  margin-right: auto;
+}
+body[data-scene="soft"] .coach-hero,
+body[data-scene="full"] .coach-hero {
+  grid-template-columns: 264px 1fr;
+  gap: 18px;
+}
+
+/* 三档切换按钮 */
+#coach-scene-toggle .scene-icon { margin-right: 5px; opacity: 0.9; }
+body[data-scene="full"] #coach-scene-toggle { color: var(--cyan); border-color: rgba(0, 212, 255, 0.45); }
+body[data-scene="off"] #coach-scene-toggle { color: var(--text-muted); }
+
+/* ── 地轮：脚下的法阵投影 ────────────────────────────────── */
+.sc-ground-glow { animation: sc-core-breathe 7.5s ease-in-out infinite; }
+.sc-ground-ring {
+  fill: none;
+  stroke: var(--sc-primary, #00d4ff);
+  stroke-width: 1;
+  opacity: 0.4;
+  animation: sc-ground-turn 46s linear infinite;
+  animation-delay: var(--sc-delay, 0s);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes sc-ground-turn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.sc-ground-tick { stroke: var(--sc-accent, #7ee1ff); stroke-width: 1.1; opacity: 0.45; }
+
+/* ── 法纹：袍面上的纹路 ──────────────────────────────────── */
+.sc-robe-mark { fill: none; stroke: var(--sc-accent, #7ee1ff); stroke-width: 1; opacity: 0.42; }
+.sc-robe-dot {
+  fill: var(--sc-aura, #fff);
+  opacity: 0.5;
+  animation: sc-halo 6.5s ease-in-out infinite;
+  animation-delay: var(--sc-delay, 0s);
+}
+
+/* ── 丹田星核 / 金丹（金丹期起）────────────────────────────
+   这颗东西的层次全靠下面几组分开的动画撑起来。三条经验：
+
+   1. **旋转元素必须以"核心"为轴**，用
+      `transform-box: view-box` + `transform-origin: 160px var(--sc-core-cy)`。
+      `fill-box` + `center` 是个陷阱：一段弧、一颗小星的包围盒中心
+      就是它自己，绕着它转等于原地打转——上一版的绕行小星就是这么废掉的
+      （转了，但绕的是自己，肉眼看不见任何运动）。
+   2. **转速必须错开**。所有东西同速同向地转，一眼就看出是贴图在转。
+      所以每个元素自己在 style 里带 `--sc-spin-dur/from/to`。
+   3. **光要溢出躯干**。球体那几层被 coreclip 裁着（看起来在体内），
+      辉光/日冕/星芒故意不裁——这一条决定了它是"体内在烧"还是"胸口贴片"。 */
+.sc-core-bloom,
+.sc-core-corona,
+.sc-core-orb,
+.sc-core-hot,
+.sc-core-limb,
+.sc-core-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ① 辉光 与 ② 日冕：两个周期不同的呼吸叠在一起，明灭才不是规整的正弦 */
+.sc-core-bloom { animation: sc-core-breathe 7.4s ease-in-out infinite; }
+.sc-core-corona { animation: sc-core-breathe 5.1s ease-in-out infinite reverse; }
+@keyframes sc-core-breathe {
+  0%, 100% { opacity: 0.52; transform: scale(1); }
+  50% { opacity: 0.92; transform: scale(1.09); }
+}
+
+/* ③ 吸积盘：后半段暗而细、前半段亮而粗，位置差一层，圆环立刻变立体 */
+.sc-core-disc {
+  transform-box: view-box;
+  transform-origin: 160px var(--sc-core-cy, 216px);
+  animation: sc-spin var(--sc-spin-dur, 44s) linear infinite;
+}
+.sc-core-disc-back,
+.sc-core-disc-front { fill: none; stroke-linecap: round; }
+.sc-core-disc-back { stroke: var(--sc-primary, #00d4ff); stroke-width: 1.1; opacity: 0.38; }
+.sc-core-disc-front { stroke: var(--sc-aura, #fff); stroke-width: 1.8; opacity: 0.75; }
+
+/* ④ 能量丝：绕核旋进的弧线，每条自带转速；反向的那些负责"乱" */
+.sc-core-fil {
+  fill: none;
+  stroke: var(--sc-aura, #fff);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.5;
+  transform-box: view-box;
+  transform-origin: 160px var(--sc-core-cy, 216px);
+  animation: sc-spin var(--sc-spin-dur, 9s) linear infinite;
+}
+.sc-core-fil.is-back { opacity: 0.26; stroke-width: 0.7; animation-direction: reverse; }
+
+/* ⑤ 球体：三段渐变定体积，临边增亮那一圈定"发光体"。缺了后者就是个平面圆 */
+.sc-core-limb {
+  stroke: var(--sc-aura, #fff);
+  stroke-width: 1.1;
+  opacity: 0.72;
+  animation: sc-core-breathe 4.4s ease-in-out infinite;
+}
+
+/* ⑥ 丹纹：球面上缓慢自转的两道弧 */
+.sc-core-swirl {
+  transform-box: view-box;
+  transform-origin: 160px var(--sc-core-cy, 216px);
+  animation: sc-spin var(--sc-spin-dur, 20s) linear infinite;
+}
+.sc-core-swirl path {
+  fill: none;
+  stroke: var(--sc-accent, #7ee1ff);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+/* ⑦ 星芒：高境才有，明灭要慢，快了就成了频闪 */
+.sc-core-ray {
+  stroke: var(--sc-aura, #fff);
+  stroke-width: 0.7;
+  opacity: 0.4;
+  animation: sc-core-ray 6.5s ease-in-out infinite;
+  animation-delay: var(--sc-delay, 0s);
+}
+@keyframes sc-core-ray {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.62; }
+}
+
+/* 脉冲环：向外扩散。「它在跳」的证据，缺了它这颗核只是块石头 */
+.sc-core-pulse {
+  fill: none;
+  stroke: var(--sc-aura, #fff);
+  stroke-width: 1.2;
+  opacity: 0;
+  animation: sc-core-pulse 3.3s cubic-bezier(0.22, 0.7, 0.3, 1) infinite;
+  animation-delay: var(--sc-delay, 0s);
+}
+@keyframes sc-core-pulse {
+  0% { opacity: 0.7; transform: scale(0.6); }
+  70% { opacity: 0.12; }
+  100% { opacity: 0; transform: scale(2.9); }
+}
+
+/* 绕行小星：拖尾给"方向感"，否则只是一颗颗无来由地闪 */
+.sc-core-sat {
+  transform-box: view-box;
+  transform-origin: 160px var(--sc-core-cy, 216px);
+  animation: sc-spin var(--sc-spin-dur, 12s) linear infinite;
+}
+.sc-core-sat-body { fill: var(--sc-accent, #7ee1ff); opacity: 0.9; }
+.sc-core-sat-tail {
+  fill: none;
+  stroke: var(--sc-accent, #7ee1ff);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  opacity: 0.28;
+}
+
+/* ── 上升的灵气 ──────────────────────────────────────────── */
+.sc-spark {
+  fill: var(--sc-accent, #7ee1ff);
+  opacity: 0;
+  animation: sc-spark-rise var(--sc-dur, 9s) linear infinite;
+  animation-delay: var(--sc-delay, 0s);
+}
+@keyframes sc-spark-rise {
+  0% { opacity: 0; transform: translateY(0) scale(0.7); }
+  18% { opacity: 0.85; }
+  70% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(calc(var(--sc-rise, 90px) * -1)) scale(1.1); }
+}
+
+/* ── 法相本体 ───────────────────────────────────────────── */
+.sc-figure { display: block; overflow: visible; }
+
+/* 法阵旋绕：每环的初相与时长由生成器写进行内变量 */
+.sc-ring { transform-box: fill-box; transform-origin: center; animation: sc-spin var(--sc-spin-dur, 40s) linear infinite; }
+@keyframes sc-spin {
+  from { transform: rotate(var(--sc-spin-from, 0deg)); }
+  to { transform: rotate(var(--sc-spin-to, 360deg)); }
+}
+
+.sc-halo { animation: sc-halo 8s ease-in-out infinite; }
+@keyframes sc-halo {
+  0%, 100% { opacity: 0.78; }
+  50% { opacity: 1; }
+}
+
+.sc-rays path { stroke: var(--sc-aura, #fff); stroke-width: 0.8; opacity: 0.24; }
+.sc-rays { transform-box: fill-box; transform-origin: center; animation: sc-spin 120s linear infinite; }
+
+.sc-tick { stroke: var(--sc-primary, #00d4ff); stroke-width: 0.9; opacity: 0.42; }
+/* 日轮：金仙专属 */
+.sc-sun-rays path { stroke: var(--sc-aura, #fff); stroke-width: 1.1; opacity: 0.45; stroke-linecap: round; }
+.sc-sun-rays { transform-box: fill-box; transform-origin: center; animation: sc-spin 150s linear infinite; }
+.sc-sun-disc { animation: sc-halo 9s ease-in-out infinite; }
+.sc-halo-ring { animation: sc-breathe 9s ease-in-out infinite; }
+@keyframes sc-breathe {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.5; }
+}
+
+/* 身体：暗底 + 上缘灵光 + 一道边缘轮廓光 */
+.sc-body-top { opacity: 0.9; }
+.sc-spine { stroke: var(--sc-primary, #00d4ff); stroke-width: 1; opacity: 0.4; }
+.sc-circuit { fill: none; stroke: var(--sc-accent, #7ee1ff); stroke-width: 1.1; opacity: 0.55; }
+.sc-plate { fill: rgba(255, 255, 255, 0.05); stroke: var(--sc-primary, #00d4ff); stroke-width: 1; opacity: 0.62; }
+.sc-dissolve { animation: sc-drift 9s ease-in-out infinite; }
+@keyframes sc-drift {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+/* 手臂画两层：暗底 + 亮线。只画一层的话，深色袍子上根本看不见手在哪 */
+.sc-arm-base { fill: none; stroke: #131d2a; stroke-linecap: round; }
+.sc-arm-line { fill: none; stroke: var(--sc-primary, #00d4ff); stroke-linecap: round; opacity: 0.6; }
+.sc-hand { fill: var(--sc-primary, #00d4ff); stroke: var(--sc-aura, #fff); stroke-width: 1; opacity: 0.85; }
+
+/* 大袖：仙气主要靠它。境界越高越长越宽，钟形下摆带一点波浪 */
+.sc-sleeve { fill: rgba(255, 255, 255, 0.05); stroke: none; }
+.sc-sleeve-hem { fill: none; stroke: var(--sc-primary, #00d4ff); stroke-width: 1.1; opacity: 0.5; stroke-linecap: round; }
+.sc-belt { fill: none; stroke: var(--sc-primary, #00d4ff); stroke-width: 2; opacity: 0.55; }
+.sc-belt-gem { fill: var(--sc-aura, #fff); opacity: 0.9; }
+
+/* 面甲：高境的头是一顶盔，不是一颗光脑袋 */
+.sc-helm { fill: rgba(10, 16, 26, 0.88); stroke: var(--sc-primary, #00d4ff); stroke-width: 1.2; opacity: 0.92; }
+.sc-helm-group.is-radiant .sc-helm {
+  fill: var(--sc-primary, #fff3c4);
+  fill-opacity: 0.3;
+  stroke: var(--sc-aura, #fff);
+  stroke-width: 1.4;
+  opacity: 1;
+}
+.sc-helm-nasal { fill: none; stroke: var(--sc-aura, #fff); stroke-width: 1; opacity: 0.35; }
+
+/* 头与脸 */
+.sc-eye { fill: var(--sc-aura, #fff); }
+.sc-eye-hi { fill: #05070f; opacity: 0.9; }
+.sc-blush { fill: var(--sc-primary, #00d4ff); opacity: 0.34; }
+.sc-mouth { fill: none; stroke: var(--sc-aura, #fff); stroke-width: 1.6; stroke-linecap: round; opacity: 0.7; }
+.sc-eye-ring { fill: none; stroke: var(--sc-aura, #fff); stroke-width: 1.2; opacity: 0.8; }
+.sc-eye-star { fill: var(--sc-aura, #fff); animation: sc-twinkle 3.6s ease-in-out infinite; }
+@keyframes sc-twinkle {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+/* 高境的面甲：一条会忽明忽暗的光带，是这张脸上唯一像「机械」的地方 */
+.sc-visor-band { animation: sc-visor 5.2s ease-in-out infinite; }
+@keyframes sc-visor {
+  0%, 100% { opacity: 0.78; }
+  44% { opacity: 1; }
+  50% { opacity: 0.42; }
+  56% { opacity: 1; }
+}
+.sc-visor-pupil { fill: #fff; opacity: 0.85; }
+.sc-third-eye { fill: var(--sc-accent, #7ee1ff); opacity: 0.9; }
+.sc-third-eye-core { fill: #fff; }
+.sc-void-core { fill: #fff; animation: sc-twinkle 4.4s ease-in-out infinite; }
+.sc-void-ring { fill: none; stroke: var(--sc-accent, #7ee1ff); stroke-width: 1; opacity: 0.7;
+  transform-box: fill-box; transform-origin: center; animation: sc-spin 22s linear infinite; }
+
+/* 星冕 */
+.sc-ahoge { fill: none; stroke: var(--sc-aura, #fff); stroke-width: 2.4; stroke-linecap: round; opacity: 0.85; }
+.sc-circlet { fill: none; stroke: var(--sc-primary, #00d4ff); stroke-width: 2; opacity: 0.85; }
+.sc-circlet-gem { fill: var(--sc-aura, #fff); }
+.sc-crown-wing { fill: var(--sc-primary, #00d4ff); opacity: 0.6; }
+.sc-crown-face { fill: var(--sc-primary, #00d4ff); opacity: 0.78; stroke: var(--sc-aura, #fff); stroke-width: 0.7; }
+.sc-float-crown { animation: sc-spin var(--sc-spin-dur, 20s) linear infinite; transform-box: fill-box; transform-origin: center; }
+.sc-float-crown-ring { stroke: var(--sc-aura, #fff); stroke-width: 1; opacity: 0.6; }
+.sc-float-crown-tick { stroke: var(--sc-aura, #fff); stroke-width: 1; opacity: 0.55; }
+
+/* 袍摆 / 披风 / 飘带 */
+.sc-cape { fill: rgba(255, 255, 255, 0.035); stroke: var(--sc-primary, #00d4ff); stroke-width: 1; opacity: 0.5; }
+.sc-cape-stars circle { fill: var(--sc-aura, #fff); opacity: 0.5; }
+.sc-ribbon {
+  fill: none; stroke: var(--sc-primary, #00d4ff); stroke-width: 1.6; opacity: 0.5;
+  stroke-linecap: round;
+  animation: sc-sway var(--sc-sway, 8s) ease-in-out infinite;
+  animation-delay: var(--sc-sway-delay, 0s);
+}
+@keyframes sc-sway {
+  0%, 100% { transform: translateX(0) scaleY(1); }
+  50% { transform: translateX(6px) scaleY(1.03); }
+}
+
+/* 引路星 */
+.sc-star-body { fill: var(--sc-primary, #00d4ff); opacity: 0.95; }
+.sc-star-inner { fill: var(--sc-aura, #fff); opacity: 0.9; }
+.sc-star-core { fill: #fff; }
+.sc-star-orbit { transform-box: fill-box; transform-origin: center;
+  animation: sc-spin var(--sc-spin-dur, 12s) linear infinite; }
+.sc-orbit-line { stroke: var(--sc-aura, #fff); stroke-width: 0.8; opacity: 0.42; }
+.sc-orbit-body { fill: var(--sc-aura, #fff); }
+.sc-galaxy-disc { opacity: 0.9; }
+.sc-galaxy-core { fill: #fff; }
+.sc-galaxy-ring { fill: none; stroke: var(--sc-accent, #7ee1ff); stroke-width: 1.1; opacity: 0.75; }
+.sc-guide-star { animation: sc-float 7.5s ease-in-out infinite; }
+@keyframes sc-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* 周天星斗：环绕整尊法相的轨道星体 */
+.sc-orbiter { transform-box: fill-box; transform-origin: center;
+  animation: sc-spin var(--sc-spin-dur, 30s) linear infinite; }
+.sc-orbiter-path { stroke: var(--sc-primary, #00d4ff); stroke-width: 0.7; opacity: 0.22; }
+.sc-orbiter-body { fill: var(--sc-aura, #fff); opacity: 0.85; }
+
+/* 全息拓片：金仙那一档才出现的科技语汇 */
+.sc-holo { animation: sc-float 9s ease-in-out infinite; animation-delay: 1.4s; }
+.sc-holo-frame { fill: rgba(0, 212, 255, 0.05); stroke: var(--sc-accent, #7ee1ff); stroke-width: 1; opacity: 0.7; }
+.sc-holo-grid path { stroke: var(--sc-accent, #7ee1ff); stroke-width: 0.6; opacity: 0.24; }
+.sc-holo-bars path { stroke: var(--sc-aura, #fff); stroke-width: 2.4; stroke-linecap: round; opacity: 0.75;
+  transform-box: fill-box; transform-origin: bottom;
+  animation: sc-bar 2.6s ease-in-out infinite; animation-delay: var(--sc-bar-delay, 0s); }
+@keyframes sc-bar {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 0.9; }
+}
+.sc-holo-dot { fill: var(--sc-aura, #fff); opacity: 0.8; }
+
+/* 悬浮碎星与灵光粒子：只动 transform / opacity */
+.sc-shard {
+  fill: var(--sc-aura, #fff);
+  animation: sc-mote var(--sc-dur, 9s) ease-in-out infinite;
+  animation-delay: var(--sc-delay, 0s);
+}
+.sc-mote {
+  fill: var(--sc-aura, #fff);
+  animation: sc-mote var(--sc-dur, 8s) ease-in-out infinite;
+  animation-delay: var(--sc-delay, 0s);
+}
+@keyframes sc-mote {
+  0%, 100% { transform: translateY(0); opacity: 0.25; }
+  50% { transform: translateY(-14px); opacity: 0.95; }
+}
+
+.sc-frame path { stroke: var(--sc-primary, #00d4ff); stroke-width: 1.1; opacity: 0.34; fill: none; stroke-linecap: round; }
+
+/* 未显化的法相：整尊压成灰的剪影，但保留形状——看得见才有奔头 */
+/* 未显化：褪成灰的、但形状要看得清——全黑成剪影就没有「想要」了 */
+.is-locked .sc-figure, .sc-figure.is-locked { filter: saturate(0.08) brightness(0.95); }
+
+/* ── 空态：教练的自我介绍 ───────────────────────────────── */
+.coach-empty { max-width: 860px; }
+
+.coach-hero {
+  display: grid;
+  grid-template-columns: 292px 1fr;
+  gap: 26px;
+  align-items: center;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.coach-hero-art {
+  position: relative;
+  border: 1px solid rgba(120, 160, 220, 0.16);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 80% at 50% 12%, rgba(0, 212, 255, 0.08), transparent 62%),
+    rgba(6, 10, 20, 0.42);
+  padding: 6px 4px 0;
+  overflow: hidden;
+}
+.coach-hero-art svg.is-hero { width: 100%; height: auto; max-height: 300px; }
+
+.hero-form-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 42px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--sc-primary, #7ee1ff);
+  text-shadow: 0 0 18px currentColor;
+}
+
+.hero-forms-btn {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgba(6, 10, 20, 0.72);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.hero-forms-btn:hover { color: var(--cyan); border-color: rgba(0, 212, 255, 0.6); }
+
+.coach-hero-txt .kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.coach-empty .coach-hero-txt h2 { margin: 0 0 6px; font-size: 22px; }
+.coach-hero-txt .form-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.coach-hero-txt .form-whisper {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-left: 2px solid rgba(120, 160, 220, 0.3);
+  padding-left: 10px;
+  margin: 0 0 10px;
+}
+.coach-hero-txt p { font-size: 13.5px; line-height: 1.75; color: var(--text-secondary); margin: 0 0 10px; }
+.coach-hero-txt .unlock-line {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  border-top: 1px dashed rgba(120, 160, 220, 0.22);
+  padding-top: 10px;
+}
+.coach-hero-txt .unlock-line b { color: var(--cyan); }
+
+/* ── 形象谱系（图鉴）───────────────────────────────────── */
+.coach-gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 4, 9, 0.78);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  padding: 3vh 2vw;
+}
+.coach-gallery.show { opacity: 1; visibility: visible; }
+
+.gallery-box {
+  width: min(1240px, 96vw);
+  height: min(880px, 92vh);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(120, 160, 220, 0.2);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 70% at 82% 0%, rgba(0, 212, 255, 0.07), transparent 60%),
+    linear-gradient(180deg, #080d18, #060911);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  transform: translateY(10px) scale(0.99);
+  transition: transform var(--transition-normal);
+}
+.coach-gallery.show .gallery-box { transform: none; }
+
+.gallery-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.gallery-head h2 { margin: 0; font-size: 17px; letter-spacing: 0.02em; }
+.gallery-sub { margin-top: 5px; font-size: 12px; color: var(--text-muted); }
+.gallery-sub b { color: var(--cyan); }
+.gallery-close {
+  margin-left: auto;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border-glow);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.gallery-close:hover { color: var(--red); border-color: rgba(248, 81, 73, 0.5); }
+
+.gallery-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+}
+
+.gallery-grid {
+  overflow-y: auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 12px;
+  align-content: start;
+  min-height: 0;
+}
+.gallery-grid::-webkit-scrollbar { width: 8px; }
+.gallery-grid::-webkit-scrollbar-thumb { background: #1c2432; border-radius: 4px; }
+
+.gallery-card {
+  /* button 默认是 inline-block，做网格项时内容盒会缩到最小内容宽度，
+     中文会被逐字挤成竖排（「已显化」竖成三行）。所以这里显式改成块级弹性列。 */
+  display: flex;
+  flex-direction: column;
+  /* 必须显式写 stretch：Chrome 的 UA 样式给 button 定了 align-items:center，
+     不覆盖的话每行子元素都会缩成 fit-content 宽度，
+     结果「星尘童儿」被截成「星尘童…」、「凡尘 · 第 0 境」折成两行。 */
+  align-items: stretch;
+  position: relative;
+  padding: 8px 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.018);
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  transition: var(--transition-fast);
+  overflow: hidden;
+}
+.gallery-card:hover { border-color: rgba(0, 212, 255, 0.4); background: rgba(0, 212, 255, 0.05); }
+.gallery-card.is-focus { border-color: rgba(0, 212, 255, 0.6); box-shadow: var(--shadow-glow-cyan); }
+.gallery-card.is-current::after {
+  content: '当前';
+  position: absolute;
+  top: 8px; right: 8px;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(0, 212, 255, 0.16);
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  color: var(--cyan);
+}
+.gallery-card.is-locked { opacity: 0.78; }
+.gallery-card.is-locked:hover { opacity: 1; }
+
+.scg-art { height: 132px; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+.scg-art svg { width: 100%; height: 100%; }
+.scg-meta { margin-top: 6px; width: 100%; }
+.scg-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0; }
+/* 这两行别用 nowrap：截断成「凡尘 · 第 0…」比折成两行难读得多 */
+.scg-realm,
+.scg-state { letter-spacing: 0; word-break: keep-all; line-height: 1.45; }
+.scg-name { font-size: 13px; font-weight: 700; color: var(--sc-primary, #e6edf3); }
+.scg-realm { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.scg-state { font-size: 10.5px; color: var(--text-muted); margin-top: 4px; }
+.scg-lock {
+  position: absolute;
+  bottom: 10px; right: 8px;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border-glow);
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.gallery-detail {
+  border-left: 1px solid var(--border-subtle);
+  padding: 16px 18px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.16);
+  min-height: 0;
+}
+.gallery-detail::-webkit-scrollbar { width: 8px; }
+.gallery-detail::-webkit-scrollbar-thumb { background: #1c2432; border-radius: 4px; }
+
+.detail-art { max-height: 260px; display: flex; justify-content: center; overflow: hidden; }
+.detail-art svg { width: auto; height: 260px; max-width: 100%; }
+.detail-art.is-locked { filter: saturate(0.08) brightness(0.95); }
+
+.detail-body { margin-top: 12px; }
+.detail-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; }
+.detail-body h3 { margin: 6px 0 4px; font-size: 19px; }
+.detail-title { font-size: 12.5px; color: var(--text-secondary); }
+.detail-body blockquote {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--sc-primary, #00d4ff);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 8px 8px 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.detail-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.detail-meta span {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-glow);
+  color: var(--text-muted);
+}
+.detail-note { font-size: 12.5px; color: var(--text-muted); line-height: 1.7; }
+.detail-note.ok { color: var(--green); }
+.detail-note b { color: var(--cyan); }
+.detail-go {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #00d4ff, #6fd6ff);
+  color: #04121c;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ── 小屏 ─────────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .gallery-body { grid-template-columns: 1fr 320px; }
+}
+
+@media (max-width: 860px) {
+  .coach-scene-figure { width: 96vw; right: -14vw; opacity: 0.22; }
+  body[data-scene="full"] .coach-scene-figure { opacity: 0.34; }
+  .coach-hero { grid-template-columns: 1fr; gap: 16px; }
+  .coach-hero-art { max-width: 262px; margin: 0 auto; }
+  .coach-hero-art svg.is-hero { max-height: 236px; }
+  .gallery-body { grid-template-columns: 1fr; }
+  .gallery-detail { border-left: none; border-top: 1px solid var(--border-subtle); }
+  .detail-art { max-height: 190px; }
+  .detail-art svg { height: 190px; }
+  .hero-form-name { bottom: 40px; }
+}
+
+/* ── 减少动态效果：把所有法相动画停掉，只留静态画面 ────── */
+@media (prefers-reduced-motion: reduce) {
+  .sc-ring, .sc-halo, .sc-rays, .sc-mote, .sc-shard, .sc-guide-star, .sc-holo,
+  .sc-ribbon, .sc-holo-bars path, .sc-dissolve, .sc-eye-star, .sc-void-ring,
+  .sc-void-core, .sc-float-crown, .sc-halo-ring, .sc-visor-band, .sc-star-orbit,
+  .sc-orbiter, .sc-sun-rays, .sc-sun-disc,
+  .sc-core-bloom, .sc-core-corona, .sc-core-disc, .sc-core-fil, .sc-core-swirl,
+  .sc-core-ray, .sc-core-pulse, .sc-core-sat, .sc-core-limb, .sc-ground-glow,
+  .sc-ground-ring, .sc-spark, .sc-robot-eye, .sc-figure {
+    animation: none !important;
+  }
+  /* 静态帧下脉冲环停在"刚扩散"的一档，否则它们全会停在 opacity:0 上，
+     等于这颗核少了最外层的轮廓 */
+  .sc-core-pulse { opacity: 0.3; transform: scale(1); }
+  .sc-core-bloom, .sc-core-corona { opacity: 0.8; }
+}

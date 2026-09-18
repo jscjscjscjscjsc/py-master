@@ -27,6 +27,7 @@ os.environ.setdefault('ARK_API_KEY', 'test-key')
 
 import app as A  # noqa: E402
 import coach_engine as coach  # noqa: E402
+import game_engine as game  # noqa: E402
 import training_engine as training  # noqa: E402
 
 TEST_USER = '__selftest__'
@@ -259,6 +260,60 @@ def main():
     data = client.post('/api/complete-kp', json={'chapter_id': '5', 'kp_index': 0}).get_json()
     check('同一知识点不重复加分', data.get('awarded') == 0)
 
+    section('8b. 修行阁：装备 / 试炼 / 战力')
+    data = client.get('/cultivation')
+    check('修行阁页面可访问', data.status_code == 200 and '修行阁' in data.get_data(as_text=True))
+    data = client.get('/api/game/state').get_json()
+    check('修行阁数据可用', data.get('success'), str(data)[:200])
+    check('等级表含 0 级共 31 行', len(data['levels']) == training.MAX_LEVEL + 1,
+          str(len(data['levels'])))
+    check('十境法相齐全', len(data['realms']) == 10 and all(r['art'].get('primary') for r in data['realms']))
+    check('每级都有神功', all(lv['skill']['name'] for lv in data['levels']))
+    check('装备都写了解锁方式', data['equipment'] and all(e['hint'] for e in data['equipment']))
+    check('战力拆解自洽', sum(p['value'] for p in data['power']['parts']) == data['power']['total'],
+          str(data['power']))
+    check('攻略给出下一步与心法', bool(data['guide']['steps']) and bool(data['guide']['tips']))
+
+    # 规则表与统计口径不能脱节：改了统计字段名而没改规则表的话，
+    # 装备会永远解不开、试炼会永远 0%——这条断言专门拦这种静默失效。
+    stats_keys = set(data['stats'])
+    missing = sorted({e['metric'] for e in data['equipment'] if e['metric'] not in stats_keys}
+                     | {o['metric'] for t in data['trials'] for o in t['objectives']
+                        if o['metric'] not in stats_keys})
+    check('装备/试炼引用的统计量都存在', not missing, str(missing))
+    check('试炼覆盖十境', [t['realm'] for t in game.TRIALS] == [r for r, _ in training.REALMS])
+    check('神功覆盖 0~30 级', set(game.SKILLS) == set(range(training.MAX_LEVEL + 1)))
+
+    # 满星通关一道较难题：这是「刷难题解锁装备」的主路径
+    hard = next((q for q in _BANK if q.get('difficulty') == 3 and q.get('solution')), None)
+    if hard:
+        client.post('/api/training/judge', json={'question_id': hard['id'], 'cells': [hard['solution']]})
+        data = client.get('/api/game/state').get_json()
+        lens = next(e for e in data['equipment'] if e['id'] == 'lens_hard')
+        check('较难题满星解锁「猎难之瞳」', lens['unlocked'], str(lens))
+        check('较难题满星计入较难满星数', data['stats']['stars3_hard'] >= 1,
+              str(data['stats']['stars3_hard']))
+
+    # 试炼：凑齐炼气期三条（通关过题 / 3 个知识点 / 有过满星）后应自动结算，且只发一次
+    for i in range(3):
+        client.post('/api/complete-kp', json={'chapter_id': '5', 'kp_index': i})
+    before = client.get('/api/cultivation/profile').get_json()['profile']['points']
+    data = client.get('/api/game/state').get_json()
+    granted = {t['realm']: t['reward'] for t in data['granted_trials']}
+    check('达成条件后试炼自动结算', '炼气期' in granted, str(data['granted_trials']))
+    after = client.get('/api/cultivation/profile').get_json()['profile']['points']
+    check('试炼奖励是真加分', after > before, f'{before} -> {after}')
+    check('试炼奖励金额与规则表一致', granted.get('炼气期') ==
+          next(t['reward'] for t in game.TRIALS if t['realm'] == '炼气期'), str(granted))
+    empty = client.get('/api/game/state').get_json()['granted_trials']
+    check('试炼奖励不重复发放', empty == [], str(empty))
+    claimed = next(t for t in data['trials'] if t['realm'] == '炼气期')
+    check('试炼状态标记为已通过', claimed['claimed'] and claimed['done'], str(claimed)[:160])
+    profile = client.get('/api/cultivation/profile').get_json()['profile']
+    check('等级条带上战力与试炼进度', profile.get('power', 0) > 0 and profile.get('trial'),
+          str(profile.get('trial'))[:160])
+    check('等级条带上境界法印', bool((profile.get('art') or {}).get('glyph')))
+
     section('9. 星辰教练：会话管理')
     data = client.get('/api/coach/sessions').get_json()
     check('会话列表可用', data.get('success') and data['sessions'] == [], str(data)[:160])
@@ -376,9 +431,25 @@ def main():
 
     section('13. 页面可访问')
     for path, name in [('/coach', '教练页'), ('/training', '刷题页'), ('/progress', '仪表盘页'),
-                       ('/dashboard', '主页')]:
+                       ('/dashboard', '主页'), ('/intro', '开场 CG 页')]:
         response = client.get(path)
         check(f'{name}返回 200', response.status_code == 200, str(response.status_code))
+
+    # 开场 CG 的进出场规则：第一次打开先看片，看过就直接进站。
+    # 这两条坏了的表现是"每次启动都被拦一次片头"，体感很差。
+    fresh = A.app.test_client()
+    check('首次打开先播开场 CG',
+          fresh.get('/').headers.get('Location', '').endswith('/intro'),
+          fresh.get('/').headers.get('Location', ''))
+    seen = A.app.test_client()
+    seen.set_cookie('pymaster_intro', '1')
+    check('看过之后直接进站',
+          seen.get('/').headers.get('Location', '').endswith('/dashboard'),
+          seen.get('/').headers.get('Location', ''))
+    done = A.app.test_client().get('/intro/done')
+    check('片尾出口会记下"已看过"',
+          'pymaster_intro=' in (done.headers.get('Set-Cookie') or ''),
+          done.headers.get('Set-Cookie', ''))
 
     section('14. 背景音乐')
     audio_dir = os.path.join(ROOT, 'static', 'audio')
@@ -406,6 +477,10 @@ def main():
     data = guest.get('/api/cultivation/profile').get_json()
     check('游客修为为 0 且标记 guest',
           data['profile']['points'] == 0 and data['profile'].get('is_guest'))
+    data = guest.get('/api/game/state').get_json()
+    check('游客能看修行阁（不落盘）',
+          data.get('success') and data.get('is_guest') and data['power']['total'] == 0
+          and data['granted_trials'] == [], str(data.get('granted_trials')))
     data = guest.post('/api/coach/chat', json={'question': '你好'})
     check('游客可以聊天（不保存）', len(sse_text(data)) > 10)
 

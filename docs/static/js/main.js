@@ -277,7 +277,8 @@ async function openAccountPanel() {
   if (!current || !me) {
     body.innerHTML = '<div style="text-align:center;padding:26px 10px;color:var(--text-muted);">' +
       '当前是游客模式，账号数据不会保存。<br><br>' +
-      '<a class="btn btn-primary" style="display:inline-block;padding:8px 18px;border-radius:8px;" href="/login">去注册 / 登录</a></div>';
+      '<a class="btn btn-primary" style="display:inline-block;padding:8px 18px;border-radius:8px;" href="/login">去注册 / 登录</a><br><br>' +
+      '<a href="/intro?ch=0" style="color:var(--cyan);text-decoration:none;font-size:13px;">▶ 重看开场 CG</a></div>';
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     return;
@@ -354,6 +355,13 @@ async function openAccountPanel() {
   addRow.href = '/login';
   addRow.innerHTML = '<span class="user-avatar">＋</span><span>新建 / 登录其它账号</span>';
   body.appendChild(addRow);
+
+  // 开场 CG 的常驻入口：想再看一遍不用去翻地址栏
+  const replayRow = document.createElement('a');
+  replayRow.className = 'account-row';
+  replayRow.href = '/intro?ch=0';
+  replayRow.innerHTML = '<span class="user-avatar">▶</span><span>重看开场 CG</span>';
+  body.appendChild(replayRow);
 
   const out = document.createElement('button');
   out.className = 'account-btn account-danger';

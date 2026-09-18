@@ -158,12 +158,15 @@ const Coach = {
 
   renderEmpty() {
     if (!this.el.inner) return;
+    // 有法相数据时，空态就是「教练站在你面前自我介绍」：
+    // 左边是它这一境的样子，右边是它想跟你说的话。
+    const hero = window.CoachScene && CoachScene.heroHtml ? CoachScene.heroHtml() : '';
     this.el.inner.innerHTML = `
       <div class="coach-empty">
-        <div class="avatar-lg" style="font-size:38px">🌟</div>
+        ${hero || `<div class="avatar-lg" style="font-size:38px">🌟</div>
         <h2>我是 JJ老师，你的星辰教练</h2>
         <p>问我 Python 与 AI 的任何问题。我讲完一定会反问你一个问题——
-           因为真正的理解，发生在你开口回答的那一刻。</p>
+           因为真正的理解，发生在你开口回答的那一刻。</p>`}
         <div class="prompt-cards">
           <div class="prompt-card" data-q="列表和元组到底该用哪个？有什么区别？"><b>列表 vs 元组</b>什么时候该用哪个？</div>
           <div class="prompt-card" data-q="什么是装饰器？能不能用生活里的例子解释一下"><b>装饰器是什么</b>用生活例子讲一遍</div>
@@ -179,6 +182,7 @@ const Coach = {
         this.el.input.focus();
       });
     });
+    if (window.CoachScene && CoachScene.bindHero) CoachScene.bindHero(this.el.inner);
   },
 
   esc(text) {

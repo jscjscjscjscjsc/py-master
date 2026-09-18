@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster · 开场</title>
+<link rel="stylesheet" href="static/css/intro_cg.css">
+<script src="static/js/static_mode.js"></script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="cg-body" data-no-music-dock
+      data-next="/intro/done"
+      data-static="1">
+
+<div id="cg-root">
+
+  <!-- 层次 0-1：星云 / 有机苔藓 / WebGL / 水波 / 暗角 / 噪点 -->
+  <div class="cg-nebula"></div>
+  <canvas id="cg-webgl"></canvas>
+  <div class="cg-moss"></div>
+  <canvas id="cg-water"></canvas>
+  <div class="cg-vignette"></div>
+  <div class="cg-grain"></div>
+
+  <!-- ============ 章节内容 ============ -->
+  <div class="cg-stage" id="cg-stage">
+
+    <!-- 00 溯源 -->
+    <section class="cg-sec" data-ch="0" data-name="溯源" data-en="Origin">
+      <div class="cg-inner cg-narrow">
+        <div class="cg-kicker cg-anim"><i></i>Prologue · 溯源</div>
+        <h2 class="cg-title cg-anim"><span class="cg-num">1989</span><span class="cg-cn">一个人的圣诞假期</span></h2>
+        <p class="cg-lede cg-anim">
+          阿姆斯特丹的冬天，一位程序员想找点事做，好打发圣诞假期。
+          他动手写了一个解释器，取名 <b>Python</b> —— 不是因为喜欢蛇，
+          而是因为他迷一档叫《蒙提·派森的飞行马戏团》的喜剧。
+        </p>
+        <div class="cg-term cg-anim">
+          <div class="cg-term-bar"><span></span><span></span><span></span><em>python 0.9.0 — 1991</em></div>
+          <div class="cg-term-body">
+            <div><span class="p">&gt;&gt;&gt;</span> <span class="k">import</span> this</div>
+            <div><span class="c">The Zen of Python, by Tim Peters</span></div>
+            <div><span class="c">Beautiful is better than ugly.</span></div>
+            <div><span class="p">&gt;&gt;&gt;</span> <span class="cg-caret"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 禅 -->
+    <section class="cg-sec" data-ch="1" data-name="禅" data-en="The Zen">
+      <div class="cg-inner cg-wide">
+        <div class="cg-kicker cg-anim"><i></i>Chapter 01 · 禅</div>
+        <h2 class="cg-title cg-anim" style="font-size:clamp(28px,3.9vw,64px)">
+          <span class="cg-num">19</span> 条信条，<span style="color:var(--cg-cyan)">一条蛇的信仰</span>
+        </h2>
+        <div class="cg-zen" id="cg-zen">
+          <div class="cg-zen-row" data-i="0"><span class="n">01</span><span class="cn">优美胜于丑陋</span><span class="en">Beautiful is better than ugly.</span></div>
+          <div class="cg-zen-row" data-i="1"><span class="n">02</span><span class="cn">明了胜于晦涩</span><span class="en">Explicit is better than implicit.</span></div>
+          <div class="cg-zen-row" data-i="2"><span class="n">03</span><span class="cn">简洁胜于复杂</span><span class="en">Simple is better than complex.</span></div>
+          <div class="cg-zen-row" data-i="3"><span class="n">04</span><span class="cn">扁平胜于嵌套</span><span class="en">Flat is better than nested.</span></div>
+          <div class="cg-zen-row" data-i="4"><span class="n">05</span><span class="cn">可读性很重要</span><span class="en">Readability counts.</span></div>
+          <div class="cg-zen-row" data-i="5"><span class="n">06</span><span class="cn">错误绝不该悄悄溜过</span><span class="en">Errors should never pass silently.</span></div>
+          <div class="cg-zen-row" data-i="6"><span class="n">07</span><span class="cn">面对歧义，拒绝猜测的诱惑</span><span class="en">Refuse the temptation to guess.</span></div>
+          <div class="cg-zen-row" data-i="7"><span class="n">08</span><span class="cn">现在胜于从不</span><span class="en">Now is better than never.</span></div>
+        </div>
+        <div class="cg-note cg-anim">PEP 20 · 把鼠标停在文字上，让它们被水冲一下</div>
+      </div>
+    </section>
+
+    <!-- 02 龟叔 -->
+    <section class="cg-sec" data-ch="2" data-name="龟叔" data-en="The Creator">
+      <div class="cg-inner cg-narrow">
+        <div class="cg-kicker cg-anim"><i></i>Chapter 02 · 龟叔</div>
+        <h2 class="cg-title cg-anim" style="font-size:clamp(30px,3.5vw,58px)">Guido van Rossum<span class="cg-cn">Python 之父 · 终身仁慈独裁者</span></h2>
+        <p class="cg-lede cg-anim">
+          他做过一个决定：这门语言要为人服务，而不是为机器。
+          三十多年后，这个决定的复利兑现了 ——
+          从运维脚本到<code>神经网络</code>，Python 成了把想法变成现实的公共语言。
+        </p>
+        <div class="cg-facts cg-anim">
+          <div class="cg-fact"><b>1956</b>生于荷兰哈勒姆</div>
+          <div class="cg-fact"><b>1991</b>发布 Python 0.9.0</div>
+          <div class="cg-fact"><b>1997</b>起担任 BDFL</div>
+          <div class="cg-fact"><b>2019</b>加入微软，主攻 CPython 提速</div>
+        </div>
+      </div>
+      <div class="cg-holo" aria-hidden="true">
+        <div class="cg-holo-frame"></div>
+        <div class="cg-holo-tag t">SUBJECT · G. van ROSSUM</div>
+        <div class="cg-holo-tag b">SCAN 4.20 — BIO 100%</div>
+        <div class="cg-scanline"></div>
+      </div>
+    </section>
+
+    <!-- 03 大竞赛 -->
+    <section class="cg-sec" data-ch="3" data-name="大竞赛" data-en="The Race">
+      <div class="cg-inner cg-wide">
+        <div class="cg-kicker cg-anim"><i></i>Chapter 03 · 大竞赛</div>
+        <h2 class="cg-title cg-anim" style="font-size:clamp(28px,3.7vw,62px)">
+          人工智能的赛道上，<br><span style="color:var(--cg-green)">它先到了终点</span>
+        </h2>
+        <p class="cg-lede cg-anim" style="max-width:52em">
+          大模型改写了编程语言的需求结构：数据处理、训练编排、评测可视化 ——
+          每一环都长在 Python 的生态上。点开卡片看数据出处。
+        </p>
+        <div class="cg-deck-wrap cg-anim">
+          <div class="cg-deck" id="cg-deck">
+            <article class="cg-card" tabindex="0" data-hot="1">
+              <div class="cg-card-top"><span>RANKING</span><span class="cg-card-badge">NO.1</span></div>
+              <h4>TIOBE 指数</h4>
+              <div class="cg-card-metric">23.8%<small>历史最高份额区间</small></div>
+              <p>2024 年度编程语言。份额从 2019 年的 8% 一路抬升到 20% 以上。</p>
+              <div class="cg-card-more">TIOBE 官方把「年度语言」给了 Python，理由是它在几乎所有领域都在涨，包括历史上被 C/C++ 牢牢占住的高性能场景。</div>
+              <div class="cg-card-hint">点击展开 · TIOBE Index</div>
+            </article>
+            <article class="cg-card" tabindex="0" data-hot="1">
+              <div class="cg-card-top"><span>ECOSYSTEM</span><span class="cg-card-badge">NO.1</span></div>
+              <h4>GitHub Octoverse</h4>
+              <div class="cg-card-metric">第 1<small>首次超过 JavaScript</small></div>
+              <p>2024 年度报告里，Python 成为 GitHub 上使用最多的语言，占据了开源世界的头名。</p>
+              <div class="cg-card-more">这份榜单统计的是真实提交量。Python 的登顶由两股力量推动：AI/数据科学的爆发，以及大量非科班开发者用 Python 入场。</div>
+              <div class="cg-card-hint">点击展开 · GitHub Octoverse</div>
+            </article>
+            <article class="cg-card" tabindex="0" data-hot="1">
+              <div class="cg-card-top"><span>SURVEY</span><span class="cg-card-badge">51%</span></div>
+              <h4>开发者调查</h4>
+              <div class="cg-card-metric">第一<small>使用率榜首</small></div>
+              <p>Stack Overflow 年度调查中，Python 稳居最常用与最想学的语言前列。</p>
+              <div class="cg-card-more">「想学」比「在用」更能说明趋势：每年新入行的开发者里，选 Python 当第一门语言的比例仍在上升。</div>
+              <div class="cg-card-hint">点击展开 · Stack Overflow Survey</div>
+            </article>
+            <article class="cg-card" tabindex="0" data-hot="1">
+              <div class="cg-card-top"><span>AI STACK</span><span class="cg-card-badge">默认</span></div>
+              <h4>AI 框架的事实接口</h4>
+              <div class="cg-card-metric">Python<small>一等公民</small></div>
+              <p>PyTorch / TensorFlow / JAX / Hugging Face——第一接口全部是 Python。</p>
+              <div class="cg-card-more">这不是巧合：科学计算社区几十年的积累（NumPy、SciPy、pandas）让 Python 成了「算法到产品」最短的那条路径。</div>
+              <div class="cg-card-hint">点击展开 · 生态事实</div>
+            </article>
+            <article class="cg-card" tabindex="0" data-hot="1">
+              <div class="cg-card-top"><span>CAREER</span><span class="cg-card-badge">硬通货</span></div>
+              <h4>招聘市场的通行证</h4>
+              <div class="cg-card-metric">1 门<small>先学它就够</small></div>
+              <p>AI 岗位的 JD 里，Python 几乎是唯一不会缺席的技能项。</p>
+              <div class="cg-card-more">先把一门语言学到能交付，比同时开五门语言更有复利。Python 的语法足够小，省下的时间正好用来补算法与工程。</div>
+              <div class="cg-card-hint">点击展开 · 岗位观察</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 04 启程 -->
+  <div class="cg-final" id="cg-final">
+    <div class="cg-giant">
+      <i>P</i><i>Y</i><i>M</i><i>A</i><i>S</i><i>T</i><i>E</i><i>R</i>
+    </div>
+    <p class="cg-final-sub">
+      读懂禅，认识写它的人，看清它站在哪里 —— 接下来，把它变成你手上的能力。<br>
+      39 章课程、400 个知识点、256 道刷题、星辰教练与等级体系，都在等你。
+    </p>
+    <div class="cg-enter-row">
+      <a class="cg-btn" id="cg-enter" href="#" role="button">进入 PyMaster <span class="cg-btn-key">↵</span></a>
+      <button class="cg-btn ghost" id="cg-replay" type="button">↺ 重看一遍</button>
+    </div>
+  </div>
+
+  <!-- ============ HUD ============ -->
+  <header class="cg-hud">
+    <div class="cg-mark">
+      <span class="cg-sigil">🐍</span>
+      <span>PYMASTER</span>
+      <span class="cg-mark-sub">/ 开场 · PROLOGUE</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="cg-pill" id="cg-sound" type="button" title="环境音">SOUND ON</button>
+      <button class="cg-pill" id="cg-skip" type="button">跳过片头 <span aria-hidden="true">↗</span></button>
+    </div>
+  </header>
+
+  <nav class="cg-rail" id="cg-rail" aria-label="章节导航">
+    <div class="cg-rail-line"><i id="cg-rail-fill"></i></div>
+    <!-- 章节按钮由 intro_cg.js 生成 -->
+  </nav>
+
+  <footer class="cg-foot">
+    <span class="cg-chap-count"><b id="cg-chap">00</b> / 04 · <span id="cg-chap-name">溯源</span></span>
+    <span class="cg-scroll-cue" id="cg-cue">滚动 · 拖动 · ←→ 键 <i></i></span>
+    <span>PyMaster · 2026</span>
+    <div class="cg-foot-bar"><i id="cg-foot-fill"></i></div>
+  </footer>
+
+  <div class="cg-cursor" id="cg-cursor"></div>
+  <div class="cg-cursor-dot" id="cg-cursor-dot"></div>
+
+  <!-- ============ 加载层 ============ -->
+  <div class="cg-loader" id="cg-loader">
+    <div class="cg-loader-mark">PYMASTER PROLOGUE</div>
+    <div class="cg-loader-bar"><i id="cg-load-bar"></i></div>
+    <div class="cg-loader-tip" id="cg-load-tip">正在生成星云…</div>
+  </div>
+
+</div>
+
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/intro_cg.js"></script>
+</body>
+</html>

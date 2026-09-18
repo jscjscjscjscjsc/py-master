@@ -17,7 +17,8 @@
     '/playground': 'playground.html',
     '/canvas': 'canvas.html',
     '/stars': 'stars.html',
-    '/update': 'update.html'
+    '/update': 'update.html',
+    '/intro': 'intro.html'
   };
   // 这些页面依赖后端才有意义，在线站不导出
   var BACKEND_ONLY = {

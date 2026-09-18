@@ -20,10 +20,15 @@
     <button class="wb-tab" data-mode="exam">实战模式</button>
   </div>
   <div class="wb-right">
+    <a class="wb-link" href="/cultivation">修行阁</a>
     <a class="wb-link" href="/coach">星辰教练</a>
     <a class="wb-link" href="/progress">学习仪表盘</a>
     <a class="wb-link" href="/dashboard">返回主页</a>
-    <span class="wb-link" id="whoami" style="cursor:default">👤 {{ username }}</span>
+    <span class="wb-link" id="whoami" style="cursor:default">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.7" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px">
+        <circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20 C5.6 16.4 8.4 14.6 12 14.6 C15.6 14.6 18.4 16.4 19.5 20"/>
+      </svg>{{ username }}</span>
   </div>
 </header>
 
@@ -50,6 +55,7 @@
 <script src="{{ url_for('static', filename='vendor/codemirror/addon/comment/comment.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ui_confirm.js') }}"></script>
 <script src="{{ url_for('static', filename='js/md_lite.js') }}"></script>
+<script src="{{ url_for('static', filename='js/portrait.js') }}"></script>
 <script src="{{ url_for('static', filename='js/cultivation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
 <script src="{{ url_for('static', filename='js/training.js') }}"></script>

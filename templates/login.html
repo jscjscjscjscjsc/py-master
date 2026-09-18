@@ -5,93 +5,111 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PyMaster — 登录</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<style>
-.local-hint{font-size:12.5px;color:var(--text-muted);text-align:center;margin:2px 0 10px}
-.local-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:16px}
-.local-card{display:flex;align-items:center;gap:9px;padding:8px 14px 8px 8px;border-radius:30px;
-  border:1px solid var(--border-subtle);background:var(--bg-card);cursor:pointer;transition:.15s}
-.local-card:hover{border-color:var(--cyan);transform:translateY(-1px)}
-.local-face{width:32px;height:32px;border-radius:50%;flex:none;display:flex;align-items:center;
-  justify-content:center;font-weight:700;font-size:14px;color:#08121b;overflow:hidden;
-  background:linear-gradient(135deg,#00d4ff,#2e6f68)}
-.local-face img{width:100%;height:100%;object-fit:cover}
-.local-name{font-size:14px;color:var(--text-primary);max-width:120px;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 </head>
 <body class="auth-page" data-no-music-dock>
 
-<div class="bg-grid"></div>
-<canvas id="particles-canvas"></canvas>
+<canvas id="auth-bg"></canvas>
+<div class="auth-veil"></div>
+<div class="auth-grain"></div>
 
-<div class="auth-container">
-  <div class="auth-logo">
-    <span class="logo-icon">🐍</span>
-    <h1>PyMaster</h1>
-    <p>Python 编程学习平台</p>
-  </div>
+<div class="auth-shell">
 
-  <div class="glass-card">
-    <!-- 本机已有账号：点头像直接切换，不用手打用户名 -->
-    <div id="local-accounts" style="display:none">
-      <div class="local-hint">这台电脑上的账号 · 点一下即可切换</div>
-      <div class="local-list" id="local-list"></div>
+  <!-- ══ 左：品牌区（窄屏隐藏） ══ -->
+  <section class="auth-showcase">
+    <div class="auth-brand">
+      <span class="sigil">🐍</span>
+      <span>PyMaster</span>
+      <span style="color:var(--a-faint)">/ Python 自学系统</span>
     </div>
 
-    <div class="auth-tabs">
-      <button class="auth-tab active" data-tab="login">登 录</button>
-      <button class="auth-tab" data-tab="register">注 册</button>
+    <h1 class="auth-mark">PY<span class="py">MASTER</span></h1>
+    <div class="auth-mark-sub">Learn Python · Build with AI</div>
+
+    <div class="auth-zen" id="auth-zen">
+      简洁胜于复杂
+      <em>Simple is better than complex.</em>
     </div>
 
-    <!-- Login Form -->
-    <form id="login-form" class="auth-form active">
-      <div class="input-group">
-        <span class="input-icon">👤</span>
-        <input type="text" id="login-username" placeholder="用户名" autocomplete="username" required>
-      </div>
-      <div class="input-group">
-        <span class="input-icon">🔒</span>
-        <input type="password" id="login-password" placeholder="密码" autocomplete="current-password" required>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">登 录</button>
-    </form>
+    <div class="auth-stats">
+      <div class="auth-stat"><b>39</b><span>章课程</span></div>
+      <div class="auth-stat"><b>400</b><span>个知识点</span></div>
+      <div class="auth-stat"><b>256</b><span>道题库</span></div>
+      <div class="auth-stat"><b>30</b><span>级修为</span></div>
+    </div>
 
-    <!-- Register Form -->
-    <form id="register-form" class="auth-form">
-      <div class="input-group">
-        <span class="input-icon">👤</span>
-        <input type="text" id="reg-username" placeholder="用户名（至少2个字符）" autocomplete="username" required minlength="2">
-      </div>
-      <div class="input-group">
-        <span class="input-icon">🔒</span>
-        <input type="password" id="reg-password" placeholder="密码（至少6个字符）" autocomplete="new-password" required minlength="6">
-      </div>
-      <div class="input-group">
-        <span class="input-icon">✅</span>
-        <input type="password" id="reg-password-confirm" placeholder="确认密码" autocomplete="new-password" required>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">注 册</button>
-    </form>
-  </div>
+    <div class="auth-showcase-foot">
+      <a class="auth-cg-btn" href="/intro?ch=0">▶ 观看开场 CG</a>
+      <span class="auth-hint-music">点击页面任意处开启背景音乐</span>
+    </div>
+  </section>
 
-  <div class="auth-footer">
-    开发人：JJ老师 &nbsp;|&nbsp; <a href="/admin/login" style="color:var(--purple);text-decoration:none;font-size:12px;">🔐 管理后台</a>
-  </div>
+  <!-- ══ 右：认证卡 ══ -->
+  <section class="auth-panel">
+    <div class="auth-box">
+      <div class="auth-box-head">
+        <h2 id="auth-title">欢迎回来</h2>
+        <p id="auth-sub">登录后学习记录、错题与修为都会保存在这台电脑上。</p>
+      </div>
+
+      <!-- 本机已有账号：点头像直接填好用户名，不用手打 -->
+      <div id="local-accounts" style="display:none">
+        <div class="local-hint">这台电脑上的账号 · 点一下即可切换</div>
+        <div class="local-list" id="local-list"></div>
+      </div>
+
+      <div class="auth-tabs" id="auth-tabs">
+        <button class="auth-tab active" data-tab="login" type="button">登 录</button>
+        <button class="auth-tab" data-tab="register" type="button">注 册</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form active">
+        <div class="input-group">
+          <span class="input-icon">👤</span>
+          <input type="text" id="login-username" placeholder="用户名" autocomplete="username" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="login-password" placeholder="密码" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">登 录</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" class="auth-form">
+        <div class="input-group">
+          <span class="input-icon">👤</span>
+          <input type="text" id="reg-username" placeholder="用户名（至少 2 个字符）" autocomplete="username" required minlength="2">
+        </div>
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="reg-password" placeholder="密码（至少 6 个字符）" autocomplete="new-password" required minlength="6">
+        </div>
+        <div class="input-group">
+          <span class="input-icon">✅</span>
+          <input type="password" id="reg-password-confirm" placeholder="确认密码" autocomplete="new-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">注 册</button>
+      </form>
+
+      <div class="auth-alt">
+        本机密码没有找回通道：把 <code style="font-family:var(--a-mono);font-size:11.5px;color:var(--a-cyan)">data/users.json</code>
+        里该账号的密码清空后重新注册即可，学习记录不会丢。
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      开发人：JJ老师 &nbsp;|&nbsp;
+      <a href="/intro?ch=4">重看开场</a> &nbsp;|&nbsp;
+      <a href="/admin/login">🔐 管理后台</a>
+    </div>
+  </section>
+
 </div>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/music_player.js') }}"></script>
-<script>
-document.addEventListener('click', function _mu() {
-  AmbientMusic.play();
-  document.removeEventListener('click', _mu);
-  document.removeEventListener('touchstart', _mu);
-});
-document.addEventListener('touchstart', function _mu2() {
-  AmbientMusic.play();
-  document.removeEventListener('click', _mu2);
-  document.removeEventListener('touchstart', _mu2);
-});
-</script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 </body>
 </html>

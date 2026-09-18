@@ -54,6 +54,7 @@ from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
 import narration_engine
 import training_engine as training
+import game_engine as game          # 修行阁：修为的成长系统（纯推导，不持有状态）
 import coach_engine as coach
 from pathlib import Path
 
@@ -277,8 +278,43 @@ def increment_daily_usage(username):
 
 @app.route('/')
 def index():
+    # 第一次打开（含从旧版本更新上来的用户）先走一遍开场 CG。
+    # 看过的标记放在 Cookie 里：换浏览器会再看一遍，这在单机版是可接受的，
+    # 而"每次启动都重放"才是真正会被嫌弃的行为。
+    if not request.cookies.get(INTRO_COOKIE):
+        return redirect(url_for('intro_page'))
     # 未登录也直接进入仪表盘（游客模式），保证GitHub页面可完整访问
     return redirect(url_for('dashboard'))
+
+
+# ── 开场引导 CG ────────────────────────────────────────────
+# 用户的第一次接触不是登录框，而是一部分钟左右的短片：Python 的来历、
+# Python 之禅、Guido 本人、以及 AI 时代它为什么是第一语言。
+# 放在此处还有一个作用：把"配置密钥"这类枯燥的第一次被推后到情绪被点燃之后。
+
+INTRO_COOKIE = 'pymaster_intro'
+
+
+@app.route('/intro')
+def intro_page():
+    return render_template('intro_cg.html',
+                           next_url=url_for('intro_done'),
+                           static_mode=False)
+
+
+@app.route('/intro/done')
+def intro_done():
+    """片尾出口：按当前状态决定去哪儿，并记下"开场已看过"。"""
+    if not ai_config_status()['configured']:
+        target = url_for('setup_wizard')
+    elif 'username' not in session:
+        target = url_for('login_page')
+    else:
+        target = url_for('dashboard')
+    resp = redirect(target)
+    resp.set_cookie(INTRO_COOKIE, '1', max_age=365 * 24 * 3600,
+                    samesite='Lax', httponly=True)
+    return resp
 
 
 @app.route('/login')
@@ -294,6 +330,9 @@ def login_page():
 
 SETUP_EXEMPT_PREFIXES = ('/setup', '/api/setup', '/static', '/login', '/api/login',
                          '/api/register', '/logout', '/favicon.ico', '/oauth',
+                         # 开场 CG 要在配置向导之前播，否则新用户见到的是
+                         # 一张要填密钥的表单，短片就没机会放了
+                         '/intro',
                          # 配置向导第一步要列出本机账号、第二步要设置头像，
                          # 这两个接口被重定向到 /setup 的话，向导自己就先坏了
                          '/api/accounts', '/api/avatar', '/avatar')
@@ -3451,11 +3490,12 @@ def _award_cultivation(username, reason, ref, amount, note=''):
         box.update({'awarded': awarded, 'before': before, 'after': after})
 
     training.mutate_state(username, mutate)
-    return {
+    settlement = {
         'awarded': box.get('awarded', 0),
         'profile': box.get('after') or training.level_from_points(0),
         'level_up': bool(box.get('after') and box.get('before') and box['after']['level'] > box['before']['level']),
     }
+    return _attach_game(settlement, username)
 
 
 def _profile(username):
@@ -3841,7 +3881,23 @@ def _settle_successful_run(username, question, cells, used_ai=False):
         box['settle'] = settle_result
         return True
     training.mutate_state(username, mutate)
-    return box.get('settle')
+    settle = box.get('settle')
+    _attach_game(settle, username)
+    return settle
+
+
+def _attach_game(settlement, username):
+    """给结算单补上修行阁的轻量字段（战力 / 新神功 / 装备数 / 试炼进度）。
+
+    这几十毫秒换来的是闭环的收口：刷完一道较难题，提示里能直接说出
+    「装备解锁 +1」「突破·得《栈帧筑基术》」，而不是只报一个分数。
+    """
+    if not settlement or username == 'guest':
+        return settlement
+    profile = settlement.get('profile') if isinstance(settlement, dict) else None
+    if isinstance(profile, dict):
+        profile.update(game.light_profile(training.load_state(username)))
+    return settlement
 
 
 @app.route('/api/training/draft', methods=['POST'])
@@ -3899,6 +3955,7 @@ def training_judge():
             return True
         training.mutate_state(username, mutate)
         settle = box.get('settle')
+        _attach_game(settle, username)
 
     return jsonify({'success': True, 'passed': bool(result.get('passed')),
                     'error': result.get('error', ''), 'stdout': result.get('detail', ''),
@@ -4170,6 +4227,67 @@ def progress_page():
                           is_guest=username == 'guest')
 
 
+# ── 修行阁：用户画像子系统 ─────────────────────────────────
+# 界面上的「修为等级」在这里长成一个完整的闭环：
+# 刷题/看讲解 → 修为 → 境界 → 神功与法相；较难题 → 装备；试炼全通 → 突破奖励。
+# 全部推导都写在 game_engine 里，app.py 只做三件事：取数、发奖、下发。
+
+@app.route('/cultivation')
+def cultivation_page():
+    username = _who()
+    return render_template('cultivation.html', username=username,
+                           is_guest=username == 'guest')
+
+
+@app.route('/api/game/state')
+def game_state():
+    """修行阁的全部数据。
+
+    顺手结算「已达成的境界试炼」——试炼是加分项，必须真发下去，
+    而发放走的是 training.award 的防重复账本，所以这个 GET 是幂等的：
+    刷新一百次也只发一次，符合条件的那一刻就会到账。
+    """
+    username = _who()
+    granted = []
+    if username != 'guest':
+        granted, _profile = game.claim_trials(username)
+    state = training.load_state(username) if username != 'guest' else {}
+    snap = game.snapshot(username, state)
+    snap['success'] = True
+    snap['is_guest'] = username == 'guest'
+    snap['granted_trials'] = [{'realm': realm, 'reward': reward} for realm, reward in granted]
+    return jsonify(snap)
+
+
+@app.route('/api/coach/forms')
+def coach_forms():
+    """星辰教练的形象谱系：当前显化的是哪一尊、下一尊差多少、十一尊各是什么样。
+
+    这个接口只读，不结算任何东西——聊天页每次打开时拉一次，
+    顺带把「刚解锁新形象」播报所需要的信息给全（current / next / forms）。
+    游客按 0 级算（凡尘的星尘童儿），照样能看到完整的谱系。
+    """
+    username = _who()
+    state = training.load_state(username) if username != 'guest' else {}
+    profile = training.level_from_points(state.get('points', 0))
+    level = profile['level']
+    forms = game.coach_form_table(level)
+    current = next((f for f in forms if f['current']), forms[0])
+    nxt = next((f for f in forms if not f['reached']), None)
+    return jsonify({
+        'success': True,
+        'is_guest': username == 'guest',
+        'user': username,
+        'level': level,
+        'realm': profile['realm'],
+        'profile': profile,
+        'art': game.coach_form_for(level),
+        'current': current,
+        'next': nxt,
+        'forms': forms,
+    })
+
+
 @app.route('/api/cultivation/profile')
 def cultivation_profile():
     username = _who()
@@ -4183,6 +4301,10 @@ def cultivation_profile():
         'attempted': len(attempts),
         'recent': list(reversed(state.get('log', [])))[:8],
     })
+    # 等级条上同时要显示战力与「这一境还差什么」——这两样由 game_engine 推导，
+    # 但它只算轻量部分（不算攻略选题），因为悬浮条在每个页面都会挂。
+    if username != 'guest':
+        profile.update(game.light_profile(state))
     return jsonify({'success': True, 'profile': profile})
 
 
@@ -4293,8 +4415,12 @@ def progress_overview():
         })
 
     profile = training.level_from_points(state.get('points', 0))
+    if username != 'guest':
+        # 仪表盘上的画像卡要用战力/试炼/法印，一并带上（轻量，不含攻略选题）
+        profile.update(game.light_profile(state))
     return jsonify({
         'success': True,
+        'user': username,          # 前端用它做画像的随机种子：同一个账号永远同一张脸
         'profile': profile,
         'totals': {
             'chapters': len(chapters),

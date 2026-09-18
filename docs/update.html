@@ -44,7 +44,21 @@ color:var(--tx2);font-size:13px;display:flex;justify-content:space-between;flex-
     <h1>PyMaster 教学平台 · 本次更新说明</h1>
     <p>PyMaster 教学平台 · 本次功能升级说明</p>
   </div>
-  <blockquote class="md-quote"><p>更新日期：2026-09-16 一句话概括：<strong>PyMaster 从「Python 基础语法演示 Demo」升级为「从零基础到 AI 应用开发的完整学习平台」， 并为每一个知识点配上了一节 5 分钟的 AI 图文讲解。</strong></p></blockquote>
+  <blockquote class="md-quote"><p>更新日期：2026-09-18（开场 CG 与全新登录页） 上一次：2026-09-16（39 章课程与 AI 图文讲解，见本文后半部分）</p></blockquote>
+<h2 class="md-h">一、打开就能看到一部开场短片</h2>
+<p>以前双击启动脚本，浏览器打开后直接是仪表盘；现在会先放一部约一分钟的 <strong>开场引导 CG</strong>，讲清楚三件事：Python 从哪来、Python 之禅是什么、 以及为什么在 AI 竞赛的当下，Python 值得你花时间。</p>
+<p>五幕结构：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>幕</th><th>主题</th><th>画面</th></tr></thead><tbody><tr><td>00</td><td><strong>溯源</strong></td><td>1989 年圣诞，阿姆斯特丹；Python 标志由粒子聚合成形</td></tr><tr><td>01</td><td><strong>禅</strong></td><td>Python 之禅 19 条信条，像碑林一样向远处铺开、逐条点亮</td></tr><tr><td>02</td><td><strong>龟叔</strong></td><td>Guido van Rossum 的全息点云像，扫描环上下扫过</td></tr><tr><td>03</td><td><strong>大竞赛</strong></td><td>语言排行榜的 3D 天际线 + 五张可点开的数据卡片</td></tr><tr><td>04</td><td><strong>启程</strong></td><td>巨型 PYMASTER 字标与向心星流，转入平台</td></tr></tbody></table></div>
+<p><strong>可以跳过</strong>：右上角「跳过片头」、或者直接按 <code class="md-inline">Esc</code>。 <strong>只看一次</strong>：看过之后再打开就直接进平台，不会每次都放。 <strong>想看第二遍</strong>：登录页左下角、以及登录后点右上角头像，都有「重看开场 CG」。</p>
+<h2 class="md-h">二、这场 CG 是能上手玩的，不是一段视频</h2>
+<p>它不是预渲染的视频文件，是浏览器里实时跑的 3D 场景 —— 所以你可以动手：</p>
+<ul><li><strong>滚轮 / 拖动 / 方向键</strong>推进剧情，松手有惯性；也可以放着不管，它会像电影一样自动往下走，你一动它就交还控制权</li><li><strong>右侧竖直章节导航</strong>：滚动时高亮自动跟随，鼠标压到节点上会有水波扩散，点一下直接飞到那一幕</li><li><strong>水流触感</strong>：鼠标划过的地方，背景星云会被涟漪顶开，画面里会留下水面波纹</li><li><strong>横向 3D 卡片</strong>：第三幕的五张卡片会跟着指针倾斜，点开时卡片向前伸出、其余卡片被推开，并伴随一圈冲击波</li><li><strong>环境音</strong>：程序实时合成的深海氛围垫音，点按、悬停、换幕各有一种水滴声（右上角可关）</li></ul>
+<blockquote class="md-quote"><p>技术说明：用本地自带的 three.js 实时渲染，<strong>不联网、无外部素材</strong>。 没有 WebGL 的老机器会自动降级成 2D 版，文字与交互照常，短片照样看得完。</p></blockquote>
+<h2 class="md-h">三、登录页重新设计</h2>
+<p>原来的登录页是一张深色卡片加两个 emoji 图标，模板味比较重。现在换成：</p>
+<ul><li><strong>左侧品牌区</strong>：巨型 PYMASTER 字标、轮播的 Python 之禅、平台数据一览（39 章 / 400 知识点 / 256 题 / 30 级修为）</li><li><strong>右侧认证卡</strong>：登录与注册改为滑动分段切换，输入框有聚焦光晕，密码可以点小眼睛查看明文</li><li><strong>本机账号</strong>直接摆成一排头像，点一下自动填好用户名，不用手打</li><li>整页背景与开场 CG 同一套视觉语言（深海底色 + 有机孢子 + 星野视差），点哪儿哪儿起涟漪</li></ul>
+<p>登录、注册、本机账号切换、头像上传这些功能一个都没变，只是换了一身皮。</p>
+<blockquote class="md-quote"><p>一句话概括：<strong>PyMaster 从「Python 基础语法演示 Demo」升级为「从零基础到 AI 应用开发的完整学习平台」， 并为每一个知识点配上了一节 5 分钟的 AI 图文讲解。</strong></p></blockquote>
 <h2 class="md-h">一、更新前 vs 更新后</h2>
 <div class="md-table-wrap"><table class="md-table"><thead><tr><th></th><th>更新前</th><th>更新后</th></tr></thead><tbody><tr><td>课程规模</td><td>9 章 Python 基础语法</td><td><strong>39 章 / 400 个知识点</strong></td></tr><tr><td>内容范围</td><td>语法入门</td><td>基础语法 → 软件工程 → 全栈开发 → <strong>大模型应用与 Agent 开发</strong></td></tr><tr><td>练习题库</td><td>少量内置选择题</td><td><strong>212 道教材原题，全部带参考答案与解析</strong></td></tr><tr><td>每章思维导图</td><td>手工维护</td><td>由知识点结构<strong>自动生成</strong></td></tr><tr><td>知识点讲解</td><td>角色对白气泡（纯文字，1–2 分钟）</td><td><strong>5 分钟图文讲解</strong>：配图 + 讲义 + 字幕 + 口播</td></tr><tr><td>讲解制作方式</td><td>人工预写</td><td><strong>AI 生产流水线</strong>，可持续批量扩充</td></tr><tr><td>在线演示</td><td>仅页面截图</td><td><strong>可实际播放的在线演示站</strong>（GitHub Pages）</td></tr></tbody></table></div>
 <h2 class="md-h">二、三大核心升级</h2>

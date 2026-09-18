@@ -46,6 +46,8 @@ STATIC_HTML_REPLACEMENTS = {
     'href="/canvas"': 'href="canvas.html"',
     'href="/stars"': 'href="stars.html"',
     "window.location.href='/canvas'": "window.location.href='canvas.html'",
+    # 开场 CG 在静态站上也要能播完：把它的出口从后端路由换成导出的首页
+    'data-static="0"': 'data-static="1"',
 }
 
 # 章节互链要带 .html 后缀（/chapter/12 → chapter-12.html），
@@ -241,6 +243,7 @@ def build(samples=8):
 
     client = pymaster.app.test_client()
     write_page(client, '/dashboard', 'index.html')
+    write_page(client, '/intro', 'intro.html')
     write_page(client, '/stars', 'stars.html')
     write_page(client, '/canvas', 'canvas.html')
     write_page(client, '/playground', 'playground.html')
