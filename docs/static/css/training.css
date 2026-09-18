@@ -5,10 +5,10 @@
 body.workbench-page {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(1100px 420px at 82% -8%, rgba(0, 212, 255, 0.07), transparent 62%),
-    radial-gradient(900px 380px at 4% 4%, rgba(163, 113, 247, 0.07), transparent 60%),
-    #05070f;
+  /* 底色交给全站氛围层（atmosphere.js）去画：这里再铺一层不透明的 #05070f
+     会把它整层盖住 —— 表现就是"氛围做了但看不见"，修行阁的暖墨绢本
+     更是会直接变成一块死黑的板子。这两团冷色辉光同理，它们和绢本打架。 */
+  background: transparent;
   color: var(--text-primary);
   font-family: var(--font-sans);
 }

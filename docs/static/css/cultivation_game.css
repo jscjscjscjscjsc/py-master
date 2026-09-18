@@ -833,3 +833,175 @@ body.cultivation-page {
   .scroll-head .title { font-size: 23px; letter-spacing: 0.3em; }
   .scroll-head .sub { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   泥金佛字（标题文字质感）
+   ------------------------------------------------------------
+   要解决的问题：卷轴上原来那套标题是「浅色小字 + 字距」，压在暖色底上
+   会发虚 —— 因为浅色细笔画和浅色底之间没有墨骨，眼睛抓不住轮廓。
+
+   泥金的规矩正好相反：**墨为骨、金为肉**。先描一层深墨把轮廓钉死，
+   再让金色只从笔画的边缘和转角透出来（multiple text-shadow 做内金外焦），
+   最后压一层极淡的斜向高光条，模拟金箔的反光。
+
+   不引任何字体文件与图片：靠多层 shadow + background-clip 就能做出金箔，
+   断网环境一样成立。
+   ══════════════════════════════════════════════════════════ */
+
+:root {
+  --gold-1: #f7e3a1;   /* 高光处 */
+  --gold-2: #d9b45c;   /* 本色 */
+  --gold-3: #a67c28;
+  --gold-4: #6d4f16;   /* 焦边 */
+  --ink-bone: #1a1206; /* 墨骨 */
+}
+
+/* 金字通用做法：金色渐变 + 多层阴影定轮廓 */
+.pm-gold {
+  color: var(--gold-2);
+  background-image: linear-gradient(178deg,
+    var(--gold-1) 0%, var(--gold-2) 26%, #fff4cc 42%,
+    var(--gold-2) 58%, var(--gold-3) 82%, var(--gold-4) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    /* 第一圈：贴骨的金边 */
+    0 0 1px rgba(109, 79, 22, 0.9),
+    0 1px 0 rgba(109, 79, 22, 0.55),
+    /* 外扩：暖光晕，模拟金箔反光 */
+    0 0 14px rgba(217, 180, 92, 0.30),
+    0 0 34px rgba(166, 124, 40, 0.16);
+  filter: drop-shadow(0 1px 1px rgba(20, 12, 4, 0.55));
+}
+
+/* 章段标题（神功 / 装备 / 试炼 …） */
+.cult-section-head h2.pm-gold {
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  font-size: 21px;
+}
+/* 金字在浅色纸面上要收一点光，否则会"糊" */
+@media (prefers-color-scheme: light) {
+  .pm-gold { filter: none; }
+}
+
+/* 法相名号：修行阁里最大的一处字，用最完整的金箔 */
+.cult-title .name.pm-gold {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  padding-right: 6px;
+}
+
+/* 神功名（《指针吐纳诀》这种） */
+.skill-card .nm.pm-gold {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 7px 0 4px;
+}
+/* 未解锁的功法：**名字仍然上金**，只是换成暗哑的青铜金。
+   这一片"功法名录"是修行阁的门面，全灰掉就没有庄重感了；
+   而且新账号 0 修为时 30 张卡全是锁着的 —— 全灰等于整页都糊。
+   用明度区分状态（当前最亮 / 已得次之 / 未得最暗），而不是开关金色。 */
+.skill-card.is-locked .nm.pm-gold {
+  background-image: linear-gradient(178deg,
+    #b9a068 0%, #9b8352 32%, #c3ad78 48%, #93794a 66%, #6f5c33 88%, #4a3d22 100%);
+  text-shadow:
+    0 0 1px rgba(58, 44, 20, 0.85),
+    0 1px 0 rgba(30, 22, 10, 0.6);
+  filter: none;
+}
+/* 未解锁整卡不再整体降到 0.62（那会把名字一起洗白），
+   改为只压装饰部分 —— 名字与术语保持可读 */
+.skill-card.is-locked { opacity: 1; }
+.skill-card.is-locked .lv,
+.skill-card.is-locked .tm { opacity: 0.62; }
+.skill-card.is-locked .stamp { opacity: 0.55; }
+
+/* 装备名、地图地名也用同一套，但字号小一档，光晕收窄 */
+.equip-card .nm.pm-gold,
+.cult-map-node .nm.pm-gold {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+}
+
+/* ── 顺带修的：卡片上的小字发虚 ────────────────────────
+   原来 .lv / .tm 用的是通用灰（偏冷），压在暖色绢底上既不够分量
+   也读不清。换成带暖调的墨色，并给足对比。 */
+.skill-card .lv {
+  color: #8a7a5e;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+}
+.skill-card .tm {
+  color: #9c8b6c;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  line-height: 1.7;
+}
+.skill-card {
+  background: linear-gradient(165deg, rgba(38, 31, 22, 0.55), rgba(22, 18, 13, 0.42));
+  border-color: rgba(180, 152, 104, 0.16);
+}
+.skill-card:hover {
+  background: linear-gradient(165deg, rgba(48, 39, 27, 0.7), rgba(28, 22, 16, 0.55));
+  border-color: rgba(200, 168, 112, 0.34);
+}
+/* 金色只留给"当前"那一境；已得的用暗一点的香槟金，未得的保持素色 */
+.skill-card.is-current {
+  border-color: rgba(217, 180, 92, 0.5);
+  box-shadow: 0 0 0 1px rgba(217, 180, 92, 0.14), 0 8px 26px rgba(0, 0, 0, 0.3);
+}
+.skill-card.is-current .nm.pm-gold {
+  background-image: linear-gradient(178deg, #fff6d4 0%, #f0d489 30%, #fff8dd 46%, #e0bd6a 62%, #b98f34 88%, #7a5718 100%);
+}
+
+/* 装备名拆出来之后，槽位变成独立一行的小字，补上间距与颜色 */
+.equip-card .slot {
+  display: block;
+  margin: 3px 0 7px;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: #9c8b6c;
+}
+.equip-card .nm.pm-gold { display: block; }
+
+/* 法相名号：金色是本体，境界颜料色改从"外圈光晕"透出来 ——
+   这样字号再大也不会丢掉境界的辨识度。 */
+.cult-title .name.pm-gold {
+  filter:
+    drop-shadow(0 1px 1px rgba(20, 12, 4, 0.6))
+    drop-shadow(0 0 18px color-mix(in srgb, var(--pm-aura, #c9a961) 42%, transparent));
+}
+
+/* 修行地图的地名 */
+.cult-map-node .nm.pm-gold,
+.cult-map-node .node-name.pm-gold { font-family: var(--font-serif); font-weight: 650; }
+
+/* 卷轴上"当前/已得"的印章也一并金一下，但留朱砂那枚不动 */
+.skill-card.is-current .stamp {
+  color: var(--gold-2);
+  border-color: color-mix(in srgb, var(--gold-2) 55%, transparent);
+}
+
+/* 已得的功法：香槟金，比当前那档暗一点、不发光 */
+.skill-card:not(.is-locked):not(.is-current) .nm.pm-gold {
+  background-image: linear-gradient(178deg,
+    #ead9a6 0%, #d3b878 32%, #f0e2b8 48%, #c8a763 66%, #9c7c3c 88%, #6b5324 100%);
+  text-shadow:
+    0 0 1px rgba(90, 66, 24, 0.9),
+    0 1px 0 rgba(50, 36, 12, 0.55),
+    0 0 12px rgba(217, 180, 92, 0.2);
+}
+
+/* 右上角的修为徽章是绝对定位的，境界那行长文字会钻到它下面去
+   （「第 10 境 · 元婴期 · 初期」+「1510修为」就叠在一起）。
+   给首行留出徽章宽度，让它自然换行。 */
+.skill-card .lv { padding-right: 74px; }
+.skill-card .stamp { max-width: 68px; white-space: nowrap; }

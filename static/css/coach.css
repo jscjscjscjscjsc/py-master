@@ -4,7 +4,8 @@
 
 body.coach-page {
   margin: 0;
-  background: #05070f;
+  /* 底色交给全站氛围层：这里再铺不透明底会把星云整层盖掉 */
+  background: transparent;
   color: var(--text-primary);
   font-family: var(--font-sans);
   height: 100vh;
@@ -162,10 +163,9 @@ body.coach-page {
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  background:
-    radial-gradient(900px 380px at 78% -10%, rgba(0, 212, 255, 0.07), transparent 65%),
-    radial-gradient(700px 320px at 10% 0%, rgba(163, 113, 247, 0.07), transparent 60%),
-    #05070f;
+  /* 侧栏玻璃：底色交给氛围层，只留一点点冷调倾向 */
+  background: linear-gradient(180deg, rgba(8, 14, 26, 0.55), rgba(5, 9, 18, 0.42));
+  backdrop-filter: blur(10px);
 }
 
 .coach-head {

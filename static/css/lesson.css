@@ -1,0 +1,437 @@
+/* ============================================================
+   lesson.css — 教案正文的排版与代码区
+   ------------------------------------------------------------
+   为什么单独一份：style.css 里教案相关的规则横跨四个"主题层"
+   （卷轴版式、科技版式、最终覆盖层、浅色覆盖层），互相用 !important
+   压来压去。在这里统一收口，**只有这一份文件负责教案正文的样子**。
+
+   两个必须同时成立的目标：
+     1. 深色主题下，教案要压得住背景的氛围层，不能反过来被喧宾夺主
+     2. 浅色主题下，代码区、行内码、表格、引用块全都要重新给色 ——
+        原来这些区域在浅色主题里没有任何覆盖，深色底配深色字就是"看不清"
+
+   覆盖策略：选择器与 style.css 同等或更高，并且带 !important，
+   靠**文件加载顺序在后**取胜（模板里本文件接在 style.css 之后）。
+   ============================================================ */
+
+/* ── 变量：两种主题各一套 ─────────────────────────────── */
+body.chapter-page {
+  --ls-ink: #eaf4ff;
+  --ls-body: #b9cbe0;
+  --ls-dim: #7d93ab;
+  --ls-accent: #67e8f9;
+  --ls-accent-2: #9dff8a;
+  --ls-code-bg: #050d1a;
+  --ls-code-head: #0a1626;
+  --ls-code-border: rgba(103, 232, 249, 0.2);
+  --ls-code-text: #d7f7ff;
+  --ls-inline-bg: rgba(103, 232, 249, 0.1);
+  --ls-inline-text: #8be9ff;
+  --ls-quote-bg: rgba(103, 232, 249, 0.05);
+  --ls-quote-line: #67e8f9;
+  --ls-table-head: rgba(103, 232, 249, 0.09);
+  --ls-table-zebra: rgba(255, 255, 255, 0.022);
+  --ls-table-line: rgba(103, 232, 249, 0.14);
+  --ls-panel: rgba(6, 17, 32, 0.9);
+}
+
+html[data-theme="light"] body.chapter-page {
+  --ls-ink: #16233a;
+  --ls-body: #33506e;
+  --ls-dim: #6b7f95;
+  --ls-accent: #0d6b82;
+  --ls-accent-2: #2f6b3a;
+  /* 浅色主题的代码块走"纸上印字"而不是"深色小窗"：
+     白底页面上嵌一块深色小窗，字反而更看不清，而且和整页气质打架 */
+  --ls-code-bg: #f2f6fa;
+  --ls-code-head: #e5ecf4;
+  --ls-code-border: #c3d3e2;
+  --ls-code-text: #22364d;
+  --ls-inline-bg: rgba(13, 107, 130, 0.09);
+  --ls-inline-text: #0b5c70;
+  --ls-quote-bg: rgba(13, 107, 130, 0.05);
+  --ls-quote-line: #2f7f96;
+  --ls-table-head: #e6eef5;
+  --ls-table-zebra: rgba(19, 44, 71, 0.028);
+  --ls-table-line: #cfdde9;
+  --ls-panel: #ffffff;
+}
+
+/* ══════════ 正文基本盘 ══════════ */
+body.chapter-page .kp-body {
+  font-size: 15px;
+  line-height: 1.95;
+}
+
+/* 中文正文的舒适行宽：太宽眼睛找不到下一行，太窄读起来跳 */
+body.chapter-page .kp-body > p,
+body.chapter-page .kp-body > ul,
+body.chapter-page .kp-body > ol,
+body.chapter-page .kp-body > blockquote {
+  max-width: 74ch;
+}
+
+body.chapter-page .kp-body p,
+body.chapter-page .kp-body li,
+body.chapter-page .kp-body td,
+body.chapter-page .kp-body th {
+  color: var(--ls-body) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 15px;
+  line-height: 1.95;
+}
+
+body.chapter-page .kp-body strong {
+  color: var(--ls-ink) !important;
+  font-weight: 650;
+}
+
+body.chapter-page .kp-body em {
+  color: var(--ls-accent) !important;
+  font-style: normal;
+  border-bottom: 1px dashed color-mix(in srgb, var(--ls-accent) 45%, transparent);
+}
+
+body.chapter-page .kp-body a {
+  color: var(--ls-accent) !important;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--ls-accent) 40%, transparent);
+}
+
+/* ── 小标题：左侧一道竖笔，读起来像讲义而不是博客 ─────── */
+body.chapter-page .kp-body h3,
+body.chapter-page .kp-body .md-h {
+  position: relative;
+  margin: 34px 0 14px;
+  padding-left: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--ls-ink) !important;
+  font-family: var(--font-sans) !important;
+}
+body.chapter-page .kp-body h3::before,
+body.chapter-page .kp-body .md-h::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.28em; bottom: 0.28em;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--ls-accent), color-mix(in srgb, var(--ls-accent) 20%, transparent));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--ls-accent) 45%, transparent);
+}
+body.chapter-page .kp-body h3:first-child,
+body.chapter-page .kp-body .md-h:first-child { margin-top: 8px; }
+
+body.chapter-page .kp-body h4 {
+  margin: 24px 0 10px;
+  font-size: 16.5px;
+  font-weight: 650;
+  color: var(--ls-ink) !important;
+}
+
+/* ── 列表：换成小方标，比圆点更"讲义" ─────────────────── */
+body.chapter-page .kp-body ul,
+body.chapter-page .kp-body ol {
+  margin: 12px 0;
+  padding-left: 0;
+  list-style: none;
+}
+body.chapter-page .kp-body ul li,
+body.chapter-page .kp-body ol li {
+  position: relative;
+  margin: 9px 0;
+  padding-left: 24px;
+}
+body.chapter-page .kp-body ul li::before {
+  content: '';
+  position: absolute;
+  left: 5px; top: 0.72em;
+  width: 6px; height: 6px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  background: var(--ls-accent);
+  opacity: 0.75;
+}
+body.chapter-page .kp-body ol { counter-reset: lsol; }
+body.chapter-page .kp-body ol li { counter-increment: lsol; }
+body.chapter-page .kp-body ol li::before {
+  content: counter(lsol);
+  position: absolute;
+  left: 0; top: 0.24em;
+  width: 17px; height: 17px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: var(--ls-inline-bg);
+  color: var(--ls-accent);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* ── 行内代码 ────────────────────────────────────────── */
+body.chapter-page .kp-body code {
+  background: var(--ls-inline-bg) !important;
+  color: var(--ls-inline-text) !important;
+  border: 1px solid color-mix(in srgb, var(--ls-inline-text) 22%, transparent);
+  border-radius: 5px;
+  padding: 1.5px 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ══════════ 代码块 ══════════
+   教材 HTML 的结构是：
+     .md-codeblock[data-lang] > .md-codebar > .md-codelang + button.md-copy
+                              > pre > code.language-xxx
+     .md-figure > pre.md-diagram        （运行结果）
+   md_content.css 里对这些类都有样式，但选择器全都要求 .md-content 祖先，
+   而教案正文的容器是 .kp-body —— 对不上，所以一直是裸样式。
+   这里把同样的结构在 .kp-body 下重新给一遍。 */
+
+body.chapter-page .kp-body .md-codeblock {
+  margin: 20px 0;
+  border: 1px solid var(--ls-code-border);
+  border-radius: 12px;
+  background: var(--ls-code-bg);
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 30px rgba(0, 0, 0, 0.22);
+}
+html[data-theme="light"] body.chapter-page .kp-body .md-codeblock {
+  box-shadow: 0 6px 18px rgba(23, 45, 71, 0.09), inset 0 1px 0 #fff;
+}
+
+body.chapter-page .kp-body .md-codebar {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 10px 0 13px;
+  background: var(--ls-code-head);
+  border-bottom: 1px solid var(--ls-code-border);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  user-select: none;
+}
+/* 顶栏左侧三颗小圆点：一眼认出这是代码窗而不是普通段落 */
+body.chapter-page .kp-body .md-codebar::before {
+  content: '';
+  width: 8px; height: 8px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: rgba(255, 107, 107, 0.6);
+  box-shadow:
+    14px 0 0 rgba(255, 212, 59, 0.55),
+    28px 0 0 rgba(157, 255, 87, 0.5);
+}
+body.chapter-page .kp-body .md-codelang {
+  margin-left: 38px;
+  color: var(--ls-accent);
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+body.chapter-page .kp-body .md-copy {
+  margin-left: auto;
+  padding: 3px 11px;
+  border: 1px solid color-mix(in srgb, var(--ls-accent) 32%, transparent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ls-accent);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+body.chapter-page .kp-body .md-copy:hover {
+  background: color-mix(in srgb, var(--ls-accent) 16%, transparent);
+}
+body.chapter-page .kp-body .md-copy.done {
+  color: var(--ls-accent-2);
+  border-color: color-mix(in srgb, var(--ls-accent-2) 48%, transparent);
+}
+body.chapter-page .kp-body .md-copy.fail {
+  color: #ff9b8a;
+  border-color: rgba(255, 155, 138, 0.48);
+}
+
+/* 代码块本体 */
+body.chapter-page .kp-body .md-codeblock pre,
+body.chapter-page .kp-body pre {
+  margin: 0;
+  padding: 15px 18px;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+  overflow-x: auto;
+}
+body.chapter-page .kp-body .md-codeblock code,
+body.chapter-page .kp-body pre code {
+  display: block;
+  background: none !important;
+  border: 0;
+  padding: 0;
+  color: var(--ls-code-text) !important;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.85;
+  white-space: pre;
+  tab-size: 4;
+}
+
+/* 运行结果 / 输出（.md-figure > pre.md-diagram）：和代码区分开 ——
+   它是"看到的结果"，不该和"要敲的代码"长得一样 */
+body.chapter-page .kp-body .md-figure {
+  margin: 16px 0;
+  border-left: 3px solid var(--ls-accent-2);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--ls-accent-2) 5%, var(--ls-code-bg));
+  border-top: 1px solid var(--ls-code-border);
+  border-right: 1px solid var(--ls-code-border);
+  border-bottom: 1px solid var(--ls-code-border);
+  overflow: hidden;
+}
+body.chapter-page .kp-body .md-diagram {
+  margin: 0;
+  padding: 14px 18px;
+  background: transparent;
+  border: 0;
+  color: var(--ls-code-text) !important;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* 代码块内的滚动条别太抢眼 */
+body.chapter-page .kp-body pre::-webkit-scrollbar { height: 9px; }
+body.chapter-page .kp-body pre::-webkit-scrollbar-track { background: transparent; }
+body.chapter-page .kp-body pre::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ls-accent) 26%, transparent);
+  border-radius: 6px;
+}
+
+/* ── 引用块：教材里的"常听到一句话"这类 ───────────────── */
+body.chapter-page .kp-body blockquote {
+  position: relative;
+  margin: 20px 0;
+  padding: 16px 20px 16px 48px;
+  background: var(--ls-quote-bg);
+  border: 1px solid color-mix(in srgb, var(--ls-quote-line) 20%, transparent);
+  border-left: 3px solid var(--ls-quote-line);
+  border-radius: 0 10px 10px 0;
+  color: var(--ls-body) !important;
+}
+body.chapter-page .kp-body blockquote::before {
+  content: '"';
+  position: absolute;
+  left: 14px; top: 2px;
+  font-family: Georgia, serif;
+  font-size: 46px;
+  line-height: 1;
+  color: var(--ls-quote-line);
+  opacity: 0.5;
+}
+body.chapter-page .kp-body blockquote p { margin: 6px 0; }
+body.chapter-page .kp-body blockquote p:first-child { margin-top: 0; }
+body.chapter-page .kp-body blockquote p:last-child { margin-bottom: 0; }
+
+/* ══════════ 表格 ══════════ */
+body.chapter-page .kp-body .md-table-wrap {
+  margin: 20px 0;
+  border: 1px solid var(--ls-table-line);
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+body.chapter-page .kp-body table,
+body.chapter-page .kp-body .md-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+body.chapter-page .kp-body th {
+  background: var(--ls-table-head) !important;
+  color: var(--ls-ink) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--ls-table-line) !important;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 650;
+  font-size: 13.5px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+body.chapter-page .kp-body td {
+  border: 0 !important;
+  border-bottom: 1px solid var(--ls-table-line) !important;
+  padding: 12px 16px;
+  vertical-align: top;
+}
+body.chapter-page .kp-body tbody tr:nth-child(even) { background: var(--ls-table-zebra); }
+body.chapter-page .kp-body tbody tr:last-child td { border-bottom: 0 !important; }
+body.chapter-page .kp-body tbody tr:hover { background: color-mix(in srgb, var(--ls-accent) 7%, transparent); }
+body.chapter-page .kp-body td code { white-space: nowrap; }
+
+/* ── 内嵌表格（没有 md-table-wrap 的兜底） ────────────── */
+body.chapter-page .kp-body > table {
+  border: 1px solid var(--ls-table-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ══════════ 其它常出现的块 ══════════ */
+body.chapter-page .kp-body hr {
+  border: 0;
+  height: 1px;
+  margin: 28px 0;
+  background: linear-gradient(90deg, transparent, var(--ls-table-line), transparent);
+}
+
+body.chapter-page .kp-body img {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--ls-table-line);
+}
+
+/* 教材里的提示块（若有） */
+body.chapter-page .kp-body .md-note,
+body.chapter-page .kp-body .tip {
+  margin: 18px 0;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: var(--ls-quote-bg);
+  border: 1px solid color-mix(in srgb, var(--ls-quote-line) 22%, transparent);
+}
+
+/* 代码块内的横向滚动条别太抢眼 */
+body.chapter-page .kp-body pre::-webkit-scrollbar { height: 9px; }
+body.chapter-page .kp-body pre::-webkit-scrollbar-track { background: transparent; }
+body.chapter-page .kp-body pre::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ls-accent) 26%, transparent);
+  border-radius: 6px;
+}
+
+/* ══════════ 浅色主题下页面其余部分的对齐 ══════════
+   氛围层在浅色主题里会自己换成"纸面材质"（见 atmosphere.js 的 paper 主题），
+   所以这里不再压它的透明度 —— 压暗只会把白纸变成灰泥。
+   暗角与噪点仍然收一点，纸面上不需要那么重的暗角。 */
+html[data-theme="light"] .atm-vignette { opacity: 0.3; }
+html[data-theme="light"] .atm-grain { opacity: 0.028; }
+
+/* 窄屏：代码块和表格别撑破 */
+@media (max-width: 640px) {
+  body.chapter-page .kp-body { font-size: 14.5px; }
+  body.chapter-page .kp-body pre { padding: 40px 14px 14px; border-radius: 10px !important; }
+  body.chapter-page .kp-body pre code { font-size: 12.5px; }
+  body.chapter-page .kp-body h3,
+  body.chapter-page .kp-body .md-h { font-size: 18px; }
+}

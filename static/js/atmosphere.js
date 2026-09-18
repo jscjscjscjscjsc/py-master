@@ -103,6 +103,31 @@
       intensity: 0.8,
       nebA: 0.85, nebB: 0.45,
     },
+    // 纸面：浅色主题专用。深色星云压在浅色页面上只会变成一层灰绿的泥，
+    // 所以浅色模式换一套底 —— 米白宣纸 + 极淡的暖灰晕 + 少量浮尘，
+    // 和深色模式是"两种材质"，不是同一张图调亮度。
+    paper: {
+      base: '#eef2f7',
+      clouds: [
+        [0.18, 0.22, 0.62, '198,214,232', 0.55],
+        [0.84, 0.34, 0.58, '214,206,232', 0.42],
+        [0.52, 0.90, 0.64, '186,206,226', 0.46],
+        [0.08, 0.76, 0.52, '224,214,198', 0.34],
+      ],
+      clumps: 22,
+      snow: 380,
+      starHues: ['150,172,200', '168,158,198', '140,180,176'],
+      starCount: 120,
+      spores: 30,
+      sporeHues: ['188,204,224', '206,196,222', '196,212,206'],
+      glow: '178,200,224',
+      glowAlpha: 0.16,
+      rippleHue: '112,148,186',
+      rippleAlt: '150,132,186',
+      drift: 0.6,
+      intensity: 0.9,
+      nebA: 0.9, nebB: 0.5,
+    },
     // 工作台：刷题 / 教练 / 仪表盘。只留极暗的底和稀疏星点，别抢注意力
     workbench: {
       base: '#05070c',
@@ -127,7 +152,13 @@
     },
   };
 
+  function isLightTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light';
+  }
+
   function pickTheme() {
+    // 浅色主题优先：这一套材质和深色的不是一回事，不能靠调透明度凑
+    if (isLightTheme()) return 'paper';
     const explicit = (document.body.dataset.atm || '').trim();
     if (THEMES[explicit]) return explicit;
     const cls = document.body.className || '';
@@ -136,8 +167,9 @@
     return 'abyss';
   }
 
-  const THEME_KEY = pickTheme();
-  const T = THEMES[THEME_KEY];
+  let THEME_KEY = pickTheme();
+  let T = THEMES[THEME_KEY];
+  const BASE_THEME = THEME_KEY;   // 深色下的本页主题，切回深色时用它
   document.body.dataset.atm = THEME_KEY;
 
   /* ══════════ 画布与图层 ══════════ */
@@ -227,9 +259,9 @@
   }
 
   let nebulaA = null, nebulaB = null;
-  const starSprites = T.starHues.map((h) => buildGlowSprite(h, 32));
-  const sporeSprites = T.sporeHues.map((h) => buildGlowSprite(h, 96));
-  const pointerGlow = buildGlowSprite(T.glow, 256);
+  let starSprites = T.starHues.map((h) => buildGlowSprite(h, 32));
+  let sporeSprites = T.sporeHues.map((h) => buildGlowSprite(h, 96));
+  let pointerGlow = buildGlowSprite(T.glow, 256);
 
   /* ══════════ 元素 ══════════ */
   let stars = [], spores = [], ripples = [];
@@ -271,10 +303,31 @@
     canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rebuildArt();
+  }
+
+  /** 按当前主题重建配色相关的素材与元素（切主题 / 首次初始化都走它） */
+  function rebuildArt() {
+    starSprites = T.starHues.map((h) => buildGlowSprite(h, 32));
+    sporeSprites = T.sporeHues.map((h) => buildGlowSprite(h, 96));
+    pointerGlow = buildGlowSprite(T.glow, 256);
     nebulaA = buildNebula(640, 400);
     nebulaB = buildNebula(360, 240);
     buildStars();
     buildSpores();
+  }
+
+  /** 深浅主题切换时换材质；这是"两种材质"，不是同一张图调亮度 */
+  function applyTheme() {
+    const next = pickTheme();
+    if (next === THEME_KEY) return;
+    THEME_KEY = next;
+    T = THEMES[next];
+    document.body.dataset.atm = next;
+    // 重新开始时不要从"深色慢慢淡入"，直接给成片
+    intro = 1;
+    rebuildArt();
+    draw();
   }
 
   /* ══════════ 水波 ══════════ */
@@ -490,6 +543,10 @@
 
   document.addEventListener('visibilitychange', () => { paused = document.hidden; });
 
+  // 主题开关在 main.js 里，它只改 html[data-theme]；这里跟着换材质。
+  // 轮询而不是 MutationObserver：属性变化极低频，轮询更省心也更便宜。
+  setInterval(applyTheme, 400);
+
   resize();
   // 先在低亮度下画一帧，避免刚打开时闪一下纯黑
   draw();
@@ -497,9 +554,10 @@
 
   // 给外部留的口子：切主题、手动炸水波
   window.PyMasterAtmosphere = {
-    theme: THEME_KEY,
+    get theme() { return THEME_KEY; },
     ripple: addRipple,
     shock: shockwave,
     redraw: draw,
+    applyTheme: applyTheme,
   };
 })();

@@ -82,3 +82,11 @@ body[data-atm="nebula"] .atm-grain { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .atm-grain { animation: none; }
 }
+
+/* ── 浅色（纸面）主题 ──────────────────────────────────
+   纸面不需要深色那套"把视线收进中央"的重暗角，收得太狠白纸会发灰。 */
+html[data-theme="light"] .atm-vignette {
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 46%, rgba(120, 138, 160, 0.16) 88%, rgba(110, 128, 152, 0.26) 100%);
+}
+html[data-theme="light"] .atm-grain { opacity: 0.03; }

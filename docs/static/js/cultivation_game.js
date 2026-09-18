@@ -88,7 +88,7 @@ const CultivationGame = {
       <div class="cult-hero-body">
         <div class="cult-kicker">SHENSHI PORTRAIT / ${this.esc(art.realm)}</div>
         <div class="cult-title">
-          <span class="name" style="color:${art.primary}">${this.esc(p.name)}</span>
+          <span class="name pm-gold" style="--pm-aura:${art.aura}">${this.esc(p.name)}</span>
           <span class="realm-tag" style="color:${art.primary}">第 ${p.level} / ${p.max_level} 境</span>
         </div>
         <div class="cult-whisper">${this.esc(art.whisper || '')}</div>
@@ -134,7 +134,7 @@ const CultivationGame = {
       .sort((a, b) => a.tier - b.tier);
     return `
     <section class="cult-section">
-      <div class="cult-section-head"><h2>境界试炼</h2><span class="rule"></span>
+      <div class="cult-section-head"><h2 class="pm-gold">境界试炼</h2><span class="rule"></span>
         <span class="sub">每个大境界三条目标，全达成给一次突破奖励</span></div>
       <div class="cult-trials">
         ${rows.map((t) => `
@@ -164,7 +164,7 @@ const CultivationGame = {
     const levels = d.levels;
     return `
     <section class="cult-section">
-      <div class="cult-section-head"><h2>神功</h2><span class="rule"></span>
+      <div class="cult-section-head"><h2 class="pm-gold">神功</h2><span class="rule"></span>
         <span class="sub">每升一级得一式，名字就是这段路要练的计算机功夫</span></div>
       <div class="skill-grid">
         ${levels.filter((lv) => lv.level > 0).map((lv) => `
@@ -172,7 +172,7 @@ const CultivationGame = {
                data-level="${lv.level}" style="--pm-primary:${lv.primary}">
             <div class="lv">${this.sigil(this.realmGlyph(d, lv.realm), null, { size: 16, className: 'pm-sigil' })}
               第 ${lv.level} 境 · ${this.esc(lv.name)}</div>
-            <div class="nm">《${this.esc(lv.skill.name)}》</div>
+            <div class="nm pm-gold">《${this.esc(lv.skill.name)}》</div>
             <div class="tm">${this.esc(lv.skill.term)}</div>
             ${lv.reached ? `<span class="stamp">${lv.current ? '当前' : '已得'}</span>`
               : `<span class="stamp" style="color:var(--text-muted)">${lv.need} 修为</span>`}
@@ -190,14 +190,14 @@ const CultivationGame = {
     const unlocked = d.equipment.filter((e) => e.unlocked).length;
     return `
     <section class="cult-section">
-      <div class="cult-section-head"><h2>装备</h2><span class="rule"></span>
+      <div class="cult-section-head"><h2 class="pm-gold">装备</h2><span class="rule"></span>
         <span class="sub">已解锁 ${unlocked} / ${d.equipment.length} 件 · 多数靠「满星通关较难题」解锁</span></div>
       <div class="equip-grid">
         ${d.equipment.map((e) => `
           <div class="equip-card ${e.unlocked ? 'on' : ''}" style="${this.artStyle(d.art)}">
             ${e.unlocked ? '<span class="badge">已解锁</span>' : ''}
             <div class="glyph">${window.Portrait.icon(e.icon, { size: 26 })}</div>
-            <div class="nm">${this.esc(e.name)}<span class="slot">${this.esc(e.slot)}</span></div>
+            <div class="nm pm-gold">${this.esc(e.name)}</div><span class="slot">${this.esc(e.slot)}</span>
             <div class="hint">解锁方式：${this.esc(e.hint)}</div>
             ${e.unlocked
               ? `<div class="why">${this.esc(e.why || '')}</div>`
@@ -211,7 +211,7 @@ const CultivationGame = {
   mapHtml(d) {
     return `
     <section class="cult-section">
-      <div class="cult-section-head"><h2>修行地图</h2><span class="rule"></span>
+      <div class="cult-section-head"><h2 class="pm-gold">修行地图</h2><span class="rule"></span>
         <span class="sub">十境三十级 · 点任意一境可预览那一境的法相与神功</span></div>
       <div class="map-scroll">
         <div class="cult-map">
@@ -240,7 +240,7 @@ const CultivationGame = {
     const g = d.guide;
     return `
     <section class="cult-section">
-      <div class="cult-section-head"><h2>攻略</h2><span class="rule"></span>
+      <div class="cult-section-head"><h2 class="pm-gold">攻略</h2><span class="rule"></span>
         <span class="sub">按你现在的进度算出来的，不是写死的教程</span></div>
       <div class="guide-grid">
         <div class="guide-steps">

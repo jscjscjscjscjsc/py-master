@@ -21,6 +21,9 @@
 <script src="{{ url_for('static', filename='js/narration_player.js') }}"></script>
 <script>window.PYMASTER_TOTAL_CHAPTERS = {{ total_chapters|default(9) }};</script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
+<!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
+     这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
 </head>
 <body class="chapter-page" data-chapter-id="{{ chapter.id }}" data-chapter-title="{{ chapter.title|e }}" data-chapter-description="{{ chapter.description|e }}">
 
@@ -657,6 +660,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){ if (window.Cultivation) Cultivation.mount(); });
 </script>
+<script src="{{ url_for('static', filename='js/lesson.js') }}"></script>
 <script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

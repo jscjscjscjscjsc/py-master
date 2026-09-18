@@ -21,6 +21,9 @@
 <script src="static/js/narration_player.js"></script>
 <script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
+<!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
+     这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
+<link rel="stylesheet" href="static/css/lesson.css">
 <script src="static/js/static_mode.js"></script>
 <script>window.PYMASTER_STATIC = true;</script>
 </head>
@@ -1942,6 +1945,7 @@ def ask(payload: AskRequest):
 <script>
 document.addEventListener('DOMContentLoaded', function(){ if (window.Cultivation) Cultivation.mount(); });
 </script>
+<script src="static/js/lesson.js"></script>
 <script src="static/js/atmosphere.js"></script>
 </body>
 </html>

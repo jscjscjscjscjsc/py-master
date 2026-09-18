@@ -57,7 +57,7 @@
 }
 
 /* Deep-space restoration: one high-contrast surface for the learning workbench. */
-body.chapter-page, body.dashboard-page { background:#030611 !important; color:var(--text-primary) !important; }
+body.chapter-page, body.dashboard-page { background:transparent !important; color:var(--text-primary) !important; }
 body.chapter-page .bg-grid, body.dashboard-page .bg-grid { opacity:.22 !important; filter:none !important; background-image:linear-gradient(rgba(103,232,249,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(103,232,249,.05) 1px,transparent 1px) !important; }
 body.chapter-page .top-nav, body.dashboard-page .top-nav { background:rgba(3,6,17,.82) !important; border-bottom:1px solid rgba(103,232,249,.16) !important; backdrop-filter:blur(18px); }
 body.chapter-page .nav-brand, body.dashboard-page .nav-brand { color:#e8f6ff !important; font-family:var(--font-sans) !important; }
@@ -3489,7 +3489,9 @@ body.chapter-page .ink-next:hover { border-color: var(--chapter-jade) !important
 /* Final theme layer: keep both modes readable after legacy chapter rules. */
 body.chapter-page,
 body.dashboard-page {
-  background: #030611 !important;
+  /* 底色由全站氛围层负责（深色星云 / 浅色纸面）；这里只定文字色，
+     再铺不透明底会把整层氛围盖掉 —— 之前"氛围做了但看不见"就是这个原因 */
+  background: transparent !important;
   color: #eaf4ff !important;
   font-family: var(--font-sans) !important;
 }
@@ -3589,7 +3591,7 @@ body.dashboard-page .progress-label { color: #a9bdd7 !important; }
 body.dashboard-page .card-num { color: #67e8f9 !important; }
 
 html[data-theme="light"] body.chapter-page,
-html[data-theme="light"] body.dashboard-page { background: #edf3f8 !important; color: #17253a !important; }
+html[data-theme="light"] body.dashboard-page { background: transparent !important; color: #17253a !important; }
 html[data-theme="light"] body.chapter-page .top-nav,
 html[data-theme="light"] body.dashboard-page .top-nav { background: rgba(247,250,253,.96) !important; border-bottom-color: #c7d6e4 !important; }
 html[data-theme="light"] body.chapter-page .nav-brand,
