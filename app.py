@@ -333,17 +333,17 @@ def setup_test_connection():
     model = (data.get('model') or '').strip()
     api_key = (data.get('api_key') or '').strip()
 
-    if not base_url or not model or not api_key:
-        return jsonify({'success': False, 'message': '地址、模型名称、API Key 都要填'})
+    if not base_url or not model:
+        return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
     if not base_url.startswith(('http://', 'https://')):
         return jsonify({'success': False, 'message': '地址要以 http:// 或 https:// 开头'})
 
-    if api_key.startswith('****'):
-        # 用户没改密钥，沿用已保存的
-        saved = read_env_file().get('ARK_API_KEY', '')
-        if not saved:
-            return jsonify({'success': False, 'message': '请重新填写 API Key'})
-        api_key = saved
+    # 密钥那栏留空（或带着 **** 掩码）都表示"不改密钥"：界面上就是这么写的，
+    # 所以这里必须沿用已保存的那把，不能反过来要求用户重输一遍
+    if not api_key or api_key.startswith('****'):
+        api_key = read_env_file().get('ARK_API_KEY', '')
+        if not api_key:
+            return jsonify({'success': False, 'message': '请填写 API Key'})
 
     ok, message = test_ai_connection(base_url, model, api_key)
     return jsonify({'success': ok, 'message': message})
@@ -358,13 +358,13 @@ def setup_save_config():
     api_key = (data.get('api_key') or '').strip()
     fallback = (data.get('fallback') or '').strip()
 
-    if not base_url or not model or not api_key:
-        return jsonify({'success': False, 'message': '地址、模型名称、API Key 都要填'})
-    if api_key.startswith('****'):
-        saved = read_env_file().get('ARK_API_KEY', '')
-        if not saved:
-            return jsonify({'success': False, 'message': '请重新填写 API Key'})
-        api_key = saved
+    if not base_url or not model:
+        return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
+    # 同上：密钥留空表示沿用已保存的，只有一次都没配过才要求填
+    if not api_key or api_key.startswith('****'):
+        api_key = read_env_file().get('ARK_API_KEY', '')
+        if not api_key:
+            return jsonify({'success': False, 'message': '请填写 API Key'})
 
     status = apply_ai_config(base_url, model, api_key, fallback)
     return jsonify({
@@ -1443,8 +1443,11 @@ def test_ai_connection(base_url, model, api_key, timeout=20):
     payload = json.dumps({
         'model': model,
         'messages': [{'role': 'user', 'content': '请只回复两个字：可用'}],
-        'max_tokens': 16,
+        # 给足 64 个 token：推理模型会把预算先花在思考上，
+        # 只给 16 的话正文是空的，用户会以为"测试成功但没回复"是坏的
+        'max_tokens': 64,
         'temperature': 0,
+        'thinking': {'type': 'disabled'},
     }).encode('utf-8')
     # 头和 ArkClient 保持一致：部分网关会对非浏览器 UA 直接返回 403
     request = urllib.request.Request(url, data=payload, headers={
@@ -1456,8 +1459,11 @@ def test_ai_connection(base_url, model, api_key, timeout=20):
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
             result = json.loads(response.read().decode('utf-8'))
-        content = result['choices'][0]['message'].get('content', '')
-        return True, f'调用成功，模型回复：{content.strip()[:30]}'
+        content = (result['choices'][0]['message'].get('content') or '').strip()
+        if not content:
+            # 接口通了但模型没给正文（推理模型常见）：也算通过，别让人以为失败了
+            return True, '调用成功（接口通、鉴权对；模型这次没返回正文，不影响使用）'
+        return True, f'调用成功，模型回复：{content[:30]}'
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode('utf-8', 'ignore')[:160]
         hints = {
@@ -1466,7 +1472,13 @@ def test_ai_connection(base_url, model, api_key, timeout=20):
             404: '模型名称或接口地址不对',
             429: '请求过于频繁，或额度已用尽',
         }
-        return False, f'{hints.get(exc.code, "接口返回错误")}（HTTP {exc.code}）{detail}'
+        hint = hints.get(exc.code, '接口返回错误')
+        # 服务商把"模型不存在"也报成 401，照着 401 的提示去查 Key 会白折腾，
+        # 所以这里看一眼原文，能认出是模型名的问题就直接说
+        low = detail.lower()
+        if 'model' in low and any(word in low for word in ('not supported', 'not found', 'invalid', 'no permission')):
+            hint = '模型名称不对（服务商说这个模型不存在或没开通）'
+        return False, f'{hint}（HTTP {exc.code}）{detail}'
     except urllib.error.URLError as exc:
         return False, f'连不上这个地址：{exc.reason}。请检查 Base URL 和网络。'
     except (KeyError, IndexError, ValueError):

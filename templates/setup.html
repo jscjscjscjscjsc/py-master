@@ -246,6 +246,10 @@ details li{margin:5px 0}
         <button class="btn btn-main" id="btn-save" style="flex:1">保存并进入平台</button>
       </div>
       <div class="msg" id="msg-2"></div>
+      <div class="hint" style="text-align:center;margin-top:12px">
+        当前服务地址：<code id="cur-host">—</code>
+        <span style="opacity:.75">（配置只保存在这个地址对应的程序里；如果打不开或保存失败，先看它是不是你要用的那个）</span>
+      </div>
     </div>
 
     <!-- ── 第三步：完成 ── -->
@@ -313,6 +317,11 @@ details li{margin:5px 0}
       body: JSON.stringify(body)
     }).then(function (r) { return r.json(); });
   }
+
+  // 显示当前服务地址：同时开了多个副本时（比如解压了两份），
+  // 一眼能看出这个页面连的是哪一个，省得"配置保存了但打开的是另一个"
+  var hostEl = $('cur-host');
+  if (hostEl) { hostEl.textContent = location.host; }
 
   // ── 本机账号列表：有账号就先让人点头像，不用手打用户名 ──
   var picked = '';
@@ -454,7 +463,7 @@ details li{margin:5px 0}
       showMsg(box, res.success ? 'ok' : 'err', (res.success ? '✓ ' : '✗ ') + (res.message || ''));
     }).catch(function () {
       self.disabled = false; self.textContent = '测试连接';
-      showMsg(box, 'err', '测试请求失败，请检查网络或地址');
+      showMsg(box, 'err', '连不上本地服务（' + location.host + '）：请确认启动窗口还开着，再试一次。');
     });
   });
 
@@ -475,7 +484,11 @@ details li{margin:5px 0}
       step(3);
     }).catch(function () {
       self.disabled = false; self.textContent = '保存并进入平台';
-      showMsg(box, 'err', '保存失败，请重试');
+      // 走到这里说明根本没连上本地服务（不是服务端拒绝）。
+      // 最常见的情况：这个页面是旧标签页，指向的那个服务早就关了。
+      showMsg(box, 'err', '连不上本地服务（' + location.host +
+              '）。请确认启动 PyMaster 的那个黑色窗口还开着，' +
+              '然后刷新本页重试；如果你开了多个副本，注意地址是不是你要用的那个。');
     });
   });
 
