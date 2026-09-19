@@ -278,7 +278,10 @@ const Training = {
           </div>
         </div>
         <div class="q-statement">${this.md(q.statement)}</div>
-        ${q.needs_input ? `<textarea class="stdin-box" id="stdin-box" placeholder="这道题需要输入数据（input）——把要喂给程序的输入写在这里，每行一个"></textarea>` : ''}
+        <div id="stdin-wrap" ${q.needs_input ? '' : 'hidden'}>
+          <div class="stdin-head"><span>⌨ 测试输入</span><span class="stdin-tip">每行一个值，按顺序喂给 input()</span></div>
+          <textarea class="stdin-box" id="stdin-box" placeholder="例如：&#10;83.5&#10;100"></textarea>
+        </div>
         <div class="cells" id="cells"></div>
         <div class="q-toolbar">
           <button class="wb-btn tiny" id="cell-add">＋ 代码块</button>
@@ -427,8 +430,19 @@ const Training = {
     this.showOutput(index, parts.join('\n'), result.ok ? 'ok' : 'error');
   },
 
+  /** 任何一块代码里出现 input( 就露出测试输入框 ——
+   *  只按题库 needs_input 标记显示的话，学生自己写了 input() 仍然会撞 EOFError。 */
+  syncStdin() {
+    const wrap = document.getElementById('stdin-wrap');
+    if (!wrap) return;
+    const cells = (this.cells || []).join('\n');
+    const needs = /(?<![\w.])input\s*\(/.test(cells);
+    if (needs) wrap.hidden = false;
+  },
+
   async runCell(index) {
     if (this.busy) return;
+    this.syncStdin();
     const cells = this.syncCells();
     if (!(cells[index] || '').trim()) { this.showOutput(index, '<span class="meta">这一块还是空的</span>', ''); return; }
     this.showOutput(index, '<span class="meta">运行中…</span>', '');

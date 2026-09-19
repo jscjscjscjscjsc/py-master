@@ -569,11 +569,34 @@ function initCodeMirror() {
   codeMirrorEditor.on('change', () => {
     clearTimeout(codeExLintTimer);
     codeExLintTimer = setTimeout(runLintCheck, 800);
+    syncStdinVisibility();
   });
   // Fix: prevent delete/backspace from triggering browser back
   codeMirrorEditor.getInputField().addEventListener('keydown', e => {
     if (e.key === 'Backspace' || e.key === 'Delete') e.stopPropagation();
   });
+}
+
+
+/** 程序里出现 input( 就把「测试输入」框露出来。
+ *  不提前显示是怕吓到还没学到输入的那批人；
+ *  但一旦写了 input()，不填输入就会撞 EOFError —— 露出提示比让人猜要好。 */
+function syncStdinVisibility() {
+  const wrap = document.getElementById('code-ex-stdin-wrap');
+  if (!wrap || !codeMirrorEditor) return;
+  const needs = /(?<![\w.])input\s*\(/.test(codeMirrorEditor.getValue());
+  const wasHidden = wrap.hidden;
+  wrap.hidden = !needs;
+  if (needs && wasHidden) {
+    const box = document.getElementById('code-ex-stdin');
+    if (box && !box.value) box.placeholder = '每行一个值，例如 83.5 然后 100';
+  }
+}
+
+/** 把后端附带的"怎么改"提示渲染成一块醒目的说明 */
+function renderRunHint(data) {
+  if (!data || !data.hint) return '';
+  return '<div class="code-ex-hint">▶ ' + escapeHtml(data.hint) + '</div>';
 }
 
 async function runLintCheck() {
@@ -666,14 +689,15 @@ async function runCodeEx() {
   output.innerHTML = '<div style="color:var(--text-muted);">运行中...</div>';
 
   try {
+    const stdinBox = document.getElementById('code-ex-stdin');
     const res = await fetch('/api/run-code', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code, stdin: stdinBox ? stdinBox.value : '' })
     });
     const data = await res.json();
 
     if (data.success && data.exit_code === 0) {
-      output.innerHTML = '<div style="color:var(--green);">✅ 运行成功！\n\n' + escapeHtml(data.output) + '</div>';
+      output.innerHTML = '<div style="color:var(--green);">✅ 运行成功！\n\n' + escapeHtml(data.output) + '</div>' + renderRunHint(data);
       status.textContent = '⏳ AI评分中...';
       status.style.color = 'var(--cyan)';
 
@@ -741,9 +765,19 @@ async function runCodeEx() {
       }
     } else {
       let errMsg = data.error || data.output || '执行出错';
-      output.innerHTML = '<div style="color:var(--red);">❌ 执行失败\n\n' + escapeHtml(errMsg) + '</div>';
+      output.innerHTML = '<div style="color:var(--red);">❌ 执行失败\n\n'
+        + escapeHtml(errMsg) + '</div>'
+        + renderRunHint(data);
       status.textContent = '❌ 执行失败';
       status.style.color = 'var(--red)';
+      // 因为缺输入而失败的，直接把输入框摆出来并聚焦 —— 这一步很关键：
+      // 只写提示不摆框，学生会去找那个根本没出现的输入框。
+      if (data.needs_input || /EOFError|EOF when reading/.test(errMsg)) {
+        const wrap = document.getElementById('code-ex-stdin-wrap');
+        const box = document.getElementById('code-ex-stdin');
+        if (wrap) wrap.hidden = false;
+        if (box) box.focus();
+      }
     }
   } catch (err) {
     output.innerHTML = '<div style="color:var(--red);">❌ 网络错误: ' + err.message + '</div>';
@@ -1966,14 +2000,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (glyph) glyph.textContent = light ? '☀' : '☾';
     btn.setAttribute('aria-pressed', light ? 'true' : 'false');
   }
-  const saved = localStorage.getItem(KEY);
-  if (saved === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
+  // 浅色主题目前只在章节页与仪表盘完整实现（那两页才有主题开关）。
+  // 其它页面是深色设计，如果这里照样套上 data-theme=light，
+  // 就会出现"浅色代码编辑器 + 深色页面"这种半截状态 —— 比不改还糟。
+  function pageSupportsLight() {
+    const cls = document.body ? document.body.classList : null;
+    return !!cls && (cls.contains('chapter-page') || cls.contains('dashboard-page'));
   }
+  const saved = localStorage.getItem(KEY);
+  if (saved === 'light' && pageSupportsLight()) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else if (saved === 'light') {
+    // 在不支持的页面上把残留属性摘掉，免得 CSS 半套用
+    document.documentElement.removeAttribute('data-theme');
+  }
+  window.__pmPageSupportsLight = pageSupportsLight;
   window.setTimeout(paintThemeButton, 0);
 })();
 function toggleTheme() {
   const html = document.documentElement;
+  if (window.__pmPageSupportsLight && !window.__pmPageSupportsLight()) return;
   const isLight = html.getAttribute('data-theme') === 'light';
   if (isLight) {
     html.removeAttribute('data-theme');

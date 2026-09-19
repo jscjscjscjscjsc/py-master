@@ -73,9 +73,16 @@ body[data-atm="nebula"] .atm-grain { display: none; }
 .bg-grid,
 #particles-canvas { display: none !important; }
 
-/* 页面主容器要在氛围层之上 */
+/* 页面主容器要在氛围层之上。
+   canvas 是 position:fixed + z-index:0，会盖住所有**未被定位**的内容：
+   表现就是刷题中心的题面、题列表整片消失（只剩 sticky 的侧栏和工具栏、
+   以及 CodeMirror 那种自带 position:relative 的元素）。
+   原来的选择器里点的是 .wb-shell，但三个 workbench 页面用的都是
+   .wb-layout —— 这条规则一直没匹配上，等于没写。 */
 .container,
 .chapters-grid,
+.wb-layout,
+.wb-guest-banner,
 .workbench-page > .wb-shell,
 .cultivation-page > .wb-shell { position: relative; z-index: 1; }
 

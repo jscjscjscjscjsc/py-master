@@ -24,6 +24,7 @@
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
 <link rel="stylesheet" href="static/css/lesson.css">
+<link rel="stylesheet" href="static/css/code_light.css">
 <script src="static/js/static_mode.js"></script>
 <script>window.PYMASTER_STATIC = true;</script>
 </head>
@@ -1960,6 +1961,16 @@ print(&quot;-&quot; * 20)</code></pre></div>
     <div class="code-ex-prompt" id="code-ex-prompt"></div>
     <div class="code-ex-editor-wrap">
       <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <!-- 测试输入：程序里用到 input() 时，这里的内容按行喂给它。
+         以前没有这个框，input() 一运行就撞 EOFError，学生只看到"执行失败"。 -->
+    <div class="code-ex-stdin" id="code-ex-stdin-wrap" hidden>
+      <div class="code-ex-stdin-head">
+        <span>⌨ 测试输入</span>
+        <span class="code-ex-stdin-tip">每行一个值，按顺序喂给 input()</span>
+      </div>
+      <textarea id="code-ex-stdin" class="code-ex-stdin-box" spellcheck="false"
+                placeholder="例如：&#10;83.5&#10;100"></textarea>
     </div>
     <div class="code-ex-toolbar">
       <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>

@@ -1100,6 +1100,13 @@ def playground():
 def run_code():
     data = request.get_json()
     code = data.get('code', '').strip()
+    # 喂给 input() 的内容。不传就按空处理：空 stdin 会让 input() 立刻
+    # 撞到 EOF，这正是"代码里有 input() 就报执行失败"的原因 ——
+    # 以前子进程继承的是服务端的 stdin（可能是 /dev/null 或已关闭），
+    # 报错还很难懂。现在改成显式传入，没填就给一句人话提示。
+    stdin_text = data.get('stdin', '')
+    if not isinstance(stdin_text, str):
+        stdin_text = ''
 
     if not code:
         return jsonify({'success': False, 'output': '', 'error': '代码不能为空'})
@@ -1109,6 +1116,8 @@ def run_code():
 
     if not code_exec_enabled():
         return jsonify({'success': False, 'output': '', 'error': CODE_EXEC_OFF_MESSAGE})
+
+    needs_input = bool(re.search(r'(?<![\w.])input\s*\(', code))
 
     # Write code to temp file
     tmp_path = None
@@ -1124,6 +1133,9 @@ def run_code():
             # 必须用 sys.executable：随包 Python 不在 PATH 上，写死 'python' 会
             # 找不到解释器，或者悄悄跑到系统里另一个 Python 上（装没装库全看运气）
             [sys.executable, '-X', 'utf8', tmp_path],
+            # 显式给 stdin：不传的话子进程会继承服务端的输入流，
+            # 在服务器上那是空的，input() 直接 EOFError
+            input=stdin_text.encode('utf-8'),
             capture_output=True,
             # 超时放宽到 20 秒：导入 pandas/matplotlib 在忙的机器上会明显变慢
             timeout=20,
@@ -1147,19 +1159,35 @@ def run_code():
 
         output = '\n'.join(output_parts) if output_parts else '(无输出)'
 
+        # input() 撞到 EOF 时，报错原文是 "EOFError: EOF when reading a line"，
+        # 对初学者等于没说。换成"怎么填测试输入"的指路。
+        hint = ''
+        if proc.returncode != 0 and ('EOFError' in stderr or 'EOF when reading' in stderr):
+            hint = ('这段程序在等键盘输入（用了 input），但没有输入数据可读。\n'
+                    '把要输入的内容填到下面的「测试输入」框里（每行一个），再点运行。')
+        elif needs_input and not stdin_text and proc.returncode == 0:
+            hint = '提示：这段程序用了 input()。换几组测试输入再跑一遍，才算真的验证过。'
+
         return jsonify({
             'success': True,
             'output': output,
             'error': '',
+            'hint': hint,
+            'needs_input': needs_input,
             'exit_code': proc.returncode,
             'elapsed': f'{elapsed}s'
         })
 
     except subprocess.TimeoutExpired:
+        # 等输入也可能表现为超时（比如程序里连着好几个 input）
+        err = '⏱ 代码执行超时（20秒限制）\n可能原因：死循环、阻塞操作或计算量过大'
+        if needs_input:
+            err += '\n如果程序里有 input()，请确认「测试输入」框里填了足够行数的数据。'
         return jsonify({
             'success': False,
             'output': '',
-            'error': '⏱ 代码执行超时（20秒限制）\n可能原因：死循环、阻塞操作或计算量过大',
+            'error': err,
+            'needs_input': needs_input,
             'exit_code': -1,
             'elapsed': '10s+'
         })
@@ -1168,6 +1196,7 @@ def run_code():
             'success': False,
             'output': '',
             'error': f'执行异常: {str(e)}',
+            'needs_input': needs_input,
             'exit_code': -1,
             'elapsed': '0s'
         })

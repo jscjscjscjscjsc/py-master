@@ -153,7 +153,12 @@
   };
 
   function isLightTheme() {
-    return document.documentElement.getAttribute('data-theme') === 'light';
+    if (document.documentElement.getAttribute('data-theme') !== 'light') return false;
+    // 再确认一次页面本身支持浅色：深色设计的页面（刷题、练习场…）
+    // 一旦被套上纸面材质，就会出现"浅底 + 深面板"的割裂感。
+    const cls = document.body ? document.body.classList : null;
+    if (!cls) return false;
+    return cls.contains('chapter-page') || cls.contains('dashboard-page');
   }
 
   function pickTheme() {

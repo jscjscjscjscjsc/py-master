@@ -451,6 +451,20 @@ def main():
           'pymaster_intro=' in (done.headers.get('Set-Cookie') or ''),
           done.headers.get('Set-Cookie', ''))
 
+    # 键盘输入：不带 stdin 时会 EOFError（这是正常的），但必须给出
+    # "去哪里填输入"的指路，并且前端要按代码内容把输入框露出来。
+    NL = chr(10)
+    code_in = 'a = float(input("x："))' + NL + 'print(a * 2)' + NL
+    r1 = client.post('/api/run-code', json={'code': code_in}).get_json()
+    check('带 input 的代码会被识别', r1.get('needs_input') is True, str(r1.get('needs_input')))
+    check('缺输入时给出填输入的指路', '测试输入' in (r1.get('hint') or ''), str(r1.get('hint'))[:80])
+    r2 = client.post('/api/run-code', json={'code': code_in, 'stdin': '21' + NL}).get_json()
+    check('填了输入就跑得通', r2.get('exit_code') == 0 and '42' in (r2.get('output') or ''),
+          str(r2.get('output'))[:60])
+    r3 = client.post('/api/run-code', json={'code': 'print(1+1)'}).get_json()
+    check('普通代码不误报需要输入', r3.get('needs_input') is False and not r3.get('hint'),
+          str(r3.get('needs_input')))
+
     section('14. 背景音乐')
     audio_dir = os.path.join(ROOT, 'static', 'audio')
     playlist_file = os.path.join(audio_dir, 'playlist.json')

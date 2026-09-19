@@ -395,19 +395,45 @@ body.workbench-page {
 
 .q-toolbar .grow { margin-left: auto; }
 
-.stdin-box {
-  width: 100%;
-  margin: 0 18px 12px;
+/* ── 测试输入：程序里出现 input() 时才会露出来 ─────────────
+   没有它，input() 会立刻撞 EOFError，学生只看得到「执行失败」。
+   #stdin-wrap 由 training.js 在代码里出现 input( 时解除 hidden。 */
+#stdin-wrap {
+  margin: 0 18px 14px;
+  padding: 10px 12px 12px;
   border: 1px dashed var(--border-glow);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.02);
+}
+#stdin-wrap[hidden] { display: none; }
+
+.stdin-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  color: var(--cyan);
+}
+
+.stdin-tip { font-size: 11.5px; color: var(--text-muted); }
+
+.stdin-box {
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background: rgba(8, 12, 20, 0.7);
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 12.5px;
   padding: 8px 10px;
   resize: vertical;
   min-height: 54px;
+  outline: none;
 }
+.stdin-box:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px var(--cyan-dim); }
+.stdin-box::placeholder { color: var(--text-muted); }
 
 /* ── 解析 / AI 讲解 ───────────────────────────── */
 .panel {
@@ -777,3 +803,71 @@ body.workbench-page {
 }
 .wb-guest-banner strong { color: #ffc94d; }
 .wb-guest-banner a { color: var(--cyan, #00d4ff); }
+
+/* ── 浅色主题：刷题中心的测试输入框 ─────────────────────── */
+html[data-theme="light"] #stdin-wrap {
+  background: #eef3f8;
+  border-color: #c9d9e6;
+}
+html[data-theme="light"] .stdin-head { color: #0d6b82; }
+html[data-theme="light"] .stdin-tip { color: #6b7c8f; }
+html[data-theme="light"] .stdin-box {
+  background: #ffffff;
+  color: #22364d;
+  border-color: #c9d9e6;
+}
+html[data-theme="light"] .stdin-box::placeholder { color: #8b9bad; }
+
+/* ── 测试输入区（刷题中心） ─────────────────────────────
+   原来输入框只在题库标了 needs_input 的题里出现；现在只要代码里写了
+   input() 就露出来，所以给个带标题的容器，别让它像个孤零零的框。 */
+#stdin-wrap {
+  margin: 0 18px 12px;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(8, 12, 20, 0.4);
+}
+#stdin-wrap[hidden] { display: none; }
+.stdin-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 7px;
+  font-size: 12px;
+  color: var(--cyan);
+}
+.stdin-tip { font-size: 11.5px; color: var(--text-muted); }
+
+/* 浅色主题下输入框也要跟着亮起来 */
+html[data-theme="light"] #stdin-wrap {
+  background: #eef3f8;
+  border-color: #cfdde9;
+}
+html[data-theme="light"] .stdin-box {
+  background: #ffffff;
+  border-color: #c3d3e2;
+  color: #22364d;
+}
+html[data-theme="light"] .stdin-head { color: #0d6b82; }
+
+/* ── 浅色主题下的代码工作台 ─────────────────────────────
+   刷题中心的单元格与输出区都是硬编码的深色底，白页面上会变成一块黑板。
+   编辑器本体由 code_light.css 覆盖，这里补单元格边框、行号槽与输出区。 */
+html[data-theme="light"] .cell .CodeMirror-gutters {
+  background: #eef3f8;
+  border-right: 1px solid #d3dfea;
+}
+html[data-theme="light"] .cell .CodeMirror-selected {
+  background: rgba(13, 107, 130, 0.16) !important;
+}
+/* 注意 .cell-out 靠 .show 控制显隐，这里只改配色，别碰 display */
+html[data-theme="light"] .cell-out {
+  background: #f7fafc;
+  border-top-color: #cfdde9;
+  color: #22364d;
+}
+html[data-theme="light"] .cell-out.error { color: #b8342a; }
+html[data-theme="light"] .cell-out .meta { color: #6b7f95; }
+html[data-theme="light"] .cell { border-color: #cfdde9; }
+html[data-theme="light"] .cell-head { background: #eef3f8; }

@@ -1,0 +1,115 @@
+/* ============================================================
+   code_light.css — 代码编辑器的浅色主题
+   ------------------------------------------------------------
+   为什么用"覆盖"而不是换 CodeMirror 主题：
+   编辑器在三个地方各建一次（练习弹窗 main.js / 刷题中心 training.js /
+   练习场 playground.html），主题名是硬编码的 'material-darker'。
+   换主题名要改三处、还得处理"切换时已存在的实例"，
+   而覆盖只需一个 CSS 文件，对现存的与将来新建的实例一律生效，
+   并且能跟着 html[data-theme] 实时切换。
+
+   配色按"纸上印字"来：浅灰底、深墨字、语法色用低饱和的
+   蓝/绿/赭，在白底上够清楚又不刺眼（深色主题那套荧光色放到白底上会糊）。
+   ============================================================ */
+
+html[data-theme="light"] body.chapter-page .cm-s-material-darker.CodeMirror {
+  background: #f7fafc;
+  color: #22364d;
+}
+
+/* ── 行号槽 ─────────────────────────────────────────── */
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-gutters {
+  background: #eef3f8;
+  border-right: 1px solid #d3dfea;
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-linenumber {
+  color: #8b9bad;
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-guttermarker,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-guttermarker-subtle,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-linenumber {
+  color: #8b9bad;
+}
+
+/* ── 光标与选区 ─────────────────────────────────────── */
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-cursor {
+  border-left: 2px solid #0d6b82;
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker div.CodeMirror-selected,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(13, 107, 130, 0.16);
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-line::selection,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-line > span::selection,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-line > span > span::selection {
+  background: rgba(13, 107, 130, 0.2);
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-line::-moz-selection,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-line > span::-moz-selection,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-line > span > span::-moz-selection {
+  background: rgba(13, 107, 130, 0.2);
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-activeline-background {
+  background: rgba(13, 107, 130, 0.055);
+}
+
+/* ── 语法着色 ───────────────────────────────────────── */
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-keyword { color: #8b2f8f; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-operator { color: #4a5a6b; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-variable { color: #22364d; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-variable-2 { color: #1f5673; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-type,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-variable-3 { color: #146b6b; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-builtin { color: #0f6b8a; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-atom { color: #9a5b00; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-number { color: #9a5b00; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-def { color: #1c4f8a; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-string { color: #2f6b3a; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-string-2 { color: #2f6b3a; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-comment {
+  color: #7a8b9c;
+  font-style: italic;
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-tag { color: #a33a3a; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-meta { color: #6b5aa3; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-attribute { color: #9a5b00; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-property { color: #1f5673; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-qualifier { color: #146b6b; }
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .cm-error {
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.09);
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-matchingbracket {
+  color: #0d6b82 !important;
+  border-bottom: 1px solid #0d6b82;
+}
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-nonmatchingbracket {
+  color: #c0392b !important;
+}
+
+/* 语法检查（lint）气泡在白底上也要能读 */
+html[data-theme="light"] body.chapter-page .CodeMirror-lint-tooltip {
+  background: #ffffff;
+  border: 1px solid #c3d3e2;
+  color: #22364d;
+  box-shadow: 0 8px 24px rgba(23, 45, 71, 0.16);
+}
+html[data-theme="light"] body.chapter-page .CodeMirror-lint-message-error,
+html[data-theme="light"] body.chapter-page .CodeMirror-lint-message-warning {
+  background: transparent;
+  color: #b8342a;
+}
+html[data-theme="light"] body.chapter-page .CodeMirror-lint-mark-error,
+html[data-theme="light"] body.chapter-page .CodeMirror-lint-mark-warning {
+  border-bottom: 2px dotted #c0392b;
+}
+
+/* 滚动条 */
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-scrollbar-filler,
+html[data-theme="light"] body.chapter-page .cm-s-material-darker .CodeMirror-gutter-filler {
+  background: #eef3f8;
+}
+html[data-theme="light"] body.chapter-page .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+html[data-theme="light"] body.chapter-page .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+  background: rgba(13, 107, 130, 0.26);
+}

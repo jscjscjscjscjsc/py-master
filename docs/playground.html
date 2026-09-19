@@ -56,6 +56,12 @@
   display: flex; flex-direction: column;
   background: #0d1117; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden;
 }
+/* 浅色主题下输出区也得跟着亮，否则白底页面里嵌一块黑板 */
+html[data-theme="light"] body.playground-page .output-panel { background: #f7fafc; border-color: #c9d9e6; }
+html[data-theme="light"] body.playground-page .output-content { color: #22364d; }
+html[data-theme="light"] body.playground-page .output-content .success-header { color: #2f6b3a; }
+html[data-theme="light"] body.playground-page .output-panel .panel-label { background: #eef3f8; color: #2f6b3a; }
+html[data-theme="light"] body.playground-page .output-content code { background: #e8eef5; color: #0b5c70; }
 .output-panel .panel-label {
   padding: 10px 16px; font-size: 12px; font-weight: 700;
   background: var(--bg-secondary); color: var(--green); text-transform: uppercase; letter-spacing: 1px;
@@ -95,6 +101,7 @@
 }
 </style>
   <link rel="stylesheet" href="static/css/atmosphere.css">
+<link rel="stylesheet" href="static/css/code_light.css">
 <script src="static/js/static_mode.js"></script>
 <script>window.PYMASTER_STATIC = true;</script>
 </head>
@@ -139,6 +146,11 @@
   <!-- Editor -->
   <div class="editor-panel">
     <div class="panel-label">📝 代码编辑器</div>
+    <!-- 测试输入：本页的示例代码里就有 input()，没有这个框它必然跑不通 -->
+    <div class="pg-stdin" id="pg-stdin" hidden>
+      <span class="pg-stdin-label">⌨ 测试输入</span>
+      <textarea id="pg-stdin-box" placeholder="每行一个值，按顺序喂给 input()"></textarea>
+    </div>
     <div class="editor-wrap" id="editor-wrap">
       <textarea id="code-editor"></textarea>
     </div>
@@ -182,6 +194,16 @@ const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
   }
 });
 editor.setSize('100%', '100%');
+
+// 代码里出现 input() 就把测试输入框露出来。
+// 本页示例里就有 input()，没有这条它一直跑不通。
+function syncPgStdin() {
+  const wrap = document.getElementById('pg-stdin');
+  if (!wrap) return;
+  if (/(?<![\w.])input\s*\(/.test(editor.getValue())) wrap.hidden = false;
+}
+editor.on('change', syncPgStdin);
+setTimeout(syncPgStdin, 400);
 
 // Default code
 const defaultCode = `# 🐍 Python 练习场
@@ -373,10 +395,11 @@ async function runCode() {
   outputDiv.innerHTML = '<div style="color:var(--text-muted)">⏳ 正在执行...</div>';
 
   try {
+    const stdinBox = document.getElementById('pg-stdin-box');
     const res = await fetch('/api/run-code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code, stdin: stdinBox ? stdinBox.value : '' })
     });
     const data = await res.json();
 

@@ -537,6 +537,17 @@ def _run_python(cells, stdin_text='', timeout=20, checks=None):
         with open(out_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
+        # input() 撞到 EOF 的原文是 "EOFError: EOF when reading a line"，
+        # 对刚学 input 的人等于没说：他不知道要去「测试输入」框里填数据。
+        # 只在真的因为缺输入而挂的时候补一句指路，其他报错原样保留。
+        for record in data.get('results', []):
+            err = record.get('error') or ''
+            if 'EOFError' in err or 'EOF when reading' in err:
+                record['error'] = err + (
+                    '\n\n这段程序在等键盘输入（用了 input），但没有数据可读。'
+                    '\n把要输入的内容填到代码块上面的「测试输入」框里（每行一个值），再运行一次。')
+                break
+
         figures = []
         for path in data.get('figures', []):
             try:
