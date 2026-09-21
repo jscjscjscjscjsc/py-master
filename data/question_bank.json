@@ -292,7 +292,7 @@
    "assert last_three == '026', '最后三个字符不对：%r' % (last_three,)"
   ],
   "explanation": "切片语法是 `s[开始:结束:步长]`，三者都可以省略：\n\n- `s[::-1]`：步长 -1 表示从右往左，天然实现反转；\n- `s[::2]`：从 0 开始每 2 个取一个，也就是所有偶数下标；\n- `s[-3:]`：负数下标从尾部数，`-1` 是最后一个字符。\n\n切片的好处是**不会越界报错**：`\"abc\"[10:]` 只是空字符串。这在处理不定长输入时非常好用。",
-  "expected_output": "6202retsaMyP\nyatro02\n026",
+  "expected_output": "6202retsaMyP\nPMse22\n026",
   "hints": [
    "切片格式 s[开始:结束:步长]",
    "反转是 s[::-1]，取最后三个是 s[-3:]"
@@ -438,7 +438,7 @@
    "assert '平均 79.6' in _out, '打印格式不对'"
   ],
   "explanation": "`sorted(lst)` 返回**新列表**，`lst.sort()` 改**原列表**——这是最容易踩的坑之一，面试也爱问。需要原顺序时用 `sorted()`。\n\n求和、最大值、最小值、长度都是内置函数 `sum` / `max` / `min` / `len`，比手写循环快得多（它们是 C 实现的）也更短。\n\n`sum(1 for s in scores if s > avg)` 这个写法值得记住：生成器表达式 + sum，可以统计「满足条件的元素个数」，不用先建一个临时列表。",
-  "expected_output": "最高 100 最低 54 平均 79.6 高于平均 5 人",
+  "expected_output": "最高 100 最低 54 平均 79.6 高于平均 4 人",
   "hints": [
    "sorted() 返回新列表，sort() 改自己",
    "sum(1 for x in ... if 条件) 可以数个数"
@@ -1088,7 +1088,7 @@
    "assert students[0]['name'] == '李', '原列表不应被改动（sorted 返回新列表）'"
   ],
   "explanation": "`key` 参数接收一个函数，`sorted` 用它把每个元素「映射」成用来比较的东西。`lambda s: s[\"score\"]` 就是一个匿名小函数：「给我一条学生记录，返回他的分数」。\n\n**多级排序**用返回元组的技巧：`(-s[\"score\"], s[\"age\"])` 表示先按分数降序（负号实现），分数相同时按年龄升序。如果两级都要降序，就两个都加负号（数字才加，字符串不能）。\n\n`max(students, key=...)` 和 `sorted` 是同一个套路：`key` 决定「按什么比」。用 `max` 比「先排序再取第一个」快，因为它是 O(n) 而不是 O(n log n)。\n\nlambda 的适用边界：**只写一行、只用一次**。逻辑一复杂或需要复用，就该定义成有名字的函数——给函数起名字本身就是最好的注释。",
-  "expected_output": "['小红', '小明', '小刚', '小美']\n小红",
+  "expected_output": "['王小刚', '欧阳小红', '小明', '李']\n王小刚",
   "hints": [
    "降序可以给 key 加负号，或者用 reverse=True",
    "多级排序让 key 返回元组"
@@ -1170,7 +1170,7 @@
    "assert '6' in _out or '4' in _out, '应打印处理后的行数'"
   ],
   "explanation": "普通函数 `return` 一次就结束；生成器函数遇到 `yield` 会**暂停并保存现场**，下次 `next()` 时从暂停处继续。所以它不占内存——处理 10GB 日志和 10 行数据占用的内存是一样的。\n\n关键区别：\n\n```python\ndef f_list(items):  return [x for x in items if x]   # 先把全部算出来\ndef f_gen(items):   yield from (x for x in items if x)  # 用一行算一行\n```\n\n生成器还有个常见坑：**只能消费一次**。`gen = read_lines(raw)` 之后遍历一次就空了，想再用得重新调用函数。所以上面测试里每次都重新 `list(read_lines(...))`。\n\n`read_lines` 里同时用了 `continue`（跳过）和 `yield`（产出），这就是「管道」思路：一个生成器负责过滤，上层再消费。多个生成器串起来（`map`/`filter` 也是生成器式的），可以做到「读一行、处理一行、写一行」，中间不落任何大列表。",
-  "expected_output": "4 ['host = localhost', 'port = 8080', 'debug = True']\n[5, 4, 3, 2, 1]",
+  "expected_output": "3 ['host = localhost', 'port = 8080', 'debug = True']\n[5, 4, 3, 2, 1]",
   "hints": [
    "生成器函数里用 yield 而不是 return",
    "调用方通常用 list() 或 for 来消费它"
@@ -1367,7 +1367,7 @@
    "assert _out.strip(), '最后应该把结果打印出来（用 sorted 保证顺序稳定）'"
   ],
   "explanation": "这是「图的可达性问题」的最朴素解法——**反复扫直到不再变化**（不动点迭代）。对几十个任务的小图完全够用，而且比递归更好读、不会栈溢出。\n\n要点在 `changed_work` 这个标记：只要本轮有新增，就再扫一轮。循环依赖（a 依赖 b、b 依赖 a）在这个写法下不会死循环，因为 `if name in affected: continue` 保证了每个任务最多被加入一次。\n\n如果任务有几千个，就该换成**反向建图 + BFS**：先建 `dep -> [依赖它的任务]` 的反向索引，再从变更点出发广度优先遍历一次，复杂度从 O(n²) 降到 O(n + e)。工业界的依赖影响分析（比如 Maven / npm 的依赖树）用的就是这个思路。\n\n为什么返回 `set` 而不是 `list`？因为「受影响的任务」本身不关心顺序，集合天然去重；要展示时再 `sorted()` 一次，顺序就稳定了。",
-  "expected_output": "['会话校验', '用户表', '权限中间件', '订单接口']\n['前端登录页']",
+  "expected_output": "['会话校验', '权限中间件', '用户表', '订单接口']\n['前端登录页']",
   "hints": [
    "反复扫描，只要还有新任务被加入就再扫一轮",
    "循环依赖时靠「已在集合里就跳过」来终止"
@@ -1498,7 +1498,7 @@
   ],
   "statement": "pytest 的核心其实很小：**找到 `test_` 开头的函数、跑它、统计结果**。\n\n要求实现：\n\n1. `test_case(fn)`：装饰器，给测试函数打标记（`fn._is_test = True`），并返回原函数\n2. `collect_tests(namespace)`：从传入的命名空间（字典）里找出所有「测试函数」——名字以 `test_` 开头、且可调用。返回按名字排序的 `(名字, 函数)` 列表\n3. `run_all(namespace)`：依次运行收集到的测试，返回 `{\"passed\": n, \"failed\": n, \"errors\": [ \"test_xxx: 报错信息\", ... ]}`。断言失败要记为 failed，其它异常也记为 failed 并记录信息；函数抛 `AssertionError` 时错误信息里要有「断言失败」字样\n\n最后写三个测试函数（两通过一失败）验证。",
   "starter_code": "def test_case(fn):\n    pass\n\n\ndef collect_tests(namespace):\n    pass\n\n\ndef run_all(namespace):\n    pass\n",
-  "solution": "def test_case(fn):\n    fn._is_test = True\n    return fn\n\n\ndef collect_tests(namespace):\n    found = []\n    for name, value in namespace.items():\n        if name.startswith('test_') and callable(value):\n            found.append((name, value))\n    found.sort(key=lambda item: item[0])\n    return found\n\n\ndef run_all(namespace):\n    passed = failed = 0\n    errors = []\n    for name, fn in collect_tests(namespace):\n        try:\n            fn()\n        except AssertionError as exc:\n            failed += 1\n            errors.append(f'{name}: 断言失败 {exc}')\n        except Exception as exc:\n            failed += 1\n            errors.append(f'{name}: {type(exc).__name__} {exc}')\n        else:\n            passed += 1\n    return {'passed': passed, 'failed': failed, 'errors': errors}\n\n\n@test_case\ndef test_add():\n    assert 1 + 1 == 2\n\n\n@test_case\ndef test_upper():\n    assert 'abc'.upper() == 'ABC'\n\n\n@test_case\ndef test_故意失败():\n    assert 2 + 2 == 5, '四则运算错了'\n\n\ndef helper():\n    return 1\n\n\nresult = run_all(dict(globals()))\nprint(result)\n",
+  "solution": "def test_case(fn):\n    fn._is_test = True\n    return fn\n\n\ndef collect_tests(namespace):\n    found = []\n    for name, value in namespace.items():\n        if name.startswith('test_') and callable(value):\n            found.append((name, value))\n    found.sort(key=lambda item: item[0])\n    return found\n\n\ndef run_all(namespace):\n    passed = failed = 0\n    errors = []\n    for name, fn in collect_tests(namespace):\n        try:\n            fn()\n        except AssertionError as exc:\n            failed += 1\n            errors.append(f'{name}: 断言失败 {exc}')\n        except Exception as exc:\n            failed += 1\n            errors.append(f'{name}: {type(exc).__name__} {exc}')\n        else:\n            passed += 1\n    return {'passed': passed, 'failed': failed, 'errors': errors}\n\n\n@test_case\ndef test_add():\n    assert 1 + 1 == 2\n\n\n@test_case\ndef test_upper():\n    assert 'abc'.upper() == 'ABC'\n\n\n@test_case\ndef test_故意失败():\n    assert 2 + 2 == 5, '四则运算错了'\n\n\ndef helper():\n    return 1\n\n\nnamespace = {k: v for k, v in globals().items() if getattr(v, '_is_test', False)}\nresult = run_all(namespace)\nprint(result)\n",
   "checks": [
    "def _t_a():\n    assert True",
    "_t_a = test_case(_t_a)",
@@ -1556,7 +1556,7 @@
    "assert summarize('')['authors'] == {} and summarize('')['hotfix_by'] == [], '空输入时 authors 应为空字典、hotfix_by 应为空列表'"
   ],
   "explanation": "这段代码的套路是「**逐行解析 → 累加统计 → 排序输出**」，处理日志、CSV、命令行输出时全是这个骨架。\n\n三个容易踩的坑：\n\n1. **分隔符可能出现在内容里**。提交信息里如果有 `|`，`line.split(\"|\")` 会切出 4 段以上。所以取 `parts[2:]` 再 join 回去，而不是硬取 `parts[2]`——这样内容里的 `|` 不会丢。\n2. **脏数据要跳过而不是崩掉**。真实 `git log` 里混着空行、特殊字符、甚至 windows 的 `\\r`，`splitlines()` 会处理掉 `\\r\\n`，剩下的靠 `len(parts) < 3` 兜底。\n3. **类型前缀的识别要收窄**。`\"修复了:一个问题\"` 这种描述里的冒号不该被当成类型。这里用「冒号前没有空格且长度 ≤ 10」做了个便宜的收窄，真实工具（如 commitlint）会用正则 `^([a-z]+)(\\(.+\\))?:` 严格匹配。\n\n`sorted(fixes.items(), key=lambda kv: (-kv[1], kv[0]))` 又是多级排序：先按提交次数降序，次数相同时按人名升序，保证输出稳定。\n\n这套统计在团队里很实用——`types` 里 `fix` 占比过高通常说明测试覆盖不够，`authors` 分布过于集中说明知识没有共享。",
-  "expected_output": "{'total': 5, 'authors': {'小明': 3, '小红': 2}, 'types': {'feat': 2, 'fix': 2, 'docs': 1}, 'hotfix_by': ['小明']}",
+  "expected_output": "{'total': 5, 'authors': {'小明': 3, '小红': 2}, 'types': {'feat': 2, 'fix': 2, 'docs': 1}, 'hotfix_by': ['小明', '小红']}",
   "hints": [
    "用 line.split(\"|\") 拿三段，注意提交信息本身可能含 |",
    "类型取冒号前的部分，转小写再判断"
@@ -1597,7 +1597,7 @@
    "assert '冲突行' in _out, '应该把冲突行号打印出来'"
   ],
   "explanation": "三方合并的判断逻辑其实只有四条，但覆盖了所有情况——这也是 Git 内部 `merge` 的核心思路（真实实现还会做 diff 对齐，把「行数不同」的情况规整成 hunk 再按 hunk 合并）。\n\n判断顺序很重要：\n1. 先看 `o == t`——两边一致就不用管 base，直接采用；\n2. 再看 `o == b` 或 `t == b`——说明**只有一边改了**，采用改的那边；\n3. 剩下的就是两边都改且不同，冲突。\n\n注意第 3 条不需要再显式判断「两边都改了」：前两个条件都不成立时，既然 `o != t`，而 `o != b` 且 `t != b`，那就必然是「都改了且不同」。**把条件写全反而是冗余，容易写错。**\n\n冲突标记只输出 `<<<<<<<` 和 `>>>>>>>` 两行，没有 `=======`——因为本題规定「冲突行只输出我们这边的值」。真正的 Git 冲突块是 `<<<<<<<` / 我们的内容 / `=======` / 他们的内容 / `>>>>>>>`，两边内容都留着让人手动选。\n\n`zip(base, ours, theirs)` 会按最短的截断，所以本題前提是三个列表等长；真实场景要先把不同长度的文件对齐（这就是 diff 算法要解决的事）。",
-  "expected_output": "['def add(a, b):', '    return a * b', '# 我加的注释', 'print(add(1, 2))']\n冲突行： []",
+  "expected_output": "['def add(a, b):', '    return a * b', '<<<<<<< ours', '# 我加的注释', '>>>>>>> theirs', 'print(add(1, 2))']\n冲突行： [3]",
   "hints": [
    "先判断 o == t，再判断 o == b 或 t == b，剩下的就是冲突",
    "冲突时要输出三行标记，并记录行号"
@@ -1637,7 +1637,7 @@
    "assert check_branch('feature-') != [], '以 - 结尾要被报出来'"
   ],
   "explanation": "解析远程地址的难点是**同一件事有两种写法**：HTTPS（`https://host/owner/repo.git`）和 SSH（`git@host:owner/repo.git`）。它们的区分点是一个 `://` 和一个 `@...:`，所以用两条正则分别匹配，先试 HTTPS 再试 SSH，都不中就返回 `None`。\n\n用**命名分组** `(?P<host>...)` 的好处是取值时写 `group(\"host\")` 而不是 `group(1)`，正则改动后不会因为顺序变化取错值。\n\n`[^/]+` 这种「非斜杠的任意字符」比 `\\w+` 更宽松，能兼容带 `.` 或 `-` 的组织名与仓库名。\n\n校验分支名时，`re.fullmatch` 比 `re.match` 更合适：`match` 只要求**开头**匹配，所以 `fullmatch(r\"[a-z]+\", \"abc!\")` 才为 False，而 `match` 会因为前三个字符匹配就通过。**做「整串必须符合」的校验，一定要 `fullmatch` 或用 `^...$`。**\n\n注意多个问题要**一次性全部返回**，而不是发现一个就 return——前端要把所有问题一起显示给用户，一个一个报会让人改四遍。\n\n这类「规范校验函数」在实际项目里非常常见：CI 里跑一遍分支名校验，能挡掉一堆因为 `Feature/Login` 这种命名导致的混乱。",
-  "expected_output": "{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\n{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\nNone\n[]\n['只能使用小写字母、数字、- 和 /']\n['只能使用小写字母、数字、- 和 /', '不能以 - 或 / 开头或结尾', '出现了连续的符号']",
+  "expected_output": "{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\n{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\nNone\n[]\n['只能使用小写字母、数字、- 和 /']\n['不能以 - 或 / 开头或结尾', '出现了连续的符号']",
   "hints": [
    "HTTPS 和 SSH 两种格式各写一条正则，用命名分组取值",
    "逐项检查并把所有问题都收集起来返回"
@@ -1719,7 +1719,7 @@
    "assert any(i['rule'] == 'print-debug' for i in scan_diff('+    print(1)')), 'print(1) 应被检出'"
   ],
   "explanation": "这套规则的工程价值在于「**把 Review 里最容易漏的事交给机器**」。人盯着 300 行 diff 时，最容易被忽略的恰恰是硬编码密钥和裸 `except`——前者会泄露到线上，后者会把所有异常吞掉，出问题时什么线索都没有。\n\n四个正则各自的小心思：\n- **密钥**：要求「等号后面紧跟一个字符串字面量」，所以 `password = get_from_env()` 不会误报——这是常见的好写法。\n- **SQL 拼接**：先要求出现 `SELECT/INSERT/...` 关键字，再要求**同行有 `+` 或 f-string**。少了第二个条件，`cursor.execute(\"SELECT ...\")` 这种参数化写法会被误伤。\n- **裸 except**：`^\\s*except\\s*:` 里的 `\\s*:` 要求冒号紧跟其后，所以 `except ValueError:` 不匹配。\n- **print**：`(^|[^\\w.])print\\s*\\(` 里的前缀判断，是为了放过 `my_print(`、`obj.print(` 这类。正则的 `\\b` 在这里不够用，因为它认为 `_` 是单词字符——`my_print` 里 `print` 前是 `_`，属于同一单词，`\\b` 不会在那里断开。换成显式的 `[^\\w.]` 才能正确排除。\n\n行号统计只数 `+` 行与上下文行，跳过 `-` 行和文件头，这样报出的行号能直接对上新文件——Review 时点一下就能跳过去。",
-  "expected_output": "{'line': 2, 'rule': 'hardcoded-secret', 'snippet': 'password = \"123456\"'}\n{'line': 3, 'rule': 'sql-concat', 'snippet': 'query = \"SELECT * FROM users WHERE name = \" + user'}\n{'line': 6, 'rule': 'bare-except', 'snippet': 'except:'}\n{'line': 7, 'rule': 'print-debug', 'snippet': 'print(\"登录失败\")'}",
+  "expected_output": "{'line': 3, 'rule': 'hardcoded-secret', 'snippet': 'password = \"123456\"'}\n{'line': 4, 'rule': 'sql-concat', 'snippet': 'query = \"SELECT * FROM users WHERE name = \" + user'}\n{'line': 7, 'rule': 'bare-except', 'snippet': 'except:'}\n{'line': 8, 'rule': 'print-debug', 'snippet': 'print(\"登录失败\")'}",
   "hints": [
    "只扫描以 + 开头的行，行号按新文件计数",
    "SQL 拼接要同时满足「有 SQL 关键字」和「有 + 或 f-string」两个条件"
@@ -1759,7 +1759,7 @@
    "assert sorted(order) == ['controllers', 'models', 'repositories', 'services'], '排序结果必须包含所有模块且不重复'"
   ],
   "explanation": "**依赖方向是分层架构唯一不能破的规矩。** 内层（领域模型）不该知道外层的事，否则改一个 HTTP 参数就可能要动数据库映射层，架构就退化成了一坨。\n\n`check_layers` 用「层号比较」而不是模块名字符串比较，好处是加新模块时只需在 `modules` 里补一条。`a < b` 表示「导入方比被导入方更靠内」，也就是依赖方向反了。同层之间（`a == b`）允许互相引用，这很常见。\n\n`topological_order` 用的是 **Kahn 算法**：\n每轮挑出「所有依赖都已经就位」的模块（`not (deps[n] & remaining)`），把它们加进结果并从待处理集合里拿掉，直到没有可放的模块——此时若还有剩余，就说明**存在环**，返回 `None`。\n\n注意这里的依赖方向：`imports` 里 `(\"services\", \"repositories\")` 表示 services 导入 repositories，所以 services **依赖** repositories，加载时 repositories 必须先就位。这正是 `deps[source].add(target)` 的含义，也是为什么判断条件是「自己的依赖不在 remaining 里」。\n\n`sorted(...)` 保证同层按字母序，输出稳定——这对「每次构建结果都一样」很重要。",
-  "expected_output": "['models -> services（第 1 层依赖第 3 层，方向反了）']\n['models', 'repositories', 'services', 'controllers']",
+  "expected_output": "['models -> services（第 1 层依赖第 3 层，方向反了）']\nNone",
   "hints": [
    "层号小的模块被层号大的模块依赖是正常的，反过来才违规",
    "拓扑排序每轮挑「依赖已就绪」的模块，挑不出来说明有环"
@@ -1839,7 +1839,7 @@
    "assert render_table([{'name': 'a'}], [('name', '姓名')]).count('\\n') >= 5, '行之间应该用换行连接，便于阅读'"
   ],
   "explanation": "这就是「模板引擎」的最小形态：**遍历数据 → 生成字符串 → 拼接**。Jinja2、Vue 的编译结果，本质都是把这段逻辑做得更通用、更快。\n\n`esc` 写在函数内部，是因为它**只服务于这个渲染函数**。Python 里嵌套函数很轻量（不像类那样要额外开销），把它藏在里面就不用污染模块命名空间，而且天然带着「只在这里用」的语义。\n\n两个细节值得注意：\n1. `row.get(key)` 而不是 `row[key]`——数据不齐是常态，缺字段就让单元格空着，比抛 `KeyError` 整个页面 500 要好；\n2. `\"\" if value is None else str(value)` 先把 `None` 变成空串，否则页面上会出现字面量 `None`，用户看了莫名其妙。\n\n用列表收集行再 `\"\\n\".join(...)`，比在循环里 `html += ...` 快得多（字符串不可变，每次 `+=` 都要复制整个字符串）。\n\n**真实项目里不要手写模板。** 容易漏转义、难维护，用 Jinja2 这类成熟引擎，它默认自动转义。本題的价值在于理解「为什么会漏转义」——比如这里的 `esc` 如果忘了调用，XSS 就进去了。",
-  "expected_output": "<table>\n  <thead><tr><th>姓名</th><th>分数</th></tr></thead>\n  <tbody>\n    <tr><td>小明</td><td>88</td></tr>\n    <tr><td>小红</td><td></td></tr>\n    <tr><td>&lt;img src=x&gt;</td><td></td></tr>\n  </tbody>\n</table>",
+  "expected_output": "<table>\n  <thead>    <tr><th>姓名</th><th>分数</th></tr></thead>\n  <tbody>\n    <tr><td>小明</td><td>88</td></tr>\n    <tr><td>小红</td><td></td></tr>\n    <tr><td>&lt;img src=x&gt;</td><td></td></tr>\n  </tbody>\n</table>\n<table>\n  <thead>    <tr><th>姓名</th></tr></thead>\n  <tbody>\n  </tbody>\n</table>",
   "hints": [
    "用 row.get(key) 取字段，缺了就得到 None",
    "先收集所有行到列表，最后用 \"\\n\".join 拼起来"
@@ -2026,7 +2026,7 @@
    "assert 'email' not in clean and errs == [], '可选字段传 None 视为未提供，不应报错'"
   ],
   "explanation": "Pydantic 替你做的就这几件事：**看字段在不在 → 看类型对不对 → 看约束满不满足 → 转换**。看起来简单，但「一次返回所有错误」和「转换与校验的顺序」这两个细节，决定了它是好用的工具还是折磨人的工具。\n\n**一次返回全部错误**是关键设计。如果发现第一个错误就 return，用户就要改一次、提交一次、再改一次，表单长的时候体验极差。所以这里用 `errors` 列表收集完再一起返回，而且每条错误都带 `field`，前端能精确标红出错的输入框。\n\n**转换先于校验**：`\"18\"` 先转成 `18`，再去做 `min/max` 判断。反过来写（先判断类型）的话，表单提交上来的数字永远是字符串，全都会被判「类型不对」。真实场景里 HTTP 表单和 JSON 的数字类型很不确定，Pydantic 的「宽松模式」做的就是这种转换。\n\n**失败字段不进 `cleaned`**：这点容易被忽略。如果错误字段也放进结果，调用方拿到的就是「半真半假」的数据，很容易直接写进数据库。宁可让它缺失，逼调用方检查 `errors`。\n\n布尔值又一次捣乱：`isinstance(value, int)` 对 `True` 成立，所以 `age=True` 会被当成 1 通过校验。加一层 `isinstance(value, bool)` 排除。\n\n`ok` 这个标志位让后续检查能「短路」——类型都不对的时候，就不该再去比较长度。用 `if ok and ...` 串起来，比层层嵌套 `if` 干净。",
-  "expected_output": "({'username': 'lilei', 'age': 18}, [])\n({'username': 'ab', 'age': 200}, [{'field': 'username', 'message': '长度不能少于 3'}, {'field': 'age', 'message': '不能大于 150'}])",
+  "expected_output": "({'username': 'lilei', 'age': 18, 'email': 'a@b.com', 'tags': ['x']}, [])\n({}, [{'field': 'username', 'message': '长度不能少于 3'}, {'field': 'age', 'message': '不能大于 150'}])\n({}, [{'field': 'username', 'message': '缺少必填字段'}, {'field': 'age', 'message': '缺少必填字段'}])",
   "hints": [
    "先做类型转换再校验约束",
    "每个字段独立检查，错误全收集完再返回"
@@ -2195,7 +2195,7 @@
    "assert two == 1 + 4, '2 个英文字符向上取整为 1 token：%r' % (two,)"
   ],
   "explanation": "多轮对话的关键是「**历史要成对传**」。大模型是无状态的——它不记得上一轮说了什么，你每次都得把历史重新发过去。如果 user 和 assistant 不成对（比如只发了两个 user），很多服务商会直接报错，或者给出奇怪的回复。\n\n所以 `build_messages` 用一个 `pending_user` 暂存，**只有遇到 assistant 才配成一轮**。这样即使历史里出现「连续两条 user」「孤立的 assistant」，也不会拼出非法的消息序列。真实项目里这种脏数据太常见了（用户狂点发送、前面某次请求失败了）。\n\n`turns[-max_turns:]` 只截最近的几轮，是为了**控制上下文长度**。完整历史会越来越长，最终超出模型窗口——表现就是请求报错，或者模型开始「忘记」最近的对话。生产环境的做法更精细：按 token 数倒着删，或者把早期对话**摘要**成一段话再放进去。\n\n`count_tokens` 是**估算**：真实的分词器（BPE）不是这么算的，中文通常 1 个字 ≈ 1~2 个 token，英文平均 4 个字符 ≈ 1 个 token。但估算够用了——你要的是「大概还剩多少额度」，不是精确值。`(other + 3) // 4` 是向上取整的整数写法，比 `math.ceil(other / 4)` 更快也不会引入浮点误差。\n\n判断中文用 `\"\\u4e00\" <= ch <= \"\\u9fff\"` 是 Unicode 码点比较，覆盖了常用汉字区。要更全面可以用 `unicodedata.name()`，但那是几十倍的开销，不值得。",
-  "expected_output": "system 你是 Python 老师\nuser Q2\nassistant A2\nuser Q3\nassistant A3\nuser 那字典呢\n估算 token： 32",
+  "expected_output": "system 你是 Python 老师\nuser 那元组呢\nassistant 不可变序列\nuser 哪个更快\nassistant 元组略快\nuser 那字典呢\n估算 token： 51",
   "hints": [
    "历史要 user 和 assistant 成对才算一轮，用暂存变量配对",
    "取最近 max_turns 轮就是 turns[-max_turns:]"
@@ -2249,7 +2249,7 @@
    "```\n\n",
    "模型决定「要调这个工具、参数是 city=杭州」，再由你的代码去真正执行。所以**描述写得好不好，直接决定模型选不选得对**——`\"查询某个城市的天气\"` 比 `\"天气\"` 有用得多。\n\n用 `inspect.signature` 自动提取参数名，比手写参数列表可靠：函数改签名时注册信息自动跟着变，不会出现「文档说一个参数、代码要两个」。\n\n**`call_tool` 绝不能抛异常**，这是整个设计的关键。模型经常会给出各种奇怪的参数组合，如果每次都抛异常，你的 Agent 主循环每次都要写 try/except，漏一处整个对话就崩了。把「参数错误」「工具内部错误」都变成结构化的 `{\"error\": ...}` 返回，模型拿到这个错误信息后**还能自己纠正**（比如换成正确的参数重试）——这是 Agent 自我修复的基础。\n\n注意错误信息里保留了异常类型（`ValueError ...`）：对模型来说，`执行失败：KeyError 「没有 火星 的天气数据」` 比笼统的「执行失败」更有指导性，它可能据此换个城市再试。\n\n装饰器工厂的三层结构（`tool(...)` → `decorator(func)` → 返回 func）和前面 `@retry(times=3)` 是同一个模式：最外层收配置，内层收函数。"
   ],
-  "expected_output": "[{'name': 'add', 'description': '把两个数字相加', 'params': ['a', 'b']}, {'name': 'get_weather', 'description': '查询某个城市的天气', 'params': ['city']}]\n{'city': '杭州', 'weather': '晴 26℃'}\n3\n{'error': '参数不匹配：缺少参数 city'}\n{'error': '未知工具 nope'}\n{'error': \"执行失败：KeyError '没有 火星 的天气数据'\"}",
+  "expected_output": "{'name': 'add', 'description': '把两个数字相加', 'params': ['a', 'b']}\n{'name': 'get_weather', 'description': '查询某个城市的天气', 'params': ['city']}\n{'city': '杭州', 'weather': '晴 26℃'}\n3\n{'error': '参数不匹配：缺少参数 city'}\n{'error': '未知工具 nope'}\n{'error': \"执行失败：KeyError '没有 火星 的天气数据'\"}",
   "hints": [
    "用 inspect.signature(func).parameters 取参数名",
    "call_tool 里先检查参数，再 try/except 包住真正的调用"
@@ -2314,7 +2314,7 @@
   ],
   "statement": "模型的上下文窗口有限。发请求前要**按 token 预算裁剪历史**，策略是「保留 system + 最近的若干轮，从最老的开始丢」。\n\n定义 `trim_messages(messages, budget, count_tokens)`：\n\n- `messages`：完整消息列表（可能以 system 开头）\n- `budget`：允许的最大 token 数\n- `count_tokens`：一个函数，接收消息列表返回 token 估算值（复用上一题的实现）\n\n返回裁剪后的消息列表，规则：\n1. **system 消息永远保留**（在开头）\n2. 从**最老的**非 system 消息开始删除，直到总量降到预算内\n3. 删除时要保证 user / assistant 成对：如果删完剩下以 assistant 开头的对话，继续删掉它\n4. 如果只留 system 还是超预算，就**只返回 system**\n\n5. 如果连 system 都没有且超预算，返回**最后一条消息**（总得让模型看到点什么）\n\n另外返回被丢弃的条数：函数返回 `(trimmed, dropped_count)`。\n\n最后用示例验证并打印。",
   "starter_code": "def trim_messages(messages, budget, count_tokens):\n    pass\n",
-  "solution": "def trim_messages(messages, budget, count_tokens):\n    items = list(messages or [])\n    if not items:\n        return [], 0\n    system = items[0] if items[0].get('role') == 'system' else None\n    body = items[1:] if system else items[:]\n\n    def total(part):\n        return count_tokens(([system] if system else []) + part)\n\n    # 至少留一条，其余从最老的开始丢\n    while len(body) > 1 and total(body) > budget:\n        body.pop(0)\n    # 剪完如果开头是 assistant，说明它的提问被删了，一起删掉\n    while body and body[0].get('role') == 'assistant':\n        body.pop(0)\n    if total(body) > budget:\n        # 一条都放不下：有 system 就只留 system，否则留最后一条\n        body = [] if system else body[-1:]\n    result = ([system] if system else []) + body\n    if not result:\n        result = [items[-1]]\n    return result, len(items) - len(result)\n\n\ndef rough_tokens(messages):\n    total = 0\n    for message in messages:\n        total += len(str(message.get('content', ''))) + 4\n    return total\n\n\nhistory = [{'role': 'system', 'content': '你是老师'}] + [\n    {'role': 'user', 'content': f'问题{i}'} for i in range(1, 6)\n]\nhistory = [{'role': 'system', 'content': '你是老师'}]\nfor i in range(1, 6):\n    history.append({'role': 'user', 'content': f'问题{i}的详细描述' * 2})\n    history.append({'role': 'assistant', 'content': f'回答{i}的内容' * 2})\ntrimmed, dropped = trim_messages(history, 200, rough_tokens)\nprint('原有', len(history), '条，丢弃', dropped, '条')\nfor m in trimmed:\n    print(' ', m['role'], m['content'][:12])\n",
+  "solution": "def trim_messages(messages, budget, count_tokens):\n    items = list(messages or [])\n    if not items:\n        return [], 0\n    system = items[0] if items[0].get('role') == 'system' else None\n    body = items[1:] if system else items[:]\n\n    def total(part):\n        return count_tokens(([system] if system else []) + part)\n\n    # 至少留一条，其余从最老的开始丢\n    while len(body) > 1 and total(body) > budget:\n        body.pop(0)\n    # 剪完如果开头是 assistant，说明它的提问被删了，一起删掉\n    while body and body[0].get('role') == 'assistant':\n        body.pop(0)\n    if total(body) > budget:\n        # 一条都放不下：有 system 就只留 system，否则留最后一条\n        body = [] if system else body[-1:]\n    result = ([system] if system else []) + body\n    if not result:\n        result = [items[-1]]\n    return result, len(items) - len(result)\n\n\ndef rough_tokens(messages):\n    total = 0\n    for message in messages:\n        total += len(str(message.get('content', ''))) + 4\n    return total\n\n\nhistory = [{'role': 'system', 'content': '你是老师'}] + [\n    {'role': 'user', 'content': f'问题{i}'} for i in range(1, 6)\n]\nhistory = [{'role': 'system', 'content': '你是老师'}]\nfor i in range(1, 6):\n    history.append({'role': 'user', 'content': f'问题{i}的详细描述' * 2})\n    history.append({'role': 'assistant', 'content': f'回答{i}的内容' * 2})\ntrimmed, dropped = trim_messages(history, 100, rough_tokens)\nprint('原有', len(history), '条，丢弃', dropped, '条')\nfor m in trimmed:\n    print(' ', m['role'], m['content'][:12])\n",
   "checks": [
    "def tcount(msgs):\n    return sum(len(str(m.get('content', ''))) + 4 for m in msgs)",
    "full = [{'role': 'system', 'content': 'S'}, {'role': 'user', 'content': 'u1'}, {'role': 'assistant', 'content': 'a1'}, {'role': 'user', 'content': 'u2'}, {'role': 'assistant', 'content': 'a2'}]",
@@ -2342,7 +2342,7 @@
    "assert same[1]['content'] == 'u1', '不该改动原列表的顺序'"
   ],
   "explanation": "上下文管理是 AI 应用工程里**最容易出事**的一环：不做裁剪，用户聊到第 30 轮就会收到「context length exceeded」，而且报错信息通常很难看。\n\n策略选择上有讲究。常見三种：\n1. **从头丢**（本題）：实现简单，代价是最早的信息丢了。适合「用户只关心最近在问什么」的场景；\n2. **摘要压缩**：用一次额外的大模型调用把旧对话浓缩成一段摘要。保住信息但多花钱、多一次延迟；\n3. **按重要性保留**：把系统提示、用户明确设定的偏好标记为「必须保留」。\n生产系统通常是 2 + 3 结合。\n\n**为什么必须成对删除？** 如果裁剪后剩下的第一条是 `assistant`，模型看到的对话就始于「自己说过的一句话」，很多服务商会直接返回 400（消息序列非法），或者让模型产生严重的幻觉——它会顺着这个残缺上下文继续编。\n\n**为什么 system 永远保留？** 它是整个对话的「人格与规则」。丢了它，模型会变回默认语气、忘掉所有约束，用户会立刻感觉「AI 变傻了」。这也是为什么 system 通常写得很精简——它要占着预算的每一轮都在场。\n\n最后两个兜底分支（只留 system / 只留最后一条）看起来是「不可能的路径」，但真实线上会遇到：用户粘贴了一篇 5 万字的文章，预算再怎么裁都不够。这时候**宁可丢掉大部分内容，也不能让请求直接失败**——让模型看到点什么，比让用户看到 500 好。",
-  "expected_output": "原有 11 条，丢弃 6 条\n  system 你是老师\n  user 问题4的详细描述",
+  "expected_output": "原有 11 条，丢弃 6 条\n  system 你是老师\n  user 问题4的详细描述问题4的\n  assistant 回答4的内容回答4的内容\n  user 问题5的详细描述问题5的\n  assistant 回答5的内容回答5的内容",
   "hints": [
    "用 while 循环从最老的开始 pop(0)，直到总量进预算",
    "剪完后再检查开头是不是 assistant，是就继续删"
@@ -2405,7 +2405,7 @@
    "assert b4.stats()['tools'] == ['a', 'b'], 'register 应支持链式调用'"
   ],
   "explanation": "缓存和限流是让 Agent「能跑得久」的两个基础设施，而且它们的**顺序不能颠倒**：必须先查缓存，再判断限流。\n\n为什么？因为缓存命中并不消耗下游资源。用户连点三次同一个按钮，第三次应该直接秒回缓存结果，而不是被限流挡住报错——那样体验很差，而且逻辑上也说不通（你并没有真的调用下游）。\n\n缓存键的构造 `name + repr(args) + repr(sorted(kwargs.items()))` 有几个讲究：\n- `sorted(kwargs.items())` 让 `f(a=1, b=2)` 和 `f(b=2, a=1)` 命中同一份缓存。用 `repr(dict)` 直接拼的话，字典顺序不同就会被当成两次不同的调用；\n- 用 `repr` 而不是 `str`：`repr` 能区分 `1` 和 `\"1\"`，而 `str(1)` 和 `str(\"1\")` 都是 `\"1\"`——这种键冲突会让工具收到错误类型的参数，是最难查的一类 bug；\n- 真实系统还会加上「工具版本」和「用户 id」，前者避免代码更新后读到旧缓存，后者避免用户之间串数据。\n\n`self.now` 做成可写属性，是为了**让时间可控**。如果代码里直接调 `time.time()`，测试就得 `time.sleep(60)` 才能验证缓存过期，整个测试套件会慢到没人愿意跑。把「当前时间」变成依赖，是写可测代码的通用手法。\n\n限流用**固定窗口计数**（最简单的实现）。真实场景常用令牌桶或滑动窗口，因为固定窗口在边界处会「双倍突发」——第 59 秒打满额度、第 61 秒又打满，两秒内实际放行了 2 倍流量。",
-  "expected_output": "3\n3\n真实执行次数： 1\n{'calls': 1, 'hits': 1, 'blocked': 0, 'tools': ['add']}\n3\n缓存过期后执行次数： 2\n10 12\n{'error': '调用过于频繁'}\n{'calls': 5, 'hits': 1, 'blocked': 1, 'tools': ['add']}",
+  "expected_output": "3\n3\n真实执行次数： 1\n{'calls': 1, 'hits': 1, 'blocked': 0, 'tools': ['add']}\n3\n缓存过期后执行次数： 2\n10 {'error': '调用过于频繁'}\n{'error': '调用过于频繁'}\n{'calls': 3, 'hits': 1, 'blocked': 2, 'tools': ['add']}",
   "hints": [
    "先查缓存再判断限流，命中缓存的调用不该被限流挡住",
    "缓存键要处理关键字参数的顺序，用 sorted(kwargs.items())"
@@ -2642,7 +2642,7 @@
    "assert [h[0] for h in search([1, 0], tie, top_k=2)] == ['a', 'b'], '分数相同时应按 id 排序：%r' % (search([1, 0], tie, top_k=2),)"
   ],
   "explanation": "**分块（chunking）**是 RAG 里最被低估的一步。块切太大，检索出来的内容混杂，模型抓不到重点还浪费 token；切太小，一句话被劈成两半，语义就断了。所以真实系统里的分块通常是「按语义边界切 + 控制长度 + 保留重叠」，本題实现的就是这个骨架。\n\n**为什么要有 `overlap`？** 因为边界处的信息最容易被割裂。比如「Python 的列表是可变的」这句话如果正好被切在「列表是」和「可变的」之间，那么无论检索到哪一块，模型都看不全这个知识点。让相邻块共享 3~5 个字符（真实系统里是 50~100 个 token），就能保证跨边界的内容至少有一块是完整的。\n\n`overlapped.append((tail + chunks[index])[:size])` 里的 `[:size]` 不能省：加了重叠前缀之后长度会超，必须截回去——否则嵌入模型可能因为超长直接报错或被静默截断。\n\n**余弦相似度**只关心「方向」不关心「长度」：`cosine([1,1], [2,2])` 等于 1，所以文档长短不影响打分，这是它在文本检索里比欧氏距离更常用的原因。\n\n三个边界必须处理：**空向量**（`[]`）、**零向量**（`[0, 0]`）、**维度不一致**。前两个会让分母为 0 直接 `ZeroDivisionError`；维度不一致说明你把两个不同模型的向量拿来比了（换了嵌入模型却没重建索引，是 RAG 项目最常见的线上事故），这时返回 0 比抛异常更安全——至少服务不会挂。\n\n`sorted(..., key=lambda item: (-item[1], str(item[0])))` 又用到了「负号降序 + 二级键」的组合：相似度降序、相同则按 id 升序。`str(item[0])` 是为了兼容 id 是数字的情况，避免 `int` 和 `str` 比较时报 `TypeError`。",
-  "expected_output": "['列表是有序容器\\n元组不可变', ...]\n1.0 0.0 0.0\n[('d1', 1.0), ('d2', 0.9939)]",
+  "expected_output": "['列表是有序容器', '序容器元组不可变 字典是', '键值对集合去重']\n1.0 0.0 0.0\n[('d1', 1.0), ('d2', 0.9939)]",
   "hints": [
    "先按换行拆段，再把短段合并到不超过 size",
    "余弦相似度记住三种返回 0 的情况：空、零向量、维度不同"
@@ -5722,7 +5722,7 @@
    "q3 = MyQueue()\nfor i in range(5):\n    q3.push(i)\nassert [q3.pop() for _ in range(5)] == [0, 1, 2, 3, 4], '连续进出应保持先进先出'"
   ],
   "explanation": "**两个栈拼成一个队列**是经典设计题，核心在于「负负得正」：元素进 `in_stack` 的顺序是 1、2、3，倒进 `out_stack` 之后变成 3、2、1（栈顶是 1），再 pop 出来就是 1、2、3——**两次逆序等于正序**。\n\n关键是 `_shift` 的判断：**只有当 `out_stack` 为空时才搬运**。如果每次 pop 都搬，就会把已经排好的顺序打乱（比如 out 里还有元素时又倒一批进来，顺序就错了）。\n\n**摊还 O(1) 的证明**：每个元素一生只被搬运一次（从 in 栈 pop 出来、push 进 out 栈），所以 n 次操作总共搬运 n 次，平均每次 O(1)。单次最坏情况是 O(n)（第一次 pop 要倒一整个栈），但摊还下来很快。\n\n`peek()` 用 `out_stack[-1]` 取栈顶而不是 `pop()` 再 push 回去：后者虽然也对，但白白多两次操作，而且如果忘了 push 回去就破坏了队列。\n\n`empty()` 要同时看两个栈——只判断 `in_stack` 是初学者最常犯的错。",
-  "expected_output": "1 1 False 2\n",
+  "expected_output": "1 1 False 1",
   "hints": [
    "只在 out_stack 为空时才把 in_stack 倒过去（否则顺序会乱）",
    "empty 要同时判断两个栈"
@@ -7759,7 +7759,7 @@
    "_r = process_state('阻塞', ['io_done', 'io_done'])\nassert _r == ('就绪', 1), 'io_done 只有在阻塞态合法，第二次应被忽略，实际 %r' % (_r,)"
   ],
   "explanation": "五状态模型是进程管理的总纲，要记住的是「哪些事件合法」而不是死背箭头：\n\n| 状态 | 能接受的事件 | 去向 |\n| --- | --- | --- |\n| 新建 | admit | 就绪 |\n| 就绪 | dispatch | 运行 |\n| 运行 | timeout / wait / exit | 就绪 / 阻塞 / 终止 |\n| 阻塞 | io_done | 就绪 |\n| 终止 | 无（吸收态） | — |\n\n几条容易考的规律：\n\n1. **阻塞态不能直接变运行**：事件出现后只能回到就绪队列重新竞争 CPU，「io_done 直接变成运行」是最常见的错误选项；\n2. **就绪态不能主动 wait**：还没拿到 CPU，谈不上等待 I/O；\n3. **终止是吸收态**：进程结束后不能再被调度；\n4. 运行 → 就绪（时间片到）与运行 → 阻塞（等待事件）是两条完全不同的边，前者是被剥夺 CPU，后者是主动让出。\n\n实现上就是一张 `状态 × 事件 → 状态` 的查表，查不到就忽略。复杂度：时间 O(len(events))、空间 O(1)（表是常量）。",
-  "expected_output": "('终止', 0)\n('终止', 1)\n('就绪', 0)\n('终止', 2)",
+  "expected_output": "('终止', 2)\n('终止', 1)\n('就绪', 1)\n('终止', 2)",
   "hints": [
    "用一张 状态 -> {事件: 新状态} 的表来查，比写一长串 if 更不容易漏",
    "查不到的事件就 ignored 加一，状态不变"
@@ -7943,7 +7943,7 @@
    "_r = sjf([('P1', 0, 3), ('P2', 2, 6), ('P3', 4, 4), ('P4', 6, 5)])\nassert round(_r['avg_turnaround'], 4) == 7.75 and round(_r['avg_weighted'], 4) == 1.7042, 'P2 先到就得先跑完（非抢占），完成时刻依次 3 / 9 / 13 / 18，平均周转 7.75、平均带权 1.7042，实际 %r / %r' % (round(_r['avg_turnaround'], 4), round(_r['avg_weighted'], 4))"
   ],
   "explanation": "SJF 的模拟要用「循环挑人」的写法，因为调度点在时间轴上出现多次：\n\n```python\nwhile len(done) < len(order):\n    ready = [p for p in order if p[1] <= now and p[0] not in done]\n    if not ready:\n        now = min(p[1] for p in order if p[0] not in done)   # CPU 空闲\n        continue\n    cur = sorted(ready, key=lambda p: (p[2], p[1], str(p[0])))[0]\n    now += cur[2]\n    finish[cur[0]] = now\n    done.add(cur[0])\n```\n\n**为什么 ready 为空时要 `continue` 而不是直接算？** 因为此时 CPU 空闲，必须先把 `now` 推到「下一个要到达的进程」的时刻，否则可能漏掉调度点。\n\n**SJF 的性质**（选择题常考）：\n\n1. 在所有进程同时到达的特殊情况下，SJF 的**平均等待时间 / 平均周转时间最小**，这是可以证明的最优性；\n2. 它需要预知服务时间（现实里只能估计），所以更像一种理论基准；\n3. 对长作业不利，长作业可能一直排在短作业后面（**饥饿**）；\n4. 抢占版本的 SJF 叫 **SRTF**（最短剩余时间优先），本题是非抢占版本，所以后来到达的短作业不能把正在跑的进程踢下去。\n\n复杂度：时间 O(n² log n)（最坏每轮排序一次）、空间 O(n)；n 很小时完全够用。",
-  "expected_output": "['P1', 'P3', 'P2', 'P4']\n{'P1': 7, 'P2': 12, 'P3': 8, 'P4': 16}\n{'P1': 7, 'P2': 10, 'P3': 4, 'P4': 11}\n2.5625\n['P1', 'P2'] {'P1': 7, 'P2': 8}",
+  "expected_output": "['P1', 'P3', 'P2', 'P4']\n{'P1': 7, 'P3': 8, 'P2': 12, 'P4': 16}\n{'P1': 7, 'P2': 10, 'P3': 4, 'P4': 11}\n2.5625\n['P1', 'P2'] {'P1': 7, 'P2': 8}",
   "hints": [
    "每一轮从「已到达且未完成」里挑 burst 最小的，跑完再进入下一轮",
    "ready 为空说明 CPU 空闲，要把 now 推到下一个到达时刻"
@@ -8055,7 +8055,7 @@
    "_r = rr_overhead([], 2, 1)\nassert _r['switches'] == 0 and _r['total'] == 0 and _r['utilization'] == 0.0, '空列表不应除零，实际 %r' % (_r,)"
   ],
   "explanation": "上下文切换的开销看着不起眼，算出来却很吓人：本题里 12 个时间单位的服务时间配了 5 次切换、每次 1 个时间单位，CPU 有 5/17 ≈ 29%% 的时间在做无用功。\n\n```\n利用率 = 服务时间 / (服务时间 + 切换次数 × 单次开销)\n```\n\n由此可以直接看出时间片的两难：\n\n- 时间片太小 → 切换次数暴涨。若每次切换要 0.1 ms、时间片 1 ms，利用率只有约 91%%；\n- 时间片太大 → 退化成 FCFS，交互式进程的响应时间变得不可接受。\n\n教材的结论是：时间片要**远大于**切换开销（典型取值是几十毫秒对几微秒），并且切换开销里最重的往往是**页表与 TLB 的更新**（换页表会刷新快表，之后所有访存都要重新填 TLB）。\n\n**常见错误**：\n\n1. 把第一次调度也算一次切换——第一个时间片前面没有「上一个进程」，不该收费；\n2. 最后一个进程结束后又加一次切换；\n3. 用 `总时间` 当分母算利用率时忘了把切换时间加进去（分母必须含开销）。\n\n复杂度：时间 O(时间片总数)、空间 O(n)。",
-  "expected_output": "5 17 0.7059\n1.0\n0 5 1.0",
+  "expected_output": "5 17 0.7059\n1.0\n2 7 0.7143",
   "hints": [
    "用 slices 计数：slices > 0 时，每个时间片前先加一次 switch_cost",
    "switches = slices − 1（第一个时间片不算切换）；utilization = sum(bursts) / total"
@@ -8093,7 +8093,7 @@
    "_r = srtf([('P1', 0, 7), ('P2', 2, 4), ('P3', 4, 1), ('P4', 5, 4)])\nassert round(sum(_r['weighted'].values()) / 4, 6) == round(_r['avg_weighted'], 6), 'avg_weighted 应是各带权周转时间的平均值，实际 %r' % (_r['avg_weighted'],)"
   ],
   "explanation": "SRTF 的模拟最朴素的写法是「一个时间单位一步」：\n\n```python\nwhile len(done) < len(order):\n    ready = [p for p in order if p[1] <= now and p[0] not in done]\n    if not ready:\n        now = min(p[1] for p in order if p[0] not in done)   # CPU 空闲\n        continue\n    cur = sorted(ready, key=lambda p: (remaining[p[0]], str(p[0])))[0]\n    remaining[cur[0]] -= 1\n    now += 1\n    if remaining[cur[0]] == 0:\n        finish[cur[0]] = now\n        done.add(cur[0])\n```\n\n每一步都重新挑人，抢占就自然发生了：**新进程一到达就进入候选集合**，如果它的剩余时间比当前进程短，下一时刻它就会胜出。\n\n注意「剩余时间相同选 pid 小的」这条仲裁规则：没有它，A、B 两个都剩 3 的进程会每个时间单位互相抢占，虽然完成时间数字可能一样，但过程（以及某些教辅给出的甘特图）就对不上了。\n\n**SRTF 的考点**：\n\n1. 它是抢占式的 SJF，**平均周转时间比 SJF 更短**（本题 7.0 与 SJF 的 8.0 对比），因为短作业一到就能抢到 CPU；\n2. 但**切换次数变多**，调度开销更大，而且长作业更惨（本题 P1 从 7 拖到 16）；\n3. 它同样要求预知服务时间，现实中只能用「历史运行时间」估计。\n\n复杂度：时间 O(总服务时间 × n)、空间 O(n)。",
-  "expected_output": "{'P1': 16, 'P2': 7, 'P3': 5, 'P4': 11}\n{'P1': 16, 'P2': 5, 'P3': 1, 'P4': 6}\n7.0 1.5089\n{'A': 5, 'B': 2} {'A': 5, 'B': 1}",
+  "expected_output": "{'P3': 5, 'P2': 7, 'P4': 11, 'P1': 16}\n{'P1': 16, 'P2': 5, 'P3': 1, 'P4': 6}\n7.0 1.5089\n{'B': 2, 'A': 5} {'A': 5, 'B': 1}",
   "hints": [
    "每个时间单位都重新从「已到达且未完成」里挑剩余时间最短的，抢占就自然发生",
    "剩�余时间相同时按 pid 小的优先，否则会来回抢占"

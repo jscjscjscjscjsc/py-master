@@ -462,7 +462,7 @@ QUESTIONS = [
             '切片的好处是**不会越界报错**：`"abc"[10:]` 只是空字符串。'
             '这在处理不定长输入时非常好用。'
         ),
-        'expected_output': '6202retsaMyP\nyatro02\n026',
+        'expected_output': '6202retsaMyP\nPMse22\n026',
         'hints': ['切片格式 s[开始:结束:步长]', '反转是 s[::-1]，取最后三个是 s[-3:]'],
     },
     {
@@ -699,7 +699,7 @@ QUESTIONS = [
             '生成器表达式 + sum，可以统计「满足条件的元素个数」，'
             '不用先建一个临时列表。'
         ),
-        'expected_output': '最高 100 最低 54 平均 79.6 高于平均 5 人',
+        'expected_output': '最高 100 最低 54 平均 79.6 高于平均 4 人',
         'hints': ['sorted() 返回新列表，sort() 改自己', 'sum(1 for x in ... if 条件) 可以数个数'],
     },
     {
@@ -2081,7 +2081,7 @@ QUESTIONS = [
             '多个生成器串起来（`map`/`filter` 也是生成器式的），'
             '可以做到「读一行、处理一行、写一行」，中间不落任何大列表。'
         ),
-        'expected_output': "4 ['host = localhost', 'port = 8080', 'debug = True']\n[5, 4, 3, 2, 1]",
+        'expected_output': "3 ['host = localhost', 'port = 8080', 'debug = True']\n[5, 4, 3, 2, 1]",
         'hints': ['生成器函数里用 yield 而不是 return', '调用方通常用 list() 或 for 来消费它'],
     },
     {
@@ -2144,7 +2144,7 @@ QUESTIONS = [
             '逻辑一复杂或需要复用，就该定义成有名字的函数——'
             '给函数起名字本身就是最好的注释。'
         ),
-        'expected_output': "['小红', '小明', '小刚', '小美']\n小红",
+        'expected_output': "['王小刚', '欧阳小红', '小明', '李']\n王小刚",
         'hints': ['降序可以给 key 加负号，或者用 reverse=True', '多级排序让 key 返回元组'],
     },
 

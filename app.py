@@ -1592,7 +1592,24 @@ def test_ai_connection(base_url, model, api_key, timeout=20):
         'x-opencode-session': str(uuid.uuid4()),
     })
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        # 偶发挂起要重试：实测同一份配置连测 6 次，5 次 2 秒返回、
+        # 1 次整个卡死 47 秒。"测试连接"卡住不动比明确报错更让人困惑。
+        # 只重试连接阶段（超时/网络类），HTTP 错误直接交给下面的分类处理。
+        response = None
+        last_exc = None
+        for attempt in range(1, 4):
+            try:
+                response = urllib.request.urlopen(request, timeout=timeout)
+                break
+            except urllib.error.HTTPError:
+                raise
+            except (urllib.error.URLError, OSError, ValueError) as exc:
+                last_exc = exc
+                if attempt < 3:
+                    time.sleep(0.8 * attempt)
+        if response is None:
+            raise last_exc
+        with response:
             result = json.loads(response.read().decode('utf-8'))
         content = (result['choices'][0]['message'].get('content') or '').strip()
         if not content:

@@ -52,6 +52,41 @@ class ArkClient:
         # 欠费账户返回 403 且密钥本身是有效的，提示必须指向充值而不是换 key
         return code in {'AccountOverdueError', 'AccountOverdue'}
 
+    def _open_stream(self, model, payload):
+        """发起流式请求，拿到还没读的响应对象。
+
+        为什么要重试：实测同一句话连发 6 次，5 次稳定 2 秒返回，
+        但会有一次整个卡住 47 秒（服务端偶发不响应）。原来只有一次机会，
+        用户看到的就是"连接超时"；而隔几秒重试基本都能成。
+        重试只做在建连阶段 —— 流一旦开始吐字就不再重试，
+        否则会把已经显示给用户的半截回答重来一遍。
+        """
+        attempts = max(1, int(os.getenv('PYMASTER_AI_RETRY', '3')))
+        connect_timeout = int(os.getenv('PYMASTER_AI_CONNECT_TIMEOUT', '20'))
+        last_error = None
+        for attempt in range(1, attempts + 1):
+            req = urllib.request.Request(
+                self.url, data=json.dumps(payload).encode(),
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + self.key,
+                    'User-Agent': BROWSER_UA,
+                    'x-opencode-session': self.session_id,
+                })
+            try:
+                return urllib.request.urlopen(req, timeout=connect_timeout)
+            except urllib.error.HTTPError:
+                # HTTP 类错误（鉴权、限流、额度）重试没有意义，交给上层分类处理
+                raise
+            except (OSError, ValueError) as exc:
+                last_error = exc
+                if attempt < attempts:
+                    time.sleep(0.8 * attempt)
+        raise ArkError(
+            f'模型连接超时（已重试 {attempts} 次）。'
+            '网络不稳或服务商临时无响应时会这样，稍后再试；'
+            '若长期如此，可在配置页换用备用模型。') from last_error
+
     def events(self, messages, max_tokens=800):
         if not self.key:
             raise ArkError('请在本机 .env 中设置 ARK_API_KEY。')
@@ -64,14 +99,8 @@ class ArkClient:
                        'stream_options': {'include_usage': True}}
             if self.thinking_disabled or model.startswith('doubao-seed'):
                 payload['thinking'] = {'type': 'disabled'}
-            req = urllib.request.Request(self.url, data=json.dumps(payload).encode(), headers={
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + self.key,
-                'User-Agent': BROWSER_UA,
-                'x-opencode-session': self.session_id,
-            })
             try:
-                with urllib.request.urlopen(req, timeout=15) as response:
+                with self._open_stream(model, payload) as response:
                     self.active_model = model
                     yield {'type': 'model', 'model': model}
                     ended = False

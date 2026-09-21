@@ -872,7 +872,7 @@ QUESTIONS = [
             '后者虽然也对，但白白多两次操作，而且如果忘了 push 回去就破坏了队列。\n\n'
             '`empty()` 要同时看两个栈——只判断 `in_stack` 是初学者最常犯的错。'
         ),
-        'expected_output': '1 1 False 2\n',
+        'expected_output': '1 1 False 1',
         'hints': ['只在 out_stack 为空时才把 in_stack 倒过去（否则顺序会乱）', 'empty 要同时判断两个栈'],
     },
     {

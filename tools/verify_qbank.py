@@ -72,6 +72,23 @@ def main():
         print('没有找到题目。')
         return 1
 
+    # expected_output 与实际输出是否一致。
+    # 这个字段有两个用途：学生在「看解析」里看到的"期望输出"，
+    # 以及**没有 checks 的题**的判题依据。原来这里完全不看它，
+    # 于是它能一直错着 —— 实测踩到过期望值写成字符串里根本不存在的
+    # 字母（ch04-01 写成 yatro02，正确是 PMse22），等于给学生看错的期望。
+    expect_problems = []
+    for module_name, q in items:
+        r = te.judge(q, [q['solution']], stdin_text=q.get('stdin', ''))
+        actual = (r.get('stdout') or r.get('detail') or '').strip()
+        wanted = [ln.strip() for ln in (q.get('expected_output') or '').splitlines() if ln.strip()]
+        if not wanted or not actual:
+            continue
+        got = [ln.strip() for ln in actual.splitlines() if ln.strip()]
+        missing = [w for w in wanted if w not in got]
+        if missing:
+            expect_problems.append((q, wanted, got, missing))
+
     print(f'题库自测：共 {len(items)} 道题\n' + '─' * 60)
     started = time.time()
     failed, schema_problems = [], []
@@ -108,11 +125,20 @@ def main():
         print(f'\n结构问题 {len(schema_problems)} 处：')
         for p in schema_problems:
             print('  ⚠ ' + p)
+    if expect_problems:
+        print(f'\nexpected_output 与实际输出不一致 {len(expect_problems)} 道'
+              '（这会把错的期望展示给学生）：')
+        for q, wanted, got, missing in expect_problems:
+            print(f'  ⚠ {q["id"]} {q["title"]}')
+            print(f'      题目写的期望里有、实际输出里没有：{missing[:3]}')
+            print(f'      实际输出前几行：{got[:3]}')
     if failed:
         print(f'\n失败 {len(failed)} 道：')
         for q, result in failed:
             print(f'  ✗ {q["id"]} {q["title"]}')
             print('    ' + (result.get('error') or '').replace('\n', '\n    ')[:400])
+        return 1
+    if expect_problems:
         return 1
     return 0
 

@@ -178,7 +178,7 @@ QUESTIONS = [
             '为什么返回 `set` 而不是 `list`？因为「受影响的任务」本身不关心顺序，'
             '集合天然去重；要展示时再 `sorted()` 一次，顺序就稳定了。'
         ),
-        'expected_output': "['会话校验', '用户表', '权限中间件', '订单接口']\n['前端登录页']",
+        'expected_output': "['会话校验', '权限中间件', '用户表', '订单接口']\n['前端登录页']",
         'hints': ['反复扫描，只要还有新任务被加入就再扫一轮', '循环依赖时靠「已在集合里就跳过」来终止'],
     },
 
@@ -581,7 +581,10 @@ QUESTIONS = [
             "    return 1\n"
             "\n"
             "\n"
-            "result = run_all(dict(globals()))\n"
+            # 只看被 @test_case 标记过的函数：装饰器与 collect_tests / run_all
+            # 的名字也以 test_ 开头，光看名字会把它们自己收进去。
+            "namespace = {k: v for k, v in globals().items() if getattr(v, '_is_test', False)}\n"
+            "result = run_all(namespace)\n"
             "print(result)\n"
         ),
         'checks': [
@@ -728,7 +731,7 @@ QUESTIONS = [
             '`types` 里 `fix` 占比过高通常说明测试覆盖不够，'
             '`authors` 分布过于集中说明知识没有共享。'
         ),
-        'expected_output': "{'total': 5, 'authors': {'小明': 3, '小红': 2}, 'types': {'feat': 2, 'fix': 2, 'docs': 1}, 'hotfix_by': ['小明']}",
+        'expected_output': "{'total': 5, 'authors': {'小明': 3, '小红': 2}, 'types': {'feat': 2, 'fix': 2, 'docs': 1}, 'hotfix_by': ['小明', '小红']}",
         'hints': ['用 line.split("|") 拿三段，注意提交信息本身可能含 |', '类型取冒号前的部分，转小写再判断'],
     },
     {
@@ -818,7 +821,7 @@ QUESTIONS = [
             '所以本題前提是三个列表等长；'
             '真实场景要先把不同长度的文件对齐（这就是 diff 算法要解决的事）。'
         ),
-        'expected_output': "['def add(a, b):', '    return a * b', '# 我加的注释', 'print(add(1, 2))']\n冲突行： []",
+        'expected_output': "['def add(a, b):', '    return a * b', '<<<<<<< ours', '# 我加的注释', '>>>>>>> theirs', 'print(add(1, 2))']\n冲突行： [3]",
         'hints': ['先判断 o == t，再判断 o == b 或 t == b，剩下的就是冲突', '冲突时要输出三行标记，并记录行号'],
     },
 
@@ -922,7 +925,7 @@ QUESTIONS = [
             '这类「规范校验函数」在实际项目里非常常见：'
             'CI 里跑一遍分支名校验，能挡掉一堆因为 `Feature/Login` 这种命名导致的混乱。'
         ),
-        'expected_output': "{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\n{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\nNone\n[]\n['只能使用小写字母、数字、- 和 /']\n['只能使用小写字母、数字、- 和 /', '不能以 - 或 / 开头或结尾', '出现了连续的符号']",
+        'expected_output': "{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\n{'host': 'gitee.com', 'owner': 'pymaster', 'repo': 'team-project'}\nNone\n[]\n['只能使用小写字母、数字、- 和 /']\n['不能以 - 或 / 开头或结尾', '出现了连续的符号']",
         'hints': ['HTTPS 和 SSH 两种格式各写一条正则，用命名分组取值', '逐项检查并把所有问题都收集起来返回'],
     },
 
@@ -1048,7 +1051,7 @@ QUESTIONS = [
             '行号统计只数 `+` 行与上下文行，跳过 `-` 行和文件头，'
             '这样报出的行号能直接对上新文件——Review 时点一下就能跳过去。'
         ),
-        'expected_output': "{'line': 2, 'rule': 'hardcoded-secret', 'snippet': 'password = \"123456\"'}\n{'line': 3, 'rule': 'sql-concat', 'snippet': 'query = \"SELECT * FROM users WHERE name = \" + user'}\n{'line': 6, 'rule': 'bare-except', 'snippet': 'except:'}\n{'line': 7, 'rule': 'print-debug', 'snippet': 'print(\"登录失败\")'}",
+        'expected_output': '{\'line\': 3, \'rule\': \'hardcoded-secret\', \'snippet\': \'password = "123456"\'}\n{\'line\': 4, \'rule\': \'sql-concat\', \'snippet\': \'query = "SELECT * FROM users WHERE name = " + user\'}\n{\'line\': 7, \'rule\': \'bare-except\', \'snippet\': \'except:\'}\n{\'line\': 8, \'rule\': \'print-debug\', \'snippet\': \'print("登录失败")\'}',
         'hints': ['只扫描以 + 开头的行，行号按新文件计数', 'SQL 拼接要同时满足「有 SQL 关键字」和「有 + 或 f-string」两个条件'],
     },
     {
@@ -1277,7 +1280,7 @@ QUESTIONS = [
             '`sorted(...)` 保证同层按字母序，输出稳定——'
             '这对「每次构建结果都一样」很重要。'
         ),
-        'expected_output': "['models -> services（第 1 层依赖第 3 层，方向反了）']\n['models', 'repositories', 'services', 'controllers']",
+        'expected_output': "['models -> services（第 1 层依赖第 3 层，方向反了）']\nNone",
         'hints': ['层号小的模块被层号大的模块依赖是正常的，反过来才违规', '拓扑排序每轮挑「依赖已就绪」的模块，挑不出来说明有环'],
     },
 
@@ -1456,7 +1459,7 @@ QUESTIONS = [
             '本題的价值在于理解「为什么会漏转义」——'
             '比如这里的 `esc` 如果忘了调用，XSS 就进去了。'
         ),
-        'expected_output': "<table>\n  <thead><tr><th>姓名</th><th>分数</th></tr></thead>\n  <tbody>\n    <tr><td>小明</td><td>88</td></tr>\n    <tr><td>小红</td><td></td></tr>\n    <tr><td>&lt;img src=x&gt;</td><td></td></tr>\n  </tbody>\n</table>",
+        'expected_output': '<table>\n  <thead>    <tr><th>姓名</th><th>分数</th></tr></thead>\n  <tbody>\n    <tr><td>小明</td><td>88</td></tr>\n    <tr><td>小红</td><td></td></tr>\n    <tr><td>&lt;img src=x&gt;</td><td></td></tr>\n  </tbody>\n</table>\n<table>\n  <thead>    <tr><th>姓名</th></tr></thead>\n  <tbody>\n  </tbody>\n</table>',
         'hints': ['用 row.get(key) 取字段，缺了就得到 None', '先收集所有行到列表，最后用 "\\n".join 拼起来'],
     },
 
@@ -1847,7 +1850,7 @@ QUESTIONS = [
             '类型都不对的时候，就不该再去比较长度。'
             '用 `if ok and ...` 串起来，比层层嵌套 `if` 干净。'
         ),
-        'expected_output': "({'username': 'lilei', 'age': 18}, [])\n({'username': 'ab', 'age': 200}, [{'field': 'username', 'message': '长度不能少于 3'}, {'field': 'age', 'message': '不能大于 150'}])",
+        'expected_output': "({'username': 'lilei', 'age': 18, 'email': 'a@b.com', 'tags': ['x']}, [])\n({}, [{'field': 'username', 'message': '长度不能少于 3'}, {'field': 'age', 'message': '不能大于 150'}])\n({}, [{'field': 'username', 'message': '缺少必填字段'}, {'field': 'age', 'message': '缺少必填字段'}])",
         'hints': ['先做类型转换再校验约束', '每个字段独立检查，错误全收集完再返回'],
     },
     {
@@ -2435,7 +2438,7 @@ QUESTIONS = [
             '覆盖了常用汉字区。要更全面可以用 `unicodedata.name()`，'
             '但那是几十倍的开销，不值得。'
         ),
-        'expected_output': "system 你是 Python 老师\nuser Q2\nassistant A2\nuser Q3\nassistant A3\nuser 那字典呢\n估算 token： 32",
+        'expected_output': 'system 你是 Python 老师\nuser 那元组呢\nassistant 不可变序列\nuser 哪个更快\nassistant 元组略快\nuser 那字典呢\n估算 token： 51',
         'hints': ['历史要 user 和 assistant 成对才算一轮，用暂存变量配对', '取最近 max_turns 轮就是 turns[-max_turns:]'],
     },
     {
@@ -2576,7 +2579,7 @@ QUESTIONS = [
             '和前面 `@retry(times=3)` 是同一个模式：'
             '最外层收配置，内层收函数。'
         ),
-        'expected_output': "[{'name': 'add', 'description': '把两个数字相加', 'params': ['a', 'b']}, {'name': 'get_weather', 'description': '查询某个城市的天气', 'params': ['city']}]\n{'city': '杭州', 'weather': '晴 26℃'}\n3\n{'error': '参数不匹配：缺少参数 city'}\n{'error': '未知工具 nope'}\n{'error': \"执行失败：KeyError '没有 火星 的天气数据'\"}",
+        'expected_output': '{\'name\': \'add\', \'description\': \'把两个数字相加\', \'params\': [\'a\', \'b\']}\n{\'name\': \'get_weather\', \'description\': \'查询某个城市的天气\', \'params\': [\'city\']}\n{\'city\': \'杭州\', \'weather\': \'晴 26℃\'}\n3\n{\'error\': \'参数不匹配：缺少参数 city\'}\n{\'error\': \'未知工具 nope\'}\n{\'error\': "执行失败：KeyError \'没有 火星 的天气数据\'"}',
         'hints': ['用 inspect.signature(func).parameters 取参数名', 'call_tool 里先检查参数，再 try/except 包住真正的调用'],
     },
 
@@ -2785,7 +2788,7 @@ QUESTIONS = [
             "for i in range(1, 6):\n"
             "    history.append({'role': 'user', 'content': f'问题{i}的详细描述' * 2})\n"
             "    history.append({'role': 'assistant', 'content': f'回答{i}的内容' * 2})\n"
-            "trimmed, dropped = trim_messages(history, 200, rough_tokens)\n"
+            "trimmed, dropped = trim_messages(history, 100, rough_tokens)\n"
             "print('原有', len(history), '条，丢弃', dropped, '条')\n"
             "for m in trimmed:\n"
             "    print(' ', m['role'], m['content'][:12])\n"
@@ -2842,7 +2845,7 @@ QUESTIONS = [
             '这时候**宁可丢掉大部分内容，也不能让请求直接失败**——'
             '让模型看到点什么，比让用户看到 500 好。'
         ),
-        'expected_output': '原有 11 条，丢弃 6 条\n  system 你是老师\n  user 问题4的详细描述',
+        'expected_output': '原有 11 条，丢弃 6 条\n  system 你是老师\n  user 问题4的详细描述问题4的\n  assistant 回答4的内容回答4的内容\n  user 问题5的详细描述问题5的\n  assistant 回答5的内容回答5的内容',
         'hints': ['用 while 循环从最老的开始 pop(0)，直到总量进预算', '剪完后再检查开头是不是 assistant，是就继续删'],
     },
 
@@ -3012,7 +3015,7 @@ QUESTIONS = [
             '因为固定窗口在边界处会「双倍突发」——'
             '第 59 秒打满额度、第 61 秒又打满，两秒内实际放行了 2 倍流量。'
         ),
-        'expected_output': "3\n3\n真实执行次数： 1\n{'calls': 1, 'hits': 1, 'blocked': 0, 'tools': ['add']}\n3\n缓存过期后执行次数： 2\n10 12\n{'error': '调用过于频繁'}\n{'calls': 5, 'hits': 1, 'blocked': 1, 'tools': ['add']}",
+        'expected_output': "3\n3\n真实执行次数： 1\n{'calls': 1, 'hits': 1, 'blocked': 0, 'tools': ['add']}\n3\n缓存过期后执行次数： 2\n10 {'error': '调用过于频繁'}\n{'error': '调用过于频繁'}\n{'calls': 3, 'hits': 1, 'blocked': 2, 'tools': ['add']}",
         'hints': ['先查缓存再判断限流，命中缓存的调用不该被限流挡住', '缓存键要处理关键字参数的顺序，用 sorted(kwargs.items())'],
     },
 
@@ -3647,7 +3650,7 @@ QUESTIONS = [
             '`str(item[0])` 是为了兼容 id 是数字的情况，'
             '避免 `int` 和 `str` 比较时报 `TypeError`。'
         ),
-        'expected_output': "['列表是有序容器\\n元组不可变', ...]\n1.0 0.0 0.0\n[('d1', 1.0), ('d2', 0.9939)]",
+        'expected_output': "['列表是有序容器', '序容器元组不可变 字典是', '键值对集合去重']\n1.0 0.0 0.0\n[('d1', 1.0), ('d2', 0.9939)]",
         'hints': ['先按换行拆段，再把短段合并到不超过 size', '余弦相似度记住三种返回 0 的情况：空、零向量、维度不同'],
     },
 ]
