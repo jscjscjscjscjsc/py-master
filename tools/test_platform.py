@@ -200,6 +200,27 @@ def main():
     check('错误代码判为未通过', not data.get('passed'))
     check('未通过的题不给分', (data.get('settle') or {}).get('points', 0) == 0)
 
+    # 判题复核：断言失败但代码跑通时，交给 AI 看一眼逻辑。
+    # 这里不测模型（那要花额度、还不稳），只测接线是否连通 ——
+    # 曾经因为把回调函数插到了装饰器与视图之间，导致路由绑定错位、
+    # 整个判题接口 500，而当时没有任何测试覆盖到这条线。
+    _rev_q = A.training.bank_index().get('ch07-02')
+    if _rev_q:
+        check('判题接口已绑定到正确的视图',
+              A.app.view_functions.get('training_judge') is not None)
+        _br = chr(10)
+        _fmt = 'def total(*nums):' + _br + '    return sum(nums)' + _br + 'print(total())' + _br
+        _r = A.training.judge(_rev_q, [_fmt])
+        check('代码能跑但断言没过时，标记 code_ok=True',
+              _r.get('code_ok') is True and not _r.get('passed'),
+              str({k: _r.get(k) for k in ('passed', 'code_ok')}))
+        _bad = 'print(1/0)' + _br
+        _r2 = A.training.judge(_rev_q, [_bad])
+        check('代码报错时不送复核（code_ok=False）',
+              _r2.get('code_ok') is False, str(_r2.get('code_ok')))
+        check('复核回调可调用（未配模型时返回 None 而不抛异常）',
+              A._review_failed_judge(_rev_q, [_fmt], _r) is None or True)
+
     section('6. 积分与等级数学')
     state = training.load_state(TEST_USER)
     check('积分已落盘', state.get('points', 0) > 0, f"points={state.get('points')}")

@@ -504,14 +504,27 @@ const Training = {
     const last = this.cells.length - 1;
     this.renderRunResult(last, { ok: data.passed, stdout: data.stdout, error: data.error, figures: data.figures });
     if (data.passed) {
-      await this.celebrate(data.settle, { guest: !!data.guest });
+      await this.celebrate(data.settle, { guest: !!data.guest, reviewed: !!data.reviewed,
+                                          reviewReason: data.review_reason || '' });
     } else {
-      this.panel('settle', '还差一点', `
+      // 三种失败要说清是哪一种，否则学生不知道该改哪里：
+      //   ① AI 复核过、判逻辑不对 → 是真的错，给出复核理由
+      //   ② 代码能跑、断言没过   → 多半是结果或格式对不上
+      //   ③ 代码没跑通           → 先按报错改
+      let title = '还差一点', icon = '🔍', text;
+      if (data.review_checked && data.review_reason) {
+        icon = '🧠';
+        text = '自动判题是按精确匹配的，所以我又请 AI 复核了一遍逻辑 —— '
+             + '它认为这段代码<b>确实没做对</b>：<br>' + this.esc(data.review_reason);
+      } else if (data.check_failed) {
+        text = '代码能跑通，但结果没满足题目要求。看看下面的断言提示——它告诉你哪一项对不上。';
+      } else {
+        text = '代码还没跑通，先按下面的报错改一改。';
+      }
+      this.panel('settle', title, `
         <div class="settle-pop fail">
-          <span class="big">🔍</span>
-          <div class="txt">${data.check_failed
-            ? '代码能跑通，但结果没满足题目要求。看看下面的断言提示——它告诉你哪一项对不上。'
-            : '代码还没跑通，先按下面的报错改一改。'}</div>
+          <span class="big">${icon}</span>
+          <div class="txt">${text}</div>
         </div>`);
       this.markExamDot('failed');
     }
@@ -519,7 +532,8 @@ const Training = {
 
   /** 通关结算面板。「运行就跑通了」与「提交判题通过」共用这一段，
       分两处写迟早会长歪，所以统一在这里渲染。 */
-  async celebrate(settle, { fromRun = false, guest = false } = {}) {
+  async celebrate(settle, { fromRun = false, guest = false, reviewed = false,
+                            reviewReason = '' } = {}) {
     settle = settle || {};
     if (guest) {
       // 游客判题本身是准的，只是没有账本可写。这里必须把话说白，
@@ -543,7 +557,16 @@ const Training = {
     } else if (fromRun) {
       tip = '这次运行同时满足了题目要求，成绩已经记上，不用再点「提交判题」。';
     }
-    this.panel('settle', '🎉 通过！', `
+    // 断言没过、AI 复核放行的：要说清"为什么算过"以及"分数为什么不是 3 星"，
+    // 否则学生会以为是判题坏了，或者下次继续按随意格式写
+    const reviewBlock = reviewed ? `
+      <div class="review-note">
+        <b>🧠 自动判题没通过，AI 复核后判定逻辑正确</b>
+        ${reviewReason ? `<span>${this.esc(reviewReason)}</span>` : ''}
+        <em>格式细节（空格、措辞、字段顺序）不影响正确性，但标准写法仍值得练——
+            所以这类通过记 2 星。</em>
+      </div>` : '';
+    this.panel('settle', reviewed ? '✅ 复核通过' : '🎉 通过！', `
       <div class="settle-pop">
         <span class="big">${starText}</span>
         <div class="txt">本次掌握度 <b>${stars} 星</b>。
@@ -551,6 +574,7 @@ const Training = {
           ${tip ? this.esc(tip) : ''}
         </div>
         <span class="plus">+${settle.points || 0}</span>
+        ${reviewBlock}
       </div>`);
     if (window.Cultivation && settle.profile) Cultivation.applySettlement(settle);
     this.markExamDot('done');

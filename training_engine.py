@@ -670,11 +670,15 @@ def judge(question, cells, stdin_text='', timeout=25):
     failed = next((r for r in results if not r['ok']), None)
     if failed:
         is_check_cell = failed['index'] >= len(cells)
+        # code_ok 表示"学生自己的代码跑通了，失败发生在断言那一格"。
+        # 这正是「该不该交给 AI 复核」的判据：代码根本跑不起来时复核没有意义
+        # （AI 也救不了一个报错的程序），只有能跑通的代码才值得再看一眼。
         return {
             'passed': False,
             'error': failed.get('error', ''),
             'detail': '',
             'check_failed': is_check_cell,
+            'code_ok': is_check_cell,
             'stdout': ''.join(r.get('stdout', '') for r in results if not is_check_cell),
         }
 
@@ -690,7 +694,9 @@ def judge(question, cells, stdin_text='', timeout=25):
         wanted = [line.strip() for line in expect.splitlines() if line.strip()]
         missing = [w for w in wanted if w not in got]
         if missing:
-            return {'passed': False, 'detail': student_out,
+            # 这条路上学生代码是跑通的（只是输出对不上），同样可以让 AI 复核
+            return {'passed': False, 'detail': student_out, 'code_ok': True,
+                    'stdout': student_out, 'check_failed': True,
                     'error': '输出和预期不一致，缺少：' + ' / '.join(missing[:3])}
     return {'passed': True, 'error': '', 'detail': student_out, 'stdout': student_out}
 
@@ -736,6 +742,10 @@ def record_attempt(state, question, cells, result, mode='practice', exam_id='', 
         record['last_stars'] = 0
     elif passed:
         clears_before = record.get('clears', 0)
+        # forced_stars：由调用方直接指定星级。
+        # 目前唯一的用途是"断言没过但 AI 复核认定逻辑等价"——那种情况下
+        # 按 errored_runs 算会因为判题本身失败而多算一次错，星级被压低，
+        # 所以直接钉在 2 星（复核通过的上限，低于"一遍写对"的 3 星）。
         stars = forced_stars or stars_for(record['runs'], record['errored_runs'], used_ai)
         gained = question_points(question.get('difficulty', 1), stars, clears_before)
         record['clears'] = clears_before + 1

@@ -871,3 +871,45 @@ html[data-theme="light"] .cell-out.error { color: #b8342a; }
 html[data-theme="light"] .cell-out .meta { color: #6b7f95; }
 html[data-theme="light"] .cell { border-color: #cfdde9; }
 html[data-theme="light"] .cell-head { background: #eef3f8; }
+
+/* ── "经 AI 复核通过"的说明块 ─────────────────────────
+   断言没过但逻辑正确时，必须把"为什么算过""分数为什么不是 3 星"
+   一起说清楚。只显示一句"通过"，学生会以为判题坏了，
+   或者下次继续按随意格式写 —— 那就违背了放宽的初衷。 */
+.review-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--cyan);
+  border-radius: 0 8px 8px 0;
+  background: rgba(0, 212, 255, 0.07);
+  text-align: left;
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+.review-note b {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--cyan);
+  font-size: 13px;
+}
+.review-note span {
+  display: block;
+  color: var(--text-primary);
+}
+.review-note em {
+  display: block;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  font-style: normal;
+  font-size: 12px;
+}
+
+html[data-theme="light"] .review-note {
+  background: rgba(13, 107, 130, 0.07);
+  border-left-color: #0d6b82;
+}
+html[data-theme="light"] .review-note b { color: #0b5c70; }
+html[data-theme="light"] .review-note span { color: #22364d; }
+html[data-theme="light"] .review-note em { color: #6b7f95; border-top-color: rgba(23, 45, 71, 0.14); }

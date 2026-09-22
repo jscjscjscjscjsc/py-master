@@ -87,6 +87,7 @@ import narration_engine
 import training_engine as training
 import demo_mode
 import sandbox_guard
+import ai_review
 import game_engine as game          # 修行阁：修为的成长系统（纯推导，不持有状态）
 import coach_engine as coach
 from pathlib import Path
@@ -4026,15 +4027,32 @@ def training_run_cell():
     result = training.run_cells(cells, active=active,
                                 stdin_text=str(data.get('stdin', ''))[:4000],
                                 timeout=20, checks=checks)
+
+    # 「▶ 运行」也会顺带判题，所以这条路同样要能复核：
+    # 断言没过、但代码跑通了，先请 AI 看一眼逻辑，别让学生在这儿也吃格式的亏。
+    reviewed, review_reason = False, ''
+    if (question and checks and result.get('ok')
+            and not result.get('checks_passed') and result.get('checks_run')):
+        rev = _review_failed_judge(
+            question, cells,
+            {'code_ok': True, 'error': result.get('check_error', '')},
+            stdout=result.get('stdout', ''))
+        if rev and rev.get('pass'):
+            reviewed, review_reason = True, rev.get('reason', '')
+            result = dict(result)
+            result['checks_passed'] = True
+
     settle = None
     if question and result.get('checks_passed'):
         settle = _settle_successful_run(username, question, cells,
-                                        used_ai=bool(data.get('used_ai')))
+                                        used_ai=bool(data.get('used_ai')),
+                                        forced_stars=2 if reviewed else None)
     return jsonify({'success': result.get('ok', False), **result, 'settle': settle,
+                    'reviewed': reviewed, 'review_reason': review_reason,
                     'guest': username == 'guest'})
 
 
-def _settle_successful_run(username, question, cells, used_ai=False):
+def _settle_successful_run(username, question, cells, used_ai=False, forced_stars=None):
     """「运行就跑通了」的结算。
 
     只有这道题**还没通关**时才自动发分：否则反复点运行就能一次次拿递减分，
@@ -4052,7 +4070,7 @@ def _settle_successful_run(username, question, cells, used_ai=False):
     def mutate(state):
         settle_result = training.record_attempt(
             state, question, cells, {'passed': True},
-            mode='practice', used_ai=used_ai)
+            mode='practice', used_ai=used_ai, forced_stars=forced_stars)
         state.setdefault('drafts', {})[question['id']] = [str(c) for c in cells]
         box['settle'] = settle_result
         return True
@@ -4093,6 +4111,45 @@ def training_save_draft():
     return jsonify({'success': True, 'saved_at': datetime.now().strftime('%H:%M:%S')})
 
 
+def _code_review_complete(prompt):
+    """给 ai_review 用的回调：把 prompt 发给模型，返回纯文本回复。
+
+    temperature 固定 0：复核要的是稳定结论，同样的代码不该有时过有时不过。
+    """
+    messages = [
+        {'role': 'system', 'content': ai_review.REVIEW_SYSTEM},
+        {'role': 'user', 'content': prompt},
+    ]
+    return ark.complete(messages, max_tokens=600)
+
+
+def _review_failed_judge(question, cells, result, stdout=''):
+    """断言没过、但代码跑通了 —— 交给 AI 看一眼逻辑对不对。
+
+    只在「学生代码能运行」时才复核：跑不起来的代码复核没有意义，
+    那不是格式问题而是真错误，直接给出报错更有教学价值。
+    """
+    # 只有"学生代码跑通了"才值得复核：跑不起来的是真错误，
+    # 直接给报错比让 AI 说一句"逻辑不对"更有教学价值
+    if not result.get('code_ok'):
+        return None
+    if not _review_enabled():
+        return None
+    try:
+        return ai_review.review(question, cells, result,
+                                complete=_code_review_complete, stdout=stdout)
+    except Exception as exc:
+        print(f'[判题复核] 异常：{type(exc).__name__}: {exc}')
+        return None
+
+
+def _review_enabled():
+    """是否启用 AI 复核。默认开；模型没配好时自动跳过，不影响做题。"""
+    if os.environ.get('PYMASTER_AI_REVIEW', '1').strip().lower() in ('0', 'false', 'no', 'off'):
+        return False
+    return bool(ai_config_status()['configured'])
+
+
 @app.route('/api/training/judge', methods=['POST'])
 def training_judge():
     """判题：跑断言，结算星级与积分。"""
@@ -4113,6 +4170,23 @@ def training_judge():
     result = training.judge(question, cells, stdin_text=str(data.get('stdin', '')),
                             timeout=25)
 
+    # 断言没过、但代码跑通了 —— 可能只是格式细节不同（空格、措辞、字段顺序）。
+    # 交给 AI 复核逻辑：它说逻辑等价就算通过，最多给 2 星。
+    # 这一层专门治"学生写对了却被判错"：全库有 44 处断言要求输出一字不差，
+    # 少一个空格就挂，那不是在考编程。
+    review_info = None
+    if not result.get('passed'):
+        review_info = _review_failed_judge(question, cells, result,
+                                           stdout=result.get('stdout', ''))
+        if review_info and review_info.get('pass'):
+            result = dict(result)
+            result['passed'] = True
+            result['reviewed'] = True
+            result['review_reason'] = review_info.get('reason', '')
+            # 复核通过封顶 2 星：断言是第一判据，AI 复核是兜底放宽，
+            # 两者不能同权 —— 否则"格式写得很随意"反而和"一次写对"拿一样的分。
+            result['forced_stars'] = 2
+
     settle = None
     if username != 'guest':
         box = {}
@@ -4121,7 +4195,8 @@ def training_judge():
             settle_result = training.record_attempt(
                 state, question, cells, result,
                 mode='exam' if exam_id else 'practice',
-                exam_id=exam_id, used_ai=used_ai, skipped=skipped)
+                exam_id=exam_id, used_ai=used_ai, skipped=skipped,
+                forced_stars=result.get('forced_stars'))
             box['settle'] = settle_result
             state.setdefault('drafts', {})[question['id']] = cells
             if exam_id:
@@ -4139,6 +4214,11 @@ def training_judge():
                     'error': result.get('error', ''), 'stdout': result.get('detail', ''),
                     'figures': result.get('figures', []),
                     'check_failed': result.get('check_failed', False),
+                    # 复核信息：前端据此告诉学生"断言没过但逻辑是对的"，
+                    # 并把 AI 的理由显示出来，让他知道放宽的边界在哪
+                    'reviewed': bool(result.get('reviewed')),
+                    'review_reason': result.get('review_reason', ''),
+                    'review_checked': bool(review_info and review_info.get('reviewed')),
                     'settle': settle,
                     # 游客判题是真判（对错是准的），但没有账本可写。把身份显式回给
                     # 前端，前端才能说清「做得对，只是不记分」，而不是显示 0 星 +0。
