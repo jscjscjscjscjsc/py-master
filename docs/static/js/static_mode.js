@@ -18,11 +18,13 @@
     '/canvas': 'canvas.html',
     '/stars': 'stars.html',
     '/update': 'update.html',
-    '/intro': 'intro.html'
+    '/intro': 'intro.html',
+    // 刷题中心现在也能在线用：题库随站点导出，判题交给浏览器里的
+    // Python（Pyodide），整条链路（选题→写码→运行→判题→看解析）都走得通
+    '/training': 'training.html'
   };
   // 这些页面依赖后端才有意义，在线站不导出
   var BACKEND_ONLY = {
-    '/training': '刷题中心要在本地跑（判题会真的执行你的代码）',
     '/coach': '星辰教练要接大模型，需本地部署',
     '/progress': '学习仪表盘读的是你的本地学习记录',
     '/cultivation': '修行阁读的是你的本地修为与作答档案',
@@ -149,8 +151,9 @@
       'gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px 46px 10px 18px;' +
       'background:linear-gradient(90deg,#0b1220ee,#0e1a2aee);border-top:1px solid #00d4ff44;' +
       'color:#cfe3ff;font-size:13.5px;line-height:1.6;backdrop-filter:blur(6px);';
-    bar.innerHTML = '<span>🧪 <b>在线演示站</b>：39 章课程正文、讲解样例、星海图全部可以直接看；' +
-      '<b>AI 答疑 / 账号进度 / 在线判题</b>需要下载本地版一键启动</span>' +
+    bar.innerHTML = '<span>🧪 <b>在线演示站</b>：课程正文、讲解样例、星海图、' +
+      '<b>刷题中心（可直接运行与判题）</b>都能用；' +
+      '<b>AI 答疑 / 成绩保存 / 修为积分</b>需要下载本地版</span>' +
       '<button style="background:#00d4ff22;border:1px solid #00d4ff55;color:#9fd9ff;' +
       'border-radius:8px;padding:4px 12px;cursor:pointer;font-size:13px;">知道了</button>';
     bar.querySelector('button').onclick = function () {

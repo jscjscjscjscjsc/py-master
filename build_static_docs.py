@@ -80,6 +80,74 @@ def write_page(client, route, destination):
     (DOCS / destination).write_text(body, encoding='utf-8')
 
 
+def export_qbank():
+    """导出在线刷题需要的数据。
+
+    刷题中心原来是"后端专属"，在线站点进去只弹一句提示。但它的输入其实
+    全是静态的：题库、题目详情、判题脚本。判题需要跑 Python —— 那一环
+    交给浏览器里的 Pyodide（见 static/js/pyodide_runner.js），
+    于是整条链路（选题 → 写代码 → 运行 → 判题 → 看解析）在静态站上都能走通。
+
+    导出三份：
+      data/qbank/catalog.json    章节与专题目录（带赛道归类）
+      data/qbank/briefs.json     题目列表（不含答案，用于侧栏与筛选）
+      data/qbank/details/<id>.json  单题详情（含答案与断言，点开才拉）
+    详情拆成单文件是刻意的：256 道题合起来约 1MB，全部预加载会拖慢首屏，
+    而学生一次只看一道。
+    """
+    import json as _json
+    out = DOCS / 'data' / 'qbank'
+    detail_dir = out / 'details'
+    out.mkdir(parents=True, exist_ok=True)
+    detail_dir.mkdir(parents=True, exist_ok=True)
+
+    courses = _json.loads((ROOT / 'data' / 'courses.json').read_text(encoding='utf-8'))
+    bank = pymaster.training.load_bank()
+    chapters = pymaster.training.bank_chapters(courses)
+
+    # 补上进度字段。本地版这些来自用户的作答档案；在线站没有成绩库，
+    # 一律给 0 —— 但字段必须齐，否则前端渲染成 "undefined/2"、"NAN/75"。
+    for info in chapters:
+        items = pymaster.training.filter_questions(chapters=[info['id']])
+        info.setdefault('solved', 0)
+        info.setdefault('attempted', 0)
+        info.setdefault('wrong', 0)
+        info.setdefault('progress', 0)
+
+    (out / 'catalog.json').write_text(_json.dumps({
+        'success': True,
+        'chapters': chapters,
+        'total': len(bank),
+        # 浏览器里跑不了第三方库（Pyodide 核心只带标准库），
+        # 把受影响的题目标出来，前端会给出明确提示而不是让学生对着报错发呆
+        'limits': {
+            'no_third_party': True,
+            'note': '在线演示站用浏览器内置的 Python 运行，'
+                    '只支持标准库；用到 pandas / requests 等第三方库的题目请下载本地版。',
+        },
+    }, ensure_ascii=False), encoding='utf-8')
+
+    briefs = [pymaster.training.question_brief(q, {}) for q in bank]
+    (out / 'briefs.json').write_text(_json.dumps(
+        {'success': True, 'questions': briefs, 'count': len(briefs)},
+        ensure_ascii=False), encoding='utf-8')
+
+    # 判题脚本：与后端用的是同一份（training_engine.HARNESS），
+    # 保证"本地能过 / 在线过不了"这种差异不会出现
+    (out / 'harness.py').write_text(pymaster.training.HARNESS, encoding='utf-8')
+
+    n = 0
+    for q in bank:
+        detail = pymaster.training.public_question(q, {}, reveal=True)
+        if not detail:
+            continue
+        (detail_dir / f"{q['id']}.json").write_text(
+            _json.dumps({'success': True, 'question': detail}, ensure_ascii=False),
+            encoding='utf-8')
+        n += 1
+    print(f'题库导出完成：{len(bank)} 道题（catalog + briefs + {n} 份详情 + 判题脚本）')
+
+
 def export_narrations(samples):
     """导出讲解样例：分镜 JSON、配图、口播音频。"""
     narrations = pymaster.narration_engine.load_narrations()
@@ -247,11 +315,28 @@ def build(samples=8):
     write_page(client, '/stars', 'stars.html')
     write_page(client, '/canvas', 'canvas.html')
     write_page(client, '/playground', 'playground.html')
+    write_page(client, '/training', 'training.html')
+    # 刷题页额外挂两个静态专用脚本：
+    #   pyodide_runner.js —— 浏览器里真跑 Python（判题的执行环境）
+    #   static_qbank.js   —— 把 /api/training/* 接到导出的 JSON 上
+    # 必须放在 static_mode.js 之后（它在 head 注入），因为这一层是"包一层"：
+    # 未接管的接口继续落到 static_mode.js 的降级提示上。
+    training_file = DOCS / 'training.html'
+    html = training_file.read_text(encoding='utf-8')
+    inject = ('<script src="static/js/pyodide_runner.js"></script>'
+              + chr(10)
+              + '<script src="static/js/static_qbank.js"></script>'
+              + chr(10))
+    if 'pyodide_runner.js' not in html:
+        html = html.replace('</body>', inject + '</body>', 1)
+        training_file.write_text(html, encoding='utf-8')
 
     courses = json.loads((ROOT / 'data' / 'courses.json').read_text(encoding='utf-8'))
     for course in courses:
         write_page(client, f"/chapter/{course['id']}", f"chapter-{course['id']}.html")
     print(f'页面导出完成：{len(courses)} 章')
+
+    export_qbank()
 
     # 星海图的数据也走静态文件
     stars_file = DOCS / 'stars.html'

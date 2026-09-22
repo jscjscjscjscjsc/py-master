@@ -59,7 +59,40 @@ const Training = {
     if (questionParam) await this.openQuestion(questionParam);
   },
 
+  /** 在线演示站：没有后端，但判题可以在浏览器里真跑（Pyodide）。
+   *  这两条链路（运行 / 提交判题）在这里接管，其余接口由
+   *  static_qbank.js 的 fetch 钩子兜住。 */
+  isStatic() {
+    return !!(window.PYMASTER_STATIC && window.StaticQBank);
+  },
+
   async api(url, options) {
+    if (this.isStatic() && (url === '/api/training/run-cell' || url === '/api/training/judge')) {
+      let body = {};
+      try { body = JSON.parse((options && options.body) || '{}'); } catch (e) {}
+      const cells = body.cells || [];
+      const isJudge = url === '/api/training/judge';
+      const active = isJudge ? cells.length - 1 : (body.active || 0);
+      // 只有"跑的是最后一块"才带断言 —— 与后端判据一致：
+      // 只跑了半截代码时断言必然不过，回一个"未通过"只会误导学生。
+      const checks = (this.current && this.current.checks
+                      && (isJudge || active === cells.length - 1))
+        ? this.current.checks : [];
+      const data = await window.StaticQBank.runCell({
+        cells, active, checks,
+        onStatus: (msg) => this.toast(msg),
+      });
+      if (!data.success) return data;
+      if (isJudge) {
+        // 判题链路期待 { passed, stdout, error } 这套字段
+        return Object.assign({}, data, {
+          passed: !!data.checks_passed,
+          stdout: data.stdout || '',
+          static: true,
+        });
+      }
+      return Object.assign({ static: true }, data);
+    }
     const response = await fetch(url, options);
     return response.json().catch(() => ({ success: false, message: '服务返回了非 JSON 内容' }));
   },

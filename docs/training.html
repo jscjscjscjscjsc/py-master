@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刷题中心 · PyMaster</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/cultivation.css">
+<link rel="stylesheet" href="static/css/music.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/css/training.css">
+  <link rel="stylesheet" href="static/css/atmosphere.css">
+<link rel="stylesheet" href="static/css/code_light.css">
+<script src="static/js/static_mode.js"></script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="workbench-page">
+
+<header class="wb-top">
+  <div class="wb-brand"><span class="spark">⚔️</span><span>刷题中心</span></div>
+  <div class="wb-tabs">
+    <button class="wb-tab active" data-mode="practice">练习模式</button>
+    <button class="wb-tab" data-mode="exam">实战模式</button>
+  </div>
+  <div class="wb-right">
+    <a class="wb-link" href="/cultivation">修行阁</a>
+    <a class="wb-link" href="/coach">星辰教练</a>
+    <a class="wb-link" href="/progress">学习仪表盘</a>
+    <a class="wb-link" href="index.html">返回主页</a>
+    <span class="wb-link" id="whoami" style="cursor:default">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.7" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px">
+        <circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20 C5.6 16.4 8.4 14.6 12 14.6 C15.6 14.6 18.4 16.4 19.5 20"/>
+      </svg>guest</span>
+  </div>
+</header>
+
+
+<div class="wb-guest-banner">
+  🧪 当前是<strong>游客模式</strong>：题目能正常做、判题也会告诉你对错，
+  但<strong>成绩不会保存</strong>——不计积分、不涨修为，换页就没了。
+  <a href="/login">登录 / 注册</a> 后再做一遍就能记上。
+</div>
+
+
+<div class="wb-layout">
+  <aside class="wb-side" id="wb-side"></aside>
+  <main>
+    <div id="wb-list" class="qlist"></div>
+    <div id="wb-detail"></div>
+  </main>
+</div>
+
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/js/ui_confirm.js"></script>
+<script src="static/js/md_lite.js"></script>
+<script src="static/js/portrait.js"></script>
+<script src="static/js/cultivation.js"></script>
+<script src="static/js/music_player.js"></script>
+<script src="static/js/training.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Training.init();
+    Cultivation.mount();
+  });
+</script>
+<script src="static/js/atmosphere.js"></script>
+<script src="static/js/pyodide_runner.js"></script>
+<script src="static/js/static_qbank.js"></script>
+</body>
+</html>
