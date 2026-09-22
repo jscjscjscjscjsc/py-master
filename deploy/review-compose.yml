@@ -1,0 +1,72 @@
+# 评审试用环境：PyMaster + AI Master 跑在同一台服务器上，两个子域名。
+#
+# 与 deploy/docker-compose.yml（单平台给学生用）的区别：
+#   - 两个平台一起起，共用一套 Caddy 做 HTTPS
+#   - 开启了演示账号与代码安全闸门（评审可以真操作，但不落盘、不越界）
+#
+#   1. 两个子域名都解析到这台服务器
+#   2. 填好 pymaster.env / aimaster.env（deploy_review.py 会生成演示账号部分）
+#   3. docker compose up -d --build
+services:
+  pymaster:
+    build:
+      context: ./pymaster
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: "5000"
+      PYMASTER_OPEN_BROWSER: "0"
+      PYMASTER_DATA_DIR: /var/pymaster-data
+      # 评审演示账号：档案只在内存里，评审怎么点都不写盘（见 demo_mode.py）
+      PYMASTER_DEMO_USER: ${PYMASTER_DEMO_USER:-}
+      PYMASTER_DEMO_PASSWORD: ${PYMASTER_DEMO_PASSWORD:-}
+      # 公网安全闸门：静态拦截系统级操作 + 子进程资源上限（见 sandbox_guard.py）
+      PYMASTER_SAFE_MODE: "1"
+    env_file:
+      # 模型密钥放这里（可选，不填只是没有 AI 答疑）
+      - ./pymaster.env
+    volumes:
+      - ./pymaster-data:/var/pymaster-data
+      - ./narrations:/srv/pymaster/static/narrations
+    mem_limit: 2500m
+    cpus: 2.0
+
+  aimaster:
+    build:
+      context: ./aimaster
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: "5178"
+      STARLAB_OPEN_BROWSER: "0"
+      STARLAB_DATA_DIR: /var/aimaster-data
+      STARLAB_DEMO_USER: ${STARLAB_DEMO_USER:-}
+      STARLAB_DEMO_PASSWORD: ${STARLAB_DEMO_PASSWORD:-}
+    env_file:
+      - ./aimaster.env
+    volumes:
+      - ./aimaster-data:/var/aimaster-data
+    mem_limit: 1200m
+    cpus: 1.0
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - pymaster
+      - aimaster
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?请先设置 DOMAIN（主域名）}
+      BASIC_USER: ${BASIC_USER:-}
+      BASIC_HASH: ${BASIC_HASH:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

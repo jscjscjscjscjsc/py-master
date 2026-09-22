@@ -1,0 +1,56 @@
+# 评审试用的两个子站，Caddy 自动申请并续期 HTTPS 证书。
+#
+# 与单平台的 Caddyfile 区别：这里**不加 basic_auth**。
+# 评审要的是"点开就能用"，再让他们输一道浏览器级口令，体验很差；
+# 防线改在应用层：演示账号 + 代码安全闸门（见 sandbox_guard.py）。
+# 如果你希望额外加一层口令，把下面注释掉的三行放开，并在 .env 里填 BASIC_* 。
+
+pymaster.{$DOMAIN} {
+	encode gzip
+
+	reverse_proxy pymaster:5000 {
+		# AI 答疑是 SSE 流式输出，必须关掉响应缓冲，否则要等整段生成完才显示
+		flush_interval -1
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	log {
+		output file /data/pymaster-access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+	}
+}
+
+aimaster.{$DOMAIN} {
+	encode gzip
+
+	reverse_proxy aimaster:5178 {
+		flush_interval -1
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	log {
+		output file /data/aimaster-access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+	}
+}
+
+# ── 需要额外一层访问口令时，把下面这段接到任一站点块里 ──
+#	basic_auth {
+#		{$BASIC_USER} {$BASIC_HASH}
+#	}

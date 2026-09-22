@@ -19,6 +19,16 @@ import json
 import os
 import re
 import subprocess
+
+try:
+    import demo_mode
+except ImportError:
+    demo_mode = None
+
+try:
+    import sandbox_guard
+except ImportError:      # 单独跑引擎（如自测脚本）时也不该崩
+    sandbox_guard = None
 import sys
 import tempfile
 import threading
@@ -187,6 +197,9 @@ def _empty_state():
 
 
 def load_state(username):
+    # 评审演示账号：状态只存内存，读文件会读到空，所以先问演示模块要
+    if demo_mode is not None and demo_mode.is_demo(username):
+        return demo_mode.get_training_state()
     path = state_path(username)
     if not os.path.exists(path):
         return _empty_state()
@@ -203,6 +216,10 @@ def load_state(username):
 def save_state(username, state):
     """先写临时文件再原子替换：刷题时会有大量并发写入，
     直接覆写目标文件出现过读到半截 JSON 的情况。"""
+    # 演示账号不落盘：评审怎么点都不会污染真实数据，重启即还原
+    if demo_mode is not None and demo_mode.is_demo(username):
+        demo_mode.set_training_state(state)
+        return
     path = state_path(username)
     tmp = path + '.tmp'
     with open(tmp, 'w', encoding='utf-8') as f:
@@ -417,6 +434,18 @@ def bank_chapters(courses=None):
 HARNESS = r'''
 import json, sys, io, os, traceback, contextlib
 
+# 公网部署时给这个子进程套上资源上限：CPU 15 秒、地址空间 512MB、
+# 线程/进程数 64。防的是死循环或疯狂吃内存把服务器拖垮（Linux 生效）。
+if os.environ.get('PYMASTER_SAFE_MODE', '').strip().lower() in ('1', 'true', 'yes', 'on'):
+    try:
+        import resource as _r
+        _r.setrlimit(_r.RLIMIT_CPU, (15, 15))
+        _c = 512 * 1024 * 1024
+        _r.setrlimit(_r.RLIMIT_AS, (_c, _c))
+        _r.setrlimit(_r.RLIMIT_NPROC, (64, 64))
+    except Exception:
+        pass
+
 payload = json.load(open(sys.argv[1], 'r', encoding='utf-8'))
 cells = payload.get('cells') or []
 out_path = sys.argv[2]
@@ -501,6 +530,18 @@ def _run_python(cells, stdin_text='', timeout=20, checks=None):
 
     checks 不为空时，会作为最后一个代码块执行，用来判定题目是否通关。
     """
+    # 公网部署时（PYMASTER_SAFE_MODE=1）先过一遍静态检查：
+    # 判题是拿服务器直接跑学生的代码，没有沙箱。正常教学代码碰不到被拦的那些操作。
+    # 拦下来时**返回一句人话**而不是抛异常 —— 这样 app.py 里所有调用点
+    # （run-cell / judge / 练习场）都自动安全，不用各自 try/except。
+    if sandbox_guard is not None and sandbox_guard.is_enabled():
+        for cell in cells:
+            try:
+                sandbox_guard.check_source(str(cell))
+            except sandbox_guard.UnsafeCode as exc:
+                return {'ok': False, 'error': str(exc), 'stdout': '', 'results': [],
+                        'blocked': True}
+
     workdir = tempfile.mkdtemp(prefix='pymaster_cells_')
     try:
         payload_path = os.path.join(workdir, 'payload.json')

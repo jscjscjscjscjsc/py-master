@@ -85,6 +85,8 @@ from comic_engine import ComicEngine, ComicMemory
 from tts_engine import EdgeTTS, DoubaoTTS, BrowserTTS
 import narration_engine
 import training_engine as training
+import demo_mode
+import sandbox_guard
 import game_engine as game          # 修行阁：修为的成长系统（纯推导，不持有状态）
 import coach_engine as coach
 from pathlib import Path
@@ -158,15 +160,64 @@ browser_tts = BrowserTTS()
 
 
 def load_json(filepath):
+    # 先算"是不是账号文件"：账号文件不存在时也要走注入分支，
+    # 全新部署（users.json 还没生成）正是最常见的情况
+    is_users_file = os.path.abspath(filepath) == os.path.abspath(USERS_FILE)
     if not os.path.exists(filepath):
-        return {} if 'users' in filepath else []
-    with open(filepath, 'r', encoding='utf-8') as f:
-        return json.load(f)
+        data = {} if is_users_file else []
+    else:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    # 评审演示账号的档案不在磁盘上。在这里注入，app.py 里那几十处
+    # `load_json(USERS_FILE).get(username)` 就都不用改。
+    if is_users_file:
+        demo = demo_account()
+        if demo:
+            data.setdefault(demo[0], demo[1])
+    return data
 
 
 def save_json(filepath, data):
+    # 演示账号的改动只留在内存：写盘前先把它剥离，
+    # 保证评审怎么点都不会污染真实学生数据。
+    if os.path.abspath(filepath) == os.path.abspath(USERS_FILE):
+        demo = demo_account()
+        if demo and isinstance(data, dict) and demo[0] in data:
+            demo_mode.set_profile(data[demo[0]])
+            data = {k: v for k, v in data.items() if k != demo[0]}
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def demo_account():
+    """返回 (用户名, 档案) 或 None。档案来自内存，不是磁盘。
+
+    密码哈希在这里现算：环境变量里存的是明文口令，
+    而登录流程走的是与真实账号完全相同的校验路径 —— 这样演示账号
+    不需要任何特殊分支，也就不会因为"演示"而漏掉安全检查。
+    """
+    if not demo_mode.is_enabled():
+        return None
+    profile = demo_mode.get_profile()
+    if not profile.get('password'):
+        _, salt, digest = hash_password_new(demo_mode.demo_password())
+        profile['password'] = digest
+        profile['password_salt'] = salt
+        profile['created_at'] = profile.get('created_at') or '2026-09-01 09:00:00'
+        profile['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return demo_mode.demo_user(), profile
+
+
+def ensure_demo_account():
+    """启动时把演示账号准备好（内存里的档案，不写盘）。
+
+    注意：容器里是 gunicorn `app:app` 启动，不会走下面的 __main__ 块，
+    所以这个调用必须放在模块级，否则演示账号只在本地 `python app.py`
+    时才生效 —— 那正是上线时最容易漏掉的地方。
+    """
+    if not demo_mode.is_enabled():
+        return
+    print(demo_mode.banner())
 
 
 def hash_password(password):
@@ -193,6 +244,9 @@ def verify_password(record, password):
         _, _, digest = hash_password_new(password, record['password_salt'])
         return secrets.compare_digest(digest, stored)
     return secrets.compare_digest(hash_password(password), stored)
+
+
+ensure_demo_account()
 
 
 def login_required(f):
@@ -404,7 +458,9 @@ def require_ai_config():
     # 或换了 data 目录）。这种"幽灵登录"要退回游客，否则界面显示着一个
     # 已经不存在的账号，进度却怎么都不保存
     username = session.get('username')
-    if username and username != 'guest' and username not in load_json(USERS_FILE):
+    if (username and username != 'guest' and not demo_mode.is_demo(username)
+            and username not in load_json(USERS_FILE)):
+        # 演示账号是内存里的，不在 users.json，别把它当成"已删除的账号"踢掉
         session.pop('username', None)
     if ai_config_status()['configured']:
         return None
@@ -1116,6 +1172,18 @@ def run_code():
 
     if not code_exec_enabled():
         return jsonify({'success': False, 'output': '', 'error': CODE_EXEC_OFF_MESSAGE})
+
+    # 公网部署时的安全闸门（PYMASTER_SAFE_MODE=1）。
+    # 这里是"练习场 / 编程练习弹窗"的运行入口，与刷题中心走的是两条链路 ——
+    # 之前只给刷题那条加了闸门，实测这条能读整个磁盘、能起进程，
+    # 等于闸门形同虚设。两条链路必须都过同一道检查。
+    if sandbox_guard.is_enabled():
+        try:
+            sandbox_guard.check_source(code)
+        except sandbox_guard.UnsafeCode as exc:
+            return jsonify({'success': False, 'output': '', 'error': str(exc),
+                            'blocked': True, 'needs_input': False,
+                            'exit_code': -1, 'elapsed': '0s'})
 
     needs_input = bool(re.search(r'(?<![\w.])input\s*\(', code))
 
