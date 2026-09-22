@@ -913,3 +913,35 @@ html[data-theme="light"] .review-note {
 html[data-theme="light"] .review-note b { color: #0b5c70; }
 html[data-theme="light"] .review-note span { color: #22364d; }
 html[data-theme="light"] .review-note em { color: #6b7f95; border-top-color: rgba(23, 45, 71, 0.14); }
+
+/* ── 随堂练习的「预期输出」预览 ─────────────────────────
+   把该跑出什么结果直接摆出来，学生不用回头翻正文对照。
+   这是"能判断自己做得对不对"的前提 —— 原来的判据只有"能运行就算过"。 */
+.ex-expect {
+  margin: 10px 0 4px;
+  border-left: 3px solid var(--green);
+  border-radius: 0 8px 8px 0;
+  background: rgba(63, 185, 80, 0.07);
+  overflow: hidden;
+}
+.ex-expect-label {
+  display: block;
+  padding: 7px 12px 0;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--green);
+}
+.ex-expect pre {
+  margin: 0;
+  padding: 8px 12px 11px;
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+html[data-theme="light"] .ex-expect { background: rgba(47, 107, 58, 0.07); }
+html[data-theme="light"] .ex-expect-label { color: #2f6b3a; }
+html[data-theme="light"] .ex-expect pre { color: #22364d; }

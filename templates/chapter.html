@@ -176,14 +176,26 @@
             </div>
             {% elif ex.type == 'code' %}
             <!-- Code Exercise -->
+            {# 标题优先用题目自己的（由教材代码案例生成，点名了要做什么）；
+               兜底的模板话只在没有具体素材时才出现。 #}
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              {% if ex.source %}📝 {% endif %}{{ ex.question }}
             </div>
             <div class="ex-code-hint">
-              💡 提示：{{ ex.code_prompt }}
+              💡 {{ ex.code_prompt }}
             </div>
+            {% if ex.expect %}
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>{{ ex.expect }}</pre>
+            </div>
+            {% endif %}
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx({{ chapter.id }}, {{ kp_loop_idx }}, {{ loop.index0 }}, {{ ex.code_prompt|tojson }})'>
+              {# 把"题目要求 + 挖空骨架"一起带进编辑器：
+                 学生打开就能看到要填什么，以及该跑出什么结果 #}
+              <button class="btn-code-ex" onclick='openCodeEx({{ chapter.id }}, {{ kp_loop_idx }}, {{ loop.index0 }}, {{ (ex.question ~ "
+
+" ~ ex.code_prompt)|tojson }}, {{ (ex.code_starter or "")|tojson }})'>
                 💻 打开编辑器作答
               </button>
             </div>

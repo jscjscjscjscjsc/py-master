@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -391,14 +391,17 @@ if n &gt; PASS_RATE and x &lt; MAX_AMOUNT and y &gt; PASS_RATE:
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「16.1 设计原则」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「16.1 设计原则」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「16.1 设计原则」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(16, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c16.1 \u8bbe\u8ba1\u539f\u5219\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(16, 1, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.1 \u8bbe\u8ba1\u539f\u5219\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c16.1 \u8bbe\u8ba1\u539f\u5219\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -561,25 +564,29 @@ name = &quot;张三&quot;           # 变量见名知意（abc 换成有意义�
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u6ce8\u91ca\u7684\u4e09\u79cd\u7528\u9014")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：注释的三种用途
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「16.2 代码质量：让代码&#34;可读&#34;」的核心用法演示一遍，并打印出结果。
+              💡 照着「注释的三种用途」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(16, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c16.2 \u4ee3\u7801\u8d28\u91cf\uff1a\u8ba9\u4ee3\u7801\"\u53ef\u8bfb\"\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(16, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u6ce8\u91ca\u7684\u4e09\u79cd\u7528\u9014\n\n\u7167\u7740\u300c\u6ce8\u91ca\u7684\u4e09\u79cd\u7528\u9014\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "def calc_stats(scores):\n    \"\"\"\u8ba1\u7b97\u6210\u7ee9\u7edf\u8ba1\uff0c\u8fd4\u56de (\u603b\u5206, \u5e73\u5747\u5206)\u3002\"\"\"\n    if not scores:\n        return 0, 0\n    total = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n    return total, total / len(scores)")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -896,14 +903,17 @@ if retry_count &gt; MAX_RETRY:
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「16.3 重构：不改变功能，改善结构」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「16.3 重构：不改变功能，改善结构」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「16.3 重构：不改变功能，改善结构」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(16, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(16, 3, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c16.3 \u91cd\u6784\uff1a\u4e0d\u6539\u53d8\u529f\u80fd\uff0c\u6539\u5584\u7ed3\u6784\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -1071,25 +1081,29 @@ if 0 &lt;= int(b) &lt;= 100 and str(b).isdigit():
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(16, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：问题代码
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「16.4 本章 Debug 四件套（质量类）」的核心用法演示一遍，并打印出结果。
+              💡 照着「问题代码」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(16, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c16.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\uff08\u8d28\u91cf\u7c7b\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(16, 4, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801\n\n\u7167\u7740\u300c\u95ee\u9898\u4ee3\u7801\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "if age \u003e 150:\n    print(\"\u4e0d\u5408\u6cd5\")\nif score \u003e 100:\n    print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nif retry \u003e 3:\n    print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>

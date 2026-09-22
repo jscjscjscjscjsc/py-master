@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -465,25 +465,29 @@ SELECT * FROM products WHERE price &gt; 10;</code></pre></div></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(23, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c23.2 RESTful API \u8bbe\u8ba1\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(23, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u7edf\u4e00\u54cd\u5e94\u683c\u5f0f")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：统一响应格式
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「23.2 RESTful API 设计」的核心用法演示一遍，并打印出结果。
+              💡 照着「统一响应格式」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(23, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c23.2 RESTful API \u8bbe\u8ba1\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u7edf\u4e00\u54cd\u5e94\u683c\u5f0f\n\n\u7167\u7740\u300c\u7edf\u4e00\u54cd\u5e94\u683c\u5f0f\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "{\n  \"code\": 0,\n  \"message\": \"ok\",\n  \"data\": {\n    \"id\": 3,\n    ____\n    ____\n  ____\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -693,25 +697,29 @@ with sqlite3.connect(&quot;shop.db&quot;) as conn:
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(23, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c23.3 \u6570\u636e\u5e93\u57fa\u7840\uff1aSQLite\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(23, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：建表、插入、查询
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「23.3 数据库基础：SQLite」的核心用法演示一遍，并打印出结果。
+              💡 照着「建表、插入、查询」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(23, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c23.3 \u6570\u636e\u5e93\u57fa\u7840\uff1aSQLite\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 3, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\n\n\u7167\u7740\u300c\u5efa\u8868\u3001\u63d2\u5165\u3001\u67e5\u8be2\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "-- \u5efa\u8868\uff1a\u5b66\u751f\u8868\uff08id \u81ea\u589e\u3001\u59d3\u540d\u3001\u6210\u7ee9\uff09\nCREATE TABLE students (\n    id INTEGER PRIMARY KEY,\n    name TEXT NOT NULL,\n    score INTEGER\n);\n\n-- \u63d2\u5165\nINSERT INTO students (name, score) VALUES (\u0027\u5f20\u4e09\u0027, 88);\n\n____\n____\n\n____\n____\n\n____\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -902,14 +910,17 @@ DELETE /api/students/{id}     → 删除</pre></div></div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「23.4 综合案例：待办 API 模拟（不引入框架）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「23.4 综合案例：待办 API 模拟（不引入框架）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「23.4 综合案例：待办 API 模拟（不引入框架）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(23, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c23.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e API \u6a21\u62df\uff08\u4e0d\u5f15\u5165\u6846\u67b6\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 4, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c23.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e API \u6a21\u62df\uff08\u4e0d\u5f15\u5165\u6846\u67b6\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c23.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e API \u6a21\u62df\uff08\u4e0d\u5f15\u5165\u6846\u67b6\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -1076,14 +1087,17 @@ if method == &quot;PUT&quot; and path.startswith(&quot;/api/tasks/&quot;):
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「23.5 本章 Debug 四件套」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「23.5 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「23.5 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(23, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c23.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(23, 5, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c23.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c23.5 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>

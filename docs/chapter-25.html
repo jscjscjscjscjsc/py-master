@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -336,14 +336,17 @@ list.appendChild(li);
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「25.1 为什么需要前端框架」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「25.1 为什么需要前端框架」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「25.1 为什么需要前端框架」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(25, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c25.1 \u4e3a\u4ec0\u4e48\u9700\u8981\u524d\u7aef\u6846\u67b6\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 1, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c25.1 \u4e3a\u4ec0\u4e48\u9700\u8981\u524d\u7aef\u6846\u67b6\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c25.1 \u4e3a\u4ec0\u4e48\u9700\u8981\u524d\u7aef\u6846\u67b6\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -530,25 +533,29 @@ list.appendChild(li);
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(25, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c25.2 Vue 3 CDN \u8d77\u6b65\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(25, '1', "\u8865\u5168\u4ee3\u7801\uff1aCDN \u5f15\u5165 + \u521b\u5efa\u5e94\u7528")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：CDN 引入 + 创建应用
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「25.2 Vue 3 CDN 起步」的核心用法演示一遍，并打印出结果。
+              💡 照着「CDN 引入 + 创建应用」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(25, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c25.2 Vue 3 CDN \u8d77\u6b65\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1aCDN \u5f15\u5165 + \u521b\u5efa\u5e94\u7528\n\n\u7167\u7740\u300cCDN \u5f15\u5165 + \u521b\u5efa\u5e94\u7528\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"zh-CN\"\u003e\n\u003chead\u003e\n    \u003cmeta charset=\"UTF-8\"\u003e\n    \u003ctitle\u003eVue \u5165\u95e8\u003c/title\u003e\n    \u003cscript src=\"https://unpkg.com/vue@3/dist/vue.global.js\"\u003e\u003c/script\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n    \u003cdiv id=\"app\"\u003e\n        \u003ch1\u003e{{ message }}\u003c/h1\u003e\n    \u003c/div\u003e\n\n    \u003cscript\u003e\n        const { createApp } = Vue;\n\n        ____\n            ____\n                return {\n                    ____\n                ____\n            ____\n        ____\n    ____\n____\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -726,25 +733,29 @@ list.appendChild(li);
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(25, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c25.3 \u56db\u4e2a\u6838\u5fc3\u6307\u4ee4\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(25, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u6e32\u67d3\u5b66\u751f\u5217\u8868")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：渲染学生列表
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「25.3 四个核心指令」的核心用法演示一遍，并打印出结果。
+              💡 照着「渲染学生列表」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(25, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c25.3 \u56db\u4e2a\u6838\u5fc3\u6307\u4ee4\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 3, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u6e32\u67d3\u5b66\u751f\u5217\u8868\n\n\u7167\u7740\u300c\u6e32\u67d3\u5b66\u751f\u5217\u8868\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "\u003cdiv id=\"app\"\u003e\n    \u003cul\u003e\n        \u003cli v-for=\"s in students\" :key=\"s.id\"\u003e\n            {{ s.name }}\uff1a{{ s.score }}\n        \u003c/li\u003e\n    \u003c/ul\u003e\n\u003c/div\u003e\n\n\u003cscript\u003e\n    const { createApp } = Vue;\n    createApp({\n        data() {\n            return {\n                ____\n                    ____\n                    ____\n                ____\n            ____\n        ____\n    ____\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1055,25 +1066,29 @@ list.appendChild(li);
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(25, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c25.5 \u7efc\u5408\u6848\u4f8b\uff1aVue + FastAPI \u524d\u540e\u7aef\u8054\u8c03\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(25, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u5f85\u529e\u6e05\u5355\u9875\u9762")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：待办清单页面
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「25.5 综合案例：Vue + FastAPI 前后端联调」的核心用法演示一遍，并打印出结果。
+              💡 照着「待办清单页面」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(25, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c25.5 \u7efc\u5408\u6848\u4f8b\uff1aVue + FastAPI \u524d\u540e\u7aef\u8054\u8c03\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 5, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u5f85\u529e\u6e05\u5355\u9875\u9762\n\n\u7167\u7740\u300c\u5f85\u529e\u6e05\u5355\u9875\u9762\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"zh-CN\"\u003e\n\u003chead\u003e\n    \u003cmeta charset=\"UTF-8\"\u003e\n    \u003ctitle\u003e\u5f85\u529e\u6e05\u5355\u003c/title\u003e\n    \u003cscript src=\"https://unpkg.com/vue@3/dist/vue.global.js\"\u003e\u003c/script\u003e\n    \u003cstyle\u003e\n        .done { text-decoration: line-through; color: gray; }\n    \u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n    \u003cdiv id=\"app\"\u003e\n        \u003ch1\u003e\u5f85\u529e\u6e05\u5355\u003c/h1\u003e\n        \u003cinput v-model=\"newContent\" placeholder=\"\u65b0\u4efb\u52a1\"\u003e\n        \u003cbutton @click=\"addTask\"\u003e\u6dfb\u52a0\u003c/button\u003e\n\n        \u003cul\u003e\n            \u003cli v-for=\"task in tasks\" :key=\"task.id\"\u003e\n                \u003cspan :class=\"{ done: task.done }\"\u003e{{ task.content }}\u003c/span\u003e\n            \u003c/li\u003e\n        \u003c/ul\u003e\n    \u003c/div\u003e\n\n    \u003cscript\u003e\n        const { createApp } = Vue;\n\n        createApp({\n            data() {\n                return {\n                    tasks: [],\n                    newContent: \"\",\n                };\n            },\n            ____\n                ____\n                    ____\n                    ____\n                    this.tasks = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n                ____\n                ____\n                    ____\n                        ____\n                        ____\n                        ____\n                    ____\n                    this.newContent = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n                    ____\n                ____\n            ____\n            ____\n                ____\n            ____\n        ____\n    ____\n____\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1347,14 +1362,17 @@ list.appendChild(li);
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「25.7 本章 Debug 四件套」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「25.7 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「25.7 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(25, 7, 1, "\u7528\u4ee3\u7801\u628a\u300c25.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(25, 7, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c25.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c25.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>

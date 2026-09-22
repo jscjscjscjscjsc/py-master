@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — 模型微调与上下文工程（Day 35–37）</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
+<link rel="stylesheet" href="static/css/cultivation.css">
+<link rel="stylesheet" href="static/css/music.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
+  <link rel="stylesheet" href="static/css/atmosphere.css">
+<!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
+     这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
+<link rel="stylesheet" href="static/css/lesson.css">
+<link rel="stylesheet" href="static/css/code_light.css">
+<script src="static/js/static_mode.js"></script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="58" data-chapter-title="模型微调与上下文工程（Day 35–37）" data-chapter-description="这是本章最重要的一节，比任何代码都重要。
+
+很多人的第一反应是「模型效果不好就去微调」。但微调是最后该考虑的手段，不是第一选择。
+
+### 三种「让模型学会新知识/新行为」的手段
+
+手段 | 解决什么 | 成本 | 更新速度 | 可解释性 ">
+
+
+
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="/coach" class="btn-playground-nav" style="margin-right:8px;" title="带哲思追问的 AI 教练">星辰教练</a>
+      <a href="/training" class="btn-playground-nav" style="margin-right:8px;">刷题中心</a>
+      <a href="/progress" class="btn-playground-nav" style="margin-right:8px;">学习仪表盘</a>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <button class="user-chip" id="user-chip" onclick="openAccountPanel()" title="账号、头像与切换">
+        <span class="user-avatar" id="user-avatar">游</span>
+        <span class="user-name">游客</span>
+      </button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 58</p>
+    <span class="hero-icon">📘</span>
+    <h2>第 58 章 · 模型微调与上下文工程（Day 35–37）</h2>
+    <p class="hero-desc">这是本章最重要的一节，比任何代码都重要。
+
+很多人的第一反应是「模型效果不好就去微调」。但微调是最后该考虑的手段，不是第一选择。
+
+### 三种「让模型学会新知识/新行为」的手段
+
+手段 | 解决什么 | 成本 | 更新速度 | 可解释性 </p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="58_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          8.0 先回答一个关键问题：什么时候该微调？
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p>这是本章最重要的一节，比任何代码都重要。</p>
+<p>很多人的第一反应是「模型效果不好就去微调」。但微调是<strong>最后</strong>该考虑的手段，不是第一选择。</p>
+<h3 class="md-h">三种「让模型学会新知识/新行为」的手段</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>手段</th><th>解决什么</th><th>成本</th><th>更新速度</th><th>可解释性</th></tr></thead><tbody><tr><td><strong>Prompt 工程</strong></td><td>输出格式、语气、推理方式</td><td>极低</td><td>改一行即生效</td><td>完全可见</td></tr><tr><td><strong>RAG（第 3 章）</strong></td><td><strong>知识</strong>：企业私有事实、时效性信息</td><td>低</td><td>重跑索引即可</td><td>可溯源到证据</td></tr><tr><td><strong>微调（本章）</strong></td><td><strong>行为/风格/格式</strong>：稳定的输出习惯、领域语言、特定任务的模式</td><td>中–高</td><td>需要重新训练</td><td>模型内部，不可见</td></tr></tbody></table></div>
+<h3 class="md-h">决策顺序（请按这个顺序排除）</h3>
+<div class="md-figure"><pre class="md-diagram">效果不好？
+  │
+  ├─ 是「不知道事实」吗？          → 用 RAG（第 3 章），不要微调
+  │   （问了企业规章，模型答不出）      微调也能&quot;塞&quot;知识，但更新成本高、易幻觉、不可溯源
+  │
+  ├─ 是「格式不稳定」吗？          → 先加 Few-shot + Schema 校验（第 1 章）
+  │   （要 JSON，偶尔多废话）          Prompt 能解决 80% 的格式问题
+  │
+  ├─ 是「推理能力不够」吗？        → 换更强的模型 / 用推理模型（第 1 章 Day04）
+  │   （多步推理总错）                微调不会让模型变聪明
+  │
+  └─ 是「输出风格/模式需要高度一致」吗？
+      （例如：必须用公司特有的判例书写风格输出、
+        或需要极高的格式遵循率、或需要降低推理成本用更小的模型）
+      → 这时候才考虑微调</pre></div>
+<blockquote class="md-quote"><p><strong>一句话记住</strong>： <strong>RAG 管「知道什么」，微调管「怎么表达」，Prompt 管「这次怎么做」。</strong> 三者是互补的，不是替代关系。生产系统里三者通常同时存在。</p></blockquote>
+<h3 class="md-h">微调的真实收益与代价</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>收益</th><th>代价</th></tr></thead><tbody><tr><td>格式遵循率显著提升（可到 95%+）</td><td>需要标注数据（几百到几千条）</td></tr><tr><td>可以用<strong>更小的模型</strong>达到大模型的格式能力 → 降低推理成本</td><td>需要 GPU 与训练知识</td></tr><tr><td>固定风格的输出更稳定</td><td><strong>知识会过时</strong>，且更新要重新训练</td></tr><tr><td>减少 Prompt 长度（行为内化到权重里）→ 省 token</td><td>可能<strong>损害通用能力</strong>（灾难性遗忘）</td></tr><tr><td></td><td>有质量风险：训练数据里的问题会被固化</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>最后一条最值得警惕</strong>：微调会把训练数据里的<strong>偏见、错误、格式缺陷</strong>都学进去， 而且很难事后修正。所以数据质量比数量重要得多。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 0, "8.0 \u5148\u56de\u7b54\u4e00\u4e2a\u5173\u952e\u95ee\u9898\uff1a\u4ec0\u4e48\u65f6\u5019\u8be5\u5fae\u8c03\uff1f", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 0, '8.0 先回答一个关键问题：什么时候该微调？')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 0, '8.0 先回答一个关键问题：什么时候该微调？')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="58_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          Day 35｜Transformer 与 LoRA 原理
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">一、教学目标</h3>
+<ol><li>说清注意力机制在做什么（不需要会推导，但要能用话讲清）；</li><li>理解 LoRA 为什么能大幅降低训练参数量；</li><li>能手算 LoRA 的参数量（这是面试常考题）。</li></ol>
+<h3 class="md-h">二、Transformer：用一句话讲清注意力</h3>
+<p>$$\text{Attention}(Q,K,V)=\text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$</p>
+<p><strong>用一句话解释</strong>：每个词都生成三个向量——Query（我在找什么）、Key（我能提供什么）、 Value（我的实际内容）。用 Q 和所有 K 做匹配打分，按分数加权汇总所有 V。</p>
+<p><strong>面试版回答</strong>（背这一段就够）：</p>
+<blockquote class="md-quote"><p>自注意力让每个位置都能直接"看到"序列中所有其他位置， 因此能并行计算并捕捉长距离依赖，不像 RNN 必须顺序处理。 Q·K 决定"关注谁"，加权 V 决定"取回什么信息"。</p></blockquote>
+<p><strong>为什么这决定了 LoRA 的可行性</strong>：Transformer 的参数量大头在<strong>线性层</strong>（尤其是注意力的 Q/K/V/O 投影和前馈层）。这些层就是大矩阵乘法。<strong>LoRA 正是作用在这些矩阵上。</strong></p>
+<h3 class="md-h">三、LoRA：低秩假设</h3>
+<h4 class="md-h">核心观察</h4>
+<p>微调时，权重的<strong>更新量</strong>具有<strong>低秩</strong>特性——不需要用满秩矩阵来表示这个变化。</p>
+<h4 class="md-h">做法</h4>
+<p>原始权重 $W_0 \in \mathbb{R}^{d \times k}$ 冻结不变，额外训练两个小矩阵：</p>
+<p>$$W = W_0 + \Delta W = W_0 + BA$$</p>
+<p>其中 $B \in \mathbb{R}^{d \times r}$，$A \in \mathbb{R}^{r \times k}$，且 $r \ll \min(d,k)$。</p>
+<ul><li>初始化：$A$ 用随机高斯，$B$ 用零 → 训练开始时 $\Delta W = 0$，不破坏原模型；</li><li>前向传播：$h = W_0 x + BAx$；</li><li><strong>梯度只更新 A 和 B</strong>，$W_0$ 冻结。</li></ul>
+<h4 class="md-h">参数量对比（必须会算）</h4>
+<p>假设 $W_0$ 是 $4096 \times 4096$：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>方案</th><th style="text-align:right">参数量</th><th style="text-align:right">相对比例</th></tr></thead><tbody><tr><td>全量微调</td><td style="text-align:right">$4096 \times 4096 = 16{,}777{,}216$</td><td style="text-align:right">100%</td></tr><tr><td>LoRA，$r=8$</td><td style="text-align:right">$4096 \times 8 + 8 \times 4096 = 65{,}536$</td><td style="text-align:right"><strong>0.39%</strong></td></tr><tr><td>LoRA，$r=16$</td><td style="text-align:right">$4096 \times 16 \times 2 = 131{,}072$</td><td style="text-align:right">0.78%</td></tr><tr><td>LoRA，$r=4$</td><td style="text-align:right">$4096 \times 4 \times 2 = 32{,}768$</td><td style="text-align:right">0.195%</td></tr></tbody></table></div>
+<p><strong>降到 1/256</strong>（$r=16$ 时）。这就是 LoRA 的核心价值。</p>
+<h4 class="md-h">为什么省显存（三层原因，别只答一层）</h4>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>层次</th><th>原因</th></tr></thead><tbody><tr><td>1. <strong>优化器状态消失</strong></td><td>全量微调要为每个参数存 Adam 的一阶/二阶动量（2 倍参数量）；LoRA 只为 A、B 存 → 主省这里</td></tr><tr><td>2. <strong>梯度消失</strong></td><td>只算 A、B 的梯度，不需要为 $W_0$ 存梯度</td></tr><tr><td>3. <strong>检查点变小</strong></td><td>保存的是 adapter（几 MB），不是整个模型（几十 GB）→ 便于分发与切换</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>常见的错误回答</strong>：「LoRA 省显存是因为参数少」。这只说对了一半—— 真正的显存大头是<strong>优化器状态和梯度</strong>（通常是参数量的 4–12 倍）。 参数量的减少通过这两个乘数被放大。<strong>面试时能说出这一层，就是分水岭。</strong></p></blockquote>
+<h3 class="md-h">四、LoRA 的关键超参数</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>参数</th><th>作用</th><th>常见取值</th><th>调参提示</th></tr></thead><tbody><tr><td><code class="md-inline">r</code>（秩）</td><td>表达能力</td><td>4 / 8 / 16 / 32</td><td>任务越复杂越大；先从 8 试。<strong>PEFT 默认 <code class="md-inline">r=8</code></strong></td></tr><tr><td><code class="md-inline">lora_alpha</code></td><td>缩放因子，实际更新量是 $\frac{\alpha}{r} BA$</td><td>通常取 <code class="md-inline">2r</code>（如 r=8 → 16）</td><td><strong>PEFT 默认 <code class="md-inline">lora_alpha=8</code></strong>（不是 16）——所以想用 <code class="md-inline">2r</code> 的惯例时必须显式写</td></tr><tr><td><code class="md-inline">lora_dropout</code></td><td>防过拟合</td><td>0.05–0.1（<strong>PEFT 默认 <code class="md-inline">0.0</code></strong>）</td><td>数据少时调大</td></tr><tr><td><code class="md-inline">target_modules</code></td><td>作用在哪些层</td><td>通常 Q/K/V/O 投影 + 前馈层</td><td><strong>只加在注意力层效果通常够；数据少时加太多层易过拟合</strong></td></tr><tr><td><code class="md-inline">bias</code></td><td>是否训练偏置项</td><td><code class="md-inline">"none"</code>（默认）</td><td>一般不动</td></tr><tr><td><code class="md-inline">task_type</code></td><td>任务类型</td><td><code class="md-inline">"CAUSAL_LM"</code></td><td><strong>它继承自 <code class="md-inline">PeftConfig</code>，不是 <code class="md-inline">LoraConfig</code> 特有字段</strong></td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong><code class="md-inline">alpha/r</code> 这个比值才是真正的缩放系数</strong>。所以只改 <code class="md-inline">r</code> 不改 <code class="md-inline">alpha</code> 会同时改变表达能力 和有效学习率——这是新手常见的混淆点。</p>
+<p><strong>特别注意默认值的坑</strong>：因为 PEFT 的 <code class="md-inline">lora_alpha</code> 默认是 <strong>8</strong>（等于 <code class="md-inline">r</code> 的默认值）， 所以「默认配置」的有效缩放是 <code class="md-inline">8/8 = 1</code>。而网上教程常推荐 <code class="md-inline">alpha = 2r</code>， 那是 <code class="md-inline">r=8</code> 时 <code class="md-inline">alpha=16</code>——<strong>两者差一倍</strong>。 如果你照抄代码但只改 <code class="md-inline">r</code>，就会在不知情的情况下改变有效学习率。 <strong>显式写出 <code class="md-inline">r</code> 和 <code class="md-inline">lora_alpha</code>，永远是个好习惯。</strong></p></blockquote>
+<h4 class="md-h">LoRA 的三个重要增强开关（2026 年仍在 PEFT 内，不是替代品）</h4>
+<p>有一个常见误解：「LoRA 已经被 DoRA / rsLoRA / LoRA+ 取代了」。 <strong>实际上它们都是 LoRA 的增强选项，不是替代方案</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>方法</th><th>PEFT 中的用法</th><th>关键作用</th></tr></thead><tbody><tr><td><strong>rsLoRA</strong></td><td><code class="md-inline">LoraConfig(use_rslora=True)</code></td><td>缩放因子从 <code class="md-inline">alpha/r</code> 改为 <strong><code class="md-inline">alpha/√r</code></strong>，让<strong>增大 <code class="md-inline">r</code> 时收益更稳定</strong>（否则大 r 反而可能变差）</td></tr><tr><td><strong>DoRA</strong></td><td><code class="md-inline">LoraConfig(use_dora=True)</code></td><td>把权重分解为「幅度 + 方向」分别更新，低秩场景效果更好。<strong>限制</strong>：与 <code class="md-inline">adapter_names</code> 推理不兼容；不支持 megatron_core</td></tr><tr><td><strong>LoRA+</strong></td><td><strong>不在 <code class="md-inline">LoraConfig</code> 里</strong>！用 <code class="md-inline">from peft.optimizers import create_loraplus_optimizer(..., loraplus_lr_ratio=16)</code></td><td>给 A、B 用不同学习率，官方称可提速约 2 倍、性能提升 1–2%</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p class="md-callout md-warn"><strong>⚠️ 最常见的代码错误</strong>：把 <code class="md-inline">loraplus_lr_ratio</code> 当成 <code class="md-inline">LoraConfig</code> 的参数传进去。 它属于<strong>优化器</strong>，不是配置对象 —— 传错会报 <code class="md-inline">TypeError</code>。</p></blockquote>
+<h4 class="md-h">还有一个趋势值得知道：初始化方法在分化</h4>
+<p>PEFT 的 <code class="md-inline">init_lora_weights</code> 现在支持远超早期的选项： <code class="md-inline">"olora"</code>、<code class="md-inline">"pissa"</code>、<code class="md-inline">"pissa_niter_[N]"</code>、<code class="md-inline">"corda"</code>、<code class="md-inline">"loftq"</code>、<code class="md-inline">"eva"</code>、<code class="md-inline">"orthogonal"</code>、 <code class="md-inline">"mica"</code>、<code class="md-inline">"lora_ga"</code> 等。同时 <code class="md-inline">peft/tuners/</code> 下新增了大量 LoRA 家族适配器 （<code class="md-inline">delora</code>、<code class="md-inline">gralora</code>、<code class="md-inline">hira</code>、<code class="md-inline">c3a</code>、<code class="md-inline">glora</code>、<code class="md-inline">lily</code>、<code class="md-inline">miss</code>、<code class="md-inline">osf</code>、<code class="md-inline">loha</code>、<code class="md-inline">lokr</code>、<code class="md-inline">ia3</code>、<code class="md-inline">adalora</code> 等）。</p>
+<p><strong>这说明生态在「分化」，而不是「收敛到某个 LoRA 取代者」。</strong> 对你的实际意义：<strong>默认用标准 LoRA 起步，遇到具体瓶颈（大 r 不稳、效果不够）再针对性换开关</strong>， 不要一上来就纠结选哪个变体。</p>
+<h3 class="md-h">五、动手：用 numpy 亲手实现 LoRA</h3>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">python code/ch08/10_lora_from_scratch.py</code></pre></div>
+<p>这个脚本不依赖 GPU，用纯 numpy 实现并验证：</p>
+<ol><li>构造两个矩阵 $W_0$（冻结）和 $A, B$（可训练）；</li><li>实现前向传播 $h = W_0x + BAx$；</li><li>实现反向传播，<strong>验证 $W_0$ 的梯度确实为零</strong>（这是"冻结"的含义）；</li><li>在一个合成任务上真的训练，打印 loss 下降曲线；</li><li>计算并打印参数量对比表。</li></ol>
+<p>!<a href="../assets/ch08/01_lora_from_scratch.png" target="_blank" rel="noopener">LoRA 原理验证：loss 下降曲线 + 参数量对比</a></p>
+<p>!<a href="../figures/ch08_lora_training.png" target="_blank" rel="noopener">LoRA 训练曲线</a></p>
+<p><strong>这个实验的教学价值</strong>：你会亲眼看到「只训练 0.4% 的参数，也能让 loss 降下来」。 比看一百遍公式都有用。</p>
+<blockquote class="md-quote"><p><strong>为什么第 3 步很重要</strong>：很多人能背出"LoRA 冻结原权重"， 但如果你没有亲手验证过 <code class="md-inline">W_0</code> 的梯度是零，你就不知道"冻结"在代码里到底是什么样的。 <strong>验证方式</strong>：反向传播后打印 <code class="md-inline">W_0.grad</code>，它应该是全零矩阵或 <code class="md-inline">None</code>。 这一个检查就能防止你把 <code class="md-inline">requires_grad</code> 设错却毫无察觉。</p></blockquote>
+<h3 class="md-h">六、当日验收</h3>
+<ul><li>[ ] 能用一句话讲清自注意力在做什么</li><li>[ ] 能手算 LoRA 的参数量（给定矩阵维度和 r）</li><li>[ ] 能说出 LoRA 省显存的<strong>三层</strong>原因，特别是优化器状态那一层</li><li>[ ] 跑通 <code class="md-inline">10_lora_from_scratch.py</code>，能解释 loss 曲线为什么下降</li><li>[ ] 能解释 <code class="md-inline">alpha/r</code> 这个比值的作用</li></ul>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 1, "Day 35\uff5cTransformer \u4e0e LoRA \u539f\u7406", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300cDay 35\uff5cTransformer \u4e0e LoRA \u539f\u7406\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 35\uff5cTransformer \u4e0e LoRA \u539f\u7406\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="1">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(58, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 35\uff5cTransformer \u4e0e LoRA \u539f\u7406\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              编写代码验证「Day 35｜Transformer 与 LoRA 原理」
+            </div>
+            <div class="ex-code-hint">
+              💡 用代码把「Day 35｜Transformer 与 LoRA 原理」的核心用法演示一遍，并打印出结果。
+            </div>
+            
+            <div class="ex-actions" style="margin-top:12px;">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(58, 1, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 35\uff5cTransformer \u4e0e LoRA \u539f\u7406\u300d\n\n\u7528\u4ee3\u7801\u628a\u300cDay 35\uff5cTransformer \u4e0e LoRA \u539f\u7406\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 1, 'Day 35｜Transformer 与 LoRA 原理')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 1, 'Day 35｜Transformer 与 LoRA 原理')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="58_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          Day 36｜LoRA / QLoRA 微调实战
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <blockquote class="md-quote"><p><strong>环境提示</strong>：本节需要 GPU。请使用 Colab（免费 T4 即可）或本地有 GPU 的机器。 课程提供的脚本 <code class="md-inline">code/ch08/20_qlora_colab.py</code> 是完整可运行版本。</p></blockquote>
+<h3 class="md-h">一、教学目标</h3>
+<ol><li>走通微调的完整链路：数据构造 → 配置 → 训练 → 评估 → 合并/部署；</li><li>理解 SFT 数据格式与数据质量要求；</li><li>能读懂 loss 曲线，判断训练是否正常。</li></ol>
+<h3 class="md-h">二、微调链路全景</h3>
+<div class="md-figure"><pre class="md-diagram">flowchart LR
+    A[明确目标] --&gt; B[构造数据集]
+    B --&gt; C[选基座模型]
+    C --&gt; D[配置 LoRA/QLoRA]
+    D --&gt; E[训练]
+    E --&gt; F[评估]
+    F --&gt;|不达标| B
+    F --&gt;|达标| G[保存 adapter]
+    G --&gt; H{部署方式}
+    H --&gt;|独立推理| I[加载 adapter 推理]
+    H --&gt;|生产部署| J[合并权重后量化部署]</pre></div>
+<h3 class="md-h">三、数据构造：SFT 格式与质量</h3>
+<h4 class="md-h">格式</h4>
+<div class="md-codeblock" data-lang="json"><div class="md-codebar"><span class="md-codelang">json</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-json">{&quot;instruction&quot;: &quot;把下面这段客服对话抽取成 JSON&quot;, &quot;input&quot;: &quot;客户说：我买的耳机左耳没声音，要退货&quot;, &quot;output&quot;: &quot;{\&quot;intent\&quot;: \&quot;退货\&quot;, \&quot;product\&quot;: \&quot;耳机\&quot;, \&quot;issue\&quot;: \&quot;左耳无声\&quot;}&quot;}</code></pre></div>
+<p>三种组织方式：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>方式</th><th>适用</th><th>说明</th></tr></thead><tbody><tr><td><code class="md-inline">instruction / input / output</code></td><td>通用</td><td>最常用，适配性好</td></tr><tr><td>纯对话格式（messages 数组）</td><td>多轮对话任务</td><td>与推理时格式一致</td></tr><tr><td>分类/生成对</td><td>单一任务</td><td>最简单</td></tr></tbody></table></div>
+<h4 class="md-h">数据质量要求（比数量重要）</h4>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>要求</th><th>为什么</th></tr></thead><tbody><tr><td><strong>输出格式绝对一致</strong></td><td>微调会学走<strong>任何</strong>模式，包括你不想要的（比如有的样本带 markdown 围栏、有的不带 → 模型输出会随机带或不带）</td></tr><tr><td><strong>覆盖边界情况</strong></td><td>只给正常样本，模型遇到缺失字段就乱编。要<strong>显式给"字段缺失时输出 null"的样本</strong></td></tr><tr><td><strong>不要有互相矛盾的样本</strong></td><td>同输入不同输出会让模型学成"随机选一个"</td></tr><tr><td><strong>规模参考</strong></td><td>格式/风格微调通常几百到几千条足够；不要一上来就标几万条</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>最容易犯的错</strong>：数据里混了不同格式的样本。 比如 100 条 JSON 输出中，有 3 条是纯文本。模型学完后，<strong>约 3% 的概率输出纯文本</strong>—— 这个比例足以让你的生产系统偶发解析失败，而且极难排查（因为你在训练时根本没注意那 3 条）。</p></blockquote>
+<h3 class="md-h">四、QLoRA：在消费级 GPU 上微调</h3>
+<p><strong>LoRA 解决了「训练参数多」，QLoRA 进一步解决了「基座模型太大装不下」。</strong></p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>技术</th><th>做法</th><th>效果</th></tr></thead><tbody><tr><td>LoRA</td><td>冻结 $W_0$，只训练低秩增量</td><td>训练参数量降 100–1000 倍</td></tr><tr><td><strong>QLoRA</strong></td><td>把<strong>冻结的 $W_0$ 量化到 4-bit</strong>，LoRA 增量仍用较高精度训练</td><td><strong>显存再降约 4 倍</strong></td></tr></tbody></table></div>
+<p><strong>关键点</strong>：量子化只作用于<strong>冻结的基座</strong>，可训练的 LoRA 部分保持较高精度—— 这样才能保证训练效果。这是 QLoRA 的巧妙之处：<strong>它量化的是不需要梯度的那部分。</strong></p>
+<h4 class="md-h">量化的四个关键参数</h4>
+<blockquote class="md-quote"><p class="md-callout md-warn"><strong>⚠️ 一个高频的错误归因</strong>：<code class="md-inline">BitsAndBytesConfig</code> <strong>不在 <code class="md-inline">bitsandbytes</code> 包里，而在 <code class="md-inline">transformers</code> 里</strong>。 正确导入是 <code class="md-inline">from transformers import BitsAndBytesConfig</code>。 写成 <code class="md-inline">from bitsandbytes import BitsAndBytesConfig</code> 会直接 ImportError。 （bitsandbytes 只提供量化后端实现，配置类由 transformers 定义。）</p></blockquote>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>参数</th><th>含义</th><th>常用值（含默认值）</th></tr></thead><tbody><tr><td><code class="md-inline">load_in_4bit</code></td><td>用 4-bit 加载基座</td><td><code class="md-inline">True</code>（默认 <code class="md-inline">False</code>）</td></tr><tr><td><code class="md-inline">bnb_4bit_quant_type</code></td><td>量化数据类型</td><td><code class="md-inline">"nf4"</code>（正态浮点，比 fp4 更适合权重分布）。<strong>默认是 <code class="md-inline">"fp4"</code></strong></td></tr><tr><td><code class="md-inline">bnb_4bit_compute_dtype</code></td><td>计算时用什么精度</td><td><code class="md-inline">torch.bfloat16</code>（新卡）或 <code class="md-inline">float16</code>（默认 <code class="md-inline">float32</code>，显存占用更高）</td></tr><tr><td><code class="md-inline">bnb_4bit_use_double_quant</code></td><td>二次量化（量化常数本身）</td><td><code class="md-inline">True</code>（再省一点显存，默认 <code class="md-inline">False</code>）</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>约束</strong>：<code class="md-inline">load_in_4bit</code> 和 <code class="md-inline">load_in_8bit</code> <strong>不能同时为 True</strong>，同时传会直接 <code class="md-inline">ValueError</code>。</p></blockquote>
+<h4 class="md-h">动手</h4>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell"># 本地（无 GPU）只能看代码与数据构造部分
+python code/ch08/20_qlora_colab.py --dry-run     # 只验证数据与配置，不训练
+
+# Colab / GPU 机器上完整运行（脚本头部有依赖安装命令）</code></pre></div>
+<p><strong>脚本里的步骤</strong>（每一处都标注了「为什么这样做」）：</p>
+<ol><li>构造 SFT 数据集并<strong>做质量检查</strong>（格式一致性、字段完整性、去重）；</li><li>配置 <code class="md-inline">BitsAndBytesConfig</code>（4-bit，<strong>从 <code class="md-inline">transformers</code> 导入</strong>）；</li><li>配置 <code class="md-inline">LoraConfig</code>（<code class="md-inline">r</code> / <code class="md-inline">lora_alpha</code> / <code class="md-inline">target_modules</code> / <code class="md-inline">lora_dropout</code>）；</li><li>用 <code class="md-inline">SFTTrainer</code> + <code class="md-inline">SFTConfig</code> 训练，记录 loss；</li><li>保存 adapter，并验证加载；</li><li>对比微调前后的输出（用同一批测试输入）。</li></ol>
+<blockquote class="md-quote"><p><strong>API 变化提示（已核实的当前写法，核实日期 2026-09-21）</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>库</th><th style="text-align:right">当前版本</th><th>需要注意的点</th></tr></thead><tbody><tr><td><code class="md-inline">peft</code></td><td style="text-align:right">0.21.0</td><td><code class="md-inline">LoraConfig</code> 默认 <code class="md-inline">r=8</code> / <code class="md-inline">lora_alpha=8</code> / <code class="md-inline">lora_dropout=0.0</code>。LoRA+ 走优化器，不在 config 里</td></tr><tr><td><code class="md-inline">trl</code></td><td style="text-align:right"><strong>1.13.0</strong>（已进入 1.x 线）</td><td><code class="md-inline">SFTTrainer</code> / <code class="md-inline">SFTConfig</code> <strong>类名未变</strong>，仍从 <code class="md-inline">trl</code> 顶层导出。<strong>但序列长度参数名是 <code class="md-inline">max_length</code>，不是老版的 <code class="md-inline">max_seq_length</code></strong> —— 这是最容易照抄旧教程踩的坑</td></tr><tr><td><code class="md-inline">transformers</code></td><td style="text-align:right">—</td><td><code class="md-inline">BitsAndBytesConfig</code> 在这里，不在 bitsandbytes</td></tr><tr><td><code class="md-inline">bitsandbytes</code></td><td style="text-align:right">0.50.2</td><td>量化后端实现</td></tr></tbody></table></div>
+<p><code class="md-inline">SFTConfig</code> 其他常用参数的默认值：<code class="md-inline">max_length=1024</code>、<code class="md-inline">packing=False</code>、 <code class="md-inline">packing_strategy="bfd"</code>、<code class="md-inline">truncation_mode="keep_start"</code>。</p>
+<p><strong>换版本后以官方文档为准</strong>，不要照抄任何教程（包括本课件）里硬编码的参数名。</p></blockquote>
+<h3 class="md-h">五、读懂 loss 曲线</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>曲线形态</th><th>说明</th><th>处理</th></tr></thead><tbody><tr><td>平稳下降后收敛</td><td>正常</td><td>可以停</td></tr><tr><td>下降后<strong>上升</strong></td><td>过拟合，或学习率太大</td><td>早停 / 降低学习率 / 加数据</td></tr><tr><td>剧烈震荡</td><td>学习率太大，或 batch 太小</td><td>降学习率 / 提高梯度累积</td></tr><tr><td>基本不降</td><td>学习率太小、数据太少、或目标任务超出模型能力</td><td>检查数据质量</td></tr><tr><td>降到很低但效果差</td><td>过拟合到训练集</td><td>看验证集，不要只看训练 loss</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>必须做的一件事</strong>：留出<strong>验证集</strong>。 只看训练 loss 就像只看练习册答案——你无法知道模型是否真的学会了。</p></blockquote>
+<h3 class="md-h">六、评估微调效果：不要只看「感觉更好了」</h3>
+<p><strong>必须做对照实验</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>对照组</th><th>目的</th></tr></thead><tbody><tr><td>基座模型（未微调）</td><td>基线</td></tr><tr><td>基座 + 优化后的 Prompt（Few-shot）</td><td><strong>关键对照</strong>：微调是否真的比 Prompt 工程更好？</td></tr><tr><td>微调后模型</td><td>实验组</td></tr></tbody></table></div>
+<p><strong>评估指标</strong>（延续第 1 章评测器的思路）：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>指标</th><th>说明</th></tr></thead><tbody><tr><td>格式遵循率</td><td>输出能被正确解析的比例（微调最直接的收益）</td></tr><tr><td>任务准确率</td><td>用固定测试集 + 规则评分</td></tr><tr><td><strong>泛化能力</strong></td><td>用<strong>训练集里没出现过的</strong>输入测试（这是最容易被忽略、也最重要的）</td></tr><tr><td>通用能力是否退化</td><td>用几个通用问题测一下（检查灾难性遗忘）</td></tr><tr><td>推理成本</td><td>如果用小模型替代大模型，实际省了多少</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>如果「基座 + 好 Prompt」和「微调」效果差不多，那就不该微调。</strong> 这个结论看起来很朴素，但它是很多团队浪费几周时间后才得出的。</p></blockquote>
+<h3 class="md-h">七、当日验收</h3>
+<ul><li>[ ] 能说出 SFT 数据的三个质量要求，特别是「格式绝对一致」为什么关键</li><li>[ ] 能说出 QLoRA 相对 LoRA 多解决了什么问题，以及为什么只量化冻结部分</li><li>[ ] 能根据 loss 曲线判断训练是否正常</li><li>[ ] 完成对照实验（基座 / 基座+Prompt / 微调），有真实数据</li><li>[ ] 能回答：什么情况下<strong>不该</strong>微调？</li></ul>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 2, "Day 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300cDay 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(58, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              编写代码验证「Day 36｜LoRA / QLoRA 微调实战」
+            </div>
+            <div class="ex-code-hint">
+              💡 用代码把「Day 36｜LoRA / QLoRA 微调实战」的核心用法演示一遍，并打印出结果。
+            </div>
+            
+            <div class="ex-actions" style="margin-top:12px;">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(58, 2, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218\u300d\n\n\u7528\u4ee3\u7801\u628a\u300cDay 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 2, 'Day 36｜LoRA / QLoRA 微调实战')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 2, 'Day 36｜LoRA / QLoRA 微调实战')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="58_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          Day 37｜上下文工程与成本优化
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">一、教学目标</h3>
+<ol><li>说清上下文工程与 Prompt 工程的区别；</li><li>掌握上下文组装、裁剪、压缩、外部化四种手段；</li><li>用真实数据做出成本优化决策。</li></ol>
+<h3 class="md-h">二、上下文工程 vs Prompt 工程</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th></th><th>Prompt 工程</th><th>上下文工程</th></tr></thead><tbody><tr><td>关注点</td><td>单次指令怎么写</td><td><strong>整个上下文窗口里放什么</strong></td></tr><tr><td>内容</td><td>system prompt 的措辞</td><td>system + 历史 + 检索证据 + 工具定义 + 外部记忆</td></tr><tr><td>时间尺度</td><td>一次调用</td><td>整个会话/任务的生命周期</td></tr><tr><td>核心问题</td><td>「怎么问」</td><td>「放什么、放多少、什么时候清理」</td></tr></tbody></table></div>
+<p><strong>三篇权威论述（答辩引用这些，比引用博客可信得多）</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>来源</th><th>定义 / 核心论点</th></tr></thead><tbody><tr><td><strong>Anthropic《Effective context engineering for AI agents》</strong>(2025-09-29)</td><td>定义："the set of strategies for curating and maintaining the optimal set of tokens (information) during LLM inference"；与 prompt engineering 的关系："<strong>the natural progression of prompt engineering</strong>"。推荐技术：right-altitude system prompts、token-efficient 且<strong>互不重叠</strong>的工具设计、精选少量 few-shot（而非穷举边界情况）、just-in-time 检索、<strong>compaction</strong>（接近上限时摘要）、<strong>structured note-taking</strong>、sub-agent 架构</td></tr><tr><td><strong>Manus《Context Engineering for AI Agents》</strong>(2025-07-18)</td><td>核心论点：<strong>KV-cache 命中率是生产级 Agent 最重要的单一指标</strong>。实践："Keep your prompt prefix stable"、"Make your context append-only"、<strong>"Mask, Don't Remove"</strong>（工具按需屏蔽而非删除）、<strong>"treat the file system as the ultimate context"</strong>、压缩要设计成<strong>可恢复的（restorable）</strong>、<strong>"leave the wrong turns in the context"</strong>（保留错误，因为错误恢复是 agentic 行为的标志）</td></tr><tr><td><strong>LangChain《Context Engineering for Agents》</strong>(2025-07-02)</td><td>定义："the delicate art and science of filling the context window with just the right information for the next step"。<strong>四大策略：Write / Select / Compress / Isolate</strong></td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>这三篇里最有实践价值的两个洞察</strong>：</p>
+<ol><li><strong>保留错误痕迹</strong>（Manus）：把失败的工具调用从上下文里删掉，会让模型重复犯同样的错。</li><li><strong>KV-cache 命中率</strong>（Manus）：这意味着<strong>改动 system prompt 的开头</strong>比改动结尾代价高得多，</li></ol></blockquote>
+<p><strong>上下文窗口的构成</strong>（这张图请记住，它是优化的地图）：</p>
+<div class="md-figure"><pre class="md-diagram">┌─────────────────────── 上下文窗口 ───────────────────────┐
+│ 1. system prompt 与规则        ← 固定成本，必须保留        │
+│ 2. 工具定义（tools schema）    ← 固定成本，工具多时很可观  │
+│ 3. 检索到的证据（RAG）          ← 每次都可能变，重点优化对象 │
+│ 4. 对话历史                    ← 随轮数增长，最大的变量    │
+│ 5. 当前用户输入                ← 必须保留                 │
+│ 6. 外部记忆的引用              ← 按需检索，不常驻          │
+└───────────────────────────────────────────────────────────┘
+        固定成本                可变成本（优化重点）</pre></div>
+<blockquote class="md-quote"><p><strong>一个容易被忽略的成本</strong>：<strong>工具定义本身占 token</strong>。 如果你注册了 30 个工具，每个工具的 JSON Schema 可能占 100–200 token， 那就是 3000–6000 token 的固定开销，<strong>每一次调用都要付</strong>。 所以「工具太多」不只是让模型选错的概率上升，也是实打实的成本。 （解法：按场景动态加载工具子集。）</p></blockquote>
+<h3 class="md-h">三、四种优化手段及各自代价</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>手段</th><th>做法</th><th>省 token</th><th>代价</th><th>适用</th></tr></thead><tbody><tr><td><strong>裁剪</strong>（Truncate）</td><td>保留最近 N 轮</td><td>中</td><td>丢失早期信息</td><td>对话类，早期内容不重要时</td></tr><tr><td><strong>压缩</strong>（Summarize）</td><td>早期内容摘要</td><td>高</td><td>有损；摘要本身要调用一次模型</td><td>长任务，主线信息重要</td></tr><tr><td><strong>外部化</strong>（Externalize）</td><td>中间产物存外部，上下文只留引用</td><td>极高</td><td>Agent 需要主动查询，多一步</td><td>产物大的任务（代码、长文档）</td></tr><tr><td><strong>选择性检索</strong></td><td>历史不常驻，按需检索相关轮次</td><td>极高</td><td>检索可能漏；实现复杂</td><td>超长会话</td></tr></tbody></table></div>
+<p><strong>组合使用的实际方案</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">system + 工具定义     → 永久保留（关键约束不可裁剪）
+最近 K 轮             → 完整保留（保证当前决策质量）
+更早的轮次            → 摘要为「已完成 + 关键结论」
+中间产物（代码/文档）  → 外部存储，上下文只留一行引用</pre></div>
+<h3 class="md-h">四、动手：三种策略的真实对比</h3>
+<div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">python code/ch08/30_context_engineering.py</code></pre></div>
+<p>脚本会模拟一个 30 轮的长对话，对比三种策略：</p>
+<p>!<a href="../assets/ch08/02_context_engineering.png" target="_blank" rel="noopener">三种上下文策略的 token 增长曲线与终局对比</a></p>
+<p>!<a href="../figures/ch08_context_strategies.png" target="_blank" rel="noopener">上下文策略对比</a></p>
+<p><strong>实测结果（真实 tiktoken 计数，30 轮对话）</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>策略</th><th style="text-align:right">第 30 轮上下文 token</th><th style="text-align:right">相对直接拼接</th><th>说明</th></tr></thead><tbody><tr><td>① 直接拼接（无裁剪）</td><td style="text-align:right">3,597</td><td style="text-align:right">100%</td><td>线性增长，永不回落</td></tr><tr><td>② 滑动窗口（预算 3000）</td><td style="text-align:right"><strong>1,423</strong></td><td style="text-align:right"><strong>40%</strong></td><td>到第 11 轮后稳定在预算线上</td></tr><tr><td>③ 摘要压缩（保留最近 6 条）</td><td style="text-align:right">704</td><td style="text-align:right"><strong>20%</strong></td><td>曲线在第 5 轮后走平</td></tr></tbody></table></div>
+<p><strong>但这里有一个必须讲清的陷阱</strong> —— 看右图的橙色部分：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>策略</th><th style="text-align:right">上下文 token</th><th style="text-align:right"><strong>摘要调用的额外 token</strong></th><th style="text-align:right">合计</th></tr></thead><tbody><tr><td>① 直接拼接</td><td style="text-align:right">3,597</td><td style="text-align:right">0</td><td style="text-align:right">3,597</td></tr><tr><td>② 滑动窗口</td><td style="text-align:right">1,423</td><td style="text-align:right">0</td><td style="text-align:right"><strong>1,423</strong></td></tr><tr><td>③ 摘要压缩</td><td style="text-align:right">704</td><td style="text-align:right"><strong>2,893</strong></td><td style="text-align:right"><strong>3,597</strong></td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>结论完全反转了。</strong> 摘要压缩的上下文看起来最省（只有 20%）， 但<strong>生成摘要本身要调用模型</strong>，把额外开销算进去后，30 轮对话的<strong>总消耗反而和"什么都不做"持平</strong>， 而且比滑动窗口贵 2.5 倍。</p>
+<p>这个实测结果回答了一个很多人想当然的问题：<strong>"压缩总是省钱的吗？"——不是。</strong></p></blockquote>
+<p><strong>必须用数据回答的三个问题</strong>：</p>
+<ol><li><strong>压缩从第几轮开始划算？</strong> 关键看「累计节省的上下文 token」何时超过「摘要本身的开销」。</li><li><strong>滑动窗口在什么时候开始丢关键信息？</strong> 脚本会构造一个「早期设定、后期依赖」的场景来暴露这个问题</li><li><strong>「关键约束永不裁剪」是怎么实现的？</strong> 答案：system prompt 与用户原始需求单独保存，</li></ol>
+<p><strong>工程结论</strong>（这才是可以外推的经验，而不是具体数字）：</p>
+<div class="md-codeblock" data-lang="code"><div class="md-codebar"><span class="md-codelang">code</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-code">对话短（几十轮以内）     → 滑动窗口最划算，简单且无额外调用
+对话很长（几百轮以上）   → 摘要压缩才开始划算（摘要开销被摊薄）
+中间产物很大            → 用外部化（存文件/DB，上下文只留引用），这一招最省</code></pre></div>
+<blockquote class="md-quote"><p><strong>注意</strong>：本实验的数字来自离线靶场与特定的消息长度分布。 <strong>不要照搬"30 轮不划算"这个结论</strong> —— 你要在自己的任务和模型单价上重跑一遍。 可以外推的是<strong>分析方法</strong>：永远把「节省」和「额外开销」放在同一张表里比较。</p></blockquote>
+<h3 class="md-h">五、成本优化的完整检查表</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>优化点</th><th>检查什么</th><th>典型收益</th></tr></thead><tbody><tr><td>输出长度</td><td>是否有限制？输出单价通常是输入的 2–4 倍</td><td>高</td></tr><tr><td>工具定义</td><td>是否加载了用不到的工具？</td><td>中（工具多时高）</td></tr><tr><td>检索条数</td><td><code class="md-inline">top_k</code> 是否过大？证据是否去重？</td><td>中–高（RAG 场景）</td></tr><tr><td>证据块大小</td><td>切块是否过大？（第 3 章 Day12）</td><td>中</td></tr><tr><td>历史管理</td><td>是否每轮都重发全部历史？</td><td>高（长会话）</td></tr><tr><td>模型选型</td><td>简单任务是否用了大模型？</td><td>高</td></tr><tr><td>缓存</td><td>是否有可复用的结果（相同问题、相同文档）？</td><td>视场景</td></tr><tr><td>批处理</td><td>能批量的是否逐条调用？</td><td>中</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p><strong>优化顺序建议</strong>：先做「高收益 + 低风险」的（输出长度、模型选型、缓存）， 再做「需要改造架构」的（历史管理、外部化）。 <strong>不要一上来就做最复杂的优化</strong> —— 先量化，再动刀。</p></blockquote>
+<h3 class="md-h">六、当日验收</h3>
+<ul><li>[ ] 能说出上下文工程与 Prompt 工程的区别</li><li>[ ] 能画出上下文窗口的六个组成部分，并指出哪些是固定成本</li><li>[ ] 能说出四种优化手段各自的代价</li><li>[ ] 有真实的 token 对比曲线，并回答了「压缩从第几轮开始划算」</li><li>[ ] 完成成本检查表，标注每项的<strong>预期</strong>收益与<strong>实测</strong>收益</li></ul>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 3, "Day 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300cDay 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(58, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              编写代码验证「Day 37｜上下文工程与成本优化」
+            </div>
+            <div class="ex-code-hint">
+              💡 用代码把「Day 37｜上下文工程与成本优化」的核心用法演示一遍，并打印出结果。
+            </div>
+            
+            <div class="ex-actions" style="margin-top:12px;">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(58, 3, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300cDay 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316\u300d\n\n\u7528\u4ee3\u7801\u628a\u300cDay 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 3, 'Day 37｜上下文工程与成本优化')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 3, 'Day 37｜上下文工程与成本优化')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="58_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          8.11 常见错误与排查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>现象</th><th>原因</th><th>修复</th></tr></thead><tbody><tr><td>微调后格式反而更不稳定</td><td>训练数据里格式不统一</td><td>清洗数据，统一输出格式</td></tr><tr><td>微调后通用能力下降</td><td>灾难性遗忘（数据太窄 / 训练太久）</td><td>混入通用数据；减少训练步数；降低学习率</td></tr><tr><td>OOM（显存不足）</td><td>基座太大 / batch 太大 / 序列太长</td><td>用 QLoRA；减小 batch + 梯度累积；截断序列</td></tr><tr><td>loss 不下降</td><td>学习率太小 / 数据太少 / 任务超出模型能力</td><td>调高学习率；检查数据；考虑换更大基座</td></tr><tr><td><code class="md-inline">SFTTrainer</code> 报参数错误</td><td>库版本变化，API 不同</td><td>查当前版本文档（不要照抄旧教程）</td></tr><tr><td>上下文压缩后 Agent 变笨</td><td>摘要丢了关键细节</td><td>关键约束单独保留；摘要要用结构化模板（保留数字、约束、结论）</td></tr><tr><td>成本优化后效果明显下降</td><td>优化过度，裁掉了必要信息</td><td>每次优化都要跑评测集，用数据守住底线</td></tr></tbody></table></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 4, "8.11 \u5e38\u89c1\u9519\u8bef\u4e0e\u6392\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 4, '8.11 常见错误与排查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 4, '8.11 常见错误与排查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="58_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          8.12 参考资料
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-table-wrap"><table class="md-table"><thead><tr><th>资源</th><th>用途</th></tr></thead><tbody><tr><td><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA 原论文</a></td><td>低秩适应的理论基础</td></tr><tr><td><a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">QLoRA 原论文</a></td><td>4-bit 量化 + LoRA</td></tr><tr><td><a href="https://huggingface.co/docs/peft" target="_blank" rel="noopener">PEFT 文档</a></td><td>LoRA 实现与参数说明</td></tr><tr><td><a href="https://huggingface.co/docs/trl" target="_blank" rel="noopener">TRL 文档</a></td><td>SFT / DPO 训练器</td></tr><tr><td><a href="https://huggingface.co/docs/transformers" target="_blank" rel="noopener">transformers 文档</a></td><td>模型加载与量化配置</td></tr><tr><td><a href="https://github.com/bitsandbytes-foundation/bitsandbytes" target="_blank" rel="noopener">bitsandbytes</a></td><td>量化后端</td></tr></tbody></table></div>
+<blockquote class="md-quote"><p>各库 API 迭代快，使用时以官方文档当前版本为准。</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 5, "8.12 \u53c2\u8003\u8d44\u6599", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 5, '8.12 参考资料')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 5, '8.12 参考资料')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="58_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          下一章预告
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p>第 9 章（Day38–40）收尾：把前面八章的成果组装成一个<strong>可上线的完整产品</strong>—— 加前端界面（流式打字机）、容器化打包、成本与质量监控， 最后完成毕业答辩与作品集。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(58, 6, "\u4e0b\u4e00\u7ae0\u9884\u544a", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="58_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(58, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(58, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(58, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="58_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(58, 6, '下一章预告')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(58, 6, '下一章预告')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <!-- 测试输入：程序里用到 input() 时，这里的内容按行喂给它。
+         以前没有这个框，input() 一运行就撞 EOFError，学生只看到"执行失败"。 -->
+    <div class="code-ex-stdin" id="code-ex-stdin-wrap" hidden>
+      <div class="code-ex-stdin-head">
+        <span>⌨ 测试输入</span>
+        <span class="code-ex-stdin-tip">每行一个值，按顺序喂给 input()</span>
+      </div>
+      <textarea id="code-ex-stdin" class="code-ex-stdin-box" spellcheck="false"
+                placeholder="例如：&#10;83.5&#10;100"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 模型微调与上下文工程（Day 35–37） — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ 模型微调与上下文工程（Day 35–37） — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># 模型微调与上下文工程（Day 35–37）
+## 8.0 先回答一个关键问题：什么时候该微调？
+### 三种「让模型学会新知识/新行为」的手段
+### 决策顺序（请按这个顺序排除）
+### 微调的真实收益与代价
+## Day 35｜Transformer 与 LoRA 原理
+### 一、教学目标
+### 二、Transformer：用一句话讲清注意力
+### 三、LoRA：低秩假设
+### 四、LoRA 的关键超参数
+### 五、动手：用 numpy 亲手实现 LoRA
+### 六、当日验收
+## Day 36｜LoRA / QLoRA 微调实战
+### 一、教学目标
+### 二、微调链路全景
+### 三、数据构造：SFT 格式与质量
+### 四、QLoRA：在消费级 GPU 上微调
+### 五、读懂 loss 曲线
+### 六、评估微调效果：不要只看「感觉更好了」
+### 七、当日验收
+## Day 37｜上下文工程与成本优化
+### 一、教学目标
+### 二、上下文工程 vs Prompt 工程
+### 三、四种优化手段及各自代价
+### 四、动手：三种策略的真实对比
+### 五、成本优化的完整检查表
+### 六、当日验收
+## 8.11 常见错误与排查
+## 8.12 参考资料
+## 下一章预告</script>
+
+
+<script>
+  const CHAPTER_ID = 58;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["8.0 \u5148\u56de\u7b54\u4e00\u4e2a\u5173\u952e\u95ee\u9898\uff1a\u4ec0\u4e48\u65f6\u5019\u8be5\u5fae\u8c03\uff1f", "Day 35\uff5cTransformer \u4e0e LoRA \u539f\u7406", "Day 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218", "Day 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316", "8.11 \u5e38\u89c1\u9519\u8bef\u4e0e\u6392\u67e5", "8.12 \u53c2\u8003\u8d44\u6599", "\u4e0b\u4e00\u7ae0\u9884\u544a"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "\u6a21\u578b\u5fae\u8c03\u4e0e\u4e0a\u4e0b\u6587\u5de5\u7a0b\uff08Day 35\u201337\uff09";
+</script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/portrait.js"></script>
+<script src="static/js/cultivation.js"></script>
+<script src="static/js/music_player.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(58, "\u6a21\u578b\u5fae\u8c03\u4e0e\u4e0a\u4e0b\u6587\u5de5\u7a0b\uff08Day 35\u201337\uff09", "\u8fd9\u662f\u672c\u7ae0\u6700\u91cd\u8981\u7684\u4e00\u8282\uff0c\u6bd4\u4efb\u4f55\u4ee3\u7801\u90fd\u91cd\u8981\u3002\n\n\u5f88\u591a\u4eba\u7684\u7b2c\u4e00\u53cd\u5e94\u662f\u300c\u6a21\u578b\u6548\u679c\u4e0d\u597d\u5c31\u53bb\u5fae\u8c03\u300d\u3002\u4f46\u5fae\u8c03\u662f\u6700\u540e\u8be5\u8003\u8651\u7684\u624b\u6bb5\uff0c\u4e0d\u662f\u7b2c\u4e00\u9009\u62e9\u3002\n\n### \u4e09\u79cd\u300c\u8ba9\u6a21\u578b\u5b66\u4f1a\u65b0\u77e5\u8bc6/\u65b0\u884c\u4e3a\u300d\u7684\u624b\u6bb5\n\n\u624b\u6bb5 | \u89e3\u51b3\u4ec0\u4e48 | \u6210\u672c | \u66f4\u65b0\u901f\u5ea6 | \u53ef\u89e3\u91ca\u6027 ", ["8.0 \u5148\u56de\u7b54\u4e00\u4e2a\u5173\u952e\u95ee\u9898\uff1a\u4ec0\u4e48\u65f6\u5019\u8be5\u5fae\u8c03\uff1f", "Day 35\uff5cTransformer \u4e0e LoRA \u539f\u7406", "Day 36\uff5cLoRA / QLoRA \u5fae\u8c03\u5b9e\u6218", "Day 37\uff5c\u4e0a\u4e0b\u6587\u5de5\u7a0b\u4e0e\u6210\u672c\u4f18\u5316", "8.11 \u5e38\u89c1\u9519\u8bef\u4e0e\u6392\u67e5", "8.12 \u53c2\u8003\u8d44\u6599", "\u4e0b\u4e00\u7ae0\u9884\u544a"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){ if (window.Cultivation) Cultivation.mount(); });
+</script>
+<script src="static/js/lesson.js"></script>
+<script src="static/js/atmosphere.js"></script>
+</body>
+</html>

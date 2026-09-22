@@ -141,6 +141,15 @@ COURSES_FILE = os.path.join(DATA_DIR, 'courses.json')
 if not os.path.exists(COURSES_FILE):
     COURSES_FILE = os.path.join(BUNDLE_DIR, 'data', 'courses.json')
 
+# 知识点级的随堂练习（由 tools/build_kp_exercises.py 从教材的代码案例生成）。
+# 原来是运行时用一句模板话兜底（"编写代码验证「XX」"），学生根本不知道该写什么；
+# 现在改为读这份预生成的具体题目；缺这个文件时仍回退到原逻辑。
+KP_EXERCISES_FILE = os.path.join(DATA_DIR, 'kp_exercises.json')
+if not os.path.exists(KP_EXERCISES_FILE):
+    _alt = os.path.join(BUNDLE_DIR, 'data', 'kp_exercises.json')
+    if os.path.exists(_alt):
+        KP_EXERCISES_FILE = _alt
+
 # Admin credentials (change these in production)
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD_HASH = hashlib.sha256("admin888".encode('utf-8')).hexdigest()
@@ -164,6 +173,7 @@ def load_json(filepath):
     # 先算"是不是账号文件"：账号文件不存在时也要走注入分支，
     # 全新部署（users.json 还没生成）正是最常见的情况
     is_users_file = os.path.abspath(filepath) == os.path.abspath(USERS_FILE)
+    is_courses_file = os.path.abspath(filepath) == os.path.abspath(COURSES_FILE)
     if not os.path.exists(filepath):
         data = {} if is_users_file else []
     else:
@@ -175,6 +185,12 @@ def load_json(filepath):
         demo = demo_account()
         if demo:
             data.setdefault(demo[0], demo[1])
+    # 课程按 order 字段排序。
+    # **章号（id）刻意保持不变**：题库的 chapter_id、讲解索引的键、
+    # 以及解锁逻辑里的 sorted(id) 都引用它。把"学习顺序"交给独立字段表达，
+    # 调整体系时才不会牵动那三处。
+    if is_courses_file and isinstance(data, list):
+        data = sorted(data, key=lambda c: (c.get('order') or c.get('id') or 0))
     return data
 
 
@@ -268,23 +284,25 @@ def get_unlock_status(courses, completed_kps, mode='explore'):
                 unlocked.add((c['id'], i))
         return unlocked
     # Explore mode: sequential unlock
-    # Build course order index from the courses list (position-based, not ID-based)
+    # 顺序以**课程列表的顺序**为准（load_json 已按 order 字段排好），
+    # 不能用 sorted(id)：体系重排后 id 与学习顺序已经解耦，
+    # 按 id 排会把"上一章"算错，导致解锁链断掉。
     course_order = {c['id']: idx for idx, c in enumerate(courses)}
-    sorted_ids = sorted(c['id'] for c in courses)
+    ordered_ids = [c['id'] for c in courses]
 
-    unlocked.add((sorted_ids[0], 0))  # First chapter KP0 always unlocked
+    unlocked.add((ordered_ids[0], 0))  # First chapter KP0 always unlocked
     for c in courses:
         ch = c['id']
         kps = c.get('knowledge_points', [])
         for i in range(len(kps)):
-            if ch == sorted_ids[0] and i == 0:
+            if ch == ordered_ids[0] and i == 0:
                 continue
             if i == 0:
-                # Find previous chapter by position in sorted order
+                # 前一章 = 列表里的上一章
                 current_pos = course_order.get(ch)
                 if current_pos is None or current_pos == 0:
                     continue
-                prev_ch_id = sorted_ids[current_pos - 1]
+                prev_ch_id = ordered_ids[current_pos - 1]
                 prev_c = next((x for x in courses if x['id'] == prev_ch_id), None)
                 if not prev_c:
                     continue
@@ -1055,6 +1073,8 @@ def chapter(chapter_id):
         '异常进阶': '写一个完整的 try-except-else-finally 结构。',
     }
 
+    kp_ready = load_json(KP_EXERCISES_FILE) or {}
+
     for i in range(len(kps)):
         kp_title = kps[i]['title']
         exercises = []
@@ -1066,10 +1086,27 @@ def chapter(chapter_id):
             ex['ex_idx'] = 0
             exercises.append(ex)
             ex_idx += 1
-        # 只给"真的含代码"的知识点追加编程练习：
-        # 纯概念、流程、协作类知识点硬塞代码题会让学生无从下手。
-        if 'md-codeblock' in kps[i].get('content', '') and (
-                not exercises or exercises[0].get('type') != 'code'):
+        # 缺配套练习时，优先用预生成的**具体**练习（来自该知识点的代码案例）：
+        # 给一段挖空骨架 + 明确的预期输出。原来的做法是塞一句模板话
+        # （"用代码把「XX」演示一遍"），学生不知道写什么，判据还是"能跑就行"。
+        kp_key = str(course['id'])
+        ready = kp_ready.get(kp_key, {}).get(str(i))
+        need_kp_ex = (not exercises or exercises[0].get('type') != 'code')
+        if ready and need_kp_ex:
+            exercises.append({
+                'type': 'code',
+                'question': ready.get('title', f'补全代码：{kp_title}'),
+                'code_prompt': ready.get('prompt', ''),
+                'code_starter': ready.get('starter', ''),
+                'expect': ready.get('expect', ''),
+                'source': ready.get('source', ''),
+                'explanation': ('对照题面给出的预期输出检查自己的结果。'
+                                '结果一致即表示这一节的核心用法你已经会用。'),
+            })
+        # 没有可生成素材的知识点**不再硬塞编程题**：
+        # 概念、流程、协作类知识点塞代码题只会让人无从下手，
+        # 这比"没有练习"更劝退。正文里已有讲解与自测提示。
+        elif 'md-codeblock' in kps[i].get('content', '') and need_kp_ex:
             hint = f'用代码把「{kp_title}」的核心用法演示一遍，并打印出结果。'
             for key, val in code_hints.items():
                 if key in kp_title:

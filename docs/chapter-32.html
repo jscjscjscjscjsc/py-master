@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -321,14 +321,17 @@ AI 成本参数（超时、max_tokens、上下文截断字符数、最多引用�
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「32.3 步骤 1：环境准备」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「32.3 步骤 1：环境准备」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「32.3 步骤 1：环境准备」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(32, 2, 0, "\u7528\u4ee3\u7801\u628a\u300c32.3 \u6b65\u9aa4 1\uff1a\u73af\u5883\u51c6\u5907\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(32, 2, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c32.3 \u6b65\u9aa4 1\uff1a\u73af\u5883\u51c6\u5907\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c32.3 \u6b65\u9aa4 1\uff1a\u73af\u5883\u51c6\u5907\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -467,14 +470,17 @@ list_tags / create_tag / update_tag / delete_tag / add_chat_message / list_chat_
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「32.4 步骤 2：数据层（`app/db.py`）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「32.4 步骤 2：数据层（`app/db.py`）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「32.4 步骤 2：数据层（`app/db.py`）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(32, 3, 0, "\u7528\u4ee3\u7801\u628a\u300c32.4 \u6b65\u9aa4 2\uff1a\u6570\u636e\u5c42\uff08`app/db.py`\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(32, 3, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c32.4 \u6b65\u9aa4 2\uff1a\u6570\u636e\u5c42\uff08`app/db.py`\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c32.4 \u6b65\u9aa4 2\uff1a\u6570\u636e\u5c42\uff08`app/db.py`\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -592,14 +598,17 @@ app.include_router(notes.router, prefix=&quot;/api&quot;)</code></pre></div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「32.5 步骤 3：HTTP 层（schemas + routers + main）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「32.5 步骤 3：HTTP 层（schemas + routers + main）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「32.5 步骤 3：HTTP 层（schemas + routers + main）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(32, 4, 0, "\u7528\u4ee3\u7801\u628a\u300c32.5 \u6b65\u9aa4 3\uff1aHTTP \u5c42\uff08schemas + routers + main\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(32, 4, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c32.5 \u6b65\u9aa4 3\uff1aHTTP \u5c42\uff08schemas + routers + main\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c32.5 \u6b65\u9aa4 3\uff1aHTTP \u5c42\uff08schemas + routers + main\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -722,14 +731,17 @@ answer(context_blocks,question)、process(text,action)。
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「32.6 步骤 4：AI 层（`services/ai_service.py`）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「32.6 步骤 4：AI 层（`services/ai_service.py`）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「32.6 步骤 4：AI 层（`services/ai_service.py`）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(32, 5, 0, "\u7528\u4ee3\u7801\u628a\u300c32.6 \u6b65\u9aa4 4\uff1aAI \u5c42\uff08`services/ai_service.py`\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(32, 5, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c32.6 \u6b65\u9aa4 4\uff1aAI \u5c42\uff08`services/ai_service.py`\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c32.6 \u6b65\u9aa4 4\uff1aAI \u5c42\uff08`services/ai_service.py`\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -841,14 +853,17 @@ if cited:
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「32.7 步骤 5：问答编排（`services/chat_service.py` + `routers/chat.py`）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「32.7 步骤 5：问答编排（`services/chat_service.py` + `routers/chat.py`）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「32.7 步骤 5：问答编排（`services/chat_service.py` + `routers/chat.py`）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(32, 6, 0, "\u7528\u4ee3\u7801\u628a\u300c32.7 \u6b65\u9aa4 5\uff1a\u95ee\u7b54\u7f16\u6392\uff08`services/chat_service.py` + `routers/chat.py`\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(32, 6, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c32.7 \u6b65\u9aa4 5\uff1a\u95ee\u7b54\u7f16\u6392\uff08`services/chat_service.py` + `routers/chat.py`\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c32.7 \u6b65\u9aa4 5\uff1a\u95ee\u7b54\u7f16\u6392\uff08`services/chat_service.py` + `routers/chat.py`\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -961,14 +976,17 @@ app.dependency_overrides[ai_service.get_ai_service] = lambda: FakeAI()</code></p
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「32.8 步骤 6：单元测试（假 AI，不烧 token）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「32.8 步骤 6：单元测试（假 AI，不烧 token）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「32.8 步骤 6：单元测试（假 AI，不烧 token）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(32, 7, 0, "\u7528\u4ee3\u7801\u628a\u300c32.8 \u6b65\u9aa4 6\uff1a\u5355\u5143\u6d4b\u8bd5\uff08\u5047 AI\uff0c\u4e0d\u70e7 token\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(32, 7, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c32.8 \u6b65\u9aa4 6\uff1a\u5355\u5143\u6d4b\u8bd5\uff08\u5047 AI\uff0c\u4e0d\u70e7 token\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c32.8 \u6b65\u9aa4 6\uff1a\u5355\u5143\u6d4b\u8bd5\uff08\u5047 AI\uff0c\u4e0d\u70e7 token\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>

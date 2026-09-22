@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -121,12 +121,17 @@
             <p><strong>学完本章，你应该能够：</strong></p>
 <ol><li>用 pip 安装第三方库，用 requests 发送 HTTP 请求并解析 JSON；</li><li>用 datetime 计算日期差、用 re 提取文本中的关键信息；</li><li>理解进程/线程/协程的概念与区别；</li><li>用 threading 实现简单并发，理解 GIL 的含义；</li><li>用 asyncio 编写协程，理解 async/await 与事件循环；</li><li>完成"同步 vs 异步"耗时对比实验，能说出何时用哪个；</li><li>了解正则的分组、修饰符与贪婪/非贪婪匹配（了解级进阶）；</li><li>用 httpx 异步客户端写真实并发请求，用 <code class="md-inline">wait_for</code> 控制超时、用 <code class="md-inline">to_thread</code> 适配同步库；</li><li>用 multiprocessing 处理 CPU 密集任务，能说出线程/进程/协程的选型；</li><li>继续遵守 L2 纪律。</li></ol>
 <p><strong>前置知识</strong>：第 1-12 章全部内容（尤其函数、异常、生成器）。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 1 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：13.1（上）pip 在虚拟环境装 requests + GET 请求</p>
+<p><strong>练习 10 分钟</strong>：任务 13-1：请求公开接口，打印状态码与前 200 字符</p>
+<p><strong>休息 10 分钟</strong>：ModuleNotFoundError → 先查装没装、装对环境没有</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day11.md</code> 第 1 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 0, "13.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1aimport requests \u540e\u6253\u5370 requests.__version__\uff0c\u7136\u540e GET \u8bf7\u6c42 https://httpbin.org/get\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d url \u5b57\u6bb5\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003erequests.__version__\u003c/code\u003e \u67e5\u770b\u7248\u672c\uff08\u8bf4\u660e\u5b89\u88c5\u6210\u529f\uff09\uff1b\u003ccode class=\"md-inline\"\u003eresp.json()\u003c/code\u003e \u628a\u54cd\u5e94\u4f53\u89e3\u6790\u4e3a\u5b57\u5178\uff1b\u003ccode class=\"md-inline\"\u003edata[\"url\"]\u003c/code\u003e \u662f httpbin \u56de\u663e\u7684\u8bf7\u6c42\u5730\u5740\u3002\u003cstrong\u003e\u5982\u679c\u62a5 ModuleNotFoundError\uff0c\u5148 \u003ccode class=\"md-inline\"\u003epip install requests\u003c/code\u003e\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1a`import requests` \u540e\u6253\u5370 `requests.__version__`\uff0c\u7136\u540e GET \u8bf7\u6c42 `https://httpbin.org/get`\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d `url` \u5b57\u6bb5\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1a\u003ccode class=\"md-inline\"\u003eimport requests\u003c/code\u003e \u540e\u6253\u5370 \u003ccode class=\"md-inline\"\u003erequests.__version__\u003c/code\u003e\uff0c\u7136\u540e GET \u8bf7\u6c42 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get\u003c/code\u003e\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d \u003ccode class=\"md-inline\"\u003eurl\u003c/code\u003e \u5b57\u6bb5\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1aimport requests \u540e\u6253\u5370 requests.__version__\uff0c\u7136\u540e GET \u8bf7\u6c42 https://httpbin.org/get\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d url \u5b57\u6bb5\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport requests\n\nprint(\u0026quot;requests \u7248\u672c\uff1a\u0026quot;, requests.__version__)\n\nresp = requests.get(\u0026quot;https://httpbin.org/get\u0026quot;)\nprint(\u0026quot;\u72b6\u6001\u7801\uff1a\u0026quot;, resp.status_code)\n\ndata = resp.json()\nprint(\u0026quot;url \u5b57\u6bb5\uff1a\u0026quot;, data[\u0026quot;url\u0026quot;])\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08url \u5185\u5bb9\u968f\u8bf7\u6c42\u53d8\u5316\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003erequests \u7248\u672c\uff1a 2.34.2\n\u72b6\u6001\u7801\uff1a 200\nurl \u5b57\u6bb5\uff1a https://httpbin.org/get\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 0, "13.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1aimport requests \u540e\u6253\u5370 requests.__version__\uff0c\u7136\u540e GET \u8bf7\u6c42 https://httpbin.org/get\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d url \u5b57\u6bb5\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1a`import requests` \u540e\u6253\u5370 `requests.__version__`\uff0c\u7136\u540e GET \u8bf7\u6c42 `https://httpbin.org/get`\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d `url` \u5b57\u6bb5\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1a\u003ccode class=\"md-inline\"\u003eimport requests\u003c/code\u003e \u540e\u6253\u5370 \u003ccode class=\"md-inline\"\u003erequests.__version__\u003c/code\u003e\uff0c\u7136\u540e GET \u8bf7\u6c42 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get\u003c/code\u003e\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d \u003ccode class=\"md-inline\"\u003eurl\u003c/code\u003e \u5b57\u6bb5\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b89\u88c5 requests \u5e76\u9a8c\u8bc1\uff1aimport requests \u540e\u6253\u5370 requests.__version__\uff0c\u7136\u540e GET \u8bf7\u6c42 https://httpbin.org/get\uff0c\u8f93\u51fa\u72b6\u6001\u7801\u548c\u8fd4\u56de JSON \u4e2d url \u5b57\u6bb5\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -166,23 +171,7 @@
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import requests
-
-print(&quot;requests 版本：&quot;, requests.__version__)
-
-resp = requests.get(&quot;https://httpbin.org/get&quot;)
-print(&quot;状态码：&quot;, resp.status_code)
-
-data = resp.json()
-print(&quot;url 字段：&quot;, data[&quot;url&quot;])</code></pre></div>
-<p><strong>运行结果</strong>（url 内容随请求变化）：</p>
-<div class="md-figure"><pre class="md-diagram">requests 版本： 2.34.2
-状态码： 200
-url 字段： https://httpbin.org/get</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">requests.__version__</code> 查看版本（说明安装成功）；<code class="md-inline">resp.json()</code> 把响应体解析为字典；<code class="md-inline">data["url"]</code> 是 httpbin 回显的请求地址。<strong>如果报 ModuleNotFoundError，先 <code class="md-inline">pip install requests</code></strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -300,12 +289,17 @@ print(f&quot;服务器收到的数据：{data[&#x27;json&#x27;]}&quot;)</code></
 <p>客户端发请求时包含四件事：<strong>方法</strong>（GET/POST/PUT/DELETE）、<strong>URL</strong>（给谁）、<strong>请求头</strong>（身份、格式）、<strong>请求体</strong>（数据，GET 通常没有）。</p>
 <p>服务器响应包含三件事：<strong>状态码</strong>（200 成功 / 404 找不到 / 500 服务器出错 / 401 未登录）、<strong>响应头</strong>、<strong>响应体</strong>（通常是 JSON）。</p>
 <p><strong>就业提示</strong>：后端面试必考"HTTP 状态码"——记住 200、404、500、401 四个就够起步。第 21 章系统讲 REST API 时会再深入。</p></blockquote>
+<blockquote class="md-quote"><p><strong>⏱ 第 2 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：13.1（下）POST 请求 + JSON 响应解析 + 超时与异常兜底；13.2 datetime/re 综合应用（10 分钟）</p>
+<p><strong>练习 10 分钟</strong>：任务 13-2：给请求加 timeout 与 try-except，断网测试不崩</p>
+<p><strong>休息 10 分钟</strong>：「发请求四件套」：装库/请求/解析/兜底</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day11.md</code> 第 2 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 1, "13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u65e5\u671f\u76f8\u51cf\u5f97\u5230 timedelta\uff0c\u003ccode class=\"md-inline\"\u003e.days\u003c/code\u003e \u53d6\u5929\u6570\u3002\u003cstrong\u003e\u6ce8\u610f\u003c/strong\u003e\uff1adate(y, m, d) \u7684\u6708\u4efd\u548c\u65e5\u671f\u4e0d\u80fd\u586b 0 \u6216\u8d85\u8303\u56f4\uff0c\u5426\u5219 ValueError\uff08\u53ef\u81ea\u884c\u52a0 try/except \u5347\u7ea7\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom datetime import date\n\ny = int(input(\u0026quot;\u51fa\u751f\u5e74\u4efd\uff1a\u0026quot;))\nm = int(input(\u0026quot;\u51fa\u751f\u6708\u4efd\uff1a\u0026quot;))\nd = int(input(\u0026quot;\u51fa\u751f\u65e5\u671f\uff1a\u0026quot;))\n\nbirthday = date(y, m, d)\ntoday = date.today()\n\nprint(f\u0026quot;\u4f60\u5df2\u7ecf\u6d3b\u4e86 {(today - birthday).days} \u5929\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u793a\u4f8b 2006-05-01\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u51fa\u751f\u5e74\u4efd\uff1a2006\n\u51fa\u751f\u6708\u4efd\uff1a5\n\u51fa\u751f\u65e5\u671f\uff1a1\n\u4f60\u5df2\u7ecf\u6d3b\u4e86 7398 \u5929\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 1, "13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u7528 datetime \u8ba1\u7b97\uff1a\u8f93\u5165\u4f60\u7684\u751f\u65e5\uff08\u5e74\u6708\u65e5\u5206\u522b\u8f93\u5165\uff09\uff0c\u8f93\u51fa\"\u4f60\u5df2\u7ecf\u6d3b\u4e86 X \u5929\"\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -345,25 +339,7 @@ print(f&quot;服务器收到的数据：{data[&#x27;json&#x27;]}&quot;)</code></
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from datetime import date
-
-y = int(input(&quot;出生年份：&quot;))
-m = int(input(&quot;出生月份：&quot;))
-d = int(input(&quot;出生日期：&quot;))
-
-birthday = date(y, m, d)
-today = date.today()
-
-print(f&quot;你已经活了 {(today - birthday).days} 天&quot;)</code></pre></div>
-<p><strong>运行结果</strong>（示例 2006-05-01）：</p>
-<div class="md-figure"><pre class="md-diagram">出生年份：2006
-出生月份：5
-出生日期：1
-你已经活了 7398 天</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>日期相减得到 timedelta，<code class="md-inline">.days</code> 取天数。<strong>注意</strong>：date(y, m, d) 的月份和日期不能填 0 或超范围，否则 ValueError（可自行加 try/except 升级）。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -378,14 +354,17 @@ print(f&quot;你已经活了 {(today - birthday).days} 天&quot;)</code></pre></
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「13.1 第三方库：pip 与 requests」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「13.1 第三方库：pip 与 requests」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「13.1 第三方库：pip 与 requests」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(13, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(13, 1, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c13.1 \u7b2c\u4e09\u65b9\u5e93\uff1apip \u4e0e requests\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -566,7 +545,7 @@ print(re.findall(r&quot;&lt;a&gt;(.*?)&lt;/a&gt;&quot;, html))   # 非贪婪：�
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 2, "13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 re \u4ece \"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\" \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u2026\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003e1[3-9]\\d{9}\u003c/code\u003e = \u4ee5 1 \u5f00\u5934 + \u7b2c\u4e8c\u4f4d 3-9 + 9 \u4e2a\u6570\u5b57\uff0c\u5171 11 \u4f4d\u3002\u5ea7\u673a\"028-88888888\"\u7b2c\u4e8c\u4f4d\u662f 2\uff0c\u4e0d\u5339\u914d\u2014\u2014\u003cstrong\u003e\u6b63\u5219\u6309\u6a21\u5f0f\u7cbe\u786e\u5339\u914d\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 re \u4ece `\"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\"` \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 re \u4ece \u003ccode class=\"md-inline\"\u003e\"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\"\u003c/code\u003e \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 re \u4ece \"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\" \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport re\n\ntext = \u0026quot;\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\u0026quot;\n\nphones = re.findall(r\u0026quot;1[3-9]\\d{9}\u0026quot;, text)\nprint(phones)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e[\u0026#x27;13812345678\u0026#x27;, \u0026#x27;15800001111\u0026#x27;]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 2, "13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 re \u4ece \"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\" \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u2026\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 re \u4ece `\"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\"` \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 re \u4ece \u003ccode class=\"md-inline\"\u003e\"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\"\u003c/code\u003e \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 re \u4ece \"\u8054\u7cfb\u65b9\u5f0f\uff1a13812345678 \u548c 15800001111\uff0c\u5907\u7528 028-88888888\" \u4e2d\u63d0\u53d6\u6240\u6709 11 \u4f4d\u624b\u673a\u53f7\u5e76\u8f93\u51fa\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 6 \u9898\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\u540e\uff0c\u628a\u4e24\u7ec4\u8017\u65f6\u53d1\u7ed9 AI\uff0c\u95ee\"\u4e3a\u4ec0\u4e48\u5f02\u6b65\u80fd\u628a 10 \u4e2a\u8bf7\u6c42\u538b\u5230 1 \u4e2a\u8bf7\u6c42\u7684\u65f6\u95f4\uff1f\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u89e3\u91ca\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -607,18 +586,7 @@ print(re.findall(r&quot;&lt;a&gt;(.*?)&lt;/a&gt;&quot;, html))   # 非贪婪：�
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import re
-
-text = &quot;联系方式：13812345678 和 15800001111，备用 028-88888888&quot;
-
-phones = re.findall(r&quot;1[3-9]\d{9}&quot;, text)
-print(phones)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">[&#x27;13812345678&#x27;, &#x27;15800001111&#x27;]</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">1[3-9]\d{9}</code> = 以 1 开头 + 第二位 3-9 + 9 个数字，共 11 位。座机"028-88888888"第二位是 2，不匹配——<strong>正则按模式精确匹配</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -628,25 +596,29 @@ print(phones)</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u51fa\u751f\u5929\u6570\u8ba1\u7b97\u5668")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：出生天数计算器
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「13.2 datetime 与 re 综合应用」的核心用法演示一遍，并打印出结果。
+              💡 照着「出生天数计算器」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(13, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c13.2 datetime \u4e0e re \u7efc\u5408\u5e94\u7528\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(13, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u51fa\u751f\u5929\u6570\u8ba1\u7b97\u5668\n\n\u7167\u7740\u300c\u51fa\u751f\u5929\u6570\u8ba1\u7b97\u5668\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "from datetime import date\n\nbirthday = date(2006, 5, 1)\ntoday = date.today()\n\ndays = (today - birthday).days\nage = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -786,12 +758,17 @@ if __name__ == &quot;__main__&quot;:
 <div class="md-table-wrap"><table class="md-table"><thead><tr><th>方案</th><th>适合</th><th>特点</th></tr></thead><tbody><tr><td>多线程 threading</td><td>IO 密集、任务少</td><td>共享内存方便，但受 GIL 限制</td></tr><tr><td>多进程 multiprocessing</td><td>CPU 密集</td><td>真正并行，但进程间通信成本高</td></tr><tr><td>协程 asyncio</td><td>IO 密集、任务多</td><td>最轻量、可开上万个，但要求异步写法</td></tr></tbody></table></div>
 <p><strong>口诀：CPU 密集用多进程，IO 密集任务少用线程、任务多用协程</strong>。</p>
 <p><strong>微任务卡（M3 · 讲解卡 · L2）</strong>：把 GIL 相关问题发给 AI，提问："请解释 GIL 为什么让多线程对 CPU 密集任务没有加速？IO 密集任务为什么不受影响？"一句话记录理解。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 3 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：13.4 asyncio：async/await、gather、事件循环（同步=排队打饭，异步=扫码等叫号）；13.3 GIL 一句话带过</p>
+<p><strong>练习 10 分钟</strong>：任务 13-3（手写）：async 函数用 asyncio.run 跑通</p>
+<p><strong>休息 10 分钟</strong>：只讲「IO 密集用异步」，不深挖调度原理</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day11.md</code> 第 3 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 3, "13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 time.sleep(0.2) \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 `time.sleep(0.2)` \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 \u003ccode class=\"md-inline\"\u003etime.sleep(0.2)\u003c/code\u003e \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 time.sleep(0.2) \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport threading\nimport time\n\ndef work(name, seconds):\n    time.sleep(seconds)\n    print(f\u0026quot;{name} \u5b8c\u6210\u0026quot;)\n\n# \u987a\u5e8f\u6267\u884c\nstart = time.time()\nwork(\u0026quot;\u4efb\u52a1A\u0026quot;, 0.2)\nwork(\u0026quot;\u4efb\u52a1B\u0026quot;, 0.2)\nprint(f\u0026quot;\u987a\u5e8f\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\n\n# \u5e76\u53d1\u6267\u884c\nstart = time.time()\nt1 = threading.Thread(target=work, args=(\u0026quot;\u4efb\u52a1C\u0026quot;, 0.2))\nt2 = threading.Thread(target=work, args=(\u0026quot;\u4efb\u52a1D\u0026quot;, 0.2))\nt1.start()\nt2.start()\nt1.join()\nt2.join()\nprint(f\u0026quot;\u5e76\u53d1\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4efb\u52a1A \u5b8c\u6210\n\u4efb\u52a1B \u5b8c\u6210\n\u987a\u5e8f\u603b\u8017\u65f6\uff1a0.40 \u79d2\n\u4efb\u52a1C \u5b8c\u6210\n\u4efb\u52a1D \u5b8c\u6210\n\u5e76\u53d1\u603b\u8017\u65f6\uff1a0.20 \u79d2\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u6ce8\u91ca\u91cc\u8981\u5199\u7684\u7ed3\u8bba\u003c/strong\u003e\uff1a\u4e24\u4e2a 0.2 \u79d2\u7684\u4efb\u52a1\uff0c\u987a\u5e8f\u6267\u884c\u8981 0.4 \u79d2\uff0c\u7ebf\u7a0b\u5e76\u53d1\u53ea\u8981 0.2 \u79d2\u2014\u2014\u003cstrong\u003e\u7b49\u5f85\u65f6\u95f4\u88ab\u5e76\u884c\u5229\u7528\u4e86\u003c/strong\u003e\u3002\u6ce8\u610f\u4efb\u52a1 C/D \u7684\u8f93\u51fa\u987a\u5e8f\u53ef\u80fd\u4e92\u6362\uff0c\u8fd9\u662f\u5e76\u53d1\u7684\u6b63\u5e38\u73b0\u8c61\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 3, "13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 time.sleep(0.2) \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 `time.sleep(0.2)` \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 \u003ccode class=\"md-inline\"\u003etime.sleep(0.2)\u003c/code\u003e \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528 threading \u5e76\u53d1\u6267\u884c\u4e24\u4e2a\u4efb\u52a1\uff08\u5404 time.sleep(0.2) \u540e\u6253\u5370\"\u4efb\u52a1X\u5b8c\u6210\"\uff09\uff0c\u8f93\u51fa\u603b\u8017\u65f6\uff1b\u518d\u548c\u987a\u5e8f\u6267\u884c\u7684\u8017\u65f6\u5bf9\u6bd4\uff0c\u5728\u6ce8\u91ca\u91cc\u5199\u51fa\u7ed3\u8bba\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -831,37 +808,7 @@ if __name__ == &quot;__main__&quot;:
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import threading
-import time
-
-def work(name, seconds):
-    time.sleep(seconds)
-    print(f&quot;{name} 完成&quot;)
-
-# 顺序执行
-start = time.time()
-work(&quot;任务A&quot;, 0.2)
-work(&quot;任务B&quot;, 0.2)
-print(f&quot;顺序总耗时：{time.time() - start:.2f} 秒&quot;)
-
-# 并发执行
-start = time.time()
-t1 = threading.Thread(target=work, args=(&quot;任务C&quot;, 0.2))
-t2 = threading.Thread(target=work, args=(&quot;任务D&quot;, 0.2))
-t1.start()
-t2.start()
-t1.join()
-t2.join()
-print(f&quot;并发总耗时：{time.time() - start:.2f} 秒&quot;)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">任务A 完成
-任务B 完成
-顺序总耗时：0.40 秒
-任务C 完成
-任务D 完成
-并发总耗时：0.20 秒</pre></div>
-<p><strong>注释里要写的结论</strong>：两个 0.2 秒的任务，顺序执行要 0.4 秒，线程并发只要 0.2 秒——<strong>等待时间被并行利用了</strong>。注意任务 C/D 的输出顺序可能互换，这是并发的正常现象。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -871,25 +818,29 @@ print(f&quot;并发总耗时：{time.time() - start:.2f} 秒&quot;)</code></pre>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u8865\u5168\u4ee3\u7801\uff1aProcessPoolExecutor")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：ProcessPoolExecutor
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「13.3 并发：线程与 GIL」的核心用法演示一遍，并打印出结果。
+              💡 照着「ProcessPoolExecutor」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(13, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c13.3 \u5e76\u53d1\uff1a\u7ebf\u7a0b\u4e0e GIL\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(13, 3, 1, "\u8865\u5168\u4ee3\u7801\uff1aProcessPoolExecutor\n\n\u7167\u7740\u300cProcessPoolExecutor\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "from concurrent.futures import ProcessPoolExecutor\n\ndef cpu_heavy(n):\n    \"\"\"\u6a21\u62df CPU \u5bc6\u96c6\uff1a\u8ba1\u7b97 1 \u5230 n \u7684\u5e73\u65b9\u548c\"\"\"\n    total = 0\n    for i in range(1, n + 1):\n        total += i * i\n    return total\n\nif __name__ == \"__main__\":\n    with ProcessPoolExecutor(max_workers=4) as pool:\n        results = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n    print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1045,12 +996,17 @@ async def main():
     print([r.status_code for r in results])</code></pre></div>
 <p><strong>讲解</strong>：没有异步版的库（如 requests）不能直接 <code class="md-inline">await</code>——<code class="md-inline">asyncio.to_thread(函数, 参数)</code> 把它放到<strong>线程池</strong>里执行，事件循环不被阻塞。<strong>这是"老库 + 新异步"的桥梁</strong>。</p>
 <blockquote class="md-quote"><p><strong>就业提示</strong>：三个场景合起来就是"生产级并发接口"的骨架：<strong>AsyncClient 并发 + wait_for 超时 + to_thread 兼容旧库</strong>。后端面试问"异步怎么落地"，能说出这三个就是实战经验。</p></blockquote>
+<blockquote class="md-quote"><p><strong>⏱ 第 4 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：13.5 工作坊：同步 5 个请求 vs gather 并发耗时对比</p>
+<p><strong>练习 10 分钟</strong>：任务 13-4：跑对比实验并记录两组耗时，说出差异原因</p>
+<p><strong>休息 10 分钟</strong>：数据要投屏，眼见为实</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day11.md</code> 第 4 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 4, "13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 await asyncio.sleep(0.2)\uff09\uff0c\u7528 gather \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003easync def\u003c/code\u003e \u5b9a\u4e49\u534f\u7a0b\u3001\u003ccode class=\"md-inline\"\u003eawait\u003c/code\u003e \u6302\u8d77\u7b49\u5f85\u3001\u003ccode class=\"md-inline\"\u003easyncio.gather\u003c/code\u003e \u5e76\u53d1\u8c03\u5ea6\u3001\u003ccode class=\"md-inline\"\u003easyncio.run\u003c/code\u003e \u542f\u52a8\u4e8b\u4ef6\u5faa\u73af\u3002\u003cstrong\u003e\u5173\u952e\u003c/strong\u003e\uff1a\u7b49\u5f85\u65f6\u4e8b\u4ef6\u5faa\u73af\u5207\u6362\u53bb\u6267\u884c\u53e6\u4e00\u4e2a\u4efb\u52a1\uff0c\u6240\u4ee5\u603b\u8017\u65f6\u7ea6\u7b49\u4e8e\u5355\u4e2a\u4efb\u52a1\u7684\u8017\u65f6\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 `await asyncio.sleep(0.2)`\uff09\uff0c\u7528 `gather` \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 \u003ccode class=\"md-inline\"\u003eawait asyncio.sleep(0.2)\u003c/code\u003e\uff09\uff0c\u7528 \u003ccode class=\"md-inline\"\u003egather\u003c/code\u003e \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 await asyncio.sleep(0.2)\uff09\uff0c\u7528 gather \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport asyncio\nimport time\n\nasync def task(name, seconds):\n    await asyncio.sleep(seconds)\n    print(f\u0026quot;{name} \u5b8c\u6210\u0026quot;)\n\nasync def main():\n    start = time.time()\n    await asyncio.gather(\n        task(\u0026quot;\u4efb\u52a1A\u0026quot;, 0.2),\n        task(\u0026quot;\u4efb\u52a1B\u0026quot;, 0.2),\n    )\n    print(f\u0026quot;\u5f02\u6b65\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\n\nasyncio.run(main())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4efb\u52a1A \u5b8c\u6210\n\u4efb\u52a1B \u5b8c\u6210\n\u5f02\u6b65\u603b\u8017\u65f6\uff1a0.20 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 4, "13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 await asyncio.sleep(0.2)\uff09\uff0c\u7528 gather \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 `await asyncio.sleep(0.2)`\uff09\uff0c\u7528 `gather` \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 \u003ccode class=\"md-inline\"\u003eawait asyncio.sleep(0.2)\u003c/code\u003e\uff09\uff0c\u7528 \u003ccode class=\"md-inline\"\u003egather\u003c/code\u003e \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u7528 asyncio \u5199\u4e24\u4e2a\u534f\u7a0b\uff08\u5404 await asyncio.sleep(0.2)\uff09\uff0c\u7528 gather \u5e76\u53d1\u6267\u884c\uff0c\u8f93\u51fa\u603b\u8017\u65f6\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1090,30 +1046,7 @@ async def main():
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
-import time
-
-async def task(name, seconds):
-    await asyncio.sleep(seconds)
-    print(f&quot;{name} 完成&quot;)
-
-async def main():
-    start = time.time()
-    await asyncio.gather(
-        task(&quot;任务A&quot;, 0.2),
-        task(&quot;任务B&quot;, 0.2),
-    )
-    print(f&quot;异步总耗时：{time.time() - start:.2f} 秒&quot;)
-
-asyncio.run(main())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">任务A 完成
-任务B 完成
-异步总耗时：0.20 秒</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">async def</code> 定义协程、<code class="md-inline">await</code> 挂起等待、<code class="md-inline">asyncio.gather</code> 并发调度、<code class="md-inline">asyncio.run</code> 启动事件循环。<strong>关键</strong>：等待时事件循环切换去执行另一个任务，所以总耗时约等于单个任务的耗时。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1123,25 +1056,37 @@ asyncio.run(main())</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(13, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u7b2c\u4e00\u4e2a\u534f\u7a0b")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：第一个协程
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「13.4 异步：asyncio 协程」的核心用法演示一遍，并打印出结果。
+              💡 照着「第一个协程」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+开始
+结束
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>开始
+结束</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(13, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c13.4 \u5f02\u6b65\uff1aasyncio \u534f\u7a0b\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(13, 4, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u7b2c\u4e00\u4e2a\u534f\u7a0b\n\n\u7167\u7740\u300c\u7b2c\u4e00\u4e2a\u534f\u7a0b\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n\u5f00\u59cb\n\u7ed3\u675f", "import asyncio\n\nasync def hello():\n    print(\"\u5f00\u59cb\")\n    ____\n    print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\n\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1240,12 +1185,17 @@ asyncio.run(async_fetch_all())</code></pre></div>
 <ol><li>运行对比代码，记录两组耗时；</li><li>把请求数从 5 改成 20，再跑一次——观察差距如何拉大；</li><li>在 Prompt 日志里用一句话总结："同步 5 秒级任务，异步为什么能压缩到 1 秒级？"（提示：等待时不空闲）</li></ol>
 <blockquote class="md-quote"><p><strong>就业提示</strong>：后端接口要并发调 3 个上游服务，同步写法 3 秒，asyncio 写法 1 秒——<strong>"异步接口"是后端岗位的加分项</strong>。第 24 章 FastAPI 天然支持 async，这里的基础直接复用。</p></blockquote>
 <p><strong>微任务卡（M4 · 审查卡 · L2）</strong>：把你手写的 threading 并发代码发给 AI："请评审 start/join 时机、共享数据风险。只给建议，不要重写。"记录采纳/否决理由。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 5 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：13.6–13.9 Debug 四件套 + 练习题 + 知识树</p>
+<p><strong>练习 10 分钟</strong>：任务 13-5：练习题基础 + 进阶各 1 道</p>
+<p><strong>休息 10 分钟</strong>：预告 FastAPI：从「调接口」到「提供接口」</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day11.md</code> 第 5 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 5, "13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c \u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cul\u003e\u003cli\u003e\u540c\u6b65\uff1a10 \u00d7 0.2 = 2.0 \u79d2\uff08\u4e00\u4e2a\u4e2a\u7b49\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5f02\u6b65\uff1a\u003ccode class=\"md-inline\"\u003egather(*[ ... for ...])\u003c/code\u003e \u628a 10 \u4e2a\u534f\u7a0b\u540c\u65f6\u8c03\u5ea6\uff0c\u603b\u8017\u65f6\u7ea6 0.2 \u79d2\u2014\u2014\u003cstrong\u003e\u5dee\u8ddd\u968f\u8bf7\u6c42\u6570\u7ebf\u6027\u62c9\u5927\u003c/strong\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e*[...]\u003c/code\u003e \u662f\u7b2c 12 \u7ae0\u7684\u89e3\u5305\uff1a\u628a\u5217\u8868\u62c6\u6210 gather \u7684\u591a\u4e2a\u4f4d\u7f6e\u53c2\u6570\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u7ed3\u8bba\u003c/strong\u003e\uff1a\u7b49\u5f85\u578b\u4efb\u52a1\uff08\u7f51\u7edc/\u78c1\u76d8\uff09\u8d8a\u591a\uff0c\u5f02\u6b65\u6536\u76ca\u8d8a\u5927\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport asyncio\nimport time\n\ndef fetch_sync(url):\n    time.sleep(0.2)\n    return f\u0026quot;{url} \u6570\u636e\u0026quot;\n\nasync def fetch_async(url):\n    await asyncio.sleep(0.2)\n    return f\u0026quot;{url} \u6570\u636e\u0026quot;\n\nasync def main():\n    start = time.time()\n    results = await asyncio.gather(*[fetch_async(f\u0026quot;url{i}\u0026quot;) for i in range(10)])\n    print(f\u0026quot;\u5f02\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 {time.time() - start:.2f} \u79d2\u0026quot;)\n\nstart = time.time()\nfor i in range(10):\n    fetch_sync(f\u0026quot;url{i}\u0026quot;)\nprint(f\u0026quot;\u540c\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 {time.time() - start:.2f} \u79d2\u0026quot;)\n\nasyncio.run(main())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u540c\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 2.00 \u79d2\n\u5f02\u6b65\uff1a10 \u4e2a\u8bf7\u6c42\u603b\u8017\u65f6 0.20 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 5, "13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c \u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u540c\u6b65 vs \u5f02\u6b65\u5bf9\u6bd4\u5b9e\u9a8c\uff1a\u53c2\u7167 13.5 \u8282\uff0c\u8bf7\u6c42\u6570\u6539\u6210 10\uff0c\u5206\u522b\u7528\u540c\u6b65\uff08time.sleep \u6a21\u62df\uff09\u548c\u5f02\u6b65\uff08asyncio.sleep \u6a21\u62df\uff09\u5b9e\u73b0\uff0c\u8f93\u51fa\u4e24\u7ec4\u8017\u65f6\u5e76\u89e3\u91ca\u5dee\u8ddd\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7\u30018 \u9898\u540e\uff0c\u628a\u7b2c 7 \u9898\u7684\u7ade\u4e89\u5b9e\u9a8c\u4ee3\u7801\u53d1\u7ed9 AI\uff1a\"\u8bf7\u89e3\u91ca\u4e3a\u4ec0\u4e48 count \u4f1a\u5c0f\u4e8e\u9884\u671f\u503c\u3001GIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff0c\u4ee5\u53ca\u751f\u4ea7\u73af\u5883\u901a\u5e38\u600e\u4e48\u89e3\u51b3\u3002\u53ea\u505a\u8bb2\u89e3\uff0c\u4e0d\u8981\u751f\u6210\u4fee\u590d\u4ee3\u7801\u3002\"\u4e00\u53e5\u8bdd\u8bb0\u5f55\u4f60\u7684\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1286,35 +1236,7 @@ asyncio.run(async_fetch_all())</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
-import time
-
-def fetch_sync(url):
-    time.sleep(0.2)
-    return f&quot;{url} 数据&quot;
-
-async def fetch_async(url):
-    await asyncio.sleep(0.2)
-    return f&quot;{url} 数据&quot;
-
-async def main():
-    start = time.time()
-    results = await asyncio.gather(*[fetch_async(f&quot;url{i}&quot;) for i in range(10)])
-    print(f&quot;异步：10 个请求总耗时 {time.time() - start:.2f} 秒&quot;)
-
-start = time.time()
-for i in range(10):
-    fetch_sync(f&quot;url{i}&quot;)
-print(f&quot;同步：10 个请求总耗时 {time.time() - start:.2f} 秒&quot;)
-
-asyncio.run(main())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">同步：10 个请求总耗时 2.00 秒
-异步：10 个请求总耗时 0.20 秒</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><ul><li>同步：10 × 0.2 = 2.0 秒（一个个等）；</li><li>异步：<code class="md-inline">gather(*[ ... for ...])</code> 把 10 个协程同时调度，总耗时约 0.2 秒——<strong>差距随请求数线性拉大</strong>；</li><li><code class="md-inline">*[...]</code> 是第 12 章的解包：把列表拆成 gather 的多个位置参数；</li><li><strong>结论</strong>：等待型任务（网络/磁盘）越多，异步收益越大。</li></ul></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1329,14 +1251,17 @@ asyncio.run(main())</code></pre></div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「13.5 工作坊：同步 vs 异步耗时对比实验」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「13.5 工作坊：同步 vs 异步耗时对比实验」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「13.5 工作坊：同步 vs 异步耗时对比实验」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(13, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(13, 5, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c13.5 \u5de5\u4f5c\u574a\uff1a\u540c\u6b65 vs \u5f02\u6b65\u8017\u65f6\u5bf9\u6bd4\u5b9e\u9a8c\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -1449,7 +1374,7 @@ asyncio.run(main())</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 6, "13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf count \u7d2f\u52a0 500 \u6b21\uff0c\u4f46\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\uff1a\u5148 tmp = count\uff0c\u518d time.sleep(0)\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e count = tmp + 1\u3002\u8fd0\u884c 3 \u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ecount = tmp + 1\u003c/code\u003e \u770b\u8d77\u6765\u662f\u4e00\u884c\uff0c\u5b9e\u9645\u662f\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\uff1a\u5148\u8bfb\u65e7\u503c\uff0c\u518d\u8ba1\u7b97\uff0c\u6700\u540e\u5199\u56de\u3002\u003ccode class=\"md-inline\"\u003etime.sleep(0)\u003c/code\u003e \u8ba9\u7ebf\u7a0b\u5728\"\u8bfb\u5b8c\u4e4b\u540e\u3001\u5199\u56de\u4e4b\u524d\"\u88ab\u5207\u6362\u8d70\uff0c\u5176\u4ed6\u7ebf\u7a0b\u4e5f\u5b8c\u6210\u4e86\u4e00\u6b21\"\u8bfb-\u6539-\u5199\"\u2014\u2014\u7b49\u539f\u7ebf\u7a0b\u56de\u6765\u5199\u56de\u65f6\uff0c\u003cstrong\u003e\u8986\u76d6\u4e86\u522b\u4eba\u521a\u5199\u597d\u7684\u503c\u003c/strong\u003e\uff0c\u8fd9\u5c31\u662f\"\u4e22\u5931\u66f4\u65b0\"\uff08race condition\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u5173\u952e\u8ba4\u77e5\u003c/strong\u003e\uff1aGIL \u53ea\u4fdd\u8bc1\"\u540c\u4e00\u65f6\u523b\u53ea\u6709\u4e00\u4e2a\u7ebf\u7a0b\u6267\u884c\u5b57\u8282\u7801\"\uff0c\u003cstrong\u003e\u4e0d\u4fdd\u8bc1\u8fd9\u4e09\u6b65\u4f5c\u4e3a\u4e00\u4e2a\u6574\u4f53\u4e0d\u88ab\u5207\u6362\u003c/strong\u003e\u3002\u6240\u4ee5 GIL \u89e3\u51b3\u4e0d\u4e86\u5171\u4eab\u6570\u636e\u7ade\u4e89\uff0c\u003cstrong\u003e\u51e1\u662f\u88ab\u591a\u4e2a\u7ebf\u7a0b\u4fee\u6539\u7684\u5171\u4eab\u53d8\u91cf\u90fd\u5fc5\u987b\u989d\u5916\u4fdd\u62a4\u003c/strong\u003e\u3002\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u90e8\u5206\u53c2\u8003\u7b54\u6848\uff08\u8fdb\u7a0b\u9694\u79bb\u4fee\u590d\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom concurrent.futures import ProcessPoolExecutor\n\ndef add_local(times):\n    local = 0\n    for _ in range(times):\n        local += 1\n    return local\n\nif __name__ == \u0026quot;__main__\u0026quot;:\n    with ProcessPoolExecutor(max_workers=8) as pool:\n        results = list(pool.map(add_local, [500] * 8))\n    print(f\u0026quot;\u8fdb\u7a0b\u6c60\u6c42\u548c\u7ed3\u679c\uff1a{sum(results)}\uff08\u9884\u671f 4000\uff09\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8fdb\u7a0b\u6c60\u6c42\u548c\u7ed3\u679c\uff1a4000\uff08\u9884\u671f 4000\uff09\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u89e3\u6790\u003c/strong\u003e\uff1a\u6bcf\u4e2a\u8fdb\u7a0b\u90fd\u6709\u003cstrong\u003e\u72ec\u7acb\u5185\u5b58\u003c/strong\u003e\uff0c\u5404\u81ea\u5728\u003cstrong\u003e\u5c40\u90e8\u53d8\u91cf\u003c/strong\u003e \u003ccode class=\"md-inline\"\u003elocal\u003c/code\u003e \u4e0a\u7d2f\u52a0 500 \u6b21\uff0c\u4e0d\u5b58\u5728\u5171\u4eab\u53d8\u91cf\uff0c\u6700\u540e\u901a\u8fc7\u8fd4\u56de\u503c\u5728\u4e3b\u8fdb\u7a0b\u6c47\u603b\u2014\u2014\u4ece\u6839\u6e90\u4e0a\u907f\u514d\u7ade\u4e89\u3002\u5bf9\u6bd4\u7ed3\u8bba\uff1a\u003cstrong\u003e\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\uff08\u65b9\u4fbf\u4f46\u5371\u9669\uff0c\u9700\u8981\u9501\u7b49\u4fdd\u62a4\uff09\uff0c\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\uff08\u5b89\u5168\uff0c\u4f46\u901a\u4fe1\u6210\u672c\u9ad8\uff09\u003c/strong\u003e\u3002\u672c\u9898\u6ca1\u6709\u8981\u6c42\u5199 \u003ccode class=\"md-inline\"\u003ethreading.Lock\u003c/code\u003e\uff08\u4e86\u89e3\u5373\u53ef\uff0c\u7b2c 14 \u7ae0\u7efc\u5408\u8bad\u7ec3\u53ef\u81ea\u884c\u63a2\u7d22\uff09\uff1a\u52a0\u9501\u7684\u672c\u8d28\u5c31\u662f\u8ba9\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\u53d8\u6210\u539f\u5b50\u64cd\u4f5c\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf `count` \u7d2f\u52a0 500 \u6b21\uff0c\u4f46**\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65**\uff1a\u5148 `tmp = count`\uff0c\u518d `time.sleep(0)`\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e `count = tmp + 1`\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf `count` \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 `ProcessPoolExecutor` \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728**\u5c40\u90e8\u53d8\u91cf**\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf \u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u7d2f\u52a0 500 \u6b21\uff0c\u4f46\u003cstrong\u003e\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\u003c/strong\u003e\uff1a\u5148 \u003ccode class=\"md-inline\"\u003etmp = count\u003c/code\u003e\uff0c\u518d \u003ccode class=\"md-inline\"\u003etime.sleep(0)\u003c/code\u003e\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e \u003ccode class=\"md-inline\"\u003ecount = tmp + 1\u003c/code\u003e\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf \u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 \u003ccode class=\"md-inline\"\u003eProcessPoolExecutor\u003c/code\u003e \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728\u003cstrong\u003e\u5c40\u90e8\u53d8\u91cf\u003c/strong\u003e\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf count \u7d2f\u52a0 500 \u6b21\uff0c\u4f46\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\uff1a\u5148 tmp = count\uff0c\u518d time.sleep(0)\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e count = tmp + 1\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf count \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 ProcessPoolExecutor \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728\u5c40\u90e8\u53d8\u91cf\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u90e8\u5206\u53c2\u8003\u7b54\u6848\uff08\u53d7\u63a7\u7ade\u4e89\uff09\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport threading\nimport time\n\ncount = 0\n\ndef add():\n    global count\n    for _ in range(500):\n        tmp = count        # \u2460 \u8bfb\n        time.sleep(0)      # \u2461 \u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\n        count = tmp + 1    # \u2462 \u5199\u56de\n\nfor run in range(3):\n    count = 0\n    threads = [threading.Thread(target=add) for _ in range(8)]\n    for t in threads:\n        t.start()\n    for t in threads:\n        t.join()\n    print(f\u0026quot;\u7b2c {run + 1} \u6b21\u8fd0\u884c\uff1acount = {count}\uff08\u9884\u671f 4000\uff09\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u6bcf\u6b21\u8fd0\u884c\u7684\u6570\u503c\u4e0d\u56fa\u5b9a\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u7b2c 1 \u6b21\u8fd0\u884c\uff1acount = 2093\uff08\u9884\u671f 4000\uff09\n\u7b2c 2 \u6b21\u8fd0\u884c\uff1acount = 784\uff08\u9884\u671f 4000\uff09\n\u7b2c 3 \u6b21\u8fd0\u884c\uff1acount = 707\uff08\u9884\u671f 4000\uff09\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 6, "13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf count \u7d2f\u52a0 500 \u6b21\uff0c\u4f46\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\uff1a\u5148 tmp = count\uff0c\u518d time.sleep(0)\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e count = tmp + 1\u3002\u8fd0\u884c 3 \u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf `count` \u7d2f\u52a0 500 \u6b21\uff0c\u4f46**\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65**\uff1a\u5148 `tmp = count`\uff0c\u518d `time.sleep(0)`\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e `count = tmp + 1`\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf `count` \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 `ProcessPoolExecutor` \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728**\u5c40\u90e8\u53d8\u91cf**\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf \u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u7d2f\u52a0 500 \u6b21\uff0c\u4f46\u003cstrong\u003e\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\u003c/strong\u003e\uff1a\u5148 \u003ccode class=\"md-inline\"\u003etmp = count\u003c/code\u003e\uff0c\u518d \u003ccode class=\"md-inline\"\u003etime.sleep(0)\u003c/code\u003e\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e \u003ccode class=\"md-inline\"\u003ecount = tmp + 1\u003c/code\u003e\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf \u003ccode class=\"md-inline\"\u003ecount\u003c/code\u003e \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 \u003ccode class=\"md-inline\"\u003eProcessPoolExecutor\u003c/code\u003e \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728\u003cstrong\u003e\u5c40\u90e8\u53d8\u91cf\u003c/strong\u003e\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u7ebf\u7a0b\u5171\u4eab\u8ba1\u6570\u5668\"\u53d7\u63a7\u7ade\u4e89\"\u5b9e\u9a8c\u3002\u521b\u5efa 8 \u4e2a\u7ebf\u7a0b\uff0c\u6bcf\u4e2a\u7ebf\u7a0b\u628a\u5168\u5c40\u53d8\u91cf count \u7d2f\u52a0 500 \u6b21\uff0c\u4f46\u5fc5\u987b\u624b\u52a8\u5199\"\u8bfb-\u6539-\u5199\"\u4e09\u6b65\uff1a\u5148 tmp = count\uff0c\u518d time.sleep(0)\uff08\u4e3b\u52a8\u8ba9\u51fa CPU\uff0c\u5236\u9020\u7ebf\u7a0b\u5207\u6362\u673a\u4f1a\uff0c\u6a21\u62df\u771f\u5b9e\u573a\u666f\u4e2d\u7ebf\u7a0b\u88ab\u968f\u65f6\u5207\u6362\uff09\uff0c\u6700\u540e count = tmp + 1\u3002\u8fd0\u884c 3 \u6b21\uff0c\u89c2\u5bdf count \u662f\u5426\u6bcf\u6b21\u90fd\u7b49\u4e8e 4000\uff0c\u5e76\u5728\u6ce8\u91ca\u4e2d\u89e3\u91ca\u539f\u56e0\u3002\u518d\u7528 ProcessPoolExecutor \u91cd\u65b0\u5b9e\u73b0\uff08\u6bcf\u4e2a\u8fdb\u7a0b\u5728\u5c40\u90e8\u53d8\u91cf\u4e0a\u7d2f\u52a0 500 \u6b21\u5e76\u8fd4\u56de\u7ed3\u679c\uff0c\u4e3b\u8fdb\u7a0b\u6c42\u548c\uff09\uff0c\u9a8c\u8bc1\u7ed3\u679c\u4e3a 4000\uff0c\u5e76\u5bf9\u6bd4\"\u7ebf\u7a0b\u5171\u4eab\u5185\u5b58\"\u4e0e\"\u8fdb\u7a0b\u72ec\u7acb\u5185\u5b58\"\u4e24\u79cd\u65b9\u6848\u7684\u5dee\u5f02\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1489,51 +1414,7 @@ asyncio.run(main())</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>第 1 部分参考答案（受控竞争）</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import threading
-import time
-
-count = 0
-
-def add():
-    global count
-    for _ in range(500):
-        tmp = count        # ① 读
-        time.sleep(0)      # ② 主动让出 CPU，制造线程切换
-        count = tmp + 1    # ③ 写回
-
-for run in range(3):
-    count = 0
-    threads = [threading.Thread(target=add) for _ in range(8)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-    print(f&quot;第 {run + 1} 次运行：count = {count}（预期 4000）&quot;)</code></pre></div>
-<p><strong>运行结果</strong>（每次运行的数值不固定）：</p>
-<div class="md-figure"><pre class="md-diagram">第 1 次运行：count = 2093（预期 4000）
-第 2 次运行：count = 784（预期 4000）
-第 3 次运行：count = 707（预期 4000）</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">count = tmp + 1</code> 看起来是一行，实际是"读-改-写"三步：先读旧值，再计算，最后写回。<code class="md-inline">time.sleep(0)</code> 让线程在"读完之后、写回之前"被切换走，其他线程也完成了一次"读-改-写"——等原线程回来写回时，<strong>覆盖了别人刚写好的值</strong>，这就是"丢失更新"（race condition）。</p>
-<p><strong>关键认知</strong>：GIL 只保证"同一时刻只有一个线程执行字节码"，<strong>不保证这三步作为一个整体不被切换</strong>。所以 GIL 解决不了共享数据竞争，<strong>凡是被多个线程修改的共享变量都必须额外保护</strong>。</p>
-<p><strong>第 2 部分参考答案（进程隔离修复）</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from concurrent.futures import ProcessPoolExecutor
-
-def add_local(times):
-    local = 0
-    for _ in range(times):
-        local += 1
-    return local
-
-if __name__ == &quot;__main__&quot;:
-    with ProcessPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(add_local, [500] * 8))
-    print(f&quot;进程池求和结果：{sum(results)}（预期 4000）&quot;)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">进程池求和结果：4000（预期 4000）</pre></div>
-<p><strong>解析</strong>：每个进程都有<strong>独立内存</strong>，各自在<strong>局部变量</strong> <code class="md-inline">local</code> 上累加 500 次，不存在共享变量，最后通过返回值在主进程汇总——从根源上避免竞争。对比结论：<strong>线程共享内存（方便但危险，需要锁等保护），进程独立内存（安全，但通信成本高）</strong>。本题没有要求写 <code class="md-inline">threading.Lock</code>（了解即可，第 14 章综合训练可自行探索）：加锁的本质就是让"读-改-写"三步变成原子操作。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1548,14 +1429,17 @@ if __name__ == &quot;__main__&quot;:
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「13.6 本章 Debug 四件套」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「13.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「13.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(13, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(13, 6, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c13.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -1643,7 +1527,7 @@ if __name__ == &quot;__main__&quot;:
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 7, "13.7 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", [{"body": "\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a \u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?i\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cul\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003eAsyncClient\u003c/code\u003e + \u003ccode class=\"md-inline\"\u003egather\u003c/code\u003e\uff1a3 \u4e2a\u8bf7\u6c42\u5e76\u53d1\u53d1\u51fa\uff0c\u4e0d\u4e32\u884c\u7b49\u5f85\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003ewait_for(\u6162\u534f\u7a0b, timeout=1)\u003c/code\u003e\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u003cstrong\u003e1 \u79d2\u540e\u5c31\u88ab\u53d6\u6d88\u5e76\u629b\u51fa \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e\u003c/strong\u003e\u2014\u2014\"\u8bf7\u6c42\u5fc5\u987b\u6709\u8d85\u65f6\"\u5728\u751f\u4ea7\u73af\u5883\u662f\u786c\u8981\u6c42\uff0c\u9632\u6b62\u63a5\u53e3\u5361\u6b7b\u62d6\u57ae\u6574\u4e2a\u670d\u52a1\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003eto_thread(requests.get, ...)\u003c/code\u003e\uff1arequests \u662f\u540c\u6b65\u5e93\uff0c\u653e\u8fdb\u7ebf\u7a0b\u6c60\u540e\u4e8b\u4ef6\u5faa\u73af\u4e0d\u4f1a\u88ab\u963b\u585e\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u7ed3\u8bba\u003c/strong\u003e\uff1a\u5f02\u6b65\u7684\u4ef7\u503c\u4e0d\u662f\"\u5feb\"\uff0c\u800c\u662f\"\u003cstrong\u003e\u4e0d\u8ba9\u4efb\u4f55\u4e00\u6bb5\u7b49\u5f85\u62d6\u4f4f\u6574\u4e2a\u7a0b\u5e8f\u003c/strong\u003e\"\u3002\u65e5\u5fd7\u7b2c 4 \u9898\u8981\u5199\u7684\u5c31\u662f\uff1a\u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u8d1f\u8d23\"\u780d\u6389\u8d85\u65f6\u7b49\u5f85\"\uff0c\u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u8d1f\u8d23\"\u517c\u5bb9\u6ca1\u6709\u5f02\u6b65\u7248\u7684\u65e7\u5e93\"\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a\n\n\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a\u003c/p\u003e\n\u003cp\u003e\u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7528 \u0026lt;code class=\"md-inline\"\u0026gt;httpx.AsyncClient\u0026lt;/code\u0026gt; \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u0026lt;code class=\"md-inline\"\u0026gt;https://httpbin.org/get?id=0..2\u0026lt;/code\u0026gt;\uff09\uff1b\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u0026lt;code class=\"md-inline\"\u0026gt;asyncio.wait_for(..., timeout=1)\u0026lt;/code\u0026gt; \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u0026lt;code class=\"md-inline\"\u0026gt;asyncio.TimeoutError\u0026lt;/code\u0026gt; \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7528 \u0026lt;code class=\"md-inline\"\u0026gt;asyncio.to_thread\u0026lt;/code\u0026gt; \u628a\u540c\u6b65\u7684 \u0026lt;code class=\"md-inline\"\u0026gt;requests.get\u0026lt;/code\u0026gt; \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt; \u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;GIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 8 \u9898\u91cc \u0026lt;code class=\"md-inline\"\u0026gt;wait_for\u0026lt;/code\u0026gt; \u548c \u0026lt;code class=\"md-inline\"\u0026gt;to_thread\u0026lt;/code\u0026gt; \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a\n\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport asyncio\nimport time\nimport httpx\nimport requests\n\nasync def fetch(client, i):\n    resp = await client.get(f\u0026quot;https://httpbin.org/get?id={i}\u0026quot;)\n    return resp.json()[\u0026quot;args\u0026quot;][\u0026quot;id\u0026quot;]\n\nasync def slow_request():\n    await asyncio.sleep(3)      # \u6a21\u62df\u4e00\u4e2a 3 \u79d2\u624d\u8fd4\u56de\u7684\u6162\u63a5\u53e3\n    return \u0026quot;\u6162\u63a5\u53e3\u6570\u636e\u0026quot;\n\ndef sync_fetch():\n    resp = requests.get(\u0026quot;https://httpbin.org/get?source=sync\u0026quot;)\n    return resp.json()[\u0026quot;args\u0026quot;][\u0026quot;source\u0026quot;]\n\nasync def main():\n    start = time.time()\n\n    # \u573a\u666f\u4e00\uff1aAsyncClient \u5e76\u53d1\n    async with httpx.AsyncClient(timeout=10) as client:\n        results = await asyncio.gather(*[fetch(client, i) for i in range(3)])\n    print(\u0026quot;\u5e76\u53d1\u7ed3\u679c\uff1a\u0026quot;, results)\n\n    # \u573a\u666f\u4e8c\uff1await_for \u8d85\u65f6\u63a7\u5236\n    try:\n        await asyncio.wait_for(slow_request(), timeout=1)\n    except asyncio.TimeoutError:\n        print(\u0026quot;\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\u0026quot;)\n\n    # \u573a\u666f\u4e09\uff1ato_thread \u9002\u914d\u540c\u6b65\u5e93\n    sync_result = await asyncio.to_thread(sync_fetch)\n    print(\u0026quot;\u540c\u6b65\u5e93\u9002\u914d\u7ed3\u679c\uff1a\u0026quot;, sync_result)\n    print(f\u0026quot;\u603b\u8017\u65f6\uff1a{time.time() - start:.2f} \u79d2\u0026quot;)\n\nasyncio.run(main())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u7f51\u7edc\u8017\u65f6\u4e0d\u540c\uff0c\u6570\u503c\u4f1a\u6709\u6ce2\u52a8\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5e76\u53d1\u7ed3\u679c\uff1a [\u0026#x27;0\u0026#x27;, \u0026#x27;1\u0026#x27;, \u0026#x27;2\u0026#x27;]\n\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\n\u540c\u6b65\u5e93\u9002\u914d\u7ed3\u679c\uff1a sync\n\u603b\u8017\u65f6\uff1a3.47 \u79d2\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(13, 7, "13.7 Vibe Coding \u4efb\u52a1\u5361\uff08L2\uff09", [{"body": "\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a \u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?i\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a\n\n\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a\u003c/p\u003e\n\u003cp\u003e\u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7528 \u0026lt;code class=\"md-inline\"\u0026gt;httpx.AsyncClient\u0026lt;/code\u0026gt; \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u0026lt;code class=\"md-inline\"\u0026gt;https://httpbin.org/get?id=0..2\u0026lt;/code\u0026gt;\uff09\uff1b\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u0026lt;code class=\"md-inline\"\u0026gt;asyncio.wait_for(..., timeout=1)\u0026lt;/code\u0026gt; \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u0026lt;code class=\"md-inline\"\u0026gt;asyncio.TimeoutError\u0026lt;/code\u0026gt; \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7528 \u0026lt;code class=\"md-inline\"\u0026gt;asyncio.to_thread\u0026lt;/code\u0026gt; \u628a\u540c\u6b65\u7684 \u0026lt;code class=\"md-inline\"\u0026gt;requests.get\u0026lt;/code\u0026gt; \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt; \u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;GIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 8 \u9898\u91cc \u0026lt;code class=\"md-inline\"\u0026gt;wait_for\u0026lt;/code\u0026gt; \u548c \u0026lt;code class=\"md-inline\"\u0026gt;to_thread\u0026lt;/code\u0026gt; \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u5b9e\u73b0\u4e00\u4e2a\"\u751f\u4ea7\u7ea7\u5f02\u6b65\u4e09\u4ef6\u5957\"\u7efc\u5408\u7a0b\u5e8f\uff08\u53c2\u7167 13.4.5 \u8282\uff09\uff1a\n\u003col\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003ehttpx.AsyncClient\u003c/code\u003e \u5e76\u53d1\u8bf7\u6c42 3 \u4e2a\u63a5\u53e3\uff08\u5982 \u003ccode class=\"md-inline\"\u003ehttps://httpbin.org/get?id=0..2\u003c/code\u003e\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u5b9a\u4e49\u4e00\u4e2a 3 \u79d2\u540e\u624d\u8fd4\u56de\u7684\u6162\u534f\u7a0b\uff0c\u7528 \u003ccode class=\"md-inline\"\u003easyncio.wait_for(..., timeout=1)\u003c/code\u003e \u7ed9\u5b83\u8bbe\u7f6e 1 \u79d2\u8d85\u65f6\uff0c\u6355\u83b7 \u003ccode class=\"md-inline\"\u003easyncio.TimeoutError\u003c/code\u003e \u5e76\u6253\u5370\"\u6162\u63a5\u53e3\u8d85\u65f6\uff0c\u5df2\u53d6\u6d88\"\uff1b\u003c/li\u003e\u003cli\u003e\u7528 \u003ccode class=\"md-inline\"\u003easyncio.to_thread\u003c/code\u003e \u628a\u540c\u6b65\u7684 \u003ccode class=\"md-inline\"\u003erequests.get\u003c/code\u003e \u653e\u8fdb\u7ebf\u7a0b\u6c60\u6267\u884c\uff1b\u003c/li\u003e\u003cli\u003e\u8f93\u51fa\u603b\u8017\u65f6\uff0c\u5e76\u5728\u6ce8\u91ca/\u65e5\u5fd7\u56de\u7b54\uff1a\u6162\u63a5\u53e3\u672c\u6765\u8981 3 \u79d2\uff0c\u4e3a\u4ec0\u4e48\u7a0b\u5e8f\u53ea\u7b49\u7ea6 1 \u79d2\uff1f\u003c/li\u003e\u003c/ol\u003e\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 4 \u9898\u4f60\u7684\u7ebf\u7a0b\u603b\u8017\u65f6\u548c\u987a\u5e8f\u603b\u8017\u65f6\u5206\u522b\u662f\u591a\u5c11\uff1f\u4e3a\u4ec0\u4e48\uff1f\u003c/li\u003e\u003cli\u003eGIL \u7528\u4f60\u81ea\u5df1\u7684\u8bdd\u89e3\u91ca\u4e00\u904d\uff08\u4e00\u53e5\u8bdd\u7248\u672c\uff09\u3002\u003c/li\u003e\u003cli\u003e\u7b2c 7 \u9898\u53d7\u63a7\u7ade\u4e89\u4e2d\uff0ccount \u4e3a\u4ec0\u4e48\u5c0f\u4e8e 4000\uff1fGIL \u4e3a\u4ec0\u4e48\u6ca1\u6709\u4fdd\u62a4\u5b83\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u91cc \u003ccode class=\"md-inline\"\u003ewait_for\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eto_thread\u003c/code\u003e \u5404\u89e3\u51b3\u4e86\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1684,52 +1568,7 @@ if __name__ == &quot;__main__&quot;:
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import asyncio
-import time
-import httpx
-import requests
-
-async def fetch(client, i):
-    resp = await client.get(f&quot;https://httpbin.org/get?id={i}&quot;)
-    return resp.json()[&quot;args&quot;][&quot;id&quot;]
-
-async def slow_request():
-    await asyncio.sleep(3)      # 模拟一个 3 秒才返回的慢接口
-    return &quot;慢接口数据&quot;
-
-def sync_fetch():
-    resp = requests.get(&quot;https://httpbin.org/get?source=sync&quot;)
-    return resp.json()[&quot;args&quot;][&quot;source&quot;]
-
-async def main():
-    start = time.time()
-
-    # 场景一：AsyncClient 并发
-    async with httpx.AsyncClient(timeout=10) as client:
-        results = await asyncio.gather(*[fetch(client, i) for i in range(3)])
-    print(&quot;并发结果：&quot;, results)
-
-    # 场景二：wait_for 超时控制
-    try:
-        await asyncio.wait_for(slow_request(), timeout=1)
-    except asyncio.TimeoutError:
-        print(&quot;慢接口超时，已取消&quot;)
-
-    # 场景三：to_thread 适配同步库
-    sync_result = await asyncio.to_thread(sync_fetch)
-    print(&quot;同步库适配结果：&quot;, sync_result)
-    print(f&quot;总耗时：{time.time() - start:.2f} 秒&quot;)
-
-asyncio.run(main())</code></pre></div>
-<p><strong>运行结果</strong>（网络耗时不同，数值会有波动）：</p>
-<div class="md-figure"><pre class="md-diagram">并发结果： [&#x27;0&#x27;, &#x27;1&#x27;, &#x27;2&#x27;]
-慢接口超时，已取消
-同步库适配结果： sync
-总耗时：3.47 秒</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><ul><li><code class="md-inline">AsyncClient</code> + <code class="md-inline">gather</code>：3 个请求并发发出，不串行等待；</li><li><code class="md-inline">wait_for(慢协程, timeout=1)</code>：慢接口本来要 3 秒，<strong>1 秒后就被取消并抛出 <code class="md-inline">asyncio.TimeoutError</code></strong>——"请求必须有超时"在生产环境是硬要求，防止接口卡死拖垮整个服务；</li><li><code class="md-inline">to_thread(requests.get, ...)</code>：requests 是同步库，放进线程池后事件循环不会被阻塞；</li><li><strong>结论</strong>：异步的价值不是"快"，而是"<strong>不让任何一段等待拖住整个程序</strong>"。日志第 4 题要写的就是：<code class="md-inline">wait_for</code> 负责"砍掉超时等待"，<code class="md-inline">to_thread</code> 负责"兼容没有异步版的旧库"。</li></ul></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             

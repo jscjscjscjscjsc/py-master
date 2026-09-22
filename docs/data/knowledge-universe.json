@@ -992,7 +992,7 @@
       "stars": [
         {
           "chapter": 6,
-          "desc": "学完本章，你应该能够： 理解字典的本质：按键取值、键唯一、查找快； 熟练使用字典的增删改查、遍历（keys/values/items）、get 安全取值； 理解字典的底层是哈希表，知道\"键必须不可变\"的原因； 熟练使用集合的去重与四种运算（交/并/差/对称差）； 能根据场景选择合适的数据结构（列表/元组/字典/集合）； 用字典完成词频统计等真实任务； 继续遵守 L1 纪律：AI 只讲解，不写码。 前置知识 ：第 1-5 章（变量、流程控制、字符串、列表、元组）。",
+          "desc": "学完本章，你应该能够： 理解字典的本质：按键取值、键唯一、查找快； 熟练使用字典的增删改查、遍历（keys/values/items）、get 安全取值； 理解字典的底层是哈希表，知道\"键必须不可变\"的原因； 熟练使用集合的去重与四种运算（交/并/差/对称差）； 能根据场景选择合适的数据结构（列表/元组/字典/集合）； 用字典完成词频统计等真实任务； 继续遵守 L1 纪律：AI 只讲解，不写码。 前置知识 ：第 1-5 章（变量、流程控制、字符串、列表、元组）。 ⏱ 第 1 ",
           "index": 0,
           "status": "available",
           "title": "6.0 学习目标与前置知识",
@@ -2487,6 +2487,182 @@
       ]
     },
     {
+      "chapter": 24,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          7,
+          8,
+          "sequence"
+        ],
+        [
+          8,
+          9,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ],
+        [
+          6,
+          8,
+          "concept"
+        ],
+        [
+          7,
+          9,
+          "concept"
+        ]
+      ],
+      "id": "chapter-24",
+      "name": "FastAPI：从入门到会用",
+      "name_en": "SECTOR 24",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 24,
+          "desc": "学完本章，你应该能够： 理解\"Web 框架\"解决了什么（对比第 23.4 的手写路由）； 安装并运行 FastAPI + uvicorn，访问自动文档 /docs ； 写路由：路径参数、查询参数、请求体（Pydantic 校验）； 理解 422 与 400 的区别，正确使用状态码与 HTTPException； 用 FastAPI + SQLite 完成一个学生 CRUD 接口； 配置 CORS 让前端能调用； 按 L3 规则使用 AI：生成接口代码 + pytest 验收。",
+          "index": 0,
+          "status": "available",
+          "title": "24.0 学习目标与前置知识",
+          "url": "chapter-24.html#kp-1"
+        },
+        {
+          "chapter": 24,
+          "desc": "24.1.1 概念认知：从手写路由到框架 第 23.4 节我们手写了 handle_request(method, path) 做路由分发——写两个接口还行，10 个接口、100 个参数校验就失控了。 Web 框架 把这三件事标准化： 路由 ： @app.get(\"/api/students\") 一句话注册接口； 参数校验 ：Pydantic 自动检查请求体； 文档 ：自动生成 /docs 交互式 API 文档。 24.1.2 概念认知：FastAPI 的三个特点 快 ：基于",
+          "index": 1,
+          "status": "available",
+          "title": "24.1 Web 框架是什么",
+          "url": "chapter-24.html#kp-2"
+        },
+        {
+          "chapter": 24,
+          "desc": "24.2.1 语法掌握：安装 代码案例 24.1 ：安装（✅ 正确，PowerShell） powershell 复制 pip install fastapi &quot;uvicorn[standard]&quot; 讲解 ： fastapi 是框架本体； uvicorn 是\"ASGI 服务器\"（把 FastAPI 跑起来的程序）。 24.2.2 语法掌握：最小应用 代码案例 24.2 ：main.py（✅ 正确，实测通过） python 复制 from fastapi i",
+          "index": 2,
+          "status": "available",
+          "title": "24.2 第一个 FastAPI 应用",
+          "url": "chapter-24.html#kp-3"
+        },
+        {
+          "chapter": 24,
+          "desc": "24.3.1 语法掌握：路径参数 代码案例 24.4 ：按 id 查询（✅ 正确，实测通过） python 复制 from fastapi import FastAPI, HTTPException app = FastAPI() students = [ {&quot;id&quot;: 1, &quot;name&quot;: &quot;张三&quot;, &quot;score&quot;: 88}, {&quot;id&quot;: 2, &quot;name&qu",
+          "index": 3,
+          "status": "available",
+          "title": "24.3 路由与参数",
+          "url": "chapter-24.html#kp-4"
+        },
+        {
+          "chapter": 24,
+          "desc": "做一个完整的待办事项（Todo）管理接口。数据先存内存列表，再用第 9 章学的 JSON 读写做持久化—— 不引入数据库 ，你已经有足够的知识做出\"能记住数据\"的后端（✅ 正确） 代码案例 24.7 ：main.py（完整应用） python 复制 import json from pathlib import Path from fastapi import FastAPI, HTTPException from pydantic import BaseModel app ",
+          "index": 4,
+          "status": "available",
+          "title": "24.4 综合案例：待办事项 REST API（JSON 文件持久化）",
+          "url": "chapter-24.html#kp-5"
+        },
+        {
+          "chapter": 24,
+          "desc": "24.5.1 概念认知：跨域是什么 前端页面在 http://127.0.0.1:5500 ，后端在 http://127.0.0.1:8000 —— 端口不同 = 跨域 。浏览器出于安全限制，默认禁止跨域请求（fetch 会报 CORS 错误）。 24.5.2 语法掌握：开启 CORS 代码案例 24.8 ：CORS 中间件（✅ 正确） python 复制 from fastapi.middleware.cors import CORSMiddleware app.add_",
+          "index": 5,
+          "status": "available",
+          "title": "24.5 CORS：让前端能调你的接口（了解）",
+          "url": "chapter-24.html#kp-6"
+        },
+        {
+          "chapter": 24,
+          "desc": "问题 1：uvicorn 找不到模块 问题代码 ： powershell 复制 uvicorn main:app --reload 实际报错 ： ModuleNotFoundError: No module named &#x27;main&#x27; 提示 ：当前目录有 main.py 吗？文件名对吗？ 讲解 ：uvicorn 从 当前工作目录 找模块。确认 main.py 在当前目录、名字一致（大小写敏感）。 老规矩：先 dir 看一眼再启动 。 问题 2：改代码不生效 ",
+          "index": 6,
+          "status": "available",
+          "title": "24.6 本章 Debug 四件套",
+          "url": "chapter-24.html#kp-7"
+        },
+        {
+          "chapter": 24,
+          "desc": "任务名称 ：让 AI 生成接口，你用 pytest 验收 任务内容 ：让 AI 生成\"待办清单\"的 FastAPI 接口（GET 列表 + POST 新建），你按 Review 四步验收。 参考提问句式 ： 请用 FastAPI 生成待办清单的接口： 1. GET /api/tasks 返回任务列表（id, content, done）； 2. POST /api/tasks 接收 content 字段，content 为空返回 400； 3. 数据存在 SQLite。 Re",
+          "index": 7,
+          "status": "available",
+          "title": "24.7 Vibe Coding 任务卡（L3 主卡）",
+          "url": "chapter-24.html#kp-8"
+        },
+        {
+          "chapter": 24,
+          "desc": "知识树 ： FastAPI ├── 框架解决：路由注册 / 参数校验 / 自动文档 ├── 安装运行：pip install fastapi uvicorn；uvicorn main:app --reload ├── 自动文档：/docs（OpenAPI）；类型提示 = 接口契约 ├── 参数三种 │ ├── 路径参数：/api/students/{id}（: int 自动校验） │ ├── 查询参数：?keyword=xxx（= 默认值） │ └── 请求体：Pydanti",
+          "index": 8,
+          "status": "available",
+          "title": "24.8 本章小结与知识树",
+          "url": "chapter-24.html#kp-9"
+        },
+        {
+          "chapter": 24,
+          "desc": "术语/命令 一句话 uvicorn main:app --reload 启动服务（开发必带 --reload） @app.get(\"/path\") 注册路由 /docs 自动生成的交互式文档 /api/students/{id} 路径参数（ : int 自动校验） ?keyword= 查询参数（带默认值） BaseModel Pydantic 请求体模型 HTTPException(404, \"...\") 错误响应 422 vs 400 格式错（框架管）vs 业务错（你抛） ",
+          "index": 9,
+          "status": "available",
+          "title": "本章速查",
+          "url": "chapter-24.html#kp-10"
+        }
+      ]
+    },
+    {
       "chapter": 14,
       "connections": [
         [
@@ -2605,6 +2781,656 @@
           "status": "available",
           "title": "本章速查",
           "url": "chapter-14.html#kp-7"
+        }
+      ]
+    },
+    {
+      "chapter": 27,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          7,
+          8,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ],
+        [
+          6,
+          8,
+          "concept"
+        ]
+      ],
+      "id": "chapter-27",
+      "name": "大模型、API 与智能体概念",
+      "name_en": "SECTOR 27",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 27,
+          "desc": "学完本章，你应该能够： 说出大模型能做什么、不能做什么（能力边界）； 理解 API 调用原理（POST /chat/completions、messages、role）； 理解 Prompt 与上下文窗口的关系； 说出智能体（Agent）的四要素； 了解 MCP 概念； 用 Codex 现场演示一次\"任务拆解\"。 前置知识 ：第 13 章（requests）、第 23 章（HTTP/REST）。 ⏱ 第 1 单元｜50 分钟 = 30 讲 + 10 练 + 10 休 讲授 3",
+          "index": 0,
+          "status": "available",
+          "title": "27.0 学习目标与前置知识",
+          "url": "chapter-27.html#kp-1"
+        },
+        {
+          "chapter": 27,
+          "desc": "27.1.1 概念认知：LLM 是什么 大语言模型（LLM） 本质上是一个\"超级文本预测器\"：根据前文预测下一个最可能的词，一个词一个词地\"写\"出回答。DeepSeek、GPT、Claude 都是 LLM。 27.1.2 能做：四大强项 能力 例子 文本生成 写文章、写邮件、写代码 理解与总结 总结会议纪要、提炼要点 翻译与改写 中英互译、改写语气 问答与推理 解释概念、分析问题 27.1.3 不能做：能力边界（关键认知） ❌ 边界 1：幻觉（Hallucination） —",
+          "index": 1,
+          "status": "available",
+          "title": "27.1 大模型能做什么、不能做什么",
+          "url": "chapter-27.html#kp-2"
+        },
+        {
+          "chapter": 27,
+          "desc": "27.2.1 概念认知：为什么用 API 回顾原教材（Vibe Coding 实战）3.1 节：不用自己训练模型，通过 API 按规则发请求就能获得模型能力—— API 是\"大模型的公共电话线\" 。 27.2.2 语法掌握：一次请求的结构 代码案例 27.1 ：请求骨架（✅ 正确） json 复制 POST https://api.deepseek.com/chat/completions { &quot;model&quot;: &quot;deepseek-v4-flas",
+          "index": 2,
+          "status": "available",
+          "title": "27.2 API 调用原理",
+          "url": "chapter-27.html#kp-3"
+        },
+        {
+          "chapter": 27,
+          "desc": "27.3.1 概念认知：Agent 四要素 智能体（Agent）= LLM（大脑）+ 规划 + 工具 + 记忆 ： 感知：接收用户需求 / 外部信息 规划：把任务拆成步骤（LLM 负责） 工具：执行具体动作（查待办、算数、发请求——代码写的函数） 反思：根据结果判断下一步（LLM 负责） 案例 27.2 ：用 Codex 演示\"拆解任务\" 给 AI 一个模糊任务：\"帮我安排周末旅行\"，观察它如何拆解： 1. 确定目的地与预算（需要用户提供） 2. 查交通（工具：车票/机票查询",
+          "index": 3,
+          "status": "available",
+          "title": "27.3 智能体（Agent）：让大模型\"动起来\"",
+          "url": "chapter-27.html#kp-4"
+        },
+        {
+          "chapter": 27,
+          "desc": "MCP（Model Context Protocol，模型上下文协议） 是 2024 年底提出的开放标准： 让 AI 应用以统一方式连接外部工具和数据源 ——就像 USB-C 统一了充电接口。 没有 MCP：每个工具一套接入方式（每家 AI 连数据库、文件、API 各写各的） 有了 MCP：工具提供&quot;标准插口&quot;，任何支持 MCP 的 AI 直接插上就能用 讲解 ：本课程了解概念即可——你第 28 章手写的\"工具调用\"就是 MCP 要标准化的那个场景。 了解",
+          "index": 4,
+          "status": "available",
+          "title": "27.4 MCP：工具互联标准（了解）",
+          "url": "chapter-27.html#kp-5"
+        },
+        {
+          "chapter": 27,
+          "desc": "问题 1：把幻觉当事实 问题描述 ：模型说\"Python 3.13 已发布\"，你直接写进报告——结果版本号是编的。 讲解 ： 凡是\"精确事实\"都要验证 。让模型给出处、或用可靠来源核对；不确定就标注\"待核实\"。 问题 2：把模型当实时数据源 问题描述 ：\"今天上海天气怎么样？\"模型答了一个编的天气。 讲解 ：模型没有实时数据。 实时信息必须走工具/API （天气接口、数据库）——这正是智能体要接工具的原因。 问题 3：单轮对话\"失忆\" 问题描述 ：第二轮问\"我上一轮说了什么\"",
+          "index": 5,
+          "status": "available",
+          "title": "27.5 本章 Debug 四件套（概念类）",
+          "url": "chapter-27.html#kp-6"
+        },
+        {
+          "chapter": 27,
+          "desc": "任务名称 ：用 Codex 演示\"任务拆解 + 人工判断\" 任务内容 ：把模糊任务发给 AI：\"我要做一个班级图书角管理系统，请帮我拆解成可执行的功能模块，并说明每个模块需要什么数据。\" Review 清单（L3） ： [ ] 我对照需求四要素（第 15 章）检查 AI 的拆解是否覆盖了用户/场景/价值/核心功能； [ ] 我否决了 AI 拆解里\"超出需求\"的模块并说明理由（YAGNI）； [ ] 拆解结果写进 Prompt 日志。 微任务卡（M3 · 讲解卡 · L2） ：",
+          "index": 6,
+          "status": "available",
+          "title": "27.6 Vibe Coding 任务卡（L3 主卡）",
+          "url": "chapter-27.html#kp-7"
+        },
+        {
+          "chapter": 27,
+          "desc": "知识树 ： 大模型、API 与智能体 ├── LLM = 超级文本预测器 │ ├── 能做：生成 / 理解总结 / 翻译 / 问答推理 │ └── 不能做：幻觉 / 无记忆 / 非计算器 / 不能行动 ├── API 调用 │ ├── POST /chat/completions：model + messages + temperature + max_tokens │ ├── role：system（规则）/ user（提问）/ assistant（历史） │ └── 记忆",
+          "index": 7,
+          "status": "available",
+          "title": "27.7 本章小结与知识树",
+          "url": "chapter-27.html#kp-8"
+        },
+        {
+          "chapter": 27,
+          "desc": "术语 一句话 LLM 大语言模型（超级文本预测器） 幻觉 模型可能编造事实（必须验证） 上下文窗口 messages 能装多少内容的限制 system / user / assistant 三角色：规则 / 提问 / 历史 智能体四要素 感知 / 规划 / 工具 / 反思 工具调用 模型指挥代码执行（有手脚） MCP 工具互联标准（了解）",
+          "index": 8,
+          "status": "available",
+          "title": "本章速查",
+          "url": "chapter-27.html#kp-9"
+        }
+      ]
+    },
+    {
+      "chapter": 28,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          7,
+          8,
+          "sequence"
+        ],
+        [
+          8,
+          9,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ],
+        [
+          6,
+          8,
+          "concept"
+        ],
+        [
+          7,
+          9,
+          "concept"
+        ]
+      ],
+      "id": "chapter-28",
+      "name": "DeepSeek API 实战",
+      "name_en": "SECTOR 28",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 28,
+          "desc": "学完本章，你应该能够： 注册 DeepSeek 开放平台并理解成本控制； 用环境变量管理 API Key，绝不入库； 用 requests 和 OpenAI SDK 两种方式调用 DeepSeek； 用 system prompt 设定角色，维护多轮对话； 了解流式输出； 实现工具调用（Function Calling），组装一个\"能查待办/算数\"的最小智能体； 继续遵守 L3 纪律。 前置知识 ：第 27 章（概念）、第 13 章（requests）、第 23 章（HTTP",
+          "index": 0,
+          "status": "available",
+          "title": "28.0 学习目标与前置知识",
+          "url": "chapter-28.html#kp-1"
+        },
+        {
+          "chapter": 28,
+          "desc": "28.1.1 语法掌握：注册与充值 打开 &lt;https://platform.deepseek.com/&gt; 注册； 创建 API Key （API Keys 页面）； 充值少量金额 （学生自费，本课程用量很小——单次对话通常不到 1 分钱）； 在\"用量\"页面可以看消费明细。 成本控制三招 ： 限输出 ： max_tokens 设合理上限（如 300-600），防止模型\"话痨\"烧 token； 注意： deepseek-v4-flash 是推理型模型， reason",
+          "index": 1,
+          "status": "available",
+          "title": "28.1 注册与成本控制",
+          "url": "chapter-28.html#kp-2"
+        },
+        {
+          "chapter": 28,
+          "desc": "28.2.1 语法掌握：用 requests 调用（不装额外库） 代码案例 28.2 ：requests 方式（✅ 正确） python 复制 import os import requests api_key = os.environ.get(&quot;DEEPSEEK_API_KEY&quot;) resp = requests.post( &quot;https://api.deepseek.com/chat/completions&quot;, headers={&",
+          "index": 2,
+          "status": "available",
+          "title": "28.2 第一次对话",
+          "url": "chapter-28.html#kp-3"
+        },
+        {
+          "chapter": 28,
+          "desc": "28.3.1 语法掌握：system prompt 设定角色 代码案例 28.4 ：角色扮演（✅ 正确） python 复制 resp = client.chat.completions.create( model=&quot;deepseek-v4-flash&quot;, messages=[ {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是电商客服，语气亲切，回答不超过 50 字&q",
+          "index": 3,
+          "status": "available",
+          "title": "28.3 系统提示词与多轮对话",
+          "url": "chapter-28.html#kp-4"
+        },
+        {
+          "chapter": 28,
+          "desc": "代码案例 28.6 ：流式接收（✅ 正确，实测过） python 复制 response = client.chat.completions.create( model=&quot;deepseek-v4-flash&quot;, messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;介绍一下你自己&quot;}], stream=True, ) for chunk in respo",
+          "index": 4,
+          "status": "available",
+          "title": "28.4 流式输出（了解）",
+          "url": "chapter-28.html#kp-5"
+        },
+        {
+          "chapter": 28,
+          "desc": "28.5.1 概念认知：Function Calling 是什么 工具调用的流程（第 27 章原理的代码化）： 1. 你告诉模型&quot;有哪些工具可用&quot;（tools 声明）； 2. 模型决定&quot;这个问题该调用 query_todo&quot;（返回 tool_calls）； 3. 你的代码执行工具函数，拿到结果； 4. 把结果作为 role=&quot;tool&quot; 的消息传回模型； 5. 模型基于结果给出最终回答。 交叉验证：普通对话 vs 工",
+          "index": 5,
+          "status": "available",
+          "title": "28.5 工具调用：让智能体\"有手有脚\"",
+          "url": "chapter-28.html#kp-6"
+        },
+        {
+          "chapter": 28,
+          "desc": "问题 1：401 Unauthorized 问题描述 ：请求返回 401（未授权）。 提示 ：Key 填对了吗？环境变量设置了吗？ 讲解 ： DEEPSEEK_API_KEY 没设置、Key 打错、Key 已吊销，都会 401。 先 print(os.environ.get(\"DEEPSEEK_API_KEY\")) 确认存在 （注意别把完整 Key 打到日志里）。 问题 2：模型名不存在 问题描述 ：报 Model Not Exist 或 400。 提示 ： model 字段",
+          "index": 6,
+          "status": "available",
+          "title": "28.6 本章 Debug 四件套",
+          "url": "chapter-28.html#kp-7"
+        },
+        {
+          "chapter": 28,
+          "desc": "任务名称 ：让 AI 生成工具调用代码，你 Review + 测试 任务内容 ：让 AI 生成一个\"能查待办 + 算数\"的工具调用智能体（参照 28.5.3），你按 Review 四步验收。 参考提问句式 ： 请用 OpenAI SDK 生成一个工具调用智能体： 1. 两个工具：query_todo（查待办）、calculator（四则运算）； 2. 主循环：模型决定调用哪个工具 → 执行 → 结果回传 → 最终回答； 3. 要有 max_turns 兜底。 Review 清",
+          "index": 7,
+          "status": "available",
+          "title": "28.7 Vibe Coding 任务卡（L3 主卡）",
+          "url": "chapter-28.html#kp-8"
+        },
+        {
+          "chapter": 28,
+          "desc": "知识树 ： DeepSeek API 实战 ├── 准备：注册充值 / Key 管理（环境变量 + .gitignore + 泄露吊销） │ └── 成本控制：max_tokens / 控轮次 / 缓存 ├── 调用两种方式 │ ├── requests：POST /chat/completions + Bearer 认证 │ └── OpenAI SDK：base_url 指向 DeepSeek（推荐） ├── 角色与多轮：system 定规则；messages 维护历史（",
+          "index": 8,
+          "status": "available",
+          "title": "28.8 本章小结与知识树",
+          "url": "chapter-28.html#kp-9"
+        },
+        {
+          "chapter": 28,
+          "desc": "术语/命令 一句话 DEEPSEEK_API_KEY 环境变量存密钥（绝不入库） OpenAI(api_key, base_url) DeepSeek 兼容 OpenAI SDK chat.completions.create(...) 发起对话 choices[0].message.content 取模型回答 temperature / max_tokens 随机性 / 输出上限（控成本） system prompt 设定角色与规则 stream=True 流式输出 too",
+          "index": 9,
+          "status": "available",
+          "title": "本章速查",
+          "url": "chapter-28.html#kp-10"
+        }
+      ]
+    },
+    {
+      "chapter": 29,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ]
+      ],
+      "id": "chapter-29",
+      "name": "主流智能体框架全景",
+      "name_en": "SECTOR 29",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 29,
+          "desc": "学完本章，你应该能够： 说出 4 个以上主流智能体框架/平台的名字和定位； 根据场景选择合适的框架； 理解\"框架 = 第 28 章工具调用循环的工程化\"； 完成一次小组框架调研分享。 前置知识 ：第 27-28 章（API 调用原理、工具调用循环）。 ⏱ 第 1 单元｜50 分钟 = 30 讲 + 10 练 + 10 休 讲授 30 分钟 ：29.1–29.3 框架全景速览（LangChain/LangFlow/Dify/Coze 一张表）+ 框架=你手写循环的工程化 练习 ",
+          "index": 0,
+          "status": "available",
+          "title": "29.0 学习目标与前置知识",
+          "url": "chapter-29.html#kp-1"
+        },
+        {
+          "chapter": 29,
+          "desc": "框架/平台 类型 定位 适合谁 特点 LangChain Python 框架 编排 LLM 应用：链、工具、记忆、RAG 想用代码构建应用的开发者 生态最大、概念多、上手陡 OpenAI Agents SDK Python 框架 轻量智能体：工具调用、多智能体协作 有 Python 基础的开发者 官方维护、贴近 API、上手快 AutoGen Python 框架 多智能体对话协作 研究/实验 多个 AI 互相讨论解决问题 CrewAI Python 框架 \"角色扮演\"团队（如",
+          "index": 1,
+          "status": "available",
+          "title": "29.1 框架对比表",
+          "url": "chapter-29.html#kp-2"
+        },
+        {
+          "chapter": 29,
+          "desc": "选框架/平台看五个问题： 代码深度 ：想写代码（LangChain/Agents SDK）还是想拖拽（Dify/Coze）？ 定制程度 ：需要深度定制 → 代码框架；快速上线 → 低代码平台； 部署方式 ：数据要留在自己服务器 → 自部署框架；无所谓 → 云平台； 中文生态 ：国内业务 → 扣子/元器/智谱生态更顺手； 团队能力 ：团队 Python 水平如何（你正在变强）。 一句话选型 ： 想学原理、写代码、深度定制 → LangChain / OpenAI Agents ",
+          "index": 2,
+          "status": "available",
+          "title": "29.2 选型逻辑",
+          "url": "chapter-29.html#kp-3"
+        },
+        {
+          "chapter": 29,
+          "desc": "框架了解即可，能力重点在原理 ——第 28 章手写的工具调用循环，就是所有框架的地基。 原因： 框架迭代极快 ：今天学 LangChain v0.1，明天 v0.3 API 就变了—— 原理十年不变，API 年年变 ； 框架依赖原理 ：不理解工具调用循环，用框架只是\"抄示例\"，出问题没法排； 就业考察 ：面试问\"你了解智能体框架吗\"，能说清\"框架解决了工具调用循环的什么问题\"比背 API 更值钱。 你的下一步 （就业后）：选一个框架深入（推荐先 OpenAI Agents S",
+          "index": 3,
+          "status": "available",
+          "title": "29.3 本课程的立场",
+          "url": "chapter-29.html#kp-4"
+        },
+        {
+          "chapter": 29,
+          "desc": "任务 ：2-3 人一组，用 AI 辅助调研一个框架（LangChain / Agents SDK / Dify / 扣子 四选一），做 3 分钟分享： 分享内容： 1. 这个框架/平台是什么、解决什么问题； 2. 它的&quot;hello world&quot;长什么样（一句话 + 一个例子）； 3. 它适合谁、不适合谁； 4. 你会不会在项目里用它？为什么？ 提示 ：用 AI 查资料时，记得让 AI 给出信息出处并交叉验证（第 27 章\"幻觉\"教训）。",
+          "index": 4,
+          "status": "available",
+          "title": "29.4 调研任务：小组框架分享",
+          "url": "chapter-29.html#kp-5"
+        },
+        {
+          "chapter": 29,
+          "desc": "任务名称 ：让 AI 帮你调研框架，你判断信息可信度 任务内容 ：让 AI 介绍\"LangChain 是什么\"，追问它\"给出 2 个真实的使用场景和官方文档链接\"，然后你打开链接核对。 Review 清单（L3） ： [ ] AI 的回答我至少找到 1 处需要核实的内容（版本号/API 名/链接）； [ ] 我打开官方文档验证了关键信息； [ ] 我把\"调研结论 + 核实过程\"写进 Prompt 日志。 微任务卡（M3 · 讲解卡 · L2） ：把你的\"选型五问\"发给 AI：",
+          "index": 5,
+          "status": "available",
+          "title": "29.5 Vibe Coding 任务卡（L3 主卡）",
+          "url": "chapter-29.html#kp-6"
+        },
+        {
+          "chapter": 29,
+          "desc": "知识树 ： 主流智能体框架（了解） ├── 代码框架：LangChain（生态大）/ OpenAI Agents SDK（轻量）/ AutoGen、CrewAI（多智能体） ├── 低代码平台：Dify（自部署可视化）/ 扣子 Coze（中文生态 Bot） ├── 本质：框架 = 第 28 章工具调用循环的工程化（工具/记忆/重试/调度） ├── 选型五问：代码深度 / 定制 / 部署 / 中文生态 / 团队能力 └── 本课程立场：原理优先，框架了解即可（API 年年变，原",
+          "index": 6,
+          "status": "available",
+          "title": "29.6 本章小结与知识树",
+          "url": "chapter-29.html#kp-7"
+        },
+        {
+          "chapter": 29,
+          "desc": "术语 一句话 LangChain / Agents SDK 代码框架（生态大 / 轻量） AutoGen / CrewAI 多智能体协作 Dify / 扣子 / 腾讯元器 低代码平台 LlamaIndex RAG 知识库（问答你的文档） 选型五问 代码 / 定制 / 部署 / 中文 / 团队 框架的本质 工具调用循环的工程化（你已手写）",
+          "index": 7,
+          "status": "available",
+          "title": "本章速查",
+          "url": "chapter-29.html#kp-8"
+        }
+      ]
+    },
+    {
+      "chapter": 41,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          7,
+          8,
+          "sequence"
+        ],
+        [
+          8,
+          9,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ],
+        [
+          6,
+          8,
+          "concept"
+        ],
+        [
+          7,
+          9,
+          "concept"
+        ]
+      ],
+      "id": "chapter-41",
+      "name": "LangFlow：可视化搭出你的第一个 AI 应用（结课专题）",
+      "name_en": "SECTOR 41",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 41,
+          "desc": "学完本章，你应该能够： 说出 LangFlow 是什么、适合什么场景； 独立安装并启动 LangFlow； 拖拽搭建一个接入 DeepSeek 的对话 Flow； 体验\"给 AI 喂文档\"的 RAG 流程（了解级）； 用 requests 调用自己搭的 Flow（10 行代码）。 前置知识 ：第 11 章（requests）、第 13 天（messages 结构、API Key、工具调用循环）。",
+          "index": 0,
+          "status": "available",
+          "title": "30.0 学习目标与前置知识",
+          "url": "chapter-41.html#kp-1"
+        },
+        {
+          "chapter": 41,
+          "desc": "30.1.1 一句话定义 LangFlow 是 LangChain 生态的开源可视化编排工具 ：把\"写代码搭 LLM 应用\"变成\"拖组件、连线条\"。Python 编写、BSD 开源、本地可部署，GitHub 数万 star。 30.1.2 它和第 28 章手写代码的关系（关键认知） 第 28 章你手写过这个循环： 用户输入 → messages.append → 调 API → 读 response → 再 append LangFlow 把这些代码变成一个个 组件（Comp",
+          "index": 1,
+          "status": "available",
+          "title": "30.1 概念认知：LangFlow 是什么",
+          "url": "chapter-41.html#kp-2"
+        },
+        {
+          "chapter": 41,
+          "desc": "30.2.1 语法掌握：三步启动 bash 复制 # 1. 建议在 Day08 学过的虚拟环境里安装（Python 3.10–3.12） pip install langflow # 2. 启动（首次启动较慢，耐心等） langflow run # 3. 浏览器打开提示的地址（默认类似 http://localhost:7860） 看到画布界面 = 启动成功。 30.2.2 语法掌握：认识画布 ┌─────────┐ ┌─────────┐ ┌─────────────┐ ┌",
+          "index": 2,
+          "status": "available",
+          "title": "30.2 安装与启动",
+          "url": "chapter-41.html#kp-3"
+        },
+        {
+          "chapter": 41,
+          "desc": "目标 ：接入 DeepSeek，跑通第一轮问答。 步骤 ： New Flow → 从空白画布开始； 拖入 Chat Input、Prompt、Language Model、Chat Output 四个组件； 依次连线（Input → Prompt → Model → Output）； 在 Language Model 组件里配置模型参数（OpenAI 兼容）： Base URL: https://api.deepseek.com （以实际服务商文档为准） API Key: 你",
+          "index": 3,
+          "status": "available",
+          "title": "30.3 实操一：搭一个最简对话 Flow",
+          "url": "chapter-41.html#kp-4"
+        },
+        {
+          "chapter": 41,
+          "desc": "概念认知：RAG = 检索增强生成 。一句话：把文档变成可检索的知识，回答前先\"查资料\"，因此更少胡说。 拖拽流程（体验为主，不深挖原理） ： File Loader → Text Splitter → 向量库(Embedding) ─┐ ├→ Retriever → Prompt → Model → Output Chat Input ──────────────────────────────────────┘ 拖入 File Loader，上传一份课程讲义（如第 1 章",
+          "index": 4,
+          "status": "available",
+          "title": "30.4 实操二：给助手加知识（RAG 流程初体验）",
+          "url": "chapter-41.html#kp-5"
+        },
+        {
+          "chapter": 41,
+          "desc": "每个 Flow 自带 API 端点 ：画布右上 Share / API（以版本界面为准），复制 curl 示例，里面有两个关键信息： flow_id 和调用地址。 30.5.1 语法掌握：用 requests 调自己的 Flow python 复制 import requests url = &quot;http://localhost:7860/api/v1/run/&lt;你的flow_id&gt;&quot; payload = {&quot;input_value&q",
+          "index": 5,
+          "status": "available",
+          "title": "30.5 实操三：LangFlow 的 API——和 Python 代码打通",
+          "url": "chapter-41.html#kp-6"
+        },
+        {
+          "chapter": 41,
+          "desc": "30.6.1 一张表 + 三句话 工具 一句话定位 LangFlow 开源可视化编排，原型与教学利器，可导出 API Dify 低代码平台，偏向应用部署与运营 LangChain 代码框架，生产级控制力，进阶课主角 三句话结论 ：验证想法 → LangFlow；交付产品 → 手写代码；两者不冲突，原型转生产是常规操作。 30.6.2 14 天知识树（结课复盘） Python 基础（Day01-07）：环境 → 变量 → 流程 → 字符串 → 容器 → 函数 Python 进阶",
+          "index": 6,
+          "status": "available",
+          "title": "30.6 选型收尾与课程总复盘",
+          "url": "chapter-41.html#kp-7"
+        },
+        {
+          "chapter": 41,
+          "desc": "问题 1：安装失败 / 启动报 Python 版本错误 检查 Python 版本（LangFlow 要求 3.10–3.12），确认 pip 装在了虚拟环境里（呼应 Day08）。 问题 2：Language Model 组件报 401 / 连接失败 API Key 粘错或 Base URL 写错；对照服务商文档逐项检查——和第 28 章的 401 排查完全同款。 问题 3：组件之间连线报错（端口颜色对不上） 连线口有类型（文本/数据/消息），类型不匹配连不上；检查两个组件的",
+          "index": 7,
+          "status": "available",
+          "title": "30.7 本章 Debug 四件套",
+          "url": "chapter-41.html#kp-8"
+        },
+        {
+          "chapter": 41,
+          "desc": "任务 ：让 Trae 为你的\"课程答疑助手\" Flow 生成一个 FastAPI 包装版： POST /api/ask 接收问题 → 转发 LangFlow → 返回回答。要求：有异常处理、Key 不硬编码。完成后审查：\"错误处理覆盖了吗？超时设置了吗？\"",
+          "index": 8,
+          "status": "available",
+          "title": "30.8 Vibe Coding 任务卡（L3 主卡）",
+          "url": "chapter-41.html#kp-9"
+        },
+        {
+          "chapter": 41,
+          "desc": "安装启动 pip install langflow → langflow run → 浏览器打开画布 四个组件 Chat Input → Prompt → Language Model → Chat Output 接国产模型 Base URL + API Key + 模型名（OpenAI 兼容方式） 加知识 RAG File Loader → Splitter → 向量库 → Retriever → Prompt 代码打通 每个 Flow 自带 API → requests.",
+          "index": 9,
+          "status": "available",
+          "title": "本章速查",
+          "url": "chapter-41.html#kp-10"
         }
       ]
     },
@@ -4013,182 +4839,6 @@
       ]
     },
     {
-      "chapter": 24,
-      "connections": [
-        [
-          0,
-          1,
-          "sequence"
-        ],
-        [
-          1,
-          2,
-          "sequence"
-        ],
-        [
-          2,
-          3,
-          "sequence"
-        ],
-        [
-          3,
-          4,
-          "sequence"
-        ],
-        [
-          4,
-          5,
-          "sequence"
-        ],
-        [
-          5,
-          6,
-          "sequence"
-        ],
-        [
-          6,
-          7,
-          "sequence"
-        ],
-        [
-          7,
-          8,
-          "sequence"
-        ],
-        [
-          8,
-          9,
-          "sequence"
-        ],
-        [
-          0,
-          2,
-          "concept"
-        ],
-        [
-          1,
-          3,
-          "concept"
-        ],
-        [
-          2,
-          4,
-          "concept"
-        ],
-        [
-          3,
-          5,
-          "concept"
-        ],
-        [
-          4,
-          6,
-          "concept"
-        ],
-        [
-          5,
-          7,
-          "concept"
-        ],
-        [
-          6,
-          8,
-          "concept"
-        ],
-        [
-          7,
-          9,
-          "concept"
-        ]
-      ],
-      "id": "chapter-24",
-      "name": "FastAPI：从入门到会用",
-      "name_en": "SECTOR 24",
-      "progress": 0,
-      "stars": [
-        {
-          "chapter": 24,
-          "desc": "学完本章，你应该能够： 理解\"Web 框架\"解决了什么（对比第 23.4 的手写路由）； 安装并运行 FastAPI + uvicorn，访问自动文档 /docs ； 写路由：路径参数、查询参数、请求体（Pydantic 校验）； 理解 422 与 400 的区别，正确使用状态码与 HTTPException； 用 FastAPI + SQLite 完成一个学生 CRUD 接口； 配置 CORS 让前端能调用； 按 L3 规则使用 AI：生成接口代码 + pytest 验收。",
-          "index": 0,
-          "status": "available",
-          "title": "24.0 学习目标与前置知识",
-          "url": "chapter-24.html#kp-1"
-        },
-        {
-          "chapter": 24,
-          "desc": "24.1.1 概念认知：从手写路由到框架 第 23.4 节我们手写了 handle_request(method, path) 做路由分发——写两个接口还行，10 个接口、100 个参数校验就失控了。 Web 框架 把这三件事标准化： 路由 ： @app.get(\"/api/students\") 一句话注册接口； 参数校验 ：Pydantic 自动检查请求体； 文档 ：自动生成 /docs 交互式 API 文档。 24.1.2 概念认知：FastAPI 的三个特点 快 ：基于",
-          "index": 1,
-          "status": "available",
-          "title": "24.1 Web 框架是什么",
-          "url": "chapter-24.html#kp-2"
-        },
-        {
-          "chapter": 24,
-          "desc": "24.2.1 语法掌握：安装 代码案例 24.1 ：安装（✅ 正确，PowerShell） powershell 复制 pip install fastapi &quot;uvicorn[standard]&quot; 讲解 ： fastapi 是框架本体； uvicorn 是\"ASGI 服务器\"（把 FastAPI 跑起来的程序）。 24.2.2 语法掌握：最小应用 代码案例 24.2 ：main.py（✅ 正确，实测通过） python 复制 from fastapi i",
-          "index": 2,
-          "status": "available",
-          "title": "24.2 第一个 FastAPI 应用",
-          "url": "chapter-24.html#kp-3"
-        },
-        {
-          "chapter": 24,
-          "desc": "24.3.1 语法掌握：路径参数 代码案例 24.4 ：按 id 查询（✅ 正确，实测通过） python 复制 from fastapi import FastAPI, HTTPException app = FastAPI() students = [ {&quot;id&quot;: 1, &quot;name&quot;: &quot;张三&quot;, &quot;score&quot;: 88}, {&quot;id&quot;: 2, &quot;name&qu",
-          "index": 3,
-          "status": "available",
-          "title": "24.3 路由与参数",
-          "url": "chapter-24.html#kp-4"
-        },
-        {
-          "chapter": 24,
-          "desc": "把第 23 章的 SQLite 接进 FastAPI，做一个完整的学生管理接口（✅ 正确） 代码案例 24.7 ：main.py（完整应用） python 复制 import sqlite3 from fastapi import FastAPI, HTTPException from pydantic import BaseModel app = FastAPI(title=&quot;学生管理 API&quot;) DB = &quot;school.db&quot; c",
-          "index": 4,
-          "status": "available",
-          "title": "24.4 综合案例：FastAPI + SQLite 学生 CRUD",
-          "url": "chapter-24.html#kp-5"
-        },
-        {
-          "chapter": 24,
-          "desc": "24.5.1 概念认知：跨域是什么 前端页面在 http://127.0.0.1:5500 ，后端在 http://127.0.0.1:8000 —— 端口不同 = 跨域 。浏览器出于安全限制，默认禁止跨域请求（fetch 会报 CORS 错误）。 24.5.2 语法掌握：开启 CORS 代码案例 24.8 ：CORS 中间件（✅ 正确） python 复制 from fastapi.middleware.cors import CORSMiddleware app.add_",
-          "index": 5,
-          "status": "available",
-          "title": "24.5 CORS：让前端能调你的接口（了解）",
-          "url": "chapter-24.html#kp-6"
-        },
-        {
-          "chapter": 24,
-          "desc": "问题 1：uvicorn 找不到模块 问题代码 ： powershell 复制 uvicorn main:app --reload 实际报错 ： ModuleNotFoundError: No module named &#x27;main&#x27; 提示 ：当前目录有 main.py 吗？文件名对吗？ 讲解 ：uvicorn 从 当前工作目录 找模块。确认 main.py 在当前目录、名字一致（大小写敏感）。 老规矩：先 dir 看一眼再启动 。 问题 2：改代码不生效 ",
-          "index": 6,
-          "status": "available",
-          "title": "24.6 本章 Debug 四件套",
-          "url": "chapter-24.html#kp-7"
-        },
-        {
-          "chapter": 24,
-          "desc": "任务名称 ：让 AI 生成接口，你用 pytest 验收 任务内容 ：让 AI 生成\"待办清单\"的 FastAPI 接口（GET 列表 + POST 新建），你按 Review 四步验收。 参考提问句式 ： 请用 FastAPI 生成待办清单的接口： 1. GET /api/tasks 返回任务列表（id, content, done）； 2. POST /api/tasks 接收 content 字段，content 为空返回 400； 3. 数据存在 SQLite。 Re",
-          "index": 7,
-          "status": "available",
-          "title": "24.7 Vibe Coding 任务卡（L3 主卡）",
-          "url": "chapter-24.html#kp-8"
-        },
-        {
-          "chapter": 24,
-          "desc": "知识树 ： FastAPI ├── 框架解决：路由注册 / 参数校验 / 自动文档 ├── 安装运行：pip install fastapi uvicorn；uvicorn main:app --reload ├── 自动文档：/docs（OpenAPI）；类型提示 = 接口契约 ├── 参数三种 │ ├── 路径参数：/api/students/{id}（: int 自动校验） │ ├── 查询参数：?keyword=xxx（= 默认值） │ └── 请求体：Pydanti",
-          "index": 8,
-          "status": "available",
-          "title": "24.8 本章小结与知识树",
-          "url": "chapter-24.html#kp-9"
-        },
-        {
-          "chapter": 24,
-          "desc": "术语/命令 一句话 uvicorn main:app --reload 启动服务（开发必带 --reload） @app.get(\"/path\") 注册路由 /docs 自动生成的交互式文档 /api/students/{id} 路径参数（ : int 自动校验） ?keyword= 查询参数（带默认值） BaseModel Pydantic 请求体模型 HTTPException(404, \"...\") 错误响应 422 vs 400 格式错（框架管）vs 业务错（你抛） ",
-          "index": 9,
-          "status": "available",
-          "title": "本章速查",
-          "url": "chapter-24.html#kp-10"
-        }
-      ]
-    },
-    {
       "chapter": 25,
       "connections": [
         [
@@ -4537,674 +5187,6 @@
           "status": "available",
           "title": "本章速查",
           "url": "chapter-26.html#kp-9"
-        }
-      ]
-    },
-    {
-      "chapter": 27,
-      "connections": [
-        [
-          0,
-          1,
-          "sequence"
-        ],
-        [
-          1,
-          2,
-          "sequence"
-        ],
-        [
-          2,
-          3,
-          "sequence"
-        ],
-        [
-          3,
-          4,
-          "sequence"
-        ],
-        [
-          4,
-          5,
-          "sequence"
-        ],
-        [
-          5,
-          6,
-          "sequence"
-        ],
-        [
-          6,
-          7,
-          "sequence"
-        ],
-        [
-          7,
-          8,
-          "sequence"
-        ],
-        [
-          0,
-          2,
-          "concept"
-        ],
-        [
-          1,
-          3,
-          "concept"
-        ],
-        [
-          2,
-          4,
-          "concept"
-        ],
-        [
-          3,
-          5,
-          "concept"
-        ],
-        [
-          4,
-          6,
-          "concept"
-        ],
-        [
-          5,
-          7,
-          "concept"
-        ],
-        [
-          6,
-          8,
-          "concept"
-        ]
-      ],
-      "id": "chapter-27",
-      "name": "大模型、API 与智能体概念",
-      "name_en": "SECTOR 27",
-      "progress": 0,
-      "stars": [
-        {
-          "chapter": 27,
-          "desc": "学完本章，你应该能够： 说出大模型能做什么、不能做什么（能力边界）； 理解 API 调用原理（POST /chat/completions、messages、role）； 理解 Prompt 与上下文窗口的关系； 说出智能体（Agent）的四要素； 了解 MCP 概念； 用 Codex 现场演示一次\"任务拆解\"。 前置知识 ：第 13 章（requests）、第 23 章（HTTP/REST）。",
-          "index": 0,
-          "status": "available",
-          "title": "27.0 学习目标与前置知识",
-          "url": "chapter-27.html#kp-1"
-        },
-        {
-          "chapter": 27,
-          "desc": "27.1.1 概念认知：LLM 是什么 大语言模型（LLM） 本质上是一个\"超级文本预测器\"：根据前文预测下一个最可能的词，一个词一个词地\"写\"出回答。DeepSeek、GPT、Claude 都是 LLM。 27.1.2 能做：四大强项 能力 例子 文本生成 写文章、写邮件、写代码 理解与总结 总结会议纪要、提炼要点 翻译与改写 中英互译、改写语气 问答与推理 解释概念、分析问题 27.1.3 不能做：能力边界（关键认知） ❌ 边界 1：幻觉（Hallucination） —",
-          "index": 1,
-          "status": "available",
-          "title": "27.1 大模型能做什么、不能做什么",
-          "url": "chapter-27.html#kp-2"
-        },
-        {
-          "chapter": 27,
-          "desc": "27.2.1 概念认知：为什么用 API 回顾原教材（Vibe Coding 实战）3.1 节：不用自己训练模型，通过 API 按规则发请求就能获得模型能力—— API 是\"大模型的公共电话线\" 。 27.2.2 语法掌握：一次请求的结构 代码案例 27.1 ：请求骨架（✅ 正确） json 复制 POST https://api.deepseek.com/chat/completions { &quot;model&quot;: &quot;deepseek-v4-flas",
-          "index": 2,
-          "status": "available",
-          "title": "27.2 API 调用原理",
-          "url": "chapter-27.html#kp-3"
-        },
-        {
-          "chapter": 27,
-          "desc": "27.3.1 概念认知：Agent 四要素 智能体（Agent）= LLM（大脑）+ 规划 + 工具 + 记忆 ： 感知：接收用户需求 / 外部信息 规划：把任务拆成步骤（LLM 负责） 工具：执行具体动作（查待办、算数、发请求——代码写的函数） 反思：根据结果判断下一步（LLM 负责） 案例 27.2 ：用 Codex 演示\"拆解任务\" 给 AI 一个模糊任务：\"帮我安排周末旅行\"，观察它如何拆解： 1. 确定目的地与预算（需要用户提供） 2. 查交通（工具：车票/机票查询",
-          "index": 3,
-          "status": "available",
-          "title": "27.3 智能体（Agent）：让大模型\"动起来\"",
-          "url": "chapter-27.html#kp-4"
-        },
-        {
-          "chapter": 27,
-          "desc": "MCP（Model Context Protocol，模型上下文协议） 是 2024 年底提出的开放标准： 让 AI 应用以统一方式连接外部工具和数据源 ——就像 USB-C 统一了充电接口。 没有 MCP：每个工具一套接入方式（每家 AI 连数据库、文件、API 各写各的） 有了 MCP：工具提供&quot;标准插口&quot;，任何支持 MCP 的 AI 直接插上就能用 讲解 ：本课程了解概念即可——你第 28 章手写的\"工具调用\"就是 MCP 要标准化的那个场景。 了解",
-          "index": 4,
-          "status": "available",
-          "title": "27.4 MCP：工具互联标准（了解）",
-          "url": "chapter-27.html#kp-5"
-        },
-        {
-          "chapter": 27,
-          "desc": "问题 1：把幻觉当事实 问题描述 ：模型说\"Python 3.13 已发布\"，你直接写进报告——结果版本号是编的。 讲解 ： 凡是\"精确事实\"都要验证 。让模型给出处、或用可靠来源核对；不确定就标注\"待核实\"。 问题 2：把模型当实时数据源 问题描述 ：\"今天上海天气怎么样？\"模型答了一个编的天气。 讲解 ：模型没有实时数据。 实时信息必须走工具/API （天气接口、数据库）——这正是智能体要接工具的原因。 问题 3：单轮对话\"失忆\" 问题描述 ：第二轮问\"我上一轮说了什么\"",
-          "index": 5,
-          "status": "available",
-          "title": "27.5 本章 Debug 四件套（概念类）",
-          "url": "chapter-27.html#kp-6"
-        },
-        {
-          "chapter": 27,
-          "desc": "任务名称 ：用 Codex 演示\"任务拆解 + 人工判断\" 任务内容 ：把模糊任务发给 AI：\"我要做一个班级图书角管理系统，请帮我拆解成可执行的功能模块，并说明每个模块需要什么数据。\" Review 清单（L3） ： [ ] 我对照需求四要素（第 15 章）检查 AI 的拆解是否覆盖了用户/场景/价值/核心功能； [ ] 我否决了 AI 拆解里\"超出需求\"的模块并说明理由（YAGNI）； [ ] 拆解结果写进 Prompt 日志。 微任务卡（M3 · 讲解卡 · L2） ：",
-          "index": 6,
-          "status": "available",
-          "title": "27.6 Vibe Coding 任务卡（L3 主卡）",
-          "url": "chapter-27.html#kp-7"
-        },
-        {
-          "chapter": 27,
-          "desc": "知识树 ： 大模型、API 与智能体 ├── LLM = 超级文本预测器 │ ├── 能做：生成 / 理解总结 / 翻译 / 问答推理 │ └── 不能做：幻觉 / 无记忆 / 非计算器 / 不能行动 ├── API 调用 │ ├── POST /chat/completions：model + messages + temperature + max_tokens │ ├── role：system（规则）/ user（提问）/ assistant（历史） │ └── 记忆",
-          "index": 7,
-          "status": "available",
-          "title": "27.7 本章小结与知识树",
-          "url": "chapter-27.html#kp-8"
-        },
-        {
-          "chapter": 27,
-          "desc": "术语 一句话 LLM 大语言模型（超级文本预测器） 幻觉 模型可能编造事实（必须验证） 上下文窗口 messages 能装多少内容的限制 system / user / assistant 三角色：规则 / 提问 / 历史 智能体四要素 感知 / 规划 / 工具 / 反思 工具调用 模型指挥代码执行（有手脚） MCP 工具互联标准（了解）",
-          "index": 8,
-          "status": "available",
-          "title": "本章速查",
-          "url": "chapter-27.html#kp-9"
-        }
-      ]
-    },
-    {
-      "chapter": 28,
-      "connections": [
-        [
-          0,
-          1,
-          "sequence"
-        ],
-        [
-          1,
-          2,
-          "sequence"
-        ],
-        [
-          2,
-          3,
-          "sequence"
-        ],
-        [
-          3,
-          4,
-          "sequence"
-        ],
-        [
-          4,
-          5,
-          "sequence"
-        ],
-        [
-          5,
-          6,
-          "sequence"
-        ],
-        [
-          6,
-          7,
-          "sequence"
-        ],
-        [
-          7,
-          8,
-          "sequence"
-        ],
-        [
-          8,
-          9,
-          "sequence"
-        ],
-        [
-          0,
-          2,
-          "concept"
-        ],
-        [
-          1,
-          3,
-          "concept"
-        ],
-        [
-          2,
-          4,
-          "concept"
-        ],
-        [
-          3,
-          5,
-          "concept"
-        ],
-        [
-          4,
-          6,
-          "concept"
-        ],
-        [
-          5,
-          7,
-          "concept"
-        ],
-        [
-          6,
-          8,
-          "concept"
-        ],
-        [
-          7,
-          9,
-          "concept"
-        ]
-      ],
-      "id": "chapter-28",
-      "name": "DeepSeek API 实战",
-      "name_en": "SECTOR 28",
-      "progress": 0,
-      "stars": [
-        {
-          "chapter": 28,
-          "desc": "学完本章，你应该能够： 注册 DeepSeek 开放平台并理解成本控制； 用环境变量管理 API Key，绝不入库； 用 requests 和 OpenAI SDK 两种方式调用 DeepSeek； 用 system prompt 设定角色，维护多轮对话； 了解流式输出； 实现工具调用（Function Calling），组装一个\"能查待办/算数\"的最小智能体； 继续遵守 L3 纪律。 前置知识 ：第 27 章（概念）、第 13 章（requests）、第 23 章（HTTP",
-          "index": 0,
-          "status": "available",
-          "title": "28.0 学习目标与前置知识",
-          "url": "chapter-28.html#kp-1"
-        },
-        {
-          "chapter": 28,
-          "desc": "28.1.1 语法掌握：注册与充值 打开 &lt;https://platform.deepseek.com/&gt; 注册； 创建 API Key （API Keys 页面）； 充值少量金额 （学生自费，本课程用量很小——单次对话通常不到 1 分钱）； 在\"用量\"页面可以看消费明细。 成本控制三招 ： 限输出 ： max_tokens 设合理上限（如 300-600），防止模型\"话痨\"烧 token； 注意： deepseek-v4-flash 是推理型模型， reason",
-          "index": 1,
-          "status": "available",
-          "title": "28.1 注册与成本控制",
-          "url": "chapter-28.html#kp-2"
-        },
-        {
-          "chapter": 28,
-          "desc": "28.2.1 语法掌握：用 requests 调用（不装额外库） 代码案例 28.2 ：requests 方式（✅ 正确） python 复制 import os import requests api_key = os.environ.get(&quot;DEEPSEEK_API_KEY&quot;) resp = requests.post( &quot;https://api.deepseek.com/chat/completions&quot;, headers={&",
-          "index": 2,
-          "status": "available",
-          "title": "28.2 第一次对话",
-          "url": "chapter-28.html#kp-3"
-        },
-        {
-          "chapter": 28,
-          "desc": "28.3.1 语法掌握：system prompt 设定角色 代码案例 28.4 ：角色扮演（✅ 正确） python 复制 resp = client.chat.completions.create( model=&quot;deepseek-v4-flash&quot;, messages=[ {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是电商客服，语气亲切，回答不超过 50 字&q",
-          "index": 3,
-          "status": "available",
-          "title": "28.3 系统提示词与多轮对话",
-          "url": "chapter-28.html#kp-4"
-        },
-        {
-          "chapter": 28,
-          "desc": "代码案例 28.6 ：流式接收（✅ 正确，实测过） python 复制 response = client.chat.completions.create( model=&quot;deepseek-v4-flash&quot;, messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;介绍一下你自己&quot;}], stream=True, ) for chunk in respo",
-          "index": 4,
-          "status": "available",
-          "title": "28.4 流式输出（了解）",
-          "url": "chapter-28.html#kp-5"
-        },
-        {
-          "chapter": 28,
-          "desc": "28.5.1 概念认知：Function Calling 是什么 工具调用的流程（第 27 章原理的代码化）： 1. 你告诉模型&quot;有哪些工具可用&quot;（tools 声明）； 2. 模型决定&quot;这个问题该调用 query_todo&quot;（返回 tool_calls）； 3. 你的代码执行工具函数，拿到结果； 4. 把结果作为 role=&quot;tool&quot; 的消息传回模型； 5. 模型基于结果给出最终回答。 交叉验证：普通对话 vs 工",
-          "index": 5,
-          "status": "available",
-          "title": "28.5 工具调用：让智能体\"有手有脚\"",
-          "url": "chapter-28.html#kp-6"
-        },
-        {
-          "chapter": 28,
-          "desc": "问题 1：401 Unauthorized 问题描述 ：请求返回 401（未授权）。 提示 ：Key 填对了吗？环境变量设置了吗？ 讲解 ： DEEPSEEK_API_KEY 没设置、Key 打错、Key 已吊销，都会 401。 先 print(os.environ.get(\"DEEPSEEK_API_KEY\")) 确认存在 （注意别把完整 Key 打到日志里）。 问题 2：模型名不存在 问题描述 ：报 Model Not Exist 或 400。 提示 ： model 字段",
-          "index": 6,
-          "status": "available",
-          "title": "28.6 本章 Debug 四件套",
-          "url": "chapter-28.html#kp-7"
-        },
-        {
-          "chapter": 28,
-          "desc": "任务名称 ：让 AI 生成工具调用代码，你 Review + 测试 任务内容 ：让 AI 生成一个\"能查待办 + 算数\"的工具调用智能体（参照 28.5.3），你按 Review 四步验收。 参考提问句式 ： 请用 OpenAI SDK 生成一个工具调用智能体： 1. 两个工具：query_todo（查待办）、calculator（四则运算）； 2. 主循环：模型决定调用哪个工具 → 执行 → 结果回传 → 最终回答； 3. 要有 max_turns 兜底。 Review 清",
-          "index": 7,
-          "status": "available",
-          "title": "28.7 Vibe Coding 任务卡（L3 主卡）",
-          "url": "chapter-28.html#kp-8"
-        },
-        {
-          "chapter": 28,
-          "desc": "知识树 ： DeepSeek API 实战 ├── 准备：注册充值 / Key 管理（环境变量 + .gitignore + 泄露吊销） │ └── 成本控制：max_tokens / 控轮次 / 缓存 ├── 调用两种方式 │ ├── requests：POST /chat/completions + Bearer 认证 │ └── OpenAI SDK：base_url 指向 DeepSeek（推荐） ├── 角色与多轮：system 定规则；messages 维护历史（",
-          "index": 8,
-          "status": "available",
-          "title": "28.8 本章小结与知识树",
-          "url": "chapter-28.html#kp-9"
-        },
-        {
-          "chapter": 28,
-          "desc": "术语/命令 一句话 DEEPSEEK_API_KEY 环境变量存密钥（绝不入库） OpenAI(api_key, base_url) DeepSeek 兼容 OpenAI SDK chat.completions.create(...) 发起对话 choices[0].message.content 取模型回答 temperature / max_tokens 随机性 / 输出上限（控成本） system prompt 设定角色与规则 stream=True 流式输出 too",
-          "index": 9,
-          "status": "available",
-          "title": "本章速查",
-          "url": "chapter-28.html#kp-10"
-        }
-      ]
-    },
-    {
-      "chapter": 29,
-      "connections": [
-        [
-          0,
-          1,
-          "sequence"
-        ],
-        [
-          1,
-          2,
-          "sequence"
-        ],
-        [
-          2,
-          3,
-          "sequence"
-        ],
-        [
-          3,
-          4,
-          "sequence"
-        ],
-        [
-          4,
-          5,
-          "sequence"
-        ],
-        [
-          5,
-          6,
-          "sequence"
-        ],
-        [
-          6,
-          7,
-          "sequence"
-        ],
-        [
-          0,
-          2,
-          "concept"
-        ],
-        [
-          1,
-          3,
-          "concept"
-        ],
-        [
-          2,
-          4,
-          "concept"
-        ],
-        [
-          3,
-          5,
-          "concept"
-        ],
-        [
-          4,
-          6,
-          "concept"
-        ],
-        [
-          5,
-          7,
-          "concept"
-        ]
-      ],
-      "id": "chapter-29",
-      "name": "主流智能体框架全景",
-      "name_en": "SECTOR 29",
-      "progress": 0,
-      "stars": [
-        {
-          "chapter": 29,
-          "desc": "学完本章，你应该能够： 说出 4 个以上主流智能体框架/平台的名字和定位； 根据场景选择合适的框架； 理解\"框架 = 第 28 章工具调用循环的工程化\"； 完成一次小组框架调研分享。 前置知识 ：第 27-28 章（API 调用原理、工具调用循环）。",
-          "index": 0,
-          "status": "available",
-          "title": "29.0 学习目标与前置知识",
-          "url": "chapter-29.html#kp-1"
-        },
-        {
-          "chapter": 29,
-          "desc": "框架/平台 类型 定位 适合谁 特点 LangChain Python 框架 编排 LLM 应用：链、工具、记忆、RAG 想用代码构建应用的开发者 生态最大、概念多、上手陡 OpenAI Agents SDK Python 框架 轻量智能体：工具调用、多智能体协作 有 Python 基础的开发者 官方维护、贴近 API、上手快 AutoGen Python 框架 多智能体对话协作 研究/实验 多个 AI 互相讨论解决问题 CrewAI Python 框架 \"角色扮演\"团队（如",
-          "index": 1,
-          "status": "available",
-          "title": "29.1 框架对比表",
-          "url": "chapter-29.html#kp-2"
-        },
-        {
-          "chapter": 29,
-          "desc": "选框架/平台看五个问题： 代码深度 ：想写代码（LangChain/Agents SDK）还是想拖拽（Dify/Coze）？ 定制程度 ：需要深度定制 → 代码框架；快速上线 → 低代码平台； 部署方式 ：数据要留在自己服务器 → 自部署框架；无所谓 → 云平台； 中文生态 ：国内业务 → 扣子/元器/智谱生态更顺手； 团队能力 ：团队 Python 水平如何（你正在变强）。 一句话选型 ： 想学原理、写代码、深度定制 → LangChain / OpenAI Agents ",
-          "index": 2,
-          "status": "available",
-          "title": "29.2 选型逻辑",
-          "url": "chapter-29.html#kp-3"
-        },
-        {
-          "chapter": 29,
-          "desc": "框架了解即可，能力重点在原理 ——第 28 章手写的工具调用循环，就是所有框架的地基。 原因： 框架迭代极快 ：今天学 LangChain v0.1，明天 v0.3 API 就变了—— 原理十年不变，API 年年变 ； 框架依赖原理 ：不理解工具调用循环，用框架只是\"抄示例\"，出问题没法排； 就业考察 ：面试问\"你了解智能体框架吗\"，能说清\"框架解决了工具调用循环的什么问题\"比背 API 更值钱。 你的下一步 （就业后）：选一个框架深入（推荐先 OpenAI Agents S",
-          "index": 3,
-          "status": "available",
-          "title": "29.3 本课程的立场",
-          "url": "chapter-29.html#kp-4"
-        },
-        {
-          "chapter": 29,
-          "desc": "任务 ：2-3 人一组，用 AI 辅助调研一个框架（LangChain / Agents SDK / Dify / 扣子 四选一），做 3 分钟分享： 分享内容： 1. 这个框架/平台是什么、解决什么问题； 2. 它的&quot;hello world&quot;长什么样（一句话 + 一个例子）； 3. 它适合谁、不适合谁； 4. 你会不会在项目里用它？为什么？ 提示 ：用 AI 查资料时，记得让 AI 给出信息出处并交叉验证（第 27 章\"幻觉\"教训）。",
-          "index": 4,
-          "status": "available",
-          "title": "29.4 调研任务：小组框架分享",
-          "url": "chapter-29.html#kp-5"
-        },
-        {
-          "chapter": 29,
-          "desc": "任务名称 ：让 AI 帮你调研框架，你判断信息可信度 任务内容 ：让 AI 介绍\"LangChain 是什么\"，追问它\"给出 2 个真实的使用场景和官方文档链接\"，然后你打开链接核对。 Review 清单（L3） ： [ ] AI 的回答我至少找到 1 处需要核实的内容（版本号/API 名/链接）； [ ] 我打开官方文档验证了关键信息； [ ] 我把\"调研结论 + 核实过程\"写进 Prompt 日志。 微任务卡（M3 · 讲解卡 · L2） ：把你的\"选型五问\"发给 AI：",
-          "index": 5,
-          "status": "available",
-          "title": "29.5 Vibe Coding 任务卡（L3 主卡）",
-          "url": "chapter-29.html#kp-6"
-        },
-        {
-          "chapter": 29,
-          "desc": "知识树 ： 主流智能体框架（了解） ├── 代码框架：LangChain（生态大）/ OpenAI Agents SDK（轻量）/ AutoGen、CrewAI（多智能体） ├── 低代码平台：Dify（自部署可视化）/ 扣子 Coze（中文生态 Bot） ├── 本质：框架 = 第 28 章工具调用循环的工程化（工具/记忆/重试/调度） ├── 选型五问：代码深度 / 定制 / 部署 / 中文生态 / 团队能力 └── 本课程立场：原理优先，框架了解即可（API 年年变，原",
-          "index": 6,
-          "status": "available",
-          "title": "29.6 本章小结与知识树",
-          "url": "chapter-29.html#kp-7"
-        },
-        {
-          "chapter": 29,
-          "desc": "术语 一句话 LangChain / Agents SDK 代码框架（生态大 / 轻量） AutoGen / CrewAI 多智能体协作 Dify / 扣子 / 腾讯元器 低代码平台 LlamaIndex RAG 知识库（问答你的文档） 选型五问 代码 / 定制 / 部署 / 中文 / 团队 框架的本质 工具调用循环的工程化（你已手写）",
-          "index": 7,
-          "status": "available",
-          "title": "本章速查",
-          "url": "chapter-29.html#kp-8"
-        }
-      ]
-    },
-    {
-      "chapter": 30,
-      "connections": [
-        [
-          0,
-          1,
-          "sequence"
-        ],
-        [
-          1,
-          2,
-          "sequence"
-        ],
-        [
-          2,
-          3,
-          "sequence"
-        ],
-        [
-          3,
-          4,
-          "sequence"
-        ],
-        [
-          4,
-          5,
-          "sequence"
-        ],
-        [
-          5,
-          6,
-          "sequence"
-        ],
-        [
-          6,
-          7,
-          "sequence"
-        ],
-        [
-          7,
-          8,
-          "sequence"
-        ],
-        [
-          8,
-          9,
-          "sequence"
-        ],
-        [
-          9,
-          10,
-          "sequence"
-        ],
-        [
-          0,
-          2,
-          "concept"
-        ],
-        [
-          1,
-          3,
-          "concept"
-        ],
-        [
-          2,
-          4,
-          "concept"
-        ],
-        [
-          3,
-          5,
-          "concept"
-        ],
-        [
-          4,
-          6,
-          "concept"
-        ],
-        [
-          5,
-          7,
-          "concept"
-        ],
-        [
-          6,
-          8,
-          "concept"
-        ],
-        [
-          7,
-          9,
-          "concept"
-        ],
-        [
-          8,
-          10,
-          "concept"
-        ]
-      ],
-      "id": "chapter-30",
-      "name": "综合实战 M1-1：项目启动、L4 解锁与需求分析",
-      "name_en": "SECTOR 30",
-      "progress": 0,
-      "stars": [
-        {
-          "chapter": 30,
-          "desc": "学完本章你能： 完成小组组建与角色分工，明确\"接口先行\"的协作方式； 完成 L4 解锁仪式 ，理解 L4 的边界与纪律； 用\"AI 生成框架 + 学生完善\"的方式产出《需求文档》，并完成小组互评与需求冻结； 把需求落到 P0 / P1 / P2 三级清单，与项目验收标准逐条对齐。 前置知识： 第 15 章（需求分析四要素、需求文档写作规范）； 第 20 章（小组协作工作流、Conventional Commits）； 第 28 章（DeepSeek API、Key 安全红线）",
-          "index": 0,
-          "status": "available",
-          "title": "30.1 学习目标与前置知识",
-          "url": "chapter-30.html#kp-1"
-        },
-        {
-          "chapter": 30,
-          "desc": "第七篇共 6 章、9 学时，与 M1-M5 五个里程碑一一对应： 教材章节 里程碑 学时 核心交付物 第 30 章 M1-1 启动与需求 1.5 小组分工、L4 解锁记录、需求文档 第 31 章 M1-2 设计与仓库 1.5 设计文档（架构/数据库/API）、Gitee 仓库 第 32 章 M2 后端开发 2 可运行后端 + pytest 全绿 第 33 章 M3 前端开发 2 可运行前端（三栏工作区） 第 34 章 M4 联调部署 1 完整可演示项目 + README 第 ",
-          "index": 1,
-          "status": "available",
-          "title": "30.2 第七篇全景与本章任务总览",
-          "url": "chapter-30.html#kp-2"
-        },
-        {
-          "chapter": 30,
-          "desc": "30.3.1 分组规则 2-3 人一组。推荐分工： 角色 职责 主战场 后端工程师 FastAPI CRUD、SQLite、AI 接口、pytest 里程碑 M2 前端工程师 Vue 三栏工作区、API 对接、AI 面板 里程碑 M3 提示词工程师 / 文档 需求、Prompt 日志、README、验收文档 全程 3 人组一人兼任两职也可以，但 每人的交付物必须进 Git ，禁止\"一人写完全部代码、其他人只挂名\"。 30.3.2 协作总原则：接口先行 前后端并行开发的前提是 ",
-          "index": 2,
-          "status": "available",
-          "title": "30.3 任务一：组建小组与角色分工",
-          "url": "chapter-30.html#kp-3"
-        },
-        {
-          "chapter": 30,
-          "desc": "30.4.1 为什么需要解锁仪式 前 29 章你的 AI 介入等级是\"被老师盯着升级\"的：L0 只准讲解、L2 只准审查、L3 生成后必须 Review。进入项目篇，AI 升级为 L4 Agent 协同 ——它可以独立完成\"有明确验收标准的子任务\"，你负责 验收与集成 。 等级越高，越需要纪律兜底。解锁仪式不是形式主义，是把你和 AI 的合作边界 白纸黑字定下来 。 30.4.2 L4 边界（一张表说清） 允许 禁止（越界红线） 让 AI 生成完整模块 / 接口 / 页面（需",
-          "index": 3,
-          "status": "available",
-          "title": "30.4 任务二：L4 解锁仪式（本课程最重要的仪式）",
-          "url": "chapter-30.html#kp-4"
-        },
-        {
-          "chapter": 30,
-          "desc": "方法论来自第 15 章： AI 只出框架和问题清单，答案由人填 。这是 L4 的典型用法——AI 干\"累活\"，人干\"判断\"。 30.5.1 步骤 1：头脑风暴（5 分钟） 小组先不打开 AI，用便利贴写\"我记笔记时最烦的 3 件事\"，归类成场景： 课堂记笔记：Markdown 快速记录、代码块； 期末复习：按标签找笔记、关键词搜索； 基于笔记提问：想让 AI 只依据我的笔记回答； 碎片整理：导入旧 Markdown、自动打标签。 每类场景写出一句话价值主张，例如：\"让 AI ",
-          "index": 4,
-          "status": "available",
-          "title": "30.5 任务三：需求分析（AI 辅助生成 + 学生完善）",
-          "url": "chapter-30.html#kp-5"
-        },
-        {
-          "chapter": 30,
-          "desc": "小组全员确认需求文档，组长在文档头标注\"v1.0（需求冻结版）\"； 冻结后任何变更走 Issue （第 19 章），不直接改文档； 把需求文档与验收标准逐条对齐（见 docs/验收标准.md ：功能完整性 25 分对应 P0 清单）； 牢记 一票否决项 ：API Key 明文入库、放弃理解 AI 代码、P0 缺项、伪造 Prompt 日志。",
-          "index": 5,
-          "status": "available",
-          "title": "30.6 任务四：需求冻结",
-          "url": "chapter-30.html#kp-6"
-        },
-        {
-          "chapter": 30,
-          "desc": "任务 ：用\"AI 生成框架 + 学生完善\"产出 docs/需求文档.md ，完成互评并冻结。 参考提问句式 （发给 Codex / DeepSeek）： 请审查我写的需求文档，重点检查： 1. P0 是否真的能在 9 学时完成（功能是否过多/过少）？ 2. 非功能需求是否漏掉安全（API Key）与成本（token）？ 3. 边界是否清晰（单用户/本地/不做向量检索的理由是否成立）？ 只给意见和问题清单，不要替我改写文档。 Review 清单 ： [ ] 需求四要素（用户/场",
-          "index": 6,
-          "status": "available",
-          "title": "30.7 主任务卡（L4 · 需求文档）",
-          "url": "chapter-30.html#kp-7"
-        },
-        {
-          "chapter": 30,
-          "desc": "问题 现象 提示 需求写成功能说明书 全是\"系统可以……\"，没有用户场景 回到 30.5.1，先写场景再写功能 P0 贪多 9 学时必然爆表 每个 P2 功能约 1-2 小时工作量，P0 之外全部后置 直接复制 AI 需求 小组互评答不上\"为什么这么做\" 答辩第一个问题就是需求取舍，抄的答不出 分工失衡 一人写全部代码 用 Git 提交记录说话：每人至少 3 个 feature 提交",
-          "index": 7,
-          "status": "available",
-          "title": "30.8 常见问题与 Debug 提示",
-          "url": "chapter-30.html#kp-8"
-        },
-        {
-          "chapter": 30,
-          "desc": "[ ] 小组分工表（含 AI 检查结论）； [ ] L4 解锁仪式完成：公约签字 + docs/prompts/ 目录； [ ] docs/需求文档.md ：四要素 + P0/P1/P2 + 非功能 + 风险； [ ] 互评记录 + 冻结版需求（v1.0）； [ ] 主任务卡完整日志。",
-          "index": 8,
-          "status": "available",
-          "title": "30.9 本章交付物检查表",
-          "url": "chapter-30.html#kp-9"
-        },
-        {
-          "chapter": 30,
-          "desc": "本章完成了项目的第一块地基： 人 （分工）、 规则 （L4 公约）、 需求 （P0/P1/P2）。记住三句话： L4 不是\"AI 帮我写作业\"，而是\"AI 干累活、人做判断\"； 需求不冻结，开发必返工； P0 之外都是加分项，先保证 9 学时能交付。",
-          "index": 9,
-          "status": "available",
-          "title": "30.10 本章小结",
-          "url": "chapter-30.html#kp-10"
-        },
-        {
-          "chapter": 30,
-          "desc": "术语 / 命令 说明 需求四要素 用户、场景、价值、功能 P0 / P1 / P2 验收必做 / 质量加分 / 拔高 接口先行 先冻结 API 清单，前后端并行 L4 解锁仪式 回顾→承诺→建账→示范→签字 《L4 使用公约》 5 条纪律（理解、验收、日志、人决策、Key 安全） docs/prompts/ Prompt 日志目录，主卡完整日志、微卡一句话日志 mkdir -p 目录 递归创建目录 Issue 需求变更 / Bug 的正式入口（Gitee）",
-          "index": 10,
-          "status": "available",
-          "title": "30.11 本章速查",
-          "url": "chapter-30.html#kp-11"
         }
       ]
     },
@@ -6287,7 +6269,165 @@
       ]
     },
     {
-      "chapter": 37,
+      "chapter": 51,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          7,
+          8,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ],
+        [
+          6,
+          8,
+          "concept"
+        ]
+      ],
+      "id": "chapter-51",
+      "name": "大模型认知与 Prompt 工程（Day 01–05）",
+      "name_en": "SECTOR 51",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 51,
+          "desc": "本章所有代码都在仓库里， 克隆下来即可运行 （不需要 API Key）： 文件 对应天 作用 code/common/llm.py 全程 统一调用层（本课程核心资产，第 2–9 章都复用它） code/ch01/01_hello_llm.py Day01 第一个大模型调用，逐字段讲解 code/ch01/02_persona.py Day01 改 system prompt 换人设 code/ch01/03_token_counter.py Day02 Token 计数与成本",
+          "index": 0,
+          "status": "available",
+          "title": "本章代码与资产索引",
+          "url": "chapter-51.html#kp-1"
+        },
+        {
+          "chapter": 51,
+          "desc": "一、教学目标 学完这一天，你应该能够： 说出大模型的能力边界（擅长什么、不擅长什么及其原因）； 认清「算法岗 vs 应用开发岗」的区别，知道自己要往哪个方向走； 建立「模型每月更新、选型维度不变」的认知，不背版本号； 用 httpx 手写一个完整的 /chat/completions 请求，并解释请求体、响应体的 每一个字段 ； 说出 messages 数组里 system / user / assistant 三种角色的作用与正确顺序。 二、大模型的能力边界 它擅长什么 能",
+          "index": 1,
+          "status": "available",
+          "title": "Day 01｜走进大模型：首次 API 调用",
+          "url": "chapter-51.html#kp-2"
+        },
+        {
+          "chapter": 51,
+          "desc": "一、教学目标 用真实 tokenizer 测量中英文的 token 消耗差异； 理解 Token 计费模型，会估算一次对话的成本； 看懂 Embedding 与余弦相似度，知道它的两个致命陷阱； 说清 temperature / top_p / top_k 分别影响什么。 二、Token：先纠正一个流传极广的错误 网上大量中文教程写着「 1 个 token ≈ 4 个汉字 」。 这是错的 ，它把英文规则套到了中文上。 真实情况（用 tiktoken 实测）： powershe",
+          "index": 2,
+          "status": "available",
+          "title": "Day 02｜Token、Embedding 与采样参数",
+          "url": "chapter-51.html#kp-3"
+        },
+        {
+          "chapter": 51,
+          "desc": "一、教学目标 掌握 Zero-shot / Few-shot / CoT 三种基本范式及其适用场景； 学会「先定 Schema，再写 Prompt」的结构化输出方法； 实现带校验与重试的抽取链路，解析成功率 ≥ 90%； 知道模型输出 JSON 的五种典型失败方式及对应处理。 二、三种提示范式 范式 做法 什么时候用 代价 Zero-shot 直接给指令 任务简单、模型见过类似任务 最省 token Few-shot 给 2–5 个输入输出示例 输出格式复杂、有特殊约定 示例",
+          "index": 3,
+          "status": "available",
+          "title": "Day 03｜Prompt 工程基础：从对话到可控输出",
+          "url": "chapter-51.html#kp-4"
+        },
+        {
+          "chapter": 51,
+          "desc": "一、教学目标 说清推理模型与指令模型的区别，知道什么时候该用哪个； 理解 CoT 的方法学地位，以及推理模型为什么不需要手动加 CoT； 识别 Prompt Injection 的常见形态，并能写出防御性 Prompt； 用评测数据量化「每一条安全指令到底防住了什么」。 二、推理模型 vs 指令模型 维度 指令模型 推理模型 代表 通用对话模型 带思考过程的模型（o 系、R1 系等） 行为 直接给答案 先生成较长的内部推理，再给答案 优势 快、便宜、适合格式化任务 复杂数学、",
+          "index": 4,
+          "status": "available",
+          "title": "Day 04｜推理模型与 Prompt 安全",
+          "url": "chapter-51.html#kp-5"
+        },
+        {
+          "chapter": 51,
+          "desc": "一、当日目标 把前四天的能力组装成 可以复用的资产 ——这是本课程的第一个正式交付物，也是后面 8 个章节的地基。 二、交付物一： llm_client （统一调用层） code/common/llm.py 已经提供了完整实现。它的设计要点： 设计 为什么这么做 后端由 .env 决定 同一份代码在靶场/真实平台间切换，零改动 返回归一化的 ChatResult 上层不依赖任何厂商的原始 JSON 结构 统一异常 LLMError 把 HTTP 状态码翻译成「该怎么办」的建议",
+          "index": 5,
+          "status": "available",
+          "title": "Day 05｜章节实战：统一调用层 + 资产库 + 评测器",
+          "url": "chapter-51.html#kp-6"
+        },
+        {
+          "chapter": 51,
+          "desc": "现象 原因 解决 ImportError: cannot import name 'common' 没有把 code/ 加进模块路径 每个脚本开头有 sys.path.insert(0, ...) ，检查它是否执行 LLMError: 连不上 http://127.0.0.1:8100 离线靶场没启动 另开终端 python tools/mock_llm_server.py --port 8100 HTTP 401 密钥错误或有多余空格 检查 .env 里 LLM_API_K",
+          "index": 6,
+          "status": "available",
+          "title": "本章常见错误速查",
+          "url": "chapter-51.html#kp-7"
+        },
+        {
+          "chapter": 51,
+          "desc": "资源 类型 用途 Attention Is All You Need 论文 Transformer 原始论文 The Illustrated Transformer 图解 零数学背景理解自注意力 tiktoken 工具 本课程使用的真实 tokenizer Pydantic 文档 官方 数据校验，第 1–9 章全程使用 httpx 文档 官方 本课程统一的 HTTP 客户端 OWASP LLM Top 10 安全 Prompt Injection 的权威分类",
+          "index": 7,
+          "status": "available",
+          "title": "参考资料",
+          "url": "chapter-51.html#kp-8"
+        },
+        {
+          "chapter": 51,
+          "desc": "第 2 章（Day06–10）把「命令行里调用一次模型」升级为「可供前端调用的后端服务」： 异步并发 → FastAPI 接口 → SSE 流式 → 多轮会话 → 上传/限流/重试/日志 → 压测与答辩。 交付物是一个带 4 个接口的企业级聊天后端。",
+          "index": 8,
+          "status": "available",
+          "title": "下一章预告",
+          "url": "chapter-51.html#kp-9"
+        }
+      ]
+    },
+    {
+      "chapter": 52,
       "connections": [
         [
           0,
@@ -6375,95 +6515,95 @@
           "concept"
         ]
       ],
-      "id": "chapter-37",
+      "id": "chapter-52",
       "name": "LLM API 工程化与 AI 后端（Day 06–10）",
-      "name_en": "SECTOR 37",
+      "name_en": "SECTOR 52",
       "progress": 0,
       "stars": [
         {
-          "chapter": 37,
-          "desc": "本章把“命令行里调用一次模型”逐层升级为“可供前端和其他系统调用的后端服务”。每天只增加一个主要复杂度。 flowchart LR A[Day05 同步单次调用] --&gt; B[Day06 异步与多供应商] B --&gt; C[Day07 FastAPI 接口] C --&gt; D[Day08 SSE 与多轮会话] D --&gt; E[Day09 上传/重试/限流/日志] E --&gt; F[Day10 联调/压测/答辩] 最终能力分层 层 职责 典型文件 配置层",
+          "chapter": 52,
+          "desc": "本章把“命令行里调用一次模型”逐层升级为“可供前端和其他系统调用的后端服务”。每天只增加一个主要复杂度。 本章代码与真实运行截图 ：全部代码在 code/ch02/ ，每节配真实执行截图（由 tools/shot.py 捕获真实输出生成）。 运行前提：先启动离线靶场 python tools/mock_llm_server.py --port 8100 。 本章修复了 v1.0 的 9 处代码缺陷 （详见每节的「v1.0 缺陷修复」说明）。 flowchart LR A[Da",
           "index": 0,
           "status": "available",
           "title": "2.0 本章学习路线",
-          "url": "chapter-37.html#kp-1"
+          "url": "chapter-52.html#kp-1"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "2.1.1 当日目标 学生先理解“等待网络时让出执行权”，再写并发。验收不是只看速度，而是能解释事件循环、协程、任务、并发限制和异常隔离。 2.1.2 用等待任务体感并发 python 复制 import asyncio from time import perf_counter async def simulated_request(name: str, seconds: float) -&gt; str: await asyncio.sleep(seconds) retu",
           "index": 1,
           "status": "available",
           "title": "2.1 Day 06｜异步编程与多供应商协议",
-          "url": "chapter-37.html#kp-2"
+          "url": "chapter-52.html#kp-2"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "2.2.1 从函数到 HTTP 接口 sequenceDiagram participant C as Client participant A as FastAPI participant L as AsyncLLMClient participant P as Provider C-&gt;&gt;A: POST /chat JSON A-&gt;&gt;A: Pydantic 校验 A-&gt;&gt;L: messages L-&gt;&gt;P: HTTPS JSO",
           "index": 2,
           "status": "available",
           "title": "2.2 Day 07｜FastAPI：把模型能力变成服务",
-          "url": "chapter-37.html#kp-3"
+          "url": "chapter-52.html#kp-3"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "2.3.1 SSE 最小协议 SSE 由服务端通过一个长连接持续发送事件。每个事件以空行结束： event: token data: {&quot;text&quot;:&quot;你&quot;} event: done data: {} JSON 编码可避免换行和中文造成协议边界混乱。 2.3.2 解析上游流 python 复制 import json from collections.abc import AsyncIterator async def stream_c",
           "index": 3,
           "status": "available",
           "title": "2.3 Day 08｜SSE 流式输出与多轮会话",
-          "url": "chapter-37.html#kp-4"
+          "url": "chapter-52.html#kp-4"
         },
         {
-          "chapter": 37,
-          "desc": "2.4.1 带退避的有限重试 python 复制 import random RETRYABLE_STATUS = {429, 500, 502, 503, 504} async def call_with_retry(operation, attempts: int = 3): for attempt in range(1, attempts + 1): try: return await operation() except httpx.HTTPStatusError a",
+          "chapter": 52,
+          "desc": "运行验证 ： powershell 复制 python code/ch02/40_resilience.py # 重试退避 + 滑动窗口限流 python code/ch02/41_upload_logging.py # 安全上传 + 结构化日志 ! 重试退避与限流 重试的三条纪律 （图中用真实失败注入验证）： 纪律 原因 只重试瞬时错误 （429 / 5xx / 连接超时） 401（密钥错）、400（参数错）重试一百次也不会成功，只会浪费配额 必须有次数上限 无上限的重试会",
           "index": 4,
           "status": "available",
           "title": "2.4 Day 09｜工程稳定性与极简抽象",
-          "url": "chapter-37.html#kp-5"
+          "url": "chapter-52.html#kp-5"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "2.5.1 最终目录 ai_chat_backend/ ├─ .env.example ├─ .gitignore ├─ requirements.txt ├─ src/ │ ├─ config.py │ ├─ models.py │ ├─ llm_client.py │ ├─ sessions.py │ ├─ resilience.py │ └─ api.py ├─ tests/ │ ├─ test_api.py │ ├─ test_retry.py │ └─ test_s",
           "index": 5,
           "status": "available",
           "title": "2.5 Day 10｜章节实战：企业级聊天后端",
-          "url": "chapter-37.html#kp-6"
+          "url": "chapter-52.html#kp-6"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "现象 优先检查 修复原则 并发反而更慢 是否每次新建客户端；上游限流；连接池上限 复用客户端并设置合理并发 FastAPI 被阻塞 async 路由中是否调用同步网络/CPU 重任务 使用异步库或移出事件循环 流式最后才显示 上游是否真流式；代理是否缓冲；事件是否双换行 分层检查每段字节到达时间 会话串线 session_id 是否进入所有读写条件 建立用户与会话双重隔离 重试放大故障 是否重试 4xx；是否无上限；是否无抖动 只重试瞬时错误并设预算 上传出现路径穿越 是否直",
           "index": 6,
           "status": "available",
           "title": "2.6 常见错误与排查顺序",
-          "url": "chapter-37.html#kp-7"
+          "url": "chapter-52.html#kp-7"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "作业 为同一问题运行同步串行、异步无限并发、异步限制并发三组实验。 为 429、超时、401 分别写测试，说明哪些应该重试。 画出一次 SSE 请求从浏览器到上游模型的连接关系。 提交一份压测报告，并分析至少一个失败请求。 答辩题 async 为什么适合模型 API？它为什么不等于多线程？ 为什么不能在每次请求中创建新的 AsyncClient ？ 422、429、502、504 分别表达什么？ SSE 为什么需要空行？断流时客户端怎样知道失败？ 单进程内存会话在多 work",
           "index": 7,
           "status": "available",
           "title": "2.7 过程性作业与答辩题",
-          "url": "chapter-37.html#kp-8"
+          "url": "chapter-52.html#kp-8"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "第二章完成了可靠的模型访问和服务外壳。第三章不重写后端，而是在这一服务中增加文档解析、索引、检索和引用，使 /chat 从通用对话升级为企业知识问答。",
           "index": 8,
           "status": "available",
           "title": "2.8 本章小结与第三章衔接",
-          "url": "chapter-37.html#kp-9"
+          "url": "chapter-52.html#kp-9"
         },
         {
-          "chapter": 37,
+          "chapter": 52,
           "desc": "HTTPX Async Support ：核对 AsyncClient 复用、流式读取和关闭要求。 FastAPI Tutorial ：核对路由、依赖注入、请求校验和文件上传。 FastAPI Custom Response ：核对 StreamingResponse 。 链接于 2026-09-15 核对。授课时以锁定依赖版本对应的官方文档为准。",
           "index": 9,
           "status": "available",
           "title": "2.9 教师参考资料",
-          "url": "chapter-37.html#kp-10"
+          "url": "chapter-52.html#kp-10"
         }
       ]
     },
     {
-      "chapter": 38,
+      "chapter": 53,
       "connections": [
         [
           0,
@@ -6571,111 +6711,111 @@
           "concept"
         ]
       ],
-      "id": "chapter-38",
+      "id": "chapter-53",
       "name": "RAG 检索增强生成（Day 11–16）",
-      "name_en": "SECTOR 38",
+      "name_en": "SECTOR 53",
       "progress": 0,
       "stars": [
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "完成本章后，学生能够： 解释 RAG 的数据流，以及它缓解知识过期和无依据回答的原因。 将 PDF、Word、HTML 转成统一的 Document 数据。 独立实现固定窗口、递归和基于段落的切块，并通过实验选择参数。 使用 Embedding 和向量库完成增、删、查与元数据过滤。 实现 BM25 与向量检索的融合，理解 rerank 的位置和价值。 为回答添加证据引用、低置信拒答与可复现评测。 将完整链路封装成 FastAPI 服务，并能解释每一层的输入和输出。",
           "index": 0,
           "status": "available",
           "title": "3.0 本章学习目标",
-          "url": "chapter-38.html#kp-1"
+          "url": "chapter-53.html#kp-1"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "RAG 是 Retrieval-Augmented Generation，即“检索增强生成”。系统先从受控知识库中检索证据，再把证据与问题一起交给模型生成答案。 flowchart TD subgraph Offline[离线索引阶段] A[企业文档] --&gt; B[解析清洗] B --&gt; C[切块] C --&gt; D[Embedding] D --&gt; E[(向量库)] end subgraph Online[在线问答阶段] Q[用户问题] --&gt; ",
           "index": 1,
           "status": "available",
           "title": "3.1 先理解 RAG 的责任边界",
-          "url": "chapter-38.html#kp-2"
+          "url": "chapter-53.html#kp-2"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "3.2.1 当日问题与验收 当日问题：不同格式的文件怎样变成统一、可追踪的文本数据？ 验收要求： 成功解析 PDF、Word、HTML 各一份。 每条输出包含 source 、 page 或 section 、 loader 。 输出文档数、总字符数、空文档数和异常列表。 扫描版 PDF 能被识别为空文本或低文本量，不能悄悄入库。 3.2.2 统一文档对象 python 复制 from dataclasses import dataclass, field from typi",
           "index": 2,
           "status": "available",
           "title": "3.2 Day 11｜RAG 原理与文档加载",
-          "url": "chapter-38.html#kp-3"
+          "url": "chapter-53.html#kp-3"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "3.3.1 为什么不能整篇入库 整篇文档向量只表达“总体主题”，难以定位局部事实；块过小又会丢失上下文。切块需要在“定位精度、语义完整、上下文成本”之间取舍。 3.3.2 固定窗口切块 python 复制 def fixed_chunks(text: str, size: int = 500, overlap: int = 80) -&gt; list[str]: if size &lt;= 0: raise ValueError(&quot;size 必须大于 0&quot",
           "index": 3,
           "status": "available",
           "title": "3.3 Day 12｜Chunking：把长文档切成可检索单元",
-          "url": "chapter-38.html#kp-4"
+          "url": "chapter-53.html#kp-4"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "3.4.1 从关键词到语义向量 Embedding 将文本映射为定长向量。语义相近的文本在向量空间中通常更接近。课程使用余弦相似度： $$ \\cos(\\theta)=\\frac{\\mathbf{a}\\cdot\\mathbf{b}}{\\|\\mathbf{a}\\|_2\\|\\mathbf{b}\\|_2} $$ 3.4.2 手写余弦相似度 python 复制 from math import sqrt def cosine_similarity(a: list[float], b: ",
           "index": 4,
           "status": "available",
           "title": "3.4 Day 13｜Embedding 与向量数据库",
-          "url": "chapter-38.html#kp-5"
+          "url": "chapter-53.html#kp-5"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "3.5.1 为什么需要多路召回 向量检索擅长语义近似，BM25 擅长型号、编号、专有名词等精确词。工程上常先用两路检索扩大候选集，再融合并重排。 3.5.2 教学版 BM25 BM25 根据词频、逆文档频率和文档长度计算相关度。中文生产系统应使用经过验证的分词器；课堂先用字符二元组，让算法过程不被额外依赖遮住。 python 复制 from collections import Counter from math import log def bigrams(text: st",
           "index": 5,
           "status": "available",
           "title": "3.5 Day 14｜混合检索、融合与重排",
-          "url": "chapter-38.html#kp-6"
+          "url": "chapter-53.html#kp-6"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "3.6.1 证据上下文组装 python 复制 def build_context(results: list[dict], max_chars: int = 6000) -&gt; tuple[str, list[dict]]: blocks: list[str] = [] citations: list[dict] = [] used = 0 for index, item in enumerate(results, start=1): meta = item[&quot",
           "index": 6,
           "status": "available",
           "title": "3.6 Day 15｜带引用生成、拒答与 RAG 评测",
-          "url": "chapter-38.html#kp-7"
+          "url": "chapter-53.html#kp-7"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "3.7.1 完整管线 python 复制 from dataclasses import dataclass @dataclass class RagAnswer: answer: str citations: list[dict] retrieved: list[dict] abstained: bool reason: str class RagPipeline: def __init__(self, retriever, llm, min_score: float = ",
           "index": 7,
           "status": "available",
           "title": "3.7 Day 16｜章节实战：企业知识库问答系统",
-          "url": "chapter-38.html#kp-8"
+          "url": "chapter-53.html#kp-8"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "现象 优先检查 不建议先做 回答缺关键事实 原文是否解析；正确 chunk 是否存在；Recall@k 立刻改生成 Prompt top-k 全是相似废话 模板噪声；切块过大；Embedding 是否一致 盲目增大 top-k 引用页码错误 PDF 页索引是否加 1；切块元数据是否继承 让模型猜页码 重复内容很多 overlap、页眉页脚、重复入库 只在回答阶段去重 换模型后检索崩溃 文档向量与查询向量是否来自同一模型和维度 强行复用旧索引 指标提升但体验下降 评测集覆盖、延",
           "index": 8,
           "status": "available",
           "title": "3.8 常见错误与排查顺序",
-          "url": "chapter-38.html#kp-9"
+          "url": "chapter-53.html#kp-9"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "把 20 个评测问题扩展到 30 个，新增 5 个跨段问题和 5 个不可回答问题。 选择一次失败检索，沿“解析、切块、索引、召回、重排”逐层定位原因。 提交一页消融报告，至少比较两种 chunk 参数和两种检索方案。 录制 5 分钟讲解，不能照读代码；必须解释一个设计选择和一个失败案例。",
           "index": 9,
           "status": "available",
           "title": "3.9 过程性作业",
-          "url": "chapter-38.html#kp-10"
+          "url": "chapter-53.html#kp-10"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "第三章把模型从“凭参数记忆回答”升级成“先查受控证据再回答”。系统仍由程序固定决定何时检索、怎样检索。第四章将控制权部分交给模型：模型依据任务选择工具，程序负责校验、执行、回传与终止。 进入第四章前，学生必须能不看图说出： 原始文档 -&gt; 解析 -&gt; 切块 -&gt; 向量化 -&gt; 入库 问题 -&gt; 多路召回 -&gt; 融合 -&gt; 重排 -&gt; 证据组装 -&gt; 生成 -&gt; 引用校验/拒答",
           "index": 10,
           "status": "available",
           "title": "3.10 本章小结与下章衔接",
-          "url": "chapter-38.html#kp-11"
+          "url": "chapter-53.html#kp-11"
         },
         {
-          "chapter": 38,
+          "chapter": 53,
           "desc": "PyMuPDF 文本提取教程 ：核对 pymupdf.open 、 Page.get_text() 与扫描件 OCR 路径。 Chroma Python Client ：核对 PersistentClient 与 collection 生命周期。 Chroma Upsert Records ：核对 ids 、 embeddings 、 documents 、 metadatas 的并行数组约束。 Pydantic BaseModel ：核对 Pydantic 2 的模型验证接",
           "index": 11,
           "status": "available",
           "title": "3.11 教师参考资料",
-          "url": "chapter-38.html#kp-12"
+          "url": "chapter-53.html#kp-12"
         }
       ]
     },
     {
-      "chapter": 39,
+      "chapter": 54,
       "connections": [
         [
           0,
@@ -6773,103 +6913,103 @@
           "concept"
         ]
       ],
-      "id": "chapter-39",
+      "id": "chapter-54",
       "name": "Agent 核心机制：从零自研（Day 17–20）",
-      "name_en": "SECTOR 39",
+      "name_en": "SECTOR 54",
       "progress": 0,
       "stars": [
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "完成本章后，学生能够： 解释普通对话、工作流与 Agent 的控制流差异。 使用 JSON Schema 描述工具输入，完成 tool call、tool result 的往返循环。 手写带最大步数、超时、参数校验和停止原因的 Agent 控制器。 用“动作、观察、状态更新”实现可审计的 ReAct 风格循环。 使用 SQLite 保存对话与事件，进程重启后仍能恢复必要上下文。 将第三章的 RAG 作为一个工具接入 Agent。 识别提示词注入、工具越权、重复执行、循环失控等",
           "index": 0,
           "status": "available",
           "title": "4.0 本章学习目标",
-          "url": "chapter-39.html#kp-1"
+          "url": "chapter-54.html#kp-1"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "普通聊天程序的控制流由开发者写死：收到问题，调用一次模型，返回文字。Agent 允许模型在受控范围内选择下一步动作，但程序仍掌握工具、权限、执行和停止。 flowchart TD U[用户任务] --&gt; C[控制器] C --&gt; M[LLM 决策] M --&gt;|最终回答| F[结束] M --&gt;|工具调用| V[参数与权限校验] V --&gt;|通过| T[执行工具] V --&gt;|失败| ER[结构化错误结果] T --&gt; O[工具结果摘",
           "index": 1,
           "status": "available",
           "title": "4.1 Agent 到底多了什么",
-          "url": "chapter-39.html#kp-2"
+          "url": "chapter-54.html#kp-2"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "4.2.1 当日问题与验收 当日问题：模型输出“想调用工具”之后，程序如何安全地把它变成一次真实函数调用？ 验收要求： 注册计算器和天气模拟器两个工具。 模型只能调用白名单工具。 参数经过类型和范围校验。 成功与失败都转换成结构化 tool result，再回传模型。 日志中同一次调用使用唯一 call_id 。 4.2.2 工具 Schema python 复制 CALCULATOR_SCHEMA = { &quot;type&quot;: &quot;function&q",
           "index": 2,
           "status": "available",
           "title": "4.2 Day 17｜Function Calling 与工具注册表",
-          "url": "chapter-39.html#kp-3"
+          "url": "chapter-54.html#kp-3"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "4.3.1 控制器状态机 课程使用“观察、选择动作、执行、更新状态”的公开控制轨迹，不展示隐藏思维链。 stateDiagram-v2 [*] --&gt; Decide Decide --&gt; Finish: 返回最终回答 Decide --&gt; Validate: 返回工具调用 Validate --&gt; Execute: 参数与权限通过 Validate --&gt; Observe: 参数或权限失败 Execute --&gt; Observe Obser",
           "index": 3,
           "status": "available",
           "title": "4.3 Day 18｜手写 ReAct 风格 Agent 控制器",
-          "url": "chapter-39.html#kp-4"
+          "url": "chapter-54.html#kp-4"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "4.4.1 记忆不是把所有历史塞进 Prompt 记忆类型 保存内容 生命周期 风险 工作记忆 当前任务的消息与工具结果 一次运行 上下文过长 对话记忆 最近若干轮或摘要 一个会话 摘要丢细节 长期事实 用户明确授权保存的偏好或业务事实 跨会话 隐私、过期、错误写入 事件日志 工具调用、结果、耗时、停止原因 审计周期 敏感参数泄露 设计原则：原始事件与给模型的摘要分开；每条长期记忆保留来源、时间与作用域；支持删除和过期。 4.4.2 SQLite 消息仓库 python 复制",
           "index": 4,
           "status": "available",
           "title": "4.4 Day 19｜记忆系统与工具适配边界",
-          "url": "chapter-39.html#kp-5"
+          "url": "chapter-54.html#kp-5"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "4.5.1 最终需求 用户可以输入复合任务，例如： 查一下出差住宿标准。假设我去上海住 3 晚，每晚 520 元，计算是否超标以及总差额。 Agent 应完成： 调用 search_knowledge 获取住宿标准与引用。 调用 calculator 计算允许总额、实际总额或差额。 返回结论、计算过程和制度引用。 若知识库没有上海标准，明确说明缺少依据，不自行编造额度。 4.5.2 服务层编排 python 复制 from uuid import uuid4 class Co",
           "index": 5,
           "status": "available",
           "title": "4.5 Day 20｜章节实战：Enterprise Copilot Agent",
-          "url": "chapter-39.html#kp-6"
+          "url": "chapter-54.html#kp-6"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "范式 控制方式 适合任务 主要风险 ReAct 风格 每一步根据新观察选择下一动作 信息不断变化、需要工具反馈 步数多、可能循环 Plan-and-Solve 先生成计划，再逐步执行 步骤相对稳定的复杂任务 初始计划错误会传递 Reflection 生成结果后由评审步骤提出修正 写作、代码和可迭代产物 成本高，可能反复修改 本章完整实现 ReAct 风格控制器。另两种范式作为拓展练习：复用同一 Tool 、 AgentEvent 和 MemoryStore ，只替换控制策略。",
           "index": 6,
           "status": "available",
           "title": "4.6 三种 Agent 范式的最小对比",
-          "url": "chapter-39.html#kp-7"
+          "url": "chapter-54.html#kp-7"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "现象 优先检查 修复原则 模型想调用工具但程序没执行 归一化层是否读到 tool calls；字段是否匹配 先打印脱敏后的原始响应 工具执行了但模型不知道结果 call_id 是否一致；tool result 是否加入消息 严格按协议配对 Agent 一直调用同一工具 工具结果是否清楚；是否有重复检测与步数限制 让程序强制停止并记录原因 参数经常错误 Schema 描述、枚举、required 是否明确 缩小动作空间，不只改 Prompt 重启后忘记历史 是否提交事务；是否加",
           "index": 7,
           "status": "available",
           "title": "4.7 常见错误与排查顺序",
-          "url": "chapter-39.html#kp-8"
+          "url": "chapter-54.html#kp-8"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "基础任务 为 calculator 、 get_weather 、 search_knowledge 各写 3 个测试。 在事件日志中增加耗时字段，但禁止记录密钥和完整敏感正文。 画出自己的 Agent 状态机，标出所有停止路径。 提高任务 实现重复工具调用检测：相同工具与相同参数连续出现两次时返回警告，三次时终止。 实现需要确认的工具包装器。工具声明 risk=\"write\" 时，控制器先返回待确认状态，不立即执行。 实现对话摘要，但保留最近 4 轮原文；比较压缩前后的输入",
           "index": 8,
           "status": "available",
           "title": "4.8 过程性作业",
-          "url": "chapter-39.html#kp-9"
+          "url": "chapter-54.html#kp-9"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "Agent 的核心不是“更会聊天”，而是一套受程序约束的闭环： 读取任务和状态 模型选择最终回答或白名单动作 程序校验参数与权限 程序执行工具并返回结构化结果 控制器更新状态并判断是否继续 达到完成、超时、预算或最大步数条件后结束 学生如果能独立手写并测试这条循环，后续学习 LangGraph、CrewAI 或其他框架时，就能把框架概念映射到状态、节点、工具、记忆和终止条件，而不是只会复制示例代码。",
           "index": 9,
           "status": "available",
           "title": "4.9 本章小结",
-          "url": "chapter-39.html#kp-10"
+          "url": "chapter-54.html#kp-10"
         },
         {
-          "chapter": 39,
+          "chapter": 54,
           "desc": "MCP 2026-07-28 Tools 规范 ：核对工具名称、Schema、调用结果与请求元数据要求。 MCP Tools 当前草案 ：用于授课前检查规范是否继续演进。 Pydantic BaseModel ：核对参数模型和运行时验证接口。 链接与示例于 2026-09-15 核对。本章用内部 Tool 契约隔离协议变化；Day 27 再按课程当时锁定的 MCP SDK 完成 Server 与 Client 实战。",
           "index": 10,
           "status": "available",
           "title": "4.10 教师参考资料",
-          "url": "chapter-39.html#kp-11"
+          "url": "chapter-54.html#kp-11"
         }
       ]
     },
     {
-      "chapter": 40,
+      "chapter": 55,
       "connections": [
         [
           0,
@@ -6957,90 +7097,632 @@
           "concept"
         ]
       ],
-      "id": "chapter-40",
+      "id": "chapter-55",
       "name": "Agent 框架实战（Day 21–25）",
-      "name_en": "SECTOR 40",
+      "name_en": "SECTOR 55",
       "progress": 0,
       "stars": [
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "本章不重新学习“Agent 是什么”，而是把第四章手写组件逐项映射到框架。 第四章手写概念 LangGraph 映射 本章出现时间 AgentResult 中的运行数据 State Day 21 一个处理函数 Node Day 21 函数调用顺序 Edge Day 21 if/else 与继续循环 Conditional Edge / Command Day 22 SQLite 运行状态 Checkpointer + thread_id Day 22 等待用户确认 inter",
           "index": 0,
           "status": "available",
           "title": "5.0 由浅入深的学习路线",
-          "url": "chapter-40.html#kp-1"
+          "url": "chapter-55.html#kp-1"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "5.1.1 当日目标 先用纯 Python 节点构建两节点 RAG 咨询图，不在第一段代码中接真实模型。学生必须先看懂状态怎样进入节点、节点返回什么更新、边怎样控制顺序。 5.1.2 第一个状态图 python 复制 from typing import TypedDict from langgraph.graph import END, START, StateGraph class RagState(TypedDict): question: str evidence: ",
           "index": 1,
           "status": "available",
           "title": "5.1 Day 21｜LangGraph 入门：State、Node、Edge",
-          "url": "chapter-40.html#kp-2"
+          "url": "chapter-55.html#kp-2"
         },
         {
-          "chapter": 40,
-          "desc": "5.2.1 从线性图到条件图 先增加证据质量判断：足够则生成，不足则改写问题后再检索；最大重试次数写入 state。 python 复制 from typing import Literal class RetryState(TypedDict): question: str rewritten_question: str evidence: list[str] answer: str retries: int max_retries: int def route_after",
+          "chapter": 55,
+          "desc": "5.2.1 从线性图到条件图 先增加证据质量判断：足够则生成，不足则改写问题后再检索；最大重试次数写入 state。 ⚠️ 本节需要两个新节点函数 。原课件 v1.0 在下面的图定义里调用了 retrieve_retry 和 generate_retry ， 但全章从未定义它们 （5.1 节只有签名是 RagState 的 retrieve / generate ）。 这是审校发现的阻断级缺陷 —— 学生照抄会在 add_node 处直接 NameError 。 完整定义如下",
           "index": 2,
           "status": "available",
           "title": "5.2 Day 22｜条件路由、循环、Checkpoint 与人工审批",
-          "url": "chapter-40.html#kp-3"
+          "url": "chapter-55.html#kp-3"
         },
         {
-          "chapter": 40,
-          "desc": "5.3.1 为什么在主线之外学习对照框架 对照的目的不是记 API，而是识别抽象差异：LangGraph 强调显式状态与控制流，CrewAI 强调角色、任务和团队，smolagents 提供工具调用 Agent 与代码 Agent。 5.3.2 CrewAI 三角色写作流水线 python 复制 from crewai import Agent, Crew, Process, Task researcher = Agent( role=&quot;资料研究员&quot;, g",
+          "chapter": 55,
+          "desc": "5.3.1 为什么在主线之外学习对照框架 对照的目的不是记 API，而是识别抽象差异：LangGraph 强调显式状态与控制流，CrewAI 强调角色、任务和团队，smolagents 提供工具调用 Agent 与代码 Agent。 5.3.2 CrewAI 三角色写作流水线 ⚠️ 必须先配置模型，否则一定失败 （原课件 v1.0 的阻断级缺陷）： v1.0 的 Agent(...) 没有传 llm= 参数。CrewAI 在缺省情况下会 默认去连 OpenAI ， 也就是需要",
           "index": 3,
           "status": "available",
           "title": "5.3 Day 23｜CrewAI 与 smolagents：两种不同抽象",
-          "url": "chapter-40.html#kp-4"
+          "url": "chapter-55.html#kp-4"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "5.4.1 六类方案对比 方案 核心抽象 优势场景 需要重点验证 原生 Python 函数、循环、状态对象 简单流程、极致可控、低依赖 自己承担持久化与观测 LangGraph 状态图、节点、边、checkpoint 长任务、分支循环、审批恢复 状态设计和图复杂度 CrewAI 角色、任务、Crew/Flow 快速多角色原型 角色边界、成本、中间产物 smolagents 工具调用与代码 Agent 轻量实验、计算和数据任务 代码执行安全 LlamaIndex Workflo",
           "index": 4,
           "status": "available",
           "title": "5.4 Day 24｜框架选型：从偏好转向约束",
-          "url": "chapter-40.html#kp-5"
+          "url": "chapter-55.html#kp-5"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "5.5.1 项目任务 实现“需求分析 → 检索资料 → 生成方案 → 自动审校 → 人工审批 → 执行或退回”的流程。执行节点先使用无副作用的模拟发布工具，避免课堂误触真实系统。 flowchart TD A[analyze] --&gt; B[research] B --&gt; C[draft] C --&gt; D[review] D --&gt;|需修改且未超限| C D --&gt;|达到修改上限| X[fail] D --&gt;|通过| E[approval] ",
           "index": 5,
           "status": "available",
           "title": "5.5 Day 25｜章节实战：带审批的生产级流程 Agent",
-          "url": "chapter-40.html#kp-6"
+          "url": "chapter-55.html#kp-6"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "现象 优先检查 修复原则 state 字段突然丢失 节点返回的是部分更新还是错误地重建全 state 明确 reducer 与覆盖语义 图无法结束 是否存在无退出条件的回边 计数器、预算和 END 路径写进图 中断后不能恢复 是否配置 checkpointer；thread_id 是否一致 将恢复标识视为数据契约 恢复后副作用执行两次 副作用是否放在 interrupt 前；是否有幂等键 审批与执行拆节点 CrewAI 中间错误难定位 是否保留每个 Task 产物 分阶段评测",
           "index": 6,
           "status": "available",
           "title": "5.6 常见错误与排查顺序",
-          "url": "chapter-40.html#kp-7"
+          "url": "chapter-55.html#kp-7"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "作业 把 Day21 线性图改成带空检索拒答的条件图。 使用持久化 checkpointer 完成一次进程重启后的审批恢复。 用同一固定任务比较 LangGraph、CrewAI、smolagents，提交量化表。 给 Day25 项目增加 request_id 幂等测试和恶意输入测试。 答辩题 LangGraph 的 State 与普通全局变量有什么本质差别？ 节点为什么应该返回部分更新？ checkpoint 与业务数据库各保存什么？ interrupt 为什么可能导致节",
           "index": 7,
           "status": "available",
           "title": "5.7 过程性作业与答辩题",
-          "url": "chapter-40.html#kp-8"
+          "url": "chapter-55.html#kp-8"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "第五章完成了从手写循环到可恢复状态图的迁移。学生已经能在单个系统中组织节点、工具、审批和持久化。第六章将进一步研究多个 Agent 的协作拓扑、标准化工具连接和全链路可观测性。",
           "index": 8,
           "status": "available",
           "title": "5.8 本章小结与第六章衔接",
-          "url": "chapter-40.html#kp-9"
+          "url": "chapter-55.html#kp-9"
         },
         {
-          "chapter": 40,
+          "chapter": 55,
           "desc": "LangGraph Overview ：StateGraph、节点、边与编译。 LangGraph Graph API ：状态更新、分支、循环和 Command。 LangGraph Persistence ：checkpoint 与 thread_id。 LangGraph Interrupts ：暂停、恢复和副作用规则。 LangGraph Streaming ： updates 、 values 、 messages 、 checkpoints 等事件模式。 CrewA",
           "index": 9,
           "status": "available",
           "title": "5.9 教师参考资料",
-          "url": "chapter-40.html#kp-10"
+          "url": "chapter-55.html#kp-10"
+        }
+      ]
+    },
+    {
+      "chapter": 56,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          7,
+          8,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ],
+        [
+          6,
+          8,
+          "concept"
+        ]
+      ],
+      "id": "chapter-56",
+      "name": "多智能体系统与 MCP（Day 26–30）",
+      "name_en": "SECTOR 56",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 56,
+          "desc": "第 4 章你手写了一个 Agent，第 5 章你用框架编排了一个可恢复的状态图。但它们都还是 单体 ：一个决策者、一条控制流。 当任务复杂到需要「不同专业视角」时，单体 Agent 会遇到三个天花板： 天花板 表现 原因 上下文污染 让一个 Agent 同时「研究+写作+审校」，它的输出质量会互相干扰 不同角色的目标、标准、语气要求冲突，混在一个 system prompt 里 无法分工 一步出错，整条链路重来 没有职责边界，错误无法定位到具体环节 无法并行 三个独立子任务串",
+          "index": 0,
+          "status": "available",
+          "title": "6.0 从「一个 Agent」到「一群 Agent」",
+          "url": "chapter-56.html#kp-1"
+        },
+        {
+          "chapter": 56,
+          "desc": "一、教学目标 说清流水线、辩论式、Manager 统筹三种模式的 适用条件与代价 ； 实现三种模式的最小可运行 Demo； 能根据任务特征选择模式，而不是凭偏好。 二、模式一：流水线（Planner → Executor → Reviewer） 结构 ：角色固定，顺序固定，前一个的输出是后一个的输入。 code 复制 用户需求 → [Planner] → 计划 → [Executor] → 产出 → [Reviewer] → 终稿 ↑ │ └────── 退回修改 ─────",
+          "index": 1,
+          "status": "available",
+          "title": "Day 26｜三种多智能体协作模式",
+          "url": "chapter-56.html#kp-2"
+        },
+        {
+          "chapter": 56,
+          "desc": "本节是本章的核心。 所有规范细节均依据 modelcontextprotocol.io/specification/2026-07-28 核实（核实日期 2026-09-21）。协议版本随季度更新，授课前请以官网为准。 一、MCP 解决什么问题 在 MCP 出现之前，每个 AI 应用要接入外部工具，都要为 每个工具 × 每个应用 写一次适配代码： code 复制 没有 MCP： Claude ─┬─ 数据库适配 ├─ 文件系统适配 └─ 搜索适配 Cursor ─┬─ 数据库",
+          "index": 2,
+          "status": "available",
+          "title": "Day 27｜MCP 协议与自建 Server",
+          "url": "chapter-56.html#kp-3"
+        },
+        {
+          "chapter": 56,
+          "desc": "一、教学目标 说清「日志」「追踪」「评测」三者的区别与各自职责； 给 Agent 加一层追踪，能回答「这一步为什么这么慢、这么贵」； 建立 Agent 评测集，把「感觉不错」变成可比较的数字。 二、为什么 Agent 特别需要可观测性 对比普通后端服务： 维度 普通后端 Agent 执行路径 代码固定，路径可预测 运行时决定 ，每次可能不同 失败原因 异常栈能定位 模型「想错了」不会抛异常，只会给错答案 成本 基本固定 随步数、上下文长度动态变化 复现 同样的输入基本同样输出",
+          "index": 3,
+          "status": "available",
+          "title": "Day 28｜Agent 可观测性与评测",
+          "url": "chapter-56.html#kp-4"
+        },
+        {
+          "chapter": 56,
+          "desc": "一、教学目标 识别长任务 Agent 的三个失控点：步数、上下文、成本； 实现预算护栏，让超支在 发生前 被拦截； 实现上下文压缩，理解它与「无损裁剪」的本质区别。 二、长任务的三个失控点 失控点 表现 后果 步数失控 陷入循环，反复调用同一工具 永远不结束，或结束时花了 50 步 上下文爆炸 每步都往 messages 里追加，从不清理 第 30 步时输入已经几万 token，且质量下降 成本超支 前两者叠加 一个任务烧掉一天的预算 关键认知 ：这三者是 互相放大 的。步数",
+          "index": 4,
+          "status": "available",
+          "title": "Day 29｜长任务与成本控制",
+          "url": "chapter-56.html#kp-5"
+        },
+        {
+          "chapter": 56,
+          "desc": "一、项目任务 构建一个完整系统，包含本章全部要素： flowchart TD A[用户任务] --&gt; B[Manager 拆解] B --&gt; C1[Worker: 检索] B --&gt; C2[Worker: 计算] C1 --&gt; D{MCP 工具调用} C2 --&gt; D D --&gt; E[MCP Server&lt;br/&gt;search_policy / calculator] E --&gt; F[Reviewer 审校] F --&g",
+          "index": 5,
+          "status": "available",
+          "title": "Day 30｜章节实战：多 Agent + MCP 综合系统",
+          "url": "chapter-56.html#kp-6"
+        },
+        {
+          "chapter": 56,
+          "desc": "现象 优先检查 修复原则 MCP 请求返回 -32602 _meta 是否含 protocolVersion 与 clientCapabilities 无状态协议要求每个请求自描述 MCP 请求返回 -32020 头部与请求体是否一致； Mcp-Name 是否缺失 头部不是装饰，必须与 body 对账 返回 403 Origin 头是否被校验拒绝 本地服务只绑 127.0.0.1 客户端读不到结果 Accept 是否同时声明了 application/json 和 text/",
+          "index": 6,
+          "status": "available",
+          "title": "6.9 常见错误与排查",
+          "url": "chapter-56.html#kp-7"
+        },
+        {
+          "chapter": 56,
+          "desc": "资源 用途 MCP 规范 2026-07-28 协议权威来源（本节的规范事实均据此核实） MCP 版本与兼容 版本协商与向后兼容 MCP Streamable HTTP 传输层要求与请求头 MCP 安全与信任 安全原则（用户同意、工具描述不可信） Langfuse 文档 可观测性平台（支持自托管） 规范链接与事实核实日期：2026-09-21。协议版本随季度更新，授课前请复核。",
+          "index": 7,
+          "status": "available",
+          "title": "6.10 参考资料",
+          "url": "chapter-56.html#kp-8"
+        },
+        {
+          "chapter": 56,
+          "desc": "第 7 章（Day31–34）把视角从「写 Agent」转向「读 Agent」—— 拆解 MetaGPT、Dify、OpenHands 等开源项目的架构， 然后参考 Hello-Agents 的思路，从零自研一个百行级的迷你 Agent 框架。 能读懂别人的框架，才说明你真的掌握了框架。",
+          "index": 8,
+          "status": "available",
+          "title": "下一章预告",
+          "url": "chapter-56.html#kp-9"
+        }
+      ]
+    },
+    {
+      "chapter": 57,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          6,
+          7,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ],
+        [
+          5,
+          7,
+          "concept"
+        ]
+      ],
+      "id": "chapter-57",
+      "name": "开源 Agent 项目源码拆解（Day 31–34）",
+      "name_en": "SECTOR 57",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 57,
+          "desc": "前六章你一直在 写 ：手写 httpx 调用、手写 ReAct 循环、手写 MCP Server。 从本章开始要 读 ——读生产级开源项目的代码。 这不是为了抄，而是为了三件事： 目的 具体收获 校准抽象判断力 你手写的 ToolRegistry 和 MetaGPT 的 Action 是同一个问题吗？它们为什么这样切分？ 看见工程规模的真实约束 你的 ReAct 循环 80 行；OpenHands 的执行循环要处理沙箱隔离、恢复、超时、资源限制。差距在哪？ 建立选型与排障的底",
+          "index": 0,
+          "status": "available",
+          "title": "7.0 为什么要读别人的代码",
+          "url": "chapter-57.html#kp-1"
+        },
+        {
+          "chapter": 57,
+          "desc": "一、教学目标 说清 MetaGPT 的核心设计思路： 把软件公司的 SOP 编码成 Agent 协作流程 ； 理解 Role / Action / Environment / Message 四个核心抽象的分工； 能对照第 6 章的三种协作模式，判断 MetaGPT 属于哪一类。 二、核心设计思路 MetaGPT 的出发点是一个观察： 软件团队之所以能协作，是因为有 SOP（标准作业程序） —— 产品经理写 PRD，架构师据此设计，工程师实现，测试验证。每一步的 输入输出格式",
+          "index": 1,
+          "status": "available",
+          "title": "Day 31｜MetaGPT：SOP 流水线式多角色协作",
+          "url": "chapter-57.html#kp-2"
+        },
+        {
+          "chapter": 57,
+          "desc": "一、教学目标 理解「低代码编排」与「代码编排」各自的适用边界； 说清 Dify 工作流引擎的节点模型； 理解插件机制如何解决「工具生态」问题。 二、定位对比：Dify 与前面章节的关系 项目 定位 谁在用 MetaGPT 用 SOP 生成软件工程交付物 研究者、自动化内容生产 Dify 可视化搭建 LLM 应用与工作流 业务团队、非专业开发者、快速交付 LangGraph 代码化的状态图编排 工程团队、需要精细控制 你的迷你框架 理解原理的教学工具 你自己 Dify 的核心价",
+          "index": 2,
+          "status": "available",
+          "title": "Day 32｜Dify：可视化工作流与插件引擎",
+          "url": "chapter-57.html#kp-3"
+        },
+        {
+          "chapter": 57,
+          "desc": "一、教学目标 理解「Agent 真的去执行代码」需要额外解决哪些工程问题； 说清沙箱隔离的必要性与实现层次； 理解长任务管理器的设计要点。 二、从「调用工具」到「执行代码」的跳跃 第 4 章的工具调用是这样的：模型输出 {\"name\": \"get_weather\", \"arguments\": {...}} ， 你的程序校验参数、执行函数、返回结果。 风险是可控的 ——因为可执行的函数是你预先注册的。 Code Agent 是另一回事 ：模型生成一段代码，你去执行它。 维度 工",
+          "index": 3,
+          "status": "available",
+          "title": "Day 33｜OpenHands 与 deer-flow：执行循环与长任务管理",
+          "url": "chapter-57.html#kp-4"
+        },
+        {
+          "chapter": 57,
+          "desc": "这是本课程最有成就感的一天。 你要把前面 33 天学到的一切， 抽象成一个 自己能讲清楚每一行 的框架。 一、教学目标 综合运用前 33 天的知识，自研一个百行级 Agent 框架； 用分层设计解决「可替换」与「可测试」两个工程问题； 写出一份能作为作品集的架构文档。 二、框架的分层设计 flowchart TD A[用户代码] --&gt; B[Runner 执行器] B --&gt; C[Agent 智能体] C --&gt; D[LLM 抽象] C --&gt; E[T",
+          "index": 4,
+          "status": "available",
+          "title": "Day 34｜从零自研迷你 Agent 框架",
+          "url": "chapter-57.html#kp-5"
+        },
+        {
+          "chapter": 57,
+          "desc": "现象 原因 修复 @tool 生成的 Schema 模型看不懂 docstring 里没有 Args 段，或没写类型标注 补类型标注与参数描述 工具被调用但参数总是错的 参数 description 太模糊（如「表达式」） 描述要含 格式与例子 ，如「如 1+2*3 ，支持 + - * / 和括号」 换模型后框架报错 LLM 层有平台特定假设 检查响应解析是否只依赖 OpenAI 兼容字段 SummaryMemory 比 BufferMemory 更贵 短对话下摘要开销 &g",
+          "index": 5,
+          "status": "available",
+          "title": "7.11 常见错误与排查",
+          "url": "chapter-57.html#kp-6"
+        },
+        {
+          "chapter": 57,
+          "desc": "各项目的状态核实日期： 2026-09-21 。开源项目变化很快，授课前请复核。 资源 用途 核实时状态 Hello-Agents 本阶段主教材（自研框架的思想来源） V1.0.3（2026-07-17），16 章 5 部分， 第七章即《构建你的 Agent 框架》 MetaGPT SOP 流水线架构 仓库已改名；PyPI 0.8.2； main 分支自称 1.0.0（未发布）；需 Python &lt;3.12 Dify 可视化工作流与集成机制 v1.17.1（2026-0",
+          "index": 6,
+          "status": "available",
+          "title": "7.12 参考资料",
+          "url": "chapter-57.html#kp-7"
+        },
+        {
+          "chapter": 57,
+          "desc": "第 8 章（Day35–37）转向模型的 内部 ：Transformer 与 LoRA 原理、QLoRA 微调实战、 上下文工程与成本优化。你会第一次 真的训练一个模型 （哪怕只是小模型）， 从而理解「微调」与「RAG / Prompt 工程」各自解决什么问题的边界。",
+          "index": 7,
+          "status": "available",
+          "title": "下一章预告",
+          "url": "chapter-57.html#kp-8"
+        }
+      ]
+    },
+    {
+      "chapter": 58,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ]
+      ],
+      "id": "chapter-58",
+      "name": "模型微调与上下文工程（Day 35–37）",
+      "name_en": "SECTOR 58",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 58,
+          "desc": "这是本章最重要的一节，比任何代码都重要。 很多人的第一反应是「模型效果不好就去微调」。但微调是 最后 该考虑的手段，不是第一选择。 三种「让模型学会新知识/新行为」的手段 手段 解决什么 成本 更新速度 可解释性 Prompt 工程 输出格式、语气、推理方式 极低 改一行即生效 完全可见 RAG（第 3 章） 知识 ：企业私有事实、时效性信息 低 重跑索引即可 可溯源到证据 微调（本章） 行为/风格/格式 ：稳定的输出习惯、领域语言、特定任务的模式 中–高 需要重新训练 模型",
+          "index": 0,
+          "status": "available",
+          "title": "8.0 先回答一个关键问题：什么时候该微调？",
+          "url": "chapter-58.html#kp-1"
+        },
+        {
+          "chapter": 58,
+          "desc": "一、教学目标 说清注意力机制在做什么（不需要会推导，但要能用话讲清）； 理解 LoRA 为什么能大幅降低训练参数量； 能手算 LoRA 的参数量（这是面试常考题）。 二、Transformer：用一句话讲清注意力 $$\\text{Attention}(Q,K,V)=\\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V$$ 用一句话解释 ：每个词都生成三个向量——Query（我在找什么）、Key（我能提供什么）、 Value（我",
+          "index": 1,
+          "status": "available",
+          "title": "Day 35｜Transformer 与 LoRA 原理",
+          "url": "chapter-58.html#kp-2"
+        },
+        {
+          "chapter": 58,
+          "desc": "环境提示 ：本节需要 GPU。请使用 Colab（免费 T4 即可）或本地有 GPU 的机器。 课程提供的脚本 code/ch08/20_qlora_colab.py 是完整可运行版本。 一、教学目标 走通微调的完整链路：数据构造 → 配置 → 训练 → 评估 → 合并/部署； 理解 SFT 数据格式与数据质量要求； 能读懂 loss 曲线，判断训练是否正常。 二、微调链路全景 flowchart LR A[明确目标] --&gt; B[构造数据集] B --&gt; C[选",
+          "index": 2,
+          "status": "available",
+          "title": "Day 36｜LoRA / QLoRA 微调实战",
+          "url": "chapter-58.html#kp-3"
+        },
+        {
+          "chapter": 58,
+          "desc": "一、教学目标 说清上下文工程与 Prompt 工程的区别； 掌握上下文组装、裁剪、压缩、外部化四种手段； 用真实数据做出成本优化决策。 二、上下文工程 vs Prompt 工程 Prompt 工程 上下文工程 关注点 单次指令怎么写 整个上下文窗口里放什么 内容 system prompt 的措辞 system + 历史 + 检索证据 + 工具定义 + 外部记忆 时间尺度 一次调用 整个会话/任务的生命周期 核心问题 「怎么问」 「放什么、放多少、什么时候清理」 三篇权威论述",
+          "index": 3,
+          "status": "available",
+          "title": "Day 37｜上下文工程与成本优化",
+          "url": "chapter-58.html#kp-4"
+        },
+        {
+          "chapter": 58,
+          "desc": "现象 原因 修复 微调后格式反而更不稳定 训练数据里格式不统一 清洗数据，统一输出格式 微调后通用能力下降 灾难性遗忘（数据太窄 / 训练太久） 混入通用数据；减少训练步数；降低学习率 OOM（显存不足） 基座太大 / batch 太大 / 序列太长 用 QLoRA；减小 batch + 梯度累积；截断序列 loss 不下降 学习率太小 / 数据太少 / 任务超出模型能力 调高学习率；检查数据；考虑换更大基座 SFTTrainer 报参数错误 库版本变化，API 不同 查当前",
+          "index": 4,
+          "status": "available",
+          "title": "8.11 常见错误与排查",
+          "url": "chapter-58.html#kp-5"
+        },
+        {
+          "chapter": 58,
+          "desc": "资源 用途 LoRA 原论文 低秩适应的理论基础 QLoRA 原论文 4-bit 量化 + LoRA PEFT 文档 LoRA 实现与参数说明 TRL 文档 SFT / DPO 训练器 transformers 文档 模型加载与量化配置 bitsandbytes 量化后端 各库 API 迭代快，使用时以官方文档当前版本为准。",
+          "index": 5,
+          "status": "available",
+          "title": "8.12 参考资料",
+          "url": "chapter-58.html#kp-6"
+        },
+        {
+          "chapter": 58,
+          "desc": "第 9 章（Day38–40）收尾：把前面八章的成果组装成一个 可上线的完整产品 —— 加前端界面（流式打字机）、容器化打包、成本与质量监控， 最后完成毕业答辩与作品集。",
+          "index": 6,
+          "status": "available",
+          "title": "下一章预告",
+          "url": "chapter-58.html#kp-7"
+        }
+      ]
+    },
+    {
+      "chapter": 59,
+      "connections": [
+        [
+          0,
+          1,
+          "sequence"
+        ],
+        [
+          1,
+          2,
+          "sequence"
+        ],
+        [
+          2,
+          3,
+          "sequence"
+        ],
+        [
+          3,
+          4,
+          "sequence"
+        ],
+        [
+          4,
+          5,
+          "sequence"
+        ],
+        [
+          5,
+          6,
+          "sequence"
+        ],
+        [
+          0,
+          2,
+          "concept"
+        ],
+        [
+          1,
+          3,
+          "concept"
+        ],
+        [
+          2,
+          4,
+          "concept"
+        ],
+        [
+          3,
+          5,
+          "concept"
+        ],
+        [
+          4,
+          6,
+          "concept"
+        ]
+      ],
+      "id": "chapter-59",
+      "name": "全栈落地与毕业项目（Day 38–40）",
+      "name_en": "SECTOR 59",
+      "progress": 0,
+      "stars": [
+        {
+          "chapter": 59,
+          "desc": "前八章你学到了各种能力。最后三天的唯一目标是： 把它们组装成一个别人能用的产品 。 「能用」和「能演示」之间有一条很宽的鸿沟： 能演示 能上线 你本机 python xxx.py 能跑 换台机器按文档就能跑起来 只有你知道怎么配环境 环境变量有模板，密钥不泄露 出错了看终端报错 有日志、有监控、有告警 界面是命令行输出 有可交互的界面，有加载状态 没算过成本 知道每个用户每天花多少钱 没有测试 有关键路径的测试，改代码不慌 这三天就是把左边一列变成右边一列。",
+          "index": 0,
+          "status": "available",
+          "title": "9.0 最后三天的目标",
+          "url": "chapter-59.html#kp-1"
+        },
+        {
+          "chapter": 59,
+          "desc": "一、教学目标 用 Gradio / Streamlit 给应用加一个能用的界面（含流式打字机效果）； 会用 Docker 打包应用，做到「换个环境也能跑」； 知道容器化的常见坑。 二、为什么需要前端 给非技术用户用的产品必须有界面。 命令行输出对演示够用，对产品是不够的。而 LLM 应用的界面有一个特殊要求： 流式输出（打字机效果）不是装饰，是体验必需品。 等待全部生成完再显示 逐字流式显示 首字可见时间 5–15 秒（等于总生成时间） 0.3–1 秒 用户感知 「卡住了？是",
+          "index": 1,
+          "status": "available",
+          "title": "Day 38｜前端展示与容器化",
+          "url": "chapter-59.html#kp-2"
+        },
+        {
+          "chapter": 59,
+          "desc": "一、教学目标 建立 LLM 应用的四个监控维度； 用真实数据做成本核算与预警； 完成上线前的安全检查清单。 二、LLM 应用要监控什么 传统后端监控 CPU、内存、QPS。 LLM 应用需要额外监控四类指标 ： 维度 指标 为什么 LLM 应用特别需要 质量 拒答率、格式遵循率、引用正确率、用户反馈 模型输出没有\"异常栈\"，质量退化是 静默 的 成本 token 消耗、单次成本、按用户/功能拆分 成本随上下文长度动态变化，且可能在无人察觉时翻倍 性能 首字延迟（TTFT）、总",
+          "index": 2,
+          "status": "available",
+          "title": "Day 39｜LLMOps：监控、成本与安全上线",
+          "url": "chapter-59.html#kp-3"
+        },
+        {
+          "chapter": 59,
+          "desc": "一、答辩要求 15 分钟演示 + 10 分钟提问 。 演示结构（建议时间分配） 时间 内容 要点 2 min 问题与价值 解决什么问题？给谁用？不讲技术 3 min 现场演示 真跑，不播录像 。包含一次成功路径 + 一次失败路径 5 min 技术架构 分层图 + 为什么这样分层 + 一个关键取舍 3 min 数据与证据 评测数据、成本数据、性能数据（ 有数字才有说服力 ） 2 min 边界与演进 现在不能做什么？下一步做什么？ 评分重点 维度 关键看什么 完整性 前端 → 后",
+          "index": 3,
+          "status": "available",
+          "title": "Day 40｜毕业答辩与就业指导",
+          "url": "chapter-59.html#kp-4"
+        },
+        {
+          "chapter": 59,
+          "desc": "40 天，你走过了这条路径： 章 你获得的 可迁移能力 （不是知识点） 1 会 测量 ：把「感觉更好」变成「通过率 +42%，成本 +76%」 2 会 交付服务 ：把脚本变成别人能调用的接口 3 会 控制知识来源 ：让模型基于证据说话，且能溯源 4 会 让模型动手 ：工具调用、循环控制、安全边界 5 会 编排 ：用状态图管理复杂流程与人工介入 6 会 协作与标准化 ：多 Agent、开放协议、可观测、成本护栏 7 会 读与抽象 ：从开源项目里提取设计，并自己造框架 8 会 理",
+          "index": 4,
+          "status": "available",
+          "title": "9.10 全课程回顾",
+          "url": "chapter-59.html#kp-5"
+        },
+        {
+          "chapter": 59,
+          "desc": "核实日期： 2026-09-21 。 界面与部署 资源 用途 核实时版本 Gradio 文档 对话界面 6.28.0 （注意 Gradio 6 移除 type 参数） Streamlit 文档 数据应用界面 1.64.0 Docker 官方文档 容器化 官方 Python 指南现用 DHI 镜像 LLMOps 工具生态（按功能分类，用于毕业项目的技术选型） 功能 工具 核实时状态 可观测 / 成本追踪 Langfuse SDK langfuse 4.15.4；服务端 v4.4",
+          "index": 5,
+          "status": "available",
+          "title": "9.11 参考资料",
+          "url": "chapter-59.html#kp-6"
+        },
+        {
+          "chapter": 59,
+          "desc": "你现在的水平，取决于你 做完 了什么，而不是 看过 什么。 如果你的作品集里只有一个「跟着教程做的 demo」，那就再挑一个真实的小需求， 用这 40 天的方法论从头做一遍——从 定义问题 开始，而不是从选框架开始。 能把一个真实问题拆解成可交付的系统，并诚实说明它的边界——这就是职业工程师的标志。",
+          "index": 6,
+          "status": "available",
+          "title": "结课寄语",
+          "url": "chapter-59.html#kp-7"
         }
       ]
     }
@@ -7048,7 +7730,7 @@
   "success": true,
   "summary": {
     "completed": 0,
-    "galaxies": 39,
-    "stars": 400
+    "galaxies": 44,
+    "stars": 439
   }
 }

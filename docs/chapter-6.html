@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -121,12 +121,22 @@
             <p><strong>学完本章，你应该能够：</strong></p>
 <ol><li>理解字典的本质：按键取值、键唯一、查找快；</li><li>熟练使用字典的增删改查、遍历（keys/values/items）、get 安全取值；</li><li>理解字典的底层是哈希表，知道"键必须不可变"的原因；</li><li>熟练使用集合的去重与四种运算（交/并/差/对称差）；</li><li>能根据场景选择合适的数据结构（列表/元组/字典/集合）；</li><li>用字典完成词频统计等真实任务；</li><li>继续遵守 L1 纪律：AI 只讲解，不写码。</li></ol>
 <p><strong>前置知识</strong>：第 1-5 章（变量、流程控制、字符串、列表、元组）。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 1 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：6.1（上）字典键值对：增删改查 + get 防崩用法</p>
+<p><strong>练习 10 分钟</strong>：任务 6-1（手写）：建自己的字典并逐项打印</p>
+<p><strong>休息 10 分钟</strong>：现场对比 KeyError 与 get 默认值</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day06.md</code> 第 1 单元</p></blockquote>
+<blockquote class="md-quote"><p><strong>⏱ 第 2 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：6.1（下）字典遍历（keys/values/items）+ 嵌套字典（通讯录 = 字典套字典）</p>
+<p><strong>练习 10 分钟</strong>：任务 6-2：通讯录加第 2 个人并遍历打印全体</p>
+<p><strong>休息 10 分钟</strong>：指出哪一层是字典哪一层是列表</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day06.md</code> 第 2 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 0, "6.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u521b\u5efa\u5b57\u5178 student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08d[\"score\"] \u548c get\uff09\uff0c\u5e76\u8f93\u51fa get(\"city\", \"\u672a\u77e5\") \u7684\u7ed3\u679c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ed[\"score\"]\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003ed.get(\"score\")\u003c/code\u003e \u7ed3\u679c\u4e00\u6837\uff1b\u003ccode class=\"md-inline\"\u003eget(\"city\", \"\u672a\u77e5\")\u003c/code\u003e \u952e\u4e0d\u5b58\u5728\u8fd4\u56de\u9ed8\u8ba4\u503c\uff0c\u4e0d\u62a5\u9519\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u521b\u5efa\u5b57\u5178 `student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}`\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08`d[\"score\"]` \u548c `get`\uff09\uff0c\u5e76\u8f93\u51fa `get(\"city\", \"\u672a\u77e5\")` \u7684\u7ed3\u679c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u521b\u5efa\u5b57\u5178 \u003ccode class=\"md-inline\"\u003estudent = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\u003c/code\u003e\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08\u003ccode class=\"md-inline\"\u003ed[\"score\"]\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eget\u003c/code\u003e\uff09\uff0c\u5e76\u8f93\u51fa \u003ccode class=\"md-inline\"\u003eget(\"city\", \"\u672a\u77e5\")\u003c/code\u003e \u7684\u7ed3\u679c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u521b\u5efa\u5b57\u5178 student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08d[\"score\"] \u548c get\uff09\uff0c\u5e76\u8f93\u51fa get(\"city\", \"\u672a\u77e5\") \u7684\u7ed3\u679c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003estudent = {\u0026quot;name\u0026quot;: \u0026quot;\u5f20\u4e09\u0026quot;, \u0026quot;age\u0026quot;: 19, \u0026quot;score\u0026quot;: 88.5}\n\nprint(student[\u0026quot;score\u0026quot;])\nprint(student.get(\u0026quot;score\u0026quot;))\nprint(student.get(\u0026quot;city\u0026quot;, \u0026quot;\u672a\u77e5\u0026quot;))\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e88.5\n88.5\n\u672a\u77e5\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 0, "6.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u521b\u5efa\u5b57\u5178 student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08d[\"score\"] \u548c get\uff09\uff0c\u5e76\u8f93\u51fa get(\"city\", \"\u672a\u77e5\") \u7684\u7ed3\u679c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u521b\u5efa\u5b57\u5178 `student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}`\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08`d[\"score\"]` \u548c `get`\uff09\uff0c\u5e76\u8f93\u51fa `get(\"city\", \"\u672a\u77e5\")` \u7684\u7ed3\u679c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u521b\u5efa\u5b57\u5178 \u003ccode class=\"md-inline\"\u003estudent = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\u003c/code\u003e\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08\u003ccode class=\"md-inline\"\u003ed[\"score\"]\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eget\u003c/code\u003e\uff09\uff0c\u5e76\u8f93\u51fa \u003ccode class=\"md-inline\"\u003eget(\"city\", \"\u672a\u77e5\")\u003c/code\u003e \u7684\u7ed3\u679c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u521b\u5efa\u5b57\u5178 student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\uff0c\u7528\u4e24\u79cd\u65b9\u5f0f\u53d6\u51fa \"score\"\uff08d[\"score\"] \u548c get\uff09\uff0c\u5e76\u8f93\u51fa get(\"city\", \"\u672a\u77e5\") \u7684\u7ed3\u679c\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -166,19 +176,7 @@
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">student = {&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 19, &quot;score&quot;: 88.5}
-
-print(student[&quot;score&quot;])
-print(student.get(&quot;score&quot;))
-print(student.get(&quot;city&quot;, &quot;未知&quot;))</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">88.5
-88.5
-未知</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">d["score"]</code> 和 <code class="md-inline">d.get("score")</code> 结果一样；<code class="md-inline">get("city", "未知")</code> 键不存在返回默认值，不报错。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -290,9 +288,9 @@ student.clear()               # 清空
 print(student)</code></pre></div>
 <p><strong>运行结果</strong>：</p>
 <div class="md-figure"><pre class="md-diagram">{&#x27;name&#x27;: &#x27;张三&#x27;, &#x27;age&#x27;: 19, &#x27;city&#x27;: &#x27;北京&#x27;}
-{&#x27;name&#x27;: &#x27;张三&#x27;, &#x27;age&#x27;: 20}
+{&#x27;name&#x27;: &#x27;张三&#x27;, &#x27;age&#x27;: 20, &#x27;city&#x27;: &#x27;北京&#x27;}
 北京
-{&#x27;name&#x27;: &#x27;张三&#x27;}
+{&#x27;name&#x27;: &#x27;张三&#x27;, &#x27;age&#x27;: 20}
 {}</pre></div>
 <p><strong>讲解</strong>：</p>
 <ul><li><strong>同一个操作，键不存在是"添加"，键存在是"修改"</strong>——这是字典最方便也最容易踩坑的特性；</li><li><code class="md-inline">pop(键)</code> 删除并返回值；</li><li><code class="md-inline">clear()</code> 清空所有键值对。</li></ul>
@@ -323,9 +321,9 @@ for key, value in student.items():
 值：张三
 值：19
 值：88.5
-键：name
-键：age
-键：score</pre></div>
+name = 张三
+age = 19
+score = 88.5</pre></div>
 <p><strong>讲解</strong>：</p>
 <ul><li><code class="md-inline">keys()</code> 所有键、<code class="md-inline">values()</code> 所有值、<code class="md-inline">items()</code> 所有键值对；</li><li><strong><code class="md-inline">for key, value in d.items()</code> 是遍历字典的标准姿势</strong>（回忆第 5 章元组解包——items 返回的就是键值元组）；</li><li>Python 3.7 起字典<strong>保持插入顺序</strong>（不必掌握细节，知道"顺序稳定"即可）。</li></ul>
 <p><strong>交叉验证：遍历中修改字典会报错（了解）</strong></p>
@@ -357,12 +355,17 @@ for sid, info in students.items():
 s002 李四 平均分：91.7</pre></div>
 <p><strong>讲解</strong>：字典的值可以是列表、字典……无限嵌套。<strong>JSON 数据（前后端交互的标准格式）就是这种结构</strong>——第 9 章读写 JSON、第 23 章写 API 时，这套结构直接复用。</p>
 <p><strong>微任务卡（M2 · 讲解卡 · L1）</strong>：把"字典为什么快"的问题发给 AI，提问："请用哈希表解释为什么字典按键查找接近一步直达？为什么列表不能当字典的键？"一句话记录理解。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 3 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：6.2 集合：去重与交并差运算</p>
+<p><strong>练习 10 分钟</strong>：任务 6-3：两个班名单求共同好友（交集）</p>
+<p><strong>休息 10 分钟</strong>：顺便解释 set 去重的代价（无序）</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day06.md</code> 第 3 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 1, "6.1 \u5b57\u5178\uff1a\u6309\u952e\u53d6\u503c", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5df2\u77e5 d = {\"a\": 1}\uff0c\u4f9d\u6b21\u6267\u884c d[\"b\"] = 2\u3001d[\"a\"] = 10\u3001d.pop(\"b\")\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ed[\"b\"] = 2\u003c/code\u003e \u952e\u4e0d\u5b58\u5728 \u2192 \u6dfb\u52a0\uff1b\u003ccode class=\"md-inline\"\u003ed[\"a\"] = 10\u003c/code\u003e \u952e\u5df2\u5b58\u5728 \u2192 \u4fee\u6539\uff1b\u003ccode class=\"md-inline\"\u003epop(\"b\")\u003c/code\u003e \u2192 \u5220\u9664\u5e76\u8fd4\u56de\u3002\u003cstrong\u003e\u540c\u4e00\u4e2a\u8d4b\u503c\u64cd\u4f5c\uff0c\u884c\u4e3a\u53d6\u51b3\u4e8e\u952e\u662f\u5426\u5b58\u5728\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5df2\u77e5 `d = {\"a\": 1}`\uff0c\u4f9d\u6b21\u6267\u884c `d[\"b\"] = 2`\u3001`d[\"a\"] = 10`\u3001`d.pop(\"b\")`\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5df2\u77e5 \u003ccode class=\"md-inline\"\u003ed = {\"a\": 1}\u003c/code\u003e\uff0c\u4f9d\u6b21\u6267\u884c \u003ccode class=\"md-inline\"\u003ed[\"b\"] = 2\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003ed[\"a\"] = 10\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003ed.pop(\"b\")\u003c/code\u003e\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5df2\u77e5 d = {\"a\": 1}\uff0c\u4f9d\u6b21\u6267\u884c d[\"b\"] = 2\u3001d[\"a\"] = 10\u3001d.pop(\"b\")\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ed = {\u0026quot;a\u0026quot;: 1}\n\nd[\u0026quot;b\u0026quot;] = 2\nprint(d)\n\nd[\u0026quot;a\u0026quot;] = 10\nprint(d)\n\nd.pop(\u0026quot;b\u0026quot;)\nprint(d)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{\u0026#x27;a\u0026#x27;: 1, \u0026#x27;b\u0026#x27;: 2}\n{\u0026#x27;a\u0026#x27;: 10, \u0026#x27;b\u0026#x27;: 2}\n{\u0026#x27;a\u0026#x27;: 10}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 1, "6.1 \u5b57\u5178\uff1a\u6309\u952e\u53d6\u503c", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5df2\u77e5 d = {\"a\": 1}\uff0c\u4f9d\u6b21\u6267\u884c d[\"b\"] = 2\u3001d[\"a\"] = 10\u3001d.pop(\"b\")\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5df2\u77e5 `d = {\"a\": 1}`\uff0c\u4f9d\u6b21\u6267\u884c `d[\"b\"] = 2`\u3001`d[\"a\"] = 10`\u3001`d.pop(\"b\")`\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5df2\u77e5 \u003ccode class=\"md-inline\"\u003ed = {\"a\": 1}\u003c/code\u003e\uff0c\u4f9d\u6b21\u6267\u884c \u003ccode class=\"md-inline\"\u003ed[\"b\"] = 2\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003ed[\"a\"] = 10\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003ed.pop(\"b\")\u003c/code\u003e\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5df2\u77e5 d = {\"a\": 1}\uff0c\u4f9d\u6b21\u6267\u884c d[\"b\"] = 2\u3001d[\"a\"] = 10\u3001d.pop(\"b\")\uff0c\u6bcf\u4e00\u6b65\u540e\u8f93\u51fa d\uff0c\u89c2\u5bdf\"\u6dfb\u52a0/\u4fee\u6539/\u5220\u9664\"\u7684\u533a\u522b\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -402,24 +405,7 @@ s002 李四 平均分：91.7</pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">d = {&quot;a&quot;: 1}
-
-d[&quot;b&quot;] = 2
-print(d)
-
-d[&quot;a&quot;] = 10
-print(d)
-
-d.pop(&quot;b&quot;)
-print(d)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">{&#x27;a&#x27;: 1, &#x27;b&#x27;: 2}
-{&#x27;a&#x27;: 10, &#x27;b&#x27;: 2}
-{&#x27;a&#x27;: 10}</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">d["b"] = 2</code> 键不存在 → 添加；<code class="md-inline">d["a"] = 10</code> 键已存在 → 修改；<code class="md-inline">pop("b")</code> → 删除并返回。<strong>同一个赋值操作，行为取决于键是否存在</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -429,25 +415,41 @@ print(d)</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(6, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c6.1 \u5b57\u5178\uff1a\u6309\u952e\u53d6\u503c\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(6, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u521b\u5efa\u5b57\u5178\u4e0e\u4e24\u79cd\u53d6\u503c\u65b9\u5f0f")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：创建字典与两种取值方式
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「6.1 字典：按键取值」的核心用法演示一遍，并打印出结果。
+              💡 照着「创建字典与两种取值方式」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+张三
+88.5
+None
+未知
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>张三
+88.5
+None
+未知</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(6, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c6.1 \u5b57\u5178\uff1a\u6309\u952e\u53d6\u503c\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(6, 1, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u521b\u5efa\u5b57\u5178\u4e0e\u4e24\u79cd\u53d6\u503c\u65b9\u5f0f\n\n\u7167\u7740\u300c\u521b\u5efa\u5b57\u5178\u4e0e\u4e24\u79cd\u53d6\u503c\u65b9\u5f0f\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n\u5f20\u4e09\n88.5\nNone\n\u672a\u77e5", "student = {\"name\": \"\u5f20\u4e09\", \"age\": 19, \"score\": 88.5}\n\nprint(student[\"name\"])\nprint(student[\"score\"])\n\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -573,12 +575,17 @@ print(unique)</code></pre></div>
 <p><strong>运行结果</strong>：</p>
 <div class="md-figure"><pre class="md-diagram">[1, 2, 3, 4, 5]</pre></div>
 <p><strong>讲解</strong>：<code class="md-inline">list(set(nums))</code> 三步：转集合（去重）→ 转回列表。<strong>代价是顺序不保证</strong>——第 5 章挑战题要求"保持顺序去重"，就要用循环 + <code class="md-inline">in</code> 的手写方案。<strong>两种方法都掌握：要速度用 set，要顺序用手写</strong>。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 4 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：6.3 四大容器选型四象限（有序？可变？按位还是按键？）</p>
+<p><strong>练习 10 分钟</strong>：任务 6-4：口头快答赛——4 个真实场景各贴哪个容器</p>
+<p><strong>休息 10 分钟</strong>：必须让每个学生至少答一次</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day06.md</code> 第 4 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 2, "6.2 \u96c6\u5408\uff1a\u65e0\u5e8f\u4e0d\u91cd\u590d", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u5df2\u77e5 s = {1, 2, 3}\uff0c\u7528 add \u6dfb\u52a0 4\uff0c\u7528 discard \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c 3 in s \u7684\u7ed3\u679c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003ediscard(99)\u003c/code\u003e \u5143\u7d20\u4e0d\u5b58\u5728\u4e5f\u4e0d\u62a5\u9519\uff08\u003ccode class=\"md-inline\"\u003eremove\u003c/code\u003e \u4f1a\u62a5 KeyError\uff09\uff1b\u003ccode class=\"md-inline\"\u003e3 in s\u003c/code\u003e \u5224\u65ad\u6210\u5458\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5df2\u77e5 `s = {1, 2, 3}`\uff0c\u7528 `add` \u6dfb\u52a0 4\uff0c\u7528 `discard` \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c `3 in s` \u7684\u7ed3\u679c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u5df2\u77e5 \u003ccode class=\"md-inline\"\u003es = {1, 2, 3}\u003c/code\u003e\uff0c\u7528 \u003ccode class=\"md-inline\"\u003eadd\u003c/code\u003e \u6dfb\u52a0 4\uff0c\u7528 \u003ccode class=\"md-inline\"\u003ediscard\u003c/code\u003e \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c \u003ccode class=\"md-inline\"\u003e3 in s\u003c/code\u003e \u7684\u7ed3\u679c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u5df2\u77e5 s = {1, 2, 3}\uff0c\u7528 add \u6dfb\u52a0 4\uff0c\u7528 discard \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c 3 in s \u7684\u7ed3\u679c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003es = {1, 2, 3}\n\ns.add(4)\ns.discard(99)\n\nprint(s)\nprint(3 in s)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e{1, 2, 3, 4}\nTrue\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 2, "6.2 \u96c6\u5408\uff1a\u65e0\u5e8f\u4e0d\u91cd\u590d", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u5df2\u77e5 s = {1, 2, 3}\uff0c\u7528 add \u6dfb\u52a0 4\uff0c\u7528 discard \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c 3 in s \u7684\u7ed3\u679c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5df2\u77e5 `s = {1, 2, 3}`\uff0c\u7528 `add` \u6dfb\u52a0 4\uff0c\u7528 `discard` \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c `3 in s` \u7684\u7ed3\u679c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u5df2\u77e5 \u003ccode class=\"md-inline\"\u003es = {1, 2, 3}\u003c/code\u003e\uff0c\u7528 \u003ccode class=\"md-inline\"\u003eadd\u003c/code\u003e \u6dfb\u52a0 4\uff0c\u7528 \u003ccode class=\"md-inline\"\u003ediscard\u003c/code\u003e \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c \u003ccode class=\"md-inline\"\u003e3 in s\u003c/code\u003e \u7684\u7ed3\u679c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u5df2\u77e5 s = {1, 2, 3}\uff0c\u7528 add \u6dfb\u52a0 4\uff0c\u7528 discard \u5220\u9664\u4e0d\u5b58\u5728\u7684 99\uff0c\u8f93\u51fa\u6700\u7ec8\u96c6\u5408\u548c 3 in s \u7684\u7ed3\u679c\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -618,20 +625,7 @@ print(unique)</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">s = {1, 2, 3}
-
-s.add(4)
-s.discard(99)
-
-print(s)
-print(3 in s)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">{1, 2, 3, 4}
-True</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">discard(99)</code> 元素不存在也不报错（<code class="md-inline">remove</code> 会报 KeyError）；<code class="md-inline">3 in s</code> 判断成员。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -641,25 +635,43 @@ True</pre></div></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(6, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c6.2 \u96c6\u5408\uff1a\u65e0\u5e8f\u4e0d\u91cd\u590d\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(6, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u521b\u5efa\u96c6\u5408\u3001\u589e\u5220\u3001\u5224\u65ad")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：创建集合、增删、判断
             </div>
             <div class="ex-code-hint">
-              💡 提示：创建两个集合并进行交集并集运算。
+              💡 照着「创建集合、增删、判断」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+{1, 2, 3}
+{1, 2, 3, 4}
+{1, 2, 3, 4}
+True
+False
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>{1, 2, 3}
+{1, 2, 3, 4}
+{1, 2, 3, 4}
+True
+False</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(6, 2, 1, "\u521b\u5efa\u4e24\u4e2a\u96c6\u5408\u5e76\u8fdb\u884c\u4ea4\u96c6\u5e76\u96c6\u8fd0\u7b97\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(6, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u521b\u5efa\u96c6\u5408\u3001\u589e\u5220\u3001\u5224\u65ad\n\n\u7167\u7740\u300c\u521b\u5efa\u96c6\u5408\u3001\u589e\u5220\u3001\u5224\u65ad\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n{1, 2, 3}\n{1, 2, 3, 4}\n{1, 2, 3, 4}\nTrue\nFalse", "s = {1, 2, 2, 3, 3, 3}\nprint(s)\n\ns.add(4)\nprint(s)\n\n____\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\n\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -748,12 +760,17 @@ world: 1 次
 python: 1 次</pre></div>
 <p><strong>讲解</strong>：</p>
 <ul><li><code class="md-inline">split()</code> 把句子切成单词列表，<code class="md-inline">lower()</code> 统一小写（"Hello" 和 "hello" 算同一个词）；</li><li><strong>计数器模式</strong>：键在字典里 → 加 1；不在 → 初始化为 1；</li><li>词频统计是数据分析、搜索引擎、NLP 的基石，也是面试经典题；</li><li>注意 <code class="md-inline">text.lower().split()</code> 的链式调用：从左到右依次执行。</li></ul>
+<blockquote class="md-quote"><p><strong>⏱ 第 5 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：6.4–6.7 Debug 四件套 + 练习题 + 知识树（容器全景）</p>
+<p><strong>练习 10 分钟</strong>：任务 6-5：词频统计挑战题（字典 + 集合双练）</p>
+<p><strong>休息 10 分钟</strong>：预告函数：把重复代码打包</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day06.md</code> 第 5 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 3, "6.3 \u6570\u636e\u7ed3\u6784\u9009\u578b\uff1a\u4ec0\u4e48\u65f6\u5019\u7528\u4ec0\u4e48", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 items() \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eitems()\u003c/code\u003e \u8fd4\u56de\u952e\u503c\u5bf9\uff0c\u003ccode class=\"md-inline\"\u003efor name, age in ...\u003c/code\u003e \u76f4\u63a5\u89e3\u5305\u6210\u4e24\u4e2a\u53d8\u91cf\u2014\u2014\u904d\u5386\u5b57\u5178\u7684\u6807\u51c6\u59ff\u52bf\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 `items()` \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 \u003ccode class=\"md-inline\"\u003eitems()\u003c/code\u003e \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 items() \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003estudents = {\n    \u0026quot;\u5f20\u4e09\u0026quot;: 19,\n    \u0026quot;\u674e\u56db\u0026quot;: 20,\n    \u0026quot;\u738b\u4e94\u0026quot;: 18,\n}\n\nfor name, age in students.items():\n    print(f\u0026quot;{name}\uff1a{age} \u5c81\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff1a19 \u5c81\n\u674e\u56db\uff1a20 \u5c81\n\u738b\u4e94\uff1a18 \u5c81\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 3, "6.3 \u6570\u636e\u7ed3\u6784\u9009\u578b\uff1a\u4ec0\u4e48\u65f6\u5019\u7528\u4ec0\u4e48", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 items() \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 `items()` \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 \u003ccode class=\"md-inline\"\u003eitems()\u003c/code\u003e \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7528\u5b57\u5178\u4fdd\u5b58\u4e09\u4e2a\u540c\u5b66\u7684\u4fe1\u606f\uff08\u59d3\u540d\u3001\u5e74\u9f84\uff09\uff0c\u904d\u5386 items() \u8f93\u51fa\"\u5f20\u4e09\uff1a19 \u5c81\"\u683c\u5f0f\u7684\u4e09\u884c\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -793,22 +810,7 @@ python: 1 次</pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">students = {
-    &quot;张三&quot;: 19,
-    &quot;李四&quot;: 20,
-    &quot;王五&quot;: 18,
-}
-
-for name, age in students.items():
-    print(f&quot;{name}：{age} 岁&quot;)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">张三：19 岁
-李四：20 岁
-王五：18 岁</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">items()</code> 返回键值对，<code class="md-inline">for name, age in ...</code> 直接解包成两个变量——遍历字典的标准姿势。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -823,14 +825,17 @@ for name, age in students.items():
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「6.3 数据结构选型：什么时候用什么」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「6.3 数据结构选型：什么时候用什么」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「6.3 数据结构选型：什么时候用什么」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(6, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c6.3 \u6570\u636e\u7ed3\u6784\u9009\u578b\uff1a\u4ec0\u4e48\u65f6\u5019\u7528\u4ec0\u4e48\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(6, 3, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c6.3 \u6570\u636e\u7ed3\u6784\u9009\u578b\uff1a\u4ec0\u4e48\u65f6\u5019\u7528\u4ec0\u4e48\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c6.3 \u6570\u636e\u7ed3\u6784\u9009\u578b\uff1a\u4ec0\u4e48\u65f6\u5019\u7528\u4ec0\u4e48\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -945,7 +950,7 @@ print(data[key])</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 4, "6.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 a = [1, 2, 3, 4]\u3001b = [3, 4, 5, 6]\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u5148 \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u8f6c\u96c6\u5408\u518d\u8fd0\u7b97\uff08\u5217\u8868\u4e0d\u80fd\u76f4\u63a5\u505a \u003ccode class=\"md-inline\"\u003e\u0026amp;\u003c/code\u003e \u8fd0\u7b97\uff09\u3002\u003ccode class=\"md-inline\"\u003e^\u003c/code\u003e \u5bf9\u79f0\u5dee = \u5e76\u96c6 - \u4ea4\u96c6\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 `a = [1, 2, 3, 4]`\u3001`b = [3, 4, 5, 6]`\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 \u003ccode class=\"md-inline\"\u003ea = [1, 2, 3, 4]\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eb = [3, 4, 5, 6]\u003c/code\u003e\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 a = [1, 2, 3, 4]\u3001b = [3, 4, 5, 6]\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003ea = [1, 2, 3, 4]\nb = [3, 4, 5, 6]\n\nset_a = set(a)\nset_b = set(b)\n\nprint(f\u0026quot;\u4ea4\u96c6\uff1a{set_a \u0026amp; set_b}\u0026quot;)\nprint(f\u0026quot;\u5e76\u96c6\uff1a{set_a | set_b}\u0026quot;)\nprint(f\u0026quot;\u53ea\u5728 a \u4e2d\uff1a{set_a - set_b}\u0026quot;)\nprint(f\u0026quot;\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\uff1a{set_a ^ set_b}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u4ea4\u96c6\uff1a{3, 4}\n\u5e76\u96c6\uff1a{1, 2, 3, 4, 5, 6}\n\u53ea\u5728 a \u4e2d\uff1a{1, 2}\n\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\uff1a{1, 2, 5, 6}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 4, "6.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 a = [1, 2, 3, 4]\u3001b = [3, 4, 5, 6]\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 `a = [1, 2, 3, 4]`\u3001`b = [3, 4, 5, 6]`\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 \u003ccode class=\"md-inline\"\u003ea = [1, 2, 3, 4]\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eb = [3, 4, 5, 6]\u003c/code\u003e\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5df2\u77e5\u4e24\u4e2a\u5217\u8868 a = [1, 2, 3, 4]\u3001b = [3, 4, 5, 6]\uff0c\u7528\u96c6\u5408\u8fd0\u7b97\u5206\u522b\u8f93\u51fa\uff1a\u4ea4\u96c6\u3001\u5e76\u96c6\u3001\u53ea\u5728 a \u4e2d\u7684\u5143\u7d20\u3001\u53ea\u5c5e\u4e8e\u4e00\u4e2a\u96c6\u5408\u7684\u5143\u7d20\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -985,25 +990,7 @@ print(data[key])</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">a = [1, 2, 3, 4]
-b = [3, 4, 5, 6]
-
-set_a = set(a)
-set_b = set(b)
-
-print(f&quot;交集：{set_a &amp; set_b}&quot;)
-print(f&quot;并集：{set_a | set_b}&quot;)
-print(f&quot;只在 a 中：{set_a - set_b}&quot;)
-print(f&quot;只属于一个集合：{set_a ^ set_b}&quot;)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">交集：{3, 4}
-并集：{1, 2, 3, 4, 5, 6}
-只在 a 中：{1, 2}
-只属于一个集合：{1, 2, 5, 6}</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>先 <code class="md-inline">set()</code> 转集合再运算（列表不能直接做 <code class="md-inline">&amp;</code> 运算）。<code class="md-inline">^</code> 对称差 = 并集 - 交集。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1013,25 +1000,29 @@ print(f&quot;只属于一个集合：{set_a ^ set_b}&quot;)</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(6, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c6.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(6, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：问题代码
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「6.4 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+              💡 照着「问题代码」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(6, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c6.4 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(6, 4, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801\n\n\u7167\u7740\u300c\u95ee\u9898\u4ee3\u7801\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "user = {\"name\": \"\u5f20\u4e09\"}\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1121,7 +1112,7 @@ print(counter)</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 5, "6.5 Vibe Coding \u4efb\u52a1\u5361\uff08L1\uff09", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u6253\u64c2\u53f0\u6cd5\u7684\u5b57\u5178\u7248\u2014\u2014\u521d\u59cb\u5316 \u003ccode class=\"md-inline\"\u003ebest_score = -1\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eworst_score = 101\u003c/code\u003e\uff08\u6210\u7ee9\u8303\u56f4 0-100 \u5916\u7684\u503c\u505a\"\u64c2\u4e3b\"\uff0c\u4fdd\u8bc1\u7b2c\u4e00\u8f6e\u5fc5\u7136\u6362\u4eba\uff09\uff0c\u904d\u5386 \u003ccode class=\"md-inline\"\u003eitems()\u003c/code\u003e \u540c\u65f6\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L1\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003escores = {}\nfor i in range(5):\n    name = input(f\u0026quot;\u8bf7\u8f93\u5165\u7b2c {i + 1} \u4e2a\u5b66\u751f\u7684\u59d3\u540d\uff1a\u0026quot;)\n    score = int(input(\u0026quot;\u8bf7\u8f93\u5165\u6210\u7ee9\uff1a\u0026quot;))\n    scores[name] = score\n\nbest_name = \u0026quot;\u0026quot;\nbest_score = -1\nworst_name = \u0026quot;\u0026quot;\nworst_score = 101\n\nfor name, score in scores.items():\n    if score \u0026gt; best_score:\n        best_score = score\n        best_name = name\n    if score \u0026lt; worst_score:\n        worst_score = score\n        worst_name = name\n\nprint(f\u0026quot;\u6700\u9ad8\uff1a{best_name} {best_score} \u5206\u0026quot;)\nprint(f\u0026quot;\u6700\u4f4e\uff1a{worst_name} {worst_score} \u5206\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u793a\u4f8b\u8f93\u5165 \u5f20\u4e0988 \u674e\u56db95 \u738b\u4e9476 \u8d75\u516d99 \u94b1\u4e0361\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6700\u9ad8\uff1a\u8d75\u516d 99 \u5206\n\u6700\u4f4e\uff1a\u94b1\u4e03 61 \u5206\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 5, "6.5 Vibe Coding \u4efb\u52a1\u5361\uff08L1\uff09", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L1\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u8f93\u5165 5 \u4e2a\u5b66\u751f\u7684\u59d3\u540d\u548c\u6210\u7ee9\uff08\u7528\u5b57\u5178\u4fdd\u5b58\uff09\uff0c\u6700\u540e\u8f93\u51fa\u6210\u7ee9\u6700\u9ad8\u548c\u6700\u4f4e\u7684\u5b66\u751f\u59d3\u540d\u4e0e\u6210\u7ee9\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u5178\u6bd4\u8f83\uff0c\u6216\u7ed3\u5408 max/min \u4e0e items\u3002\uff09\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L1\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 7 \u9898\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\u540e\uff0c\u628a\u4f60\u7684\u4ee3\u7801\u53d1\u7ed9 AI \u9010\u884c\u8bb2\u89e3\uff1b\u91cd\u70b9\u95ee\"\u8ba1\u6570\u5668\u6a21\u5f0f\u4e3a\u4ec0\u4e48\u7528 in \u5224\u65ad\"\uff1f\u4e00\u53e5\u8bdd\u8bb0\u5f55\u7406\u89e3\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1162,34 +1153,7 @@ print(counter)</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">scores = {}
-for i in range(5):
-    name = input(f&quot;请输入第 {i + 1} 个学生的姓名：&quot;)
-    score = int(input(&quot;请输入成绩：&quot;))
-    scores[name] = score
-
-best_name = &quot;&quot;
-best_score = -1
-worst_name = &quot;&quot;
-worst_score = 101
-
-for name, score in scores.items():
-    if score &gt; best_score:
-        best_score = score
-        best_name = name
-    if score &lt; worst_score:
-        worst_score = score
-        worst_name = name
-
-print(f&quot;最高：{best_name} {best_score} 分&quot;)
-print(f&quot;最低：{worst_name} {worst_score} 分&quot;)</code></pre></div>
-<p><strong>运行结果</strong>（示例输入 张三88 李四95 王五76 赵六99 钱七61）：</p>
-<div class="md-figure"><pre class="md-diagram">最高：赵六 99 分
-最低：钱七 61 分</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>打擂台法的字典版——初始化 <code class="md-inline">best_score = -1</code>、<code class="md-inline">worst_score = 101</code>（成绩范围 0-100 外的值做"擂主"，保证第一轮必然换人），遍历 <code class="md-inline">items()</code> 同时更新姓名和成绩。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1204,14 +1168,17 @@ print(f&quot;最低：{worst_name} {worst_score} 分&quot;)</code></pre></div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「6.5 Vibe Coding 任务卡（L1）」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「6.5 Vibe Coding 任务卡（L1）」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「6.5 Vibe Coding 任务卡（L1）」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(6, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c6.5 Vibe Coding \u4efb\u52a1\u5361\uff08L1\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(6, 5, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c6.5 Vibe Coding \u4efb\u52a1\u5361\uff08L1\uff09\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c6.5 Vibe Coding \u4efb\u52a1\u5361\uff08L1\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -1304,7 +1271,7 @@ print(f&quot;最低：{worst_name} {worst_score} 分&quot;)</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 6, "6.6 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1\u6bcf\u4e2a\u5b57\u7b26\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cul\u003e\u003cli\u003e\u904d\u5386\u5b57\u7b26\u4e32\u9010\u4e2a\u5b57\u7b26\u7edf\u8ba1\uff0c\u7a7a\u683c\u7528 \u003ccode class=\"md-inline\"\u003econtinue\u003c/code\u003e \u8df3\u8fc7\uff1b\u003c/li\u003e\u003cli\u003e\u8ba1\u6570\u5668\u6a21\u5f0f\uff1a\u003ccode class=\"md-inline\"\u003ein\u003c/code\u003e \u5224\u65ad \u2192 \u52a0 1 \u6216\u521d\u59cb\u5316\u4e3a 1\uff1b\u003c/li\u003e\u003cli\u003e\u6700\u5927\u503c\u7528\u6253\u64c2\u53f0\uff08\u4e0d\u7528 \u003ccode class=\"md-inline\"\u003emax(counter, key=...)\u003c/code\u003e\uff0c\u56e0\u4e3a \u003ccode class=\"md-inline\"\u003ekey\u003c/code\u003e \u53c2\u6570\u7b2c 7 \u7ae0\u624d\u5b66\uff0c\u8fd9\u91cc\u624b\u5199\u6700\u7a33\uff09\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1**\u6bcf\u4e2a\u5b57\u7b26**\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1\u003cstrong\u003e\u6bcf\u4e2a\u5b57\u7b26\u003c/strong\u003e\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1\u6bcf\u4e2a\u5b57\u7b26\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etext = input(\u0026quot;\u8bf7\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff1a\u0026quot;)\n\ncounter = {}\nfor ch in text:\n    if ch == \u0026quot; \u0026quot;:\n        continue\n    if ch in counter:\n        counter[ch] += 1\n    else:\n        counter[ch] = 1\n\nmax_char = \u0026quot;\u0026quot;\nmax_count = 0\nfor ch, count in counter.items():\n    if count \u0026gt; max_count:\n        max_count = count\n        max_char = ch\n\nprint(f\u0026quot;\u51fa\u73b0\u6700\u591a\u7684\u5b57\u7b26\uff1a{max_char}\uff0c\u5171 {max_count} \u6b21\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08\u8f93\u5165 hello world\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u8bf7\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff1ahello world\n\u51fa\u73b0\u6700\u591a\u7684\u5b57\u7b26\uff1al\uff0c\u5171 3 \u6b21\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 6, "6.6 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1\u6bcf\u4e2a\u5b57\u7b26\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1**\u6bcf\u4e2a\u5b57\u7b26**\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1\u003cstrong\u003e\u6bcf\u4e2a\u5b57\u7b26\u003c/strong\u003e\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b57\u7b26\u9891\u6b21\u7edf\u8ba1\uff1a\u8f93\u5165\u4e00\u6bb5\u6587\u5b57\uff08\u4e2d\u6587\u82f1\u6587\u7686\u53ef\uff09\uff0c\u7edf\u8ba1\u6bcf\u4e2a\u5b57\u7b26\u51fa\u73b0\u7684\u6b21\u6570\uff08\u5ffd\u7565\u7a7a\u683c\uff09\uff0c\u8f93\u51fa\u51fa\u73b0\u6b21\u6570\u6700\u591a\u7684\u5b57\u7b26\u548c\u6b21\u6570\u3002\uff08\u63d0\u793a\uff1a\u904d\u5386\u5b57\u7b26\u4e32\uff0c\u7528\u5b57\u5178\u8ba1\u6570\uff0c\u518d\u7528\u5faa\u73af\u627e\u6700\u5927\u503c\u3002\uff09", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1344,32 +1311,7 @@ print(f&quot;最低：{worst_name} {worst_score} 分&quot;)</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">text = input(&quot;请输入一段文字：&quot;)
-
-counter = {}
-for ch in text:
-    if ch == &quot; &quot;:
-        continue
-    if ch in counter:
-        counter[ch] += 1
-    else:
-        counter[ch] = 1
-
-max_char = &quot;&quot;
-max_count = 0
-for ch, count in counter.items():
-    if count &gt; max_count:
-        max_count = count
-        max_char = ch
-
-print(f&quot;出现最多的字符：{max_char}，共 {max_count} 次&quot;)</code></pre></div>
-<p><strong>运行结果</strong>（输入 hello world）：</p>
-<div class="md-figure"><pre class="md-diagram">请输入一段文字：hello world
-出现最多的字符：l，共 3 次</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><ul><li>遍历字符串逐个字符统计，空格用 <code class="md-inline">continue</code> 跳过；</li><li>计数器模式：<code class="md-inline">in</code> 判断 → 加 1 或初始化为 1；</li><li>最大值用打擂台（不用 <code class="md-inline">max(counter, key=...)</code>，因为 <code class="md-inline">key</code> 参数第 7 章才学，这里手写最稳）。</li></ul></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1440,7 +1382,7 @@ print(f&quot;出现最多的字符：{max_char}，共 {max_count} 次&quot;)</co
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 7, "\u672c\u7ae0\u901f\u67e5", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u7684\u5751\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 nums = [3, 1, 2, 3, 4, 1, 5]\uff0c\u7528\u5faa\u73af + in \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 list(set(nums)) \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002 \u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e \u003col\u003e\u003cli\u003e\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cul\u003e\u003cli\u003e\u624b\u5199\u65b9\u6848\uff1a\u003ccode class=\"md-inline\"\u003e3\u003c/code\u003e \u7b2c\u4e00\u6b21\u51fa\u73b0 \u2192 \u52a0\u5165\uff1b\u7b2c\u4e8c\u4e2a \u003ccode class=\"md-inline\"\u003e3\u003c/code\u003e \u5df2\u5728\u5217\u8868\u91cc \u2192 \u8df3\u8fc7\u3002\u003cstrong\u003e\u987a\u5e8f = \u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\u003c/strong\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003eset\u003c/code\u003e \u65b9\u6848\uff1a\u96c6\u5408\u65e0\u5e8f\uff0c\u8f6c\u56de\u5217\u8868\u540e\u987a\u5e8f\u4e0d\u4fdd\u8bc1\u2014\u2014\u003ccode class=\"md-inline\"\u003e[3, 1, 2, 4, 5]\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003e[1, 2, 3, 4, 5]\u003c/code\u003e \u90fd\u53ef\u80fd\u51fa\u73b0\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u7ed3\u8bba\uff1a\u8981\u7a33\u5b9a\u987a\u5e8f\u7528\u624b\u5199\uff0c\u53ea\u6c42\u7ed3\u679c\u7528 set\u003c/strong\u003e\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 `nums = [3, 1, 2, 3, 4, 1, 5]`\uff0c\u7528\u5faa\u73af + `in` \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 `list(set(nums))` \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u7684\u5751\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 \u003ccode class=\"md-inline\"\u003enums = [3, 1, 2, 3, 4, 1, 5]\u003c/code\u003e\uff0c\u7528\u5faa\u73af + \u003ccode class=\"md-inline\"\u003ein\u003c/code\u003e \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 \u003ccode class=\"md-inline\"\u003elist(set(nums))\u003c/code\u003e \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u0026lt;code class=\"md-inline\"\u0026gt;{}\u0026lt;/code\u0026gt; \u548c \u0026lt;code class=\"md-inline\"\u0026gt;set()\u0026lt;/code\u0026gt; \u7684\u5751\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 nums = [3, 1, 2, 3, 4, 1, 5]\uff0c\u7528\u5faa\u73af + in \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 list(set(nums)) \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u7684\u5751\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003enums = [3, 1, 2, 3, 4, 1, 5]\n\nunique = []\nfor num in nums:\n    if num not in unique:\n        unique.append(num)\n\nprint(\u0026quot;\u624b\u5199\u53bb\u91cd\uff1a\u0026quot;, unique)\nprint(\u0026quot;set \u53bb\u91cd\uff1a\u0026quot;, list(set(nums)))\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff08set \u7684\u8f93\u51fa\u987a\u5e8f\u4e0d\u56fa\u5b9a\uff0c\u4ee5\u5b9e\u9645\u8fd0\u884c\u4e3a\u51c6\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u624b\u5199\u53bb\u91cd\uff1a [3, 1, 2, 4, 5]\nset \u53bb\u91cd\uff1a [1, 2, 3, 4, 5]\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(6, 7, "\u672c\u7ae0\u901f\u67e5", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u7684\u5751\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 nums = [3, 1, 2, 3, 4, 1, 5]\uff0c\u7528\u5faa\u73af + in \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 list(set(nums)) \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002 \u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e \u003col\u003e\u003cli\u003e\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 `nums = [3, 1, 2, 3, 4, 1, 5]`\uff0c\u7528\u5faa\u73af + `in` \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 `list(set(nums))` \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u7684\u5751\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 \u003ccode class=\"md-inline\"\u003enums = [3, 1, 2, 3, 4, 1, 5]\u003c/code\u003e\uff0c\u7528\u5faa\u73af + \u003ccode class=\"md-inline\"\u003ein\u003c/code\u003e \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 \u003ccode class=\"md-inline\"\u003elist(set(nums))\u003c/code\u003e \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u0026lt;code class=\"md-inline\"\u0026gt;{}\u0026lt;/code\u0026gt; \u548c \u0026lt;code class=\"md-inline\"\u0026gt;set()\u0026lt;/code\u0026gt; \u7684\u5751\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u4fdd\u6301\u987a\u5e8f\u53bb\u91cd\uff1a\u5df2\u77e5 nums = [3, 1, 2, 3, 4, 1, 5]\uff0c\u7528\u5faa\u73af + in \u5224\u65ad\u751f\u6210\u53bb\u91cd\u540e\u7684\u65b0\u5217\u8868\uff08\u987a\u5e8f\u4fdd\u6301\u7b2c\u4e00\u6b21\u51fa\u73b0\u7684\u987a\u5e8f\uff09\uff0c\u8f93\u51fa\u7ed3\u679c\uff1b\u7136\u540e\u5bf9\u6bd4 list(set(nums)) \u7684\u8f93\u51fa\uff0c\u8bf4\u660e\u4e24\u8005\u987a\u5e8f\u4e3a\u4ec0\u4e48\u53ef\u80fd\u4e0d\u540c\u3002\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u4ec0\u4e48\u7ed3\u6784\u5b58\"\u5b57\u7b26 \u2192 \u6b21\u6570\"\uff1f\u4e3a\u4ec0\u4e48\u5b57\u5178\u5408\u9002\uff1f\u003c/li\u003e\u003cli\u003e\u672c\u7ae0\u4f60\u6709\u6ca1\u6709\u8e29\u5230 \u003ccode class=\"md-inline\"\u003e{}\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eset()\u003c/code\u003e \u7684\u5751\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1481,22 +1423,7 @@ print(f&quot;出现最多的字符：{max_char}，共 {max_count} 次&quot;)</co
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">nums = [3, 1, 2, 3, 4, 1, 5]
-
-unique = []
-for num in nums:
-    if num not in unique:
-        unique.append(num)
-
-print(&quot;手写去重：&quot;, unique)
-print(&quot;set 去重：&quot;, list(set(nums)))</code></pre></div>
-<p><strong>运行结果</strong>（set 的输出顺序不固定，以实际运行为准）：</p>
-<div class="md-figure"><pre class="md-diagram">手写去重： [3, 1, 2, 4, 5]
-set 去重： [1, 2, 3, 4, 5]</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><ul><li>手写方案：<code class="md-inline">3</code> 第一次出现 → 加入；第二个 <code class="md-inline">3</code> 已在列表里 → 跳过。<strong>顺序 = 第一次出现的顺序</strong>；</li><li><code class="md-inline">set</code> 方案：集合无序，转回列表后顺序不保证——<code class="md-inline">[3, 1, 2, 4, 5]</code> 和 <code class="md-inline">[1, 2, 3, 4, 5]</code> 都可能出现；</li><li><strong>结论：要稳定顺序用手写，只求结果用 set</strong>。</li></ul></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             

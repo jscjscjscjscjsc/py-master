@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -123,12 +123,17 @@
             <p><strong>学完本章，你应该能够：</strong></p>
 <ol><li>理解继承的意义：复用 + 扩展；</li><li>掌握子类定义、方法重写、<code class="md-inline">super()</code> 调用父类方法；</li><li>理解多态：同一接口、不同实现，<code class="md-inline">isinstance</code> 与鸭子类型；</li><li>了解多继承与 MRO（方法解析顺序）；</li><li>用 <code class="md-inline">abc</code> 模块定义抽象基类（接口规范）；</li><li>用"is-a（先天）+ can-do（后天）"视角判断该不该多继承；</li><li>了解"接口 = 纯抽象类"的概念（can-do 的代码形态）；</li><li>区分"继承（is-a）"与"组合（has-a）"；</li><li>认识单例、工厂、观察者三个设计模式的<strong>思想</strong>（不背实现）；</li><li>继续遵守 L2 纪律：AI 是评审员，不写完整代码。</li></ol>
 <p><strong>前置知识</strong>：第 10 章（类、对象、封装、魔术方法）。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 5 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：11.1 继承 + 11.2 多态（11.3 多继承/MRO、11.4 抽象基类、11.6 设计模式降为课后了解）</p>
+<p><strong>练习 10 分钟</strong>：任务 11-5：给账户类写子类并重写方法</p>
+<p><strong>休息 10 分钟</strong>：提醒：子类重写时最容易漏 self</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day09.md</code> 第 5 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 0, "11.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Vehicle \u7236\u7c7b\uff08brand\u3001move() \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1bCar \u548c Bike \u5b50\u7c7b\u91cd\u5199 move()\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u5b50\u7c7b\u7ee7\u627f\u7236\u7c7b\u7684 \u003ccode class=\"md-inline\"\u003ebrand\u003c/code\u003e \u5c5e\u6027\uff08\u003ccode class=\"md-inline\"\u003e__init__\u003c/code\u003e \u590d\u7528\uff09\uff0c\u5404\u81ea\u91cd\u5199 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Vehicle` \u7236\u7c7b\uff08`brand`\u3001`move()` \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1b`Car` \u548c `Bike` \u5b50\u7c7b\u91cd\u5199 `move()`\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eVehicle\u003c/code\u003e \u7236\u7c7b\uff08\u003ccode class=\"md-inline\"\u003ebrand\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1b\u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eBike\u003c/code\u003e \u5b50\u7c7b\u91cd\u5199 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Vehicle \u7236\u7c7b\uff08brand\u3001move() \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1bCar \u548c Bike \u5b50\u7c7b\u91cd\u5199 move()\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Vehicle:\n    def __init__(self, brand):\n        self.brand = brand\n\n    def move(self):\n        return \u0026quot;\u884c\u9a76\u4e2d\u0026quot;\n\nclass Car(Vehicle):\n    def move(self):\n        return \u0026quot;\u6c7d\u8f66\u5728\u884c\u9a76\u0026quot;\n\nclass Bike(Vehicle):\n    def move(self):\n        return \u0026quot;\u81ea\u884c\u8f66\u5728\u9a91\u884c\u0026quot;\n\ncar = Car(\u0026quot;\u54c1\u724cA\u0026quot;)\nbike = Bike(\u0026quot;\u54c1\u724cB\u0026quot;)\nprint(car.move())\nprint(bike.move())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6c7d\u8f66\u5728\u884c\u9a76\n\u81ea\u884c\u8f66\u5728\u9a91\u884c\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 0, "11.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Vehicle \u7236\u7c7b\uff08brand\u3001move() \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1bCar \u548c Bike \u5b50\u7c7b\u91cd\u5199 move()\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b9a\u4e49 `Vehicle` \u7236\u7c7b\uff08`brand`\u3001`move()` \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1b`Car` \u548c `Bike` \u5b50\u7c7b\u91cd\u5199 `move()`\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eVehicle\u003c/code\u003e \u7236\u7c7b\uff08\u003ccode class=\"md-inline\"\u003ebrand\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1b\u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eBike\u003c/code\u003e \u5b50\u7c7b\u91cd\u5199 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b9a\u4e49 Vehicle \u7236\u7c7b\uff08brand\u3001move() \u8fd4\u56de\"\u884c\u9a76\u4e2d\"\uff09\uff1bCar \u548c Bike \u5b50\u7c7b\u91cd\u5199 move()\uff08\u5206\u522b\u8fd4\u56de\"\u6c7d\u8f66\u5728\u884c\u9a76\"\"\u81ea\u884c\u8f66\u5728\u9a91\u884c\"\uff09\uff1b\u521b\u5efa\u4e24\u4e2a\u5bf9\u8c61\u8c03\u7528\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -168,32 +173,7 @@
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Vehicle:
-    def __init__(self, brand):
-        self.brand = brand
-
-    def move(self):
-        return &quot;行驶中&quot;
-
-class Car(Vehicle):
-    def move(self):
-        return &quot;汽车在行驶&quot;
-
-class Bike(Vehicle):
-    def move(self):
-        return &quot;自行车在骑行&quot;
-
-car = Car(&quot;品牌A&quot;)
-bike = Bike(&quot;品牌B&quot;)
-print(car.move())
-print(bike.move())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">汽车在行驶
-自行车在骑行</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>子类继承父类的 <code class="md-inline">brand</code> 属性（<code class="md-inline">__init__</code> 复用），各自重写 <code class="md-inline">move()</code>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -381,7 +361,7 @@ print(s.name)</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 1, "11.1 \u7ee7\u627f\uff1a\u590d\u7528\u4e0e\u6269\u5c55", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Person\uff08name\u3001age\uff09\u548c Student(Person)\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 super().__init__ \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003esuper().__init__(name, age)\u003c/code\u003e \u5148\u6267\u884c\u7236\u7c7b\u521d\u59cb\u5316\uff08name\u3001age\uff09\uff0c\u518d\u8bbe\u7f6e\u81ea\u5df1\u7684 school\u3002\u003cstrong\u003e\u987a\u5e8f\u4e0d\u80fd\u53cd\u003c/strong\u003e\u2014\u2014\u7236\u7c7b\u5c5e\u6027\u8981\u5148\u5c31\u4f4d\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Person`\uff08name\u3001age\uff09\u548c `Student(Person)`\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 `super().__init__` \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003ePerson\u003c/code\u003e\uff08name\u3001age\uff09\u548c \u003ccode class=\"md-inline\"\u003eStudent(Person)\u003c/code\u003e\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 \u003ccode class=\"md-inline\"\u003esuper().__init__\u003c/code\u003e \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Person\uff08name\u3001age\uff09\u548c Student(Person)\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 super().__init__ \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\nclass Student(Person):\n    def __init__(self, name, age, school):\n        super().__init__(name, age)\n        self.school = school\n\n    def introduce(self):\n        return f\u0026quot;{self.name}\uff0c{self.age}\u5c81\uff0c\u5728{self.school}\u4e0a\u5b66\u0026quot;\n\ns = Student(\u0026quot;\u5f20\u4e09\u0026quot;, 19, \u0026quot;\u67d0\u67d0\u5927\u5b66\u0026quot;)\nprint(s.introduce())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5f20\u4e09\uff0c19\u5c81\uff0c\u5728\u67d0\u67d0\u5927\u5b66\u4e0a\u5b66\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 1, "11.1 \u7ee7\u627f\uff1a\u590d\u7528\u4e0e\u6269\u5c55", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Person\uff08name\u3001age\uff09\u548c Student(Person)\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 super().__init__ \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b9a\u4e49 `Person`\uff08name\u3001age\uff09\u548c `Student(Person)`\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 `super().__init__` \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003ePerson\u003c/code\u003e\uff08name\u3001age\uff09\u548c \u003ccode class=\"md-inline\"\u003eStudent(Person)\u003c/code\u003e\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 \u003ccode class=\"md-inline\"\u003esuper().__init__\u003c/code\u003e \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5b9a\u4e49 Person\uff08name\u3001age\uff09\u548c Student(Person)\uff08\u52a0 school\uff09\uff0c\u5b50\u7c7b\u7528 super().__init__ \u521d\u59cb\u5316\uff0c\u8f93\u51fa\u5b8c\u6574\u4ecb\u7ecd\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -421,27 +401,7 @@ print(s.name)</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-class Student(Person):
-    def __init__(self, name, age, school):
-        super().__init__(name, age)
-        self.school = school
-
-    def introduce(self):
-        return f&quot;{self.name}，{self.age}岁，在{self.school}上学&quot;
-
-s = Student(&quot;张三&quot;, 19, &quot;某某大学&quot;)
-print(s.introduce())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">张三，19岁，在某某大学上学</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">super().__init__(name, age)</code> 先执行父类初始化（name、age），再设置自己的 school。<strong>顺序不能反</strong>——父类属性要先就位。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -451,25 +411,37 @@ print(s.introduce())</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.1 \u7ee7\u627f\uff1a\u590d\u7528\u4e0e\u6269\u5c55\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u52a8\u7269\u7ee7\u627f\u4f53\u7cfb")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：动物继承体系
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.1 继承：复用与扩展」的核心用法演示一遍，并打印出结果。
+              💡 照着「动物继承体系」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+旺财
+...
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>旺财
+...</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c11.1 \u7ee7\u627f\uff1a\u590d\u7528\u4e0e\u6269\u5c55\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 1, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u52a8\u7269\u7ee7\u627f\u4f53\u7cfb\n\n\u7167\u7740\u300c\u52a8\u7269\u7ee7\u627f\u4f53\u7cfb\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n\u65fa\u8d22\n...", "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        return \"...\"\n\n\nclass Dog(Animal):\n    pass\n\n\nd = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -580,7 +552,7 @@ False</pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 2, "11.2 \u591a\u6001\uff1a\u540c\u4e00\u63a5\u53e3\uff0c\u4e0d\u540c\u5b9e\u73b0", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 isinstance \u5224\u65ad\uff1aCar \u5bf9\u8c61\u662f\u4e0d\u662f Vehicle \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Car \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Bike \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eCar \u662f Vehicle \u7684\u5b50\u7c7b\uff0c\u6240\u4ee5 car \u65e2\u662f Car \u7684\u5b9e\u4f8b\u4e5f\u662f Vehicle \u7684\u5b9e\u4f8b\uff1b\u4e0d\u662f Bike \u7684\u5b9e\u4f8b\u3002\u003cstrong\u003eisinstance \u7b2c\u4e00\u4e2a\u53c2\u6570\u662f\u5bf9\u8c61\uff0c\u7b2c\u4e8c\u4e2a\u662f\u7c7b\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 `isinstance` \u5224\u65ad\uff1a`Car` \u5bf9\u8c61\u662f\u4e0d\u662f `Vehicle` \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f `Car` \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f `Bike` \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 \u003ccode class=\"md-inline\"\u003eisinstance\u003c/code\u003e \u5224\u65ad\uff1a\u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e \u5bf9\u8c61\u662f\u4e0d\u662f \u003ccode class=\"md-inline\"\u003eVehicle\u003c/code\u003e \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f \u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f \u003ccode class=\"md-inline\"\u003eBike\u003c/code\u003e \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 isinstance \u5224\u65ad\uff1aCar \u5bf9\u8c61\u662f\u4e0d\u662f Vehicle \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Car \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Bike \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Vehicle:\n    pass\nclass Car(Vehicle):\n    pass\nclass Bike(Vehicle):\n    pass\n\ncar = Car()\nprint(isinstance(car, Vehicle))\nprint(isinstance(car, Car))\nprint(isinstance(car, Bike))\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003eTrue\nTrue\nFalse\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 2, "11.2 \u591a\u6001\uff1a\u540c\u4e00\u63a5\u53e3\uff0c\u4e0d\u540c\u5b9e\u73b0", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u7528 isinstance \u5224\u65ad\uff1aCar \u5bf9\u8c61\u662f\u4e0d\u662f Vehicle \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Car \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Bike \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u7528 `isinstance` \u5224\u65ad\uff1a`Car` \u5bf9\u8c61\u662f\u4e0d\u662f `Vehicle` \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f `Car` \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f `Bike` \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u7528 \u003ccode class=\"md-inline\"\u003eisinstance\u003c/code\u003e \u5224\u65ad\uff1a\u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e \u5bf9\u8c61\u662f\u4e0d\u662f \u003ccode class=\"md-inline\"\u003eVehicle\u003c/code\u003e \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f \u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f \u003ccode class=\"md-inline\"\u003eBike\u003c/code\u003e \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u7528 isinstance \u5224\u65ad\uff1aCar \u5bf9\u8c61\u662f\u4e0d\u662f Vehicle \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Car \u7684\u5b9e\u4f8b\uff1f\u662f\u4e0d\u662f Bike \u7684\u5b9e\u4f8b\uff1f\u8f93\u51fa\u4e09\u4e2a\u5e03\u5c14\u503c\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -620,25 +592,7 @@ False</pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Vehicle:
-    pass
-class Car(Vehicle):
-    pass
-class Bike(Vehicle):
-    pass
-
-car = Car()
-print(isinstance(car, Vehicle))
-print(isinstance(car, Car))
-print(isinstance(car, Bike))</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">True
-True
-False</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>Car 是 Vehicle 的子类，所以 car 既是 Car 的实例也是 Vehicle 的实例；不是 Bike 的实例。<strong>isinstance 第一个参数是对象，第二个是类</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -648,25 +602,39 @@ False</pre></div></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.2 \u591a\u6001\uff1a\u540c\u4e00\u63a5\u53e3\uff0c\u4e0d\u540c\u5b9e\u73b0\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u591a\u6001\u8c03\u7528")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：多态调用
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.2 多态：同一接口，不同实现」的核心用法演示一遍，并打印出结果。
+              💡 照着「多态调用」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+旺财：汪汪
+咪咪：喵
+未知：...
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>旺财：汪汪
+咪咪：喵
+未知：...</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c11.2 \u591a\u6001\uff1a\u540c\u4e00\u63a5\u53e3\uff0c\u4e0d\u540c\u5b9e\u73b0\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u591a\u6001\u8c03\u7528\n\n\u7167\u7740\u300c\u591a\u6001\u8c03\u7528\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n\u65fa\u8d22\uff1a\u6c6a\u6c6a\n\u54aa\u54aa\uff1a\u55b5\n\u672a\u77e5\uff1a...", "class Animal:\n    def speak(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def speak(self):\n        return \"\u6c6a\u6c6a\"\n\nclass Cat(Animal):\n    def speak(self):\n        return \"\u55b5\"\n\ndef make_sound(animal):\n    return animal.speak()          # \u4e0d\u7ba1\u4ec0\u4e48\u52a8\u7269\uff0c\u53ea\u8981\u4f1a speak\n\nanimals = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\nfor animal in animals:\n    print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -807,7 +775,7 @@ print(d.guide())           # 来自 Guidable（can-do）</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 3, "11.3 \u591a\u7ee7\u627f\u4e0e MRO\uff08\u4e86\u89e3\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa [Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")] \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 move()\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003e\u5faa\u73af\u91cc\u4e0d\u5224\u65ad\u7c7b\u578b\uff0c\u7edf\u4e00\u8c03\u7528 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\u2014\u2014\u003cstrong\u003e\u540c\u4e00\u4e2a\u8c03\u7528\u3001\u4e0d\u540c\u5b9e\u73b0\uff0c\u8fd9\u5c31\u662f\u591a\u6001\u003c/strong\u003e\u3002\u60f3\u52a0\u4e2a Bus\uff0c\u53ea\u8981\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff0c\u5faa\u73af\u4e0d\u7528\u6539\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa `[Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")]` \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 `move()`\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa \u003ccode class=\"md-inline\"\u003e[Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")]\u003c/code\u003e \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa [Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")] \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 move()\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Vehicle:\n    def move(self):\n        return \u0026quot;\u884c\u9a76\u4e2d\u0026quot;\n\nclass Car(Vehicle):\n    def move(self):\n        return \u0026quot;\u6c7d\u8f66\u5728\u884c\u9a76\u0026quot;\n\nclass Bike(Vehicle):\n    def move(self):\n        return \u0026quot;\u81ea\u884c\u8f66\u5728\u9a91\u884c\u0026quot;\n\nvehicles = [Car(\u0026quot;\u54c1\u724cA\u0026quot;), Bike(\u0026quot;\u54c1\u724cB\u0026quot;)]\n\nfor v in vehicles:\n    print(v.move())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6c7d\u8f66\u5728\u884c\u9a76\n\u81ea\u884c\u8f66\u5728\u9a91\u884c\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 3, "11.3 \u591a\u7ee7\u627f\u4e0e MRO\uff08\u4e86\u89e3\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa [Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")] \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 move()\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa `[Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")]` \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 `move()`\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa \u003ccode class=\"md-inline\"\u003e[Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")]\u003c/code\u003e \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u591a\u6001\u7ec3\u4e60\uff1a\u521b\u5efa [Car(\"\u54c1\u724cA\"), Bike(\"\u54c1\u724cB\")] \u5217\u8868\uff0c\u7528\u5faa\u73af\u7edf\u4e00\u8c03\u7528 move()\uff0c\u8f93\u51fa\u5404\u81ea\u7684\u884c\u9a76\u63cf\u8ff0\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -847,29 +815,7 @@ print(d.guide())           # 来自 Guidable（can-do）</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Vehicle:
-    def move(self):
-        return &quot;行驶中&quot;
-
-class Car(Vehicle):
-    def move(self):
-        return &quot;汽车在行驶&quot;
-
-class Bike(Vehicle):
-    def move(self):
-        return &quot;自行车在骑行&quot;
-
-vehicles = [Car(&quot;品牌A&quot;), Bike(&quot;品牌B&quot;)]
-
-for v in vehicles:
-    print(v.move())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">汽车在行驶
-自行车在骑行</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>循环里不判断类型，统一调用 <code class="md-inline">move()</code>——<strong>同一个调用、不同实现，这就是多态</strong>。想加个 Bus，只要实现 <code class="md-inline">move()</code>，循环不用改。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -879,25 +825,37 @@ for v in vehicles:
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.3 \u591a\u7ee7\u627f\u4e0e MRO\uff08\u4e86\u89e3\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u591a\u7ee7\u627f")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：多继承
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.3 多继承与 MRO（了解）」的核心用法演示一遍，并打印出结果。
+              💡 照着「多继承」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+B
+[&lt;class &#39;__main__.D&#39;&gt;, &lt;class &#39;__main__.B&#39;&gt;, &lt;class &#39;__main__.C&#39;&gt;, &lt;class &#39;__main__.A&#39;&gt;, &lt;class &#39;object&#39;&gt;]
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>B
+[&lt;class &#39;__main__.D&#39;&gt;, &lt;class &#39;__main__.B&#39;&gt;, &lt;class &#39;__main__.C&#39;&gt;, &lt;class &#39;__main__.A&#39;&gt;, &lt;class &#39;object&#39;&gt;]</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c11.3 \u591a\u7ee7\u627f\u4e0e MRO\uff08\u4e86\u89e3\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 3, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u591a\u7ee7\u627f\n\n\u7167\u7740\u300c\u591a\u7ee7\u627f\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\nB\n[\u003cclass \u0027__main__.D\u0027\u003e, \u003cclass \u0027__main__.B\u0027\u003e, \u003cclass \u0027__main__.C\u0027\u003e, \u003cclass \u0027__main__.A\u0027\u003e, \u003cclass \u0027object\u0027\u003e]", "class A:\n    def who(self):\n        return \"A\"\n\nclass B(A):\n    def who(self):\n        return \"B\"\n\nclass C(A):\n    def who(self):\n        return \"C\"\n\nclass D(B, C):\n    pass\n\nd = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1045,7 +1003,7 @@ print(d.guide())</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 4, "11.4 \u62bd\u8c61\u57fa\u7c7b\uff1a\u5f3a\u5236\"\u5fc5\u987b\u5b9e\u73b0\"", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 Shape(ABC)\uff08\u62bd\u8c61\u65b9\u6cd5 area\uff09\uff0cCircle \u548c Rectangle \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa Shape() \u89c2\u5bdf\u62a5\u9519\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eShape\u003c/code\u003e \u5e26\u62bd\u8c61\u65b9\u6cd5\u4e0d\u80fd\u5b9e\u4f8b\u5316\uff08\u62a5 \u003ccode class=\"md-inline\"\u003eTypeError: Can\u0027t instantiate abstract class...\u003c/code\u003e\uff09\u3002\u5b50\u7c7b\u5fc5\u987b\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003earea\u003c/code\u003e\u2014\u2014\u003cstrong\u003e\u63a5\u53e3\u89c4\u8303\u88ab\u5f3a\u5236\u6267\u884c\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 `Shape(ABC)`\uff08\u62bd\u8c61\u65b9\u6cd5 `area`\uff09\uff0c`Circle` \u548c `Rectangle` \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa `Shape()` \u89c2\u5bdf\u62a5\u9519\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eShape(ABC)\u003c/code\u003e\uff08\u62bd\u8c61\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003earea\u003c/code\u003e\uff09\uff0c\u003ccode class=\"md-inline\"\u003eCircle\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eRectangle\u003c/code\u003e \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa \u003ccode class=\"md-inline\"\u003eShape()\u003c/code\u003e \u89c2\u5bdf\u62a5\u9519\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 Shape(ABC)\uff08\u62bd\u8c61\u65b9\u6cd5 area\uff09\uff0cCircle \u548c Rectangle \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa Shape() \u89c2\u5bdf\u62a5\u9519\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\nclass Circle(Shape):\n    def __init__(self, radius):\n        self.radius = radius\n    def area(self):\n        return 3.14 * self.radius ** 2\n\nclass Rectangle(Shape):\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n    def area(self):\n        return self.width * self.height\n\nprint(Circle(2).area())\nprint(Rectangle(3, 4).area())\n\n# \u5c1d\u8bd5\u5b9e\u4f8b\u5316\u62bd\u8c61\u7c7b\uff08\u4f1a\u62a5\u9519\uff09\n# Shape()\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e12.56\n12\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 4, "11.4 \u62bd\u8c61\u57fa\u7c7b\uff1a\u5f3a\u5236\"\u5fc5\u987b\u5b9e\u73b0\"", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 Shape(ABC)\uff08\u62bd\u8c61\u65b9\u6cd5 area\uff09\uff0cCircle \u548c Rectangle \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa Shape() \u89c2\u5bdf\u62a5\u9519\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 `Shape(ABC)`\uff08\u62bd\u8c61\u65b9\u6cd5 `area`\uff09\uff0c`Circle` \u548c `Rectangle` \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa `Shape()` \u89c2\u5bdf\u62a5\u9519\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eShape(ABC)\u003c/code\u003e\uff08\u62bd\u8c61\u65b9\u6cd5 \u003ccode class=\"md-inline\"\u003earea\u003c/code\u003e\uff09\uff0c\u003ccode class=\"md-inline\"\u003eCircle\u003c/code\u003e \u548c \u003ccode class=\"md-inline\"\u003eRectangle\u003c/code\u003e \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa \u003ccode class=\"md-inline\"\u003eShape()\u003c/code\u003e \u89c2\u5bdf\u62a5\u9519\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u62bd\u8c61\u57fa\u7c7b\uff1a\u5b9a\u4e49 Shape(ABC)\uff08\u62bd\u8c61\u65b9\u6cd5 area\uff09\uff0cCircle \u548c Rectangle \u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e24\u79cd\u5f62\u72b6\u7684\u5bf9\u8c61\u5e76\u8f93\u51fa\u9762\u79ef\uff1b\u518d\u5c1d\u8bd5\u76f4\u63a5\u521b\u5efa Shape() \u89c2\u5bdf\u62a5\u9519\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1085,38 +1043,7 @@ print(d.guide())</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from abc import ABC, abstractmethod
-
-class Shape(ABC):
-    @abstractmethod
-    def area(self):
-        pass
-
-class Circle(Shape):
-    def __init__(self, radius):
-        self.radius = radius
-    def area(self):
-        return 3.14 * self.radius ** 2
-
-class Rectangle(Shape):
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-    def area(self):
-        return self.width * self.height
-
-print(Circle(2).area())
-print(Rectangle(3, 4).area())
-
-# 尝试实例化抽象类（会报错）
-# Shape()</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">12.56
-12</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">Shape</code> 带抽象方法不能实例化（报 <code class="md-inline">TypeError: Can't instantiate abstract class...</code>）。子类必须实现 <code class="md-inline">area</code>——<strong>接口规范被强制执行</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1126,25 +1053,37 @@ print(Rectangle(3, 4).area())
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.4 \u62bd\u8c61\u57fa\u7c7b\uff1a\u5f3a\u5236\"\u5fc5\u987b\u5b9e\u73b0\"\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u62bd\u8c61\u57fa\u7c7b Shape")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：抽象基类 Shape
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.4 抽象基类：强制&#34;必须实现&#34;」的核心用法演示一遍，并打印出结果。
+              💡 照着「抽象基类 Shape」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+12.56
+16
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>12.56
+16</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c11.4 \u62bd\u8c61\u57fa\u7c7b\uff1a\u5f3a\u5236\"\u5fc5\u987b\u5b9e\u73b0\"\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 4, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u62bd\u8c61\u57fa\u7c7b Shape\n\n\u7167\u7740\u300c\u62bd\u8c61\u57fa\u7c7b Shape\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n12.56\n16", "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\n\nclass Circle(Shape):\n    def __init__(self, radius):\n        self.radius = radius\n\n    def area(self):\n        return 3.14 * self.radius ** 2\n\n\nclass Square(Shape):\n    def __init__(self, side):\n        self.side = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\n    def area(self):\n        return self.side ** 2\n\n\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1236,7 +1175,7 @@ print(car.start())</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 5, "11.5 \u7ec4\u5408\u4f18\u4e8e\u7ee7\u627f", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 Engine\uff08start() \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c Car\uff08has-a Engine\uff0cstart() \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eCar \u003cstrong\u003ehas-a\u003c/strong\u003e Engine\uff08\u7ec4\u5408\uff09\u3002\u60f3\u6362\"\u7535\u52a8\u53d1\u52a8\u673a\"\uff0c\u53ea\u9700\u6362\u7ec4\u5408\u8fdb\u6765\u7684\u5bf9\u8c61\uff0cCar \u7684\u4ee3\u7801\u4e0d\u7528\u6539\u2014\u2014\u003cstrong\u003e\u7ec4\u5408\u6bd4\u7ee7\u627f\u66f4\u7075\u6d3b\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 `Engine`\uff08`start()` \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c `Car`\uff08`has-a` Engine\uff0c`start()` \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eEngine\u003c/code\u003e\uff08\u003ccode class=\"md-inline\"\u003estart()\u003c/code\u003e \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c \u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e\uff08\u003ccode class=\"md-inline\"\u003ehas-a\u003c/code\u003e Engine\uff0c\u003ccode class=\"md-inline\"\u003estart()\u003c/code\u003e \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 Engine\uff08start() \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c Car\uff08has-a Engine\uff0cstart() \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Engine:\n    def start(self):\n        return \u0026quot;\u53d1\u52a8\u673a\u542f\u52a8\u0026quot;\n\nclass Car:\n    def __init__(self, brand):\n        self.brand = brand\n        self.engine = Engine()\n\n    def start(self):\n        return f\u0026quot;{self.brand}\uff1a{self.engine.start()}\u0026quot;\n\ncar = Car(\u0026quot;\u67d0\u54c1\u724c\u0026quot;)\nprint(car.start())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u67d0\u54c1\u724c\uff1a\u53d1\u52a8\u673a\u542f\u52a8\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 5, "11.5 \u7ec4\u5408\u4f18\u4e8e\u7ee7\u627f", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 Engine\uff08start() \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c Car\uff08has-a Engine\uff0cstart() \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 `Engine`\uff08`start()` \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c `Car`\uff08`has-a` Engine\uff0c`start()` \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 \u003ccode class=\"md-inline\"\u003eEngine\u003c/code\u003e\uff08\u003ccode class=\"md-inline\"\u003estart()\u003c/code\u003e \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c \u003ccode class=\"md-inline\"\u003eCar\u003c/code\u003e\uff08\u003ccode class=\"md-inline\"\u003ehas-a\u003c/code\u003e Engine\uff0c\u003ccode class=\"md-inline\"\u003estart()\u003c/code\u003e \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L2\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u7ec4\u5408\u7ec3\u4e60\uff1a\u5b9a\u4e49 Engine\uff08start() \u8fd4\u56de\"\u53d1\u52a8\u673a\u542f\u52a8\"\uff09\u548c Car\uff08has-a Engine\uff0cstart() \u8c03\u7528 engine \u7684 start\uff09\uff0c\u9a8c\u8bc1\u8f93\u51fa\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L2\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u540e\uff0c\u628a\u4f60\u7684\u5de5\u5382\u51fd\u6570\u53d1\u7ed9 AI \u5ba1\u67e5\uff0c\u91cd\u70b9\u95ee\"\u5982\u679c\u65b0\u589e\u4e00\u79cd\u4ea4\u901a\u5de5\u5177\uff0c\u8c03\u7528\u5904\u8981\u6539\u5417\uff1f\u5de5\u5382\u7684\u4ef7\u503c\u5728\u54ea\uff1f\"\u8bb0\u5f55\u7ed3\u8bba\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1277,26 +1216,7 @@ print(car.start())</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Engine:
-    def start(self):
-        return &quot;发动机启动&quot;
-
-class Car:
-    def __init__(self, brand):
-        self.brand = brand
-        self.engine = Engine()
-
-    def start(self):
-        return f&quot;{self.brand}：{self.engine.start()}&quot;
-
-car = Car(&quot;某品牌&quot;)
-print(car.start())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">某品牌：发动机启动</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>Car <strong>has-a</strong> Engine（组合）。想换"电动发动机"，只需换组合进来的对象，Car 的代码不用改——<strong>组合比继承更灵活</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1306,25 +1226,35 @@ print(car.start())</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.5 \u7ec4\u5408\u4f18\u4e8e\u7ee7\u627f\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u7ec4\u5408")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：组合
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.5 组合优于继承」的核心用法演示一遍，并打印出结果。
+              💡 照着「组合」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+某品牌：发动机启动
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>某品牌：发动机启动</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c11.5 \u7ec4\u5408\u4f18\u4e8e\u7ee7\u627f\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 5, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u7ec4\u5408\n\n\u7167\u7740\u300c\u7ec4\u5408\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n\u67d0\u54c1\u724c\uff1a\u53d1\u52a8\u673a\u542f\u52a8", "class Engine:\n    def start(self):\n        return \"\u53d1\u52a8\u673a\u542f\u52a8\"\n\nclass Car:\n    def __init__(self, brand):\n        self.brand = brand\n        self.engine = Engine()      # Car \u62e5\u6709\u4e00\u4e2a Engine\n\n    def start(self):\n        return f\"{self.brand}\uff1a{self.engine.start()}\"\n\n\ncar = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1424,12 +1354,17 @@ print(animal.speak())</code></pre></div>
 <h3 class="md-h">11.6.3 观察者模式（Observer）：订阅-通知（了解思想）</h3>
 <p><strong>场景</strong>：微信公众号发文章，关注的人都会收到通知。<strong>观察者模式</strong>就是"一对多"的通知机制——被观察者状态变化时，自动通知所有"订阅者"。</p>
 <p><strong>真实场景</strong>：GUI 按钮点击事件、Web 框架的信号、消息队列的订阅发布。<strong>本课程了解思想即可</strong>，最终项目如果做"数据变更后刷新页面"，用类似思路。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 6 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：11.7 综合案例（课堂以「银行账户：储蓄/信用账户」场景改造使用）+ 11.8 Debug + 练习题</p>
+<p><strong>练习 10 分钟</strong>：任务 11-6：扩展第三种账户类型 + 用 Trae 生成 v2 做审查对比</p>
+<p><strong>休息 10 分钟</strong>：收尾点题：Day13 把大模型装进 LLMClient 类</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day09.md</code> 第 6 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 6, "11.6 \u8bbe\u8ba1\u6a21\u5f0f\u5165\u95e8\uff1a\u4e09\u4e2a\u7ecf\u5178\u601d\u60f3", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1aAnimal(ABC) \u62bd\u8c61\u7c7b\uff08speak \u62bd\u8c61\u65b9\u6cd5 + name \u5c5e\u6027\uff09\uff0cDog\u3001Cat\u3001Bird \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 speak() \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cul\u003e\u003cli\u003e\u62bd\u8c61\u7c7b \u003ccode class=\"md-inline\"\u003eAnimal\u003c/code\u003e \u5f3a\u5236\"\u6240\u6709\u52a8\u7269\u5fc5\u987b\u4f1a speak\"\uff1b\u003c/li\u003e\u003cli\u003e\u591a\u6001\uff1a\u5faa\u73af\u91cc\u7edf\u4e00\u8c03 \u003ccode class=\"md-inline\"\u003espeak()\u003c/code\u003e\uff1b\u003c/li\u003e\u003cli\u003e\u7edf\u8ba1\u7528 \u003ccode class=\"md-inline\"\u003etype(animal).__name__\u003c/code\u003e \u62ff\u5230\u7c7b\u540d\uff08\"Dog\"\uff09\uff0c\u5b57\u5178\u8ba1\u6570\uff08\u7b2c 6 \u7ae0\u8ba1\u6570\u5668\u6a21\u5f0f\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003cstrong\u003e\u5982\u679c speak \u4e0d\u8bbe\u62bd\u8c61\u65b9\u6cd5\u003c/strong\u003e\uff1a\u4efb\u4f55\"\u52a8\u7269\"\u6f0f\u5b9e\u73b0\u90fd\u4e0d\u4f1a\u62a5\u9519\uff0c\u8fd0\u884c\u65f6\u624d\u5d29\u6e83\u2014\u2014\u62bd\u8c61\u57fa\u7c7b\u628a\u9519\u8bef\u63d0\u524d\u5230\"\u521b\u5efa\u5bf9\u8c61\u65f6\"\u3002\u003c/li\u003e\u003c/ul\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1a`Animal(ABC)` \u62bd\u8c61\u7c7b\uff08`speak` \u62bd\u8c61\u65b9\u6cd5 + `name` \u5c5e\u6027\uff09\uff0c`Dog`\u3001`Cat`\u3001`Bird` \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 `speak()` \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1a\u003ccode class=\"md-inline\"\u003eAnimal(ABC)\u003c/code\u003e \u62bd\u8c61\u7c7b\uff08\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u62bd\u8c61\u65b9\u6cd5 + \u003ccode class=\"md-inline\"\u003ename\u003c/code\u003e \u5c5e\u6027\uff09\uff0c\u003ccode class=\"md-inline\"\u003eDog\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eCat\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eBird\u003c/code\u003e \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 \u003ccode class=\"md-inline\"\u003espeak()\u003c/code\u003e \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1aAnimal(ABC) \u62bd\u8c61\u7c7b\uff08speak \u62bd\u8c61\u65b9\u6cd5 + name \u5c5e\u6027\uff09\uff0cDog\u3001Cat\u3001Bird \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 speak() \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom abc import ABC, abstractmethod\n\nclass Animal(ABC):\n    def __init__(self, name):\n        self.name = name\n\n    @abstractmethod\n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        return \u0026quot;\u6c6a\u6c6a\u0026quot;\n\nclass Cat(Animal):\n    def speak(self):\n        return \u0026quot;\u55b5\u0026quot;\n\nclass Bird(Animal):\n    def speak(self):\n        return \u0026quot;\u53fd\u53fd\u0026quot;\n\nzoo = [Dog(\u0026quot;\u65fa\u8d22\u0026quot;), Cat(\u0026quot;\u54aa\u54aa\u0026quot;), Bird(\u0026quot;\u5c0f\u98de\u0026quot;), Dog(\u0026quot;\u5927\u9ec4\u0026quot;)]\n\ncounter = {}\nfor animal in zoo:\n    print(f\u0026quot;{animal.name}\uff1a{animal.speak()}\u0026quot;)\n    kind = type(animal).__name__\n    if kind in counter:\n        counter[kind] += 1\n    else:\n        counter[kind] = 1\n\nprint(\u0026quot;\u7edf\u8ba1\uff1a\u0026quot;, counter)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u65fa\u8d22\uff1a\u6c6a\u6c6a\n\u54aa\u54aa\uff1a\u55b5\n\u5c0f\u98de\uff1a\u53fd\u53fd\n\u5927\u9ec4\uff1a\u6c6a\u6c6a\n\u7edf\u8ba1\uff1a {\u0026#x27;Dog\u0026#x27;: 2, \u0026#x27;Cat\u0026#x27;: 1, \u0026#x27;Bird\u0026#x27;: 1}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 6, "11.6 \u8bbe\u8ba1\u6a21\u5f0f\u5165\u95e8\uff1a\u4e09\u4e2a\u7ecf\u5178\u601d\u60f3", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1aAnimal(ABC) \u62bd\u8c61\u7c7b\uff08speak \u62bd\u8c61\u65b9\u6cd5 + name \u5c5e\u6027\uff09\uff0cDog\u3001Cat\u3001Bird \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 speak() \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1a`Animal(ABC)` \u62bd\u8c61\u7c7b\uff08`speak` \u62bd\u8c61\u65b9\u6cd5 + `name` \u5c5e\u6027\uff09\uff0c`Dog`\u3001`Cat`\u3001`Bird` \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 `speak()` \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1a\u003ccode class=\"md-inline\"\u003eAnimal(ABC)\u003c/code\u003e \u62bd\u8c61\u7c7b\uff08\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u62bd\u8c61\u65b9\u6cd5 + \u003ccode class=\"md-inline\"\u003ename\u003c/code\u003e \u5c5e\u6027\uff09\uff0c\u003ccode class=\"md-inline\"\u003eDog\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eCat\u003c/code\u003e\u3001\u003ccode class=\"md-inline\"\u003eBird\u003c/code\u003e \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 \u003ccode class=\"md-inline\"\u003espeak()\u003c/code\u003e \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u52a8\u7269\u56ed\u7cfb\u7edf\uff1aAnimal(ABC) \u62bd\u8c61\u7c7b\uff08speak \u62bd\u8c61\u65b9\u6cd5 + name \u5c5e\u6027\uff09\uff0cDog\u3001Cat\u3001Bird \u4e09\u4e2a\u5b50\u7c7b\u5b9e\u73b0\uff1b\u521b\u5efa\u4e00\u4e2a\u52a8\u7269\u5217\u8868\uff0c\u5faa\u73af\u8c03\u7528 speak() \u5e76\u7edf\u8ba1\u6bcf\u79cd\u52a8\u7269\u7684\u6570\u91cf\uff08\u7528\u5b57\u5178\uff09\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1469,50 +1404,7 @@ print(animal.speak())</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from abc import ABC, abstractmethod
-
-class Animal(ABC):
-    def __init__(self, name):
-        self.name = name
-
-    @abstractmethod
-    def speak(self):
-        pass
-
-class Dog(Animal):
-    def speak(self):
-        return &quot;汪汪&quot;
-
-class Cat(Animal):
-    def speak(self):
-        return &quot;喵&quot;
-
-class Bird(Animal):
-    def speak(self):
-        return &quot;叽叽&quot;
-
-zoo = [Dog(&quot;旺财&quot;), Cat(&quot;咪咪&quot;), Bird(&quot;小飞&quot;), Dog(&quot;大黄&quot;)]
-
-counter = {}
-for animal in zoo:
-    print(f&quot;{animal.name}：{animal.speak()}&quot;)
-    kind = type(animal).__name__
-    if kind in counter:
-        counter[kind] += 1
-    else:
-        counter[kind] = 1
-
-print(&quot;统计：&quot;, counter)</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">旺财：汪汪
-咪咪：喵
-小飞：叽叽
-大黄：汪汪
-统计： {&#x27;Dog&#x27;: 2, &#x27;Cat&#x27;: 1, &#x27;Bird&#x27;: 1}</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><ul><li>抽象类 <code class="md-inline">Animal</code> 强制"所有动物必须会 speak"；</li><li>多态：循环里统一调 <code class="md-inline">speak()</code>；</li><li>统计用 <code class="md-inline">type(animal).__name__</code> 拿到类名（"Dog"），字典计数（第 6 章计数器模式）；</li><li><strong>如果 speak 不设抽象方法</strong>：任何"动物"漏实现都不会报错，运行时才崩溃——抽象基类把错误提前到"创建对象时"。</li></ul></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1522,25 +1414,35 @@ print(&quot;统计：&quot;, counter)</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.6 \u8bbe\u8ba1\u6a21\u5f0f\u5165\u95e8\uff1a\u4e09\u4e2a\u7ecf\u5178\u601d\u60f3\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u5355\u4f8b\u914d\u7f6e\u7c7b")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：单例配置类
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.6 设计模式入门：三个经典思想」的核心用法演示一遍，并打印出结果。
+              💡 照着「单例配置类」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+True
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>True</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c11.6 \u8bbe\u8ba1\u6a21\u5f0f\u5165\u95e8\uff1a\u4e09\u4e2a\u7ecf\u5178\u601d\u60f3\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 6, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u5355\u4f8b\u914d\u7f6e\u7c7b\n\n\u7167\u7740\u300c\u5355\u4f8b\u914d\u7f6e\u7c7b\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\nTrue", "class Config:\n    _instance = None\n\n    def __new__(cls):\n        if cls._instance is None:\n            cls._instance = super().__new__(cls)\n        return cls._instance\n\n\nc1 = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nc2 = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1661,7 +1563,7 @@ print(f&quot;总面积：{total:.2f}&quot;)</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 7, "11.7 \u7efc\u5408\u6848\u4f8b\uff1a\u56fe\u5f62\u9762\u79ef\u7cfb\u7edf", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 create_vehicle(kind, brand) \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e \"car\" / \"bike\" \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 move()\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f \u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u5de5\u5382\u6a21\u5f0f = \u003cstrong\u003e\u628a\"\u521b\u5efa\u903b\u8f91\"\u4ece\"\u4f7f\u7528\u903b\u8f91\"\u4e2d\u5206\u79bb\u003c/strong\u003e\u3002\u672c\u8bfe\u7a0b\u7684\u6700\u7ec8\u9879\u76ee\u91cc\uff0c\u6839\u636e\u6587\u4ef6\u7c7b\u578b\u521b\u5efa\u89e3\u6790\u5668\u3001\u6839\u636e\u652f\u4ed8\u65b9\u5f0f\u521b\u5efa\u652f\u4ed8\u5904\u7406\u5668\uff0c\u90fd\u4f1a\u7528\u5230\u8fd9\u4e2a\u601d\u60f3\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 `create_vehicle(kind, brand)` \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e `\"car\"` / `\"bike\"` \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 `move()`\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 \u003ccode class=\"md-inline\"\u003ecreate_vehicle(kind, brand)\u003c/code\u003e \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e \u003ccode class=\"md-inline\"\u003e\"car\"\u003c/code\u003e / \u003ccode class=\"md-inline\"\u003e\"bike\"\u003c/code\u003e \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/p\u003e\n\u003cp\u003e\u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u0026lt;code class=\"md-inline\"\u0026gt;speak\u0026lt;/code\u0026gt; \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 create_vehicle(kind, brand) \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e \"car\" / \"bike\" \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 move()\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eclass Vehicle:\n    def move(self):\n        return \u0026quot;\u884c\u9a76\u4e2d\u0026quot;\n\nclass Car(Vehicle):\n    def move(self):\n        return \u0026quot;\u6c7d\u8f66\u5728\u884c\u9a76\u0026quot;\n\nclass Bike(Vehicle):\n    def move(self):\n        return \u0026quot;\u81ea\u884c\u8f66\u5728\u9a91\u884c\u0026quot;\n\ndef create_vehicle(kind, brand):\n    \u0026quot;\u0026quot;\u0026quot;\u5de5\u5382\u51fd\u6570\uff1a\u6839\u636e kind \u521b\u5efa\u5bf9\u5e94\u5bf9\u8c61\u0026quot;\u0026quot;\u0026quot;\n    if kind == \u0026quot;car\u0026quot;:\n        return Car()\n    elif kind == \u0026quot;bike\u0026quot;:\n        return Bike()\n    else:\n        return Vehicle()\n\nvehicles = [\n    create_vehicle(\u0026quot;car\u0026quot;, \u0026quot;A\u0026quot;),\n    create_vehicle(\u0026quot;bike\u0026quot;, \u0026quot;B\u0026quot;),\n    create_vehicle(\u0026quot;car\u0026quot;, \u0026quot;C\u0026quot;),\n]\n\nfor v in vehicles:\n    print(v.move())\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6c7d\u8f66\u5728\u884c\u9a76\n\u81ea\u884c\u8f66\u5728\u9a91\u884c\n\u6c7d\u8f66\u5728\u884c\u9a76\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u6ce8\u91ca\u91cc\u8981\u56de\u7b54\u7684\u95ee\u9898\u003c/strong\u003e\uff08\u4e0d\u5199\u4f1a\u600e\u6837\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u5982\u679c\u4e0d\u52a0\u5de5\u5382\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u5c31\u8981\u5199\uff1a\nif kind == \u0026quot;car\u0026quot;: v = Car()\nelif kind == \u0026quot;bike\u0026quot;: v = Bike()\n...\n\u5982\u679c\u521b\u5efa\u903b\u8f91\u6709 10 \u79cd\u7c7b\u578b\uff0c\u8fd9\u4e2a if \u94fe\u8981\u590d\u5236\u5230\u6bcf\u4e2a\u4f7f\u7528\u7684\u5730\u65b9\uff1b\n\u4ee5\u540e\u65b0\u589e\u4e00\u79cd\u7c7b\u578b\uff0c\u6240\u6709\u4f7f\u7528\u5904\u90fd\u8981\u6539\uff08\u8fdd\u53cd DRY\uff09\u3002\n\u5de5\u5382\u628a\u0026quot;\u521b\u5efa\u54ea\u79cd\u5bf9\u8c61\u0026quot;\u7684\u5224\u65ad\u96c6\u4e2d\u5230\u4e00\u5904\uff1a\u8c03\u7528\u8005\u53ea\u8bf4\u0026quot;\u8981 car\u0026quot;\uff0c\n\u5de5\u5382\u8d1f\u8d23\u0026quot;\u600e\u4e48\u521b\u5efa\u0026quot;\uff1b\u65b0\u589e\u7c7b\u578b\u53ea\u6539\u5de5\u5382\uff0c\u8c03\u7528\u5904\u4e00\u884c\u4e0d\u52a8\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 7, "11.7 \u7efc\u5408\u6848\u4f8b\uff1a\u56fe\u5f62\u9762\u79ef\u7cfb\u7edf", [{"body": "\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u003c/li\u003e\u003c/ol\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 create_vehicle(kind, brand) \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e \"car\" / \"bike\" \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 move()\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f \u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/\u2026\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 `create_vehicle(kind, brand)` \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e `\"car\"` / `\"bike\"` \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 `move()`\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f\n\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u003c/li\u003e\u003c/ol\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 \u003ccode class=\"md-inline\"\u003ecreate_vehicle(kind, brand)\u003c/code\u003e \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e \u003ccode class=\"md-inline\"\u003e\"car\"\u003c/code\u003e / \u003ccode class=\"md-inline\"\u003e\"bike\"\u003c/code\u003e \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 \u003ccode class=\"md-inline\"\u003emove()\u003c/code\u003e\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f\u003c/p\u003e\n\u003cp\u003e\u0026lt;p\u0026gt;\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u0026lt;/p\u0026gt; \u0026lt;ol\u0026gt;\u0026lt;li\u0026gt;\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u0026lt;code class=\"md-inline\"\u0026gt;speak\u0026lt;/code\u0026gt; \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u0026lt;/li\u0026gt;\u0026lt;li\u0026gt;\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u0026lt;/li\u0026gt;\u0026lt;/ol\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u5de5\u5382\u6a21\u5f0f\uff1a\u5199 create_vehicle(kind, brand) \u5de5\u5382\u51fd\u6570\uff0c\u6839\u636e \"car\" / \"bike\" \u8fd4\u56de\u5bf9\u5e94\u5bf9\u8c61\uff1b\u7528\u5de5\u5382\u521b\u5efa 3 \u8f86\u8f66\u52a0\u5165\u5217\u8868\uff0c\u5faa\u73af\u8f93\u51fa\u6bcf\u8f86\u7684 move()\uff1b\u601d\u8003\u5e76\u5199\u5728\u6ce8\u91ca\u91cc\uff1a\u5982\u679c\u4e0d\u52a0\"\u5de5\u5382\"\u8fd9\u4e00\u5c42\uff0c\u8c03\u7528\u5904\u7684\u4ee3\u7801\u4f1a\u6709\u4ec0\u4e48\u95ee\u9898\uff1f\n\u003cp\u003e\u63d0\u4ea4\u540e\uff0c\u5728 Prompt \u65e5\u5fd7\u4e2d\u56de\u7b54\uff1a\u003c/p\u003e\n\u003col\u003e\u003cli\u003e\u7b2c 7 \u9898\u4f60\u7528\u4e86\u62bd\u8c61\u57fa\u7c7b\u5417\uff1f\u003ccode class=\"md-inline\"\u003espeak\u003c/code\u003e \u4e0d\u8bbe\u6210\u62bd\u8c61\u65b9\u6cd5\u4f1a\u6709\u4ec0\u4e48\u9690\u60a3\uff1f\u003c/li\u003e\u003cli\u003e\u7b2c 8 \u9898\u5de5\u5382\u6a21\u5f0f\u7684\"\u597d\u5904\"\u4f60\u7528\u4e00\u53e5\u8bdd\u6982\u62ec\u4e86\u5417\uff1fAI \u8bc4\u5ba1\u6709\u6ca1\u6709\u7ed9\u51fa\u4e0d\u540c\u7684\u6269\u5c55\u65b9\u6848\uff1f\u003c/li\u003e\u003c/ol\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1702,52 +1604,7 @@ print(f&quot;总面积：{total:.2f}&quot;)</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">class Vehicle:
-    def move(self):
-        return &quot;行驶中&quot;
-
-class Car(Vehicle):
-    def move(self):
-        return &quot;汽车在行驶&quot;
-
-class Bike(Vehicle):
-    def move(self):
-        return &quot;自行车在骑行&quot;
-
-def create_vehicle(kind, brand):
-    &quot;&quot;&quot;工厂函数：根据 kind 创建对应对象&quot;&quot;&quot;
-    if kind == &quot;car&quot;:
-        return Car()
-    elif kind == &quot;bike&quot;:
-        return Bike()
-    else:
-        return Vehicle()
-
-vehicles = [
-    create_vehicle(&quot;car&quot;, &quot;A&quot;),
-    create_vehicle(&quot;bike&quot;, &quot;B&quot;),
-    create_vehicle(&quot;car&quot;, &quot;C&quot;),
-]
-
-for v in vehicles:
-    print(v.move())</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">汽车在行驶
-自行车在骑行
-汽车在行驶</pre></div>
-<p><strong>注释里要回答的问题</strong>（不写会怎样）：</p>
-<div class="md-figure"><pre class="md-diagram">如果不加工厂这一层，调用处就要写：
-if kind == &quot;car&quot;: v = Car()
-elif kind == &quot;bike&quot;: v = Bike()
-...
-如果创建逻辑有 10 种类型，这个 if 链要复制到每个使用的地方；
-以后新增一种类型，所有使用处都要改（违反 DRY）。
-工厂把&quot;创建哪种对象&quot;的判断集中到一处：调用者只说&quot;要 car&quot;，
-工厂负责&quot;怎么创建&quot;；新增类型只改工厂，调用处一行不动。</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>工厂模式 = <strong>把"创建逻辑"从"使用逻辑"中分离</strong>。本课程的最终项目里，根据文件类型创建解析器、根据支付方式创建支付处理器，都会用到这个思想。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1757,25 +1614,41 @@ elif kind == &quot;bike&quot;: v = Bike()
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.7 \u7efc\u5408\u6848\u4f8b\uff1a\u56fe\u5f62\u9762\u79ef\u7cfb\u7edf\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u62bd\u8c61\u57fa\u7c7b + \u591a\u6001 + \u7ec4\u5408\u7684\u7efc\u5408\u8fd0\u7528")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：抽象基类 + 多态 + 组合的综合运用
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.7 综合案例：图形面积系统」的核心用法演示一遍，并打印出结果。
+              💡 照着「抽象基类 + 多态 + 组合的综合运用」的做法，把下面的代码补完整，让它能跑出正确结果。
+跑出来的结果应该是：
+圆形面积：12.56
+矩形面积：12.00
+圆形面积：3.14
+总面积：27.70
             </div>
+            
+            <div class="ex-expect">
+              <span class="ex-expect-label">预期输出</span>
+              <pre>圆形面积：12.56
+矩形面积：12.00
+圆形面积：3.14
+总面积：27.70</pre>
+            </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 7, 1, "\u7528\u4ee3\u7801\u628a\u300c11.7 \u7efc\u5408\u6848\u4f8b\uff1a\u56fe\u5f62\u9762\u79ef\u7cfb\u7edf\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 7, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u62bd\u8c61\u57fa\u7c7b + \u591a\u6001 + \u7ec4\u5408\u7684\u7efc\u5408\u8fd0\u7528\n\n\u7167\u7740\u300c\u62bd\u8c61\u57fa\u7c7b + \u591a\u6001 + \u7ec4\u5408\u7684\u7efc\u5408\u8fd0\u7528\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8dd1\u51fa\u6765\u7684\u7ed3\u679c\u5e94\u8be5\u662f\uff1a\n\u5706\u5f62\u9762\u79ef\uff1a12.56\n\u77e9\u5f62\u9762\u79ef\uff1a12.00\n\u5706\u5f62\u9762\u79ef\uff1a3.14\n\u603b\u9762\u79ef\uff1a27.70", "from abc import ABC, abstractmethod\n\nclass Shape(ABC):\n    @abstractmethod\n    def area(self):\n        pass\n\n    @abstractmethod\n    def name(self):\n        pass\n\n\nclass Circle(Shape):\n    def __init__(self, radius):\n        self.radius = radius\n\n    def area(self):\n        return 3.14 * self.radius ** 2\n\n    def name(self):\n        return \"\u5706\u5f62\"\n\n\nclass Rectangle(Shape):\n    def __init__(self, width, height):\n        self.width = width\n        self.height = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\n    def area(self):\n        return self.width * self.height\n\n    def name(self):\n        return \"\u77e9\u5f62\"\n\n\nshapes = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\ntotal = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nfor shape in shapes:\n    area = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n    ____\n    print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9\n\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1909,7 +1782,7 @@ print(isinstance(Dog, d))</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 8, "11.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c11.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d", "type": "code"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(11, 8, "11.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"code_prompt": "\u7167\u7740\u300c\u95ee\u9898\u4ee3\u7801\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "code_starter": "class Person:\n    def __init__(self, name):\n        self.name = name\n\nclass Student(Person):\n    def __init__(self, name, school):\n        self.school = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\ns = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9", "expect": "", "explanation": "\u5bf9\u7167\u9898\u9762\u7ed9\u51fa\u7684\u9884\u671f\u8f93\u51fa\u68c0\u67e5\u81ea\u5df1\u7684\u7ed3\u679c\u3002\u7ed3\u679c\u4e00\u81f4\u5373\u8868\u793a\u8fd9\u4e00\u8282\u7684\u6838\u5fc3\u7528\u6cd5\u4f60\u5df2\u7ecf\u4f1a\u7528\u3002", "question": "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801", "source": "\u4ee3\u7801\u6848\u4f8b ", "type": "code"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1922,25 +1795,29 @@ print(isinstance(Dog, d))</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 1</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(11, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c11.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(11, '0', "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：问题代码
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「11.8 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+              💡 照着「问题代码」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(11, 8, 0, "\u7528\u4ee3\u7801\u628a\u300c11.8 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(11, 8, 0, "\u8865\u5168\u4ee3\u7801\uff1a\u95ee\u9898\u4ee3\u7801\n\n\u7167\u7740\u300c\u95ee\u9898\u4ee3\u7801\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "class Person:\n    def __init__(self, name):\n        self.name = name\n\nclass Student(Person):\n    def __init__(self, name, school):\n        self.school = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n\ns = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>

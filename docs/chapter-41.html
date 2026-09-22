@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyMaster — LangFlow：可视化搭出你的第一个 AI 应用（结课专题）</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/chapter_intro_3d.css">
+<link rel="stylesheet" href="static/css/star_map.css">
+<link rel="stylesheet" href="static/vendor/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/theme/material-darker.min.css">
+<link rel="stylesheet" href="static/vendor/codemirror/addon/lint/lint.min.css">
+
+<link rel="stylesheet" href="static/css/atlas.css">
+<link rel="stylesheet" href="static/css/narration.css">
+<link rel="stylesheet" href="static/css/md_content.css">
+<link rel="stylesheet" href="static/css/cultivation.css">
+<link rel="stylesheet" href="static/css/music.css">
+<!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
+     而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
+<script src="static/js/narration_player.js"></script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
+  <link rel="stylesheet" href="static/css/atmosphere.css">
+<!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
+     这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
+<link rel="stylesheet" href="static/css/lesson.css">
+<link rel="stylesheet" href="static/css/code_light.css">
+<script src="static/js/static_mode.js"></script>
+<script>window.PYMASTER_STATIC = true;</script>
+</head>
+<body class="chapter-page" data-chapter-id="41" data-chapter-title="LangFlow：可视化搭出你的第一个 AI 应用（结课专题）" data-chapter-description="学完本章，你应该能够：
+
+- 说出 LangFlow 是什么、适合什么场景；
+- 独立安装并启动 LangFlow；
+- 拖拽搭建一个接入 DeepSeek 的对话 Flow；
+- 体验&#34;给 AI 喂文档&#34;的 RAG 流程（了解级）；
+- ">
+
+
+
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="brand-icon">🐍</span>
+      <span>PyMaster</span>
+    </div>
+    <div class="nav-user">
+      <button class="nav-tool-btn" onclick="showFavorites()" title="我的收藏"><span class="nav-tool-label">收藏</span></button>
+      <button class="nav-tool-btn" onclick="showWrongBook()" title="错题本"><span class="nav-tool-label">错题</span></button>
+      <a href="/coach" class="btn-playground-nav" style="margin-right:8px;" title="带哲思追问的 AI 教练">星辰教练</a>
+      <a href="/training" class="btn-playground-nav" style="margin-right:8px;">刷题中心</a>
+      <a href="/progress" class="btn-playground-nav" style="margin-right:8px;">学习仪表盘</a>
+      <a href="playground.html" class="btn-playground-nav" style="margin-right:8px;">
+        练习场
+      </a>
+      <button id="music-toggle-btn" onclick="AmbientMusic.toggle()" title="背景音乐" class="nav-quiet-btn">音乐</button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="切换日间 / 深空主题" aria-label="切换日间 / 深空主题"><span class="theme-glyph" aria-hidden="true">☾</span><span class="theme-label">主题</span></button>
+      <button class="btn-theme-toggle" onclick="openStarMap()" title="打开星海知识图谱" aria-label="打开星海知识图谱"><span class="theme-glyph" aria-hidden="true">✦</span><span class="theme-label">星海</span></button>
+      <button class="user-chip" id="user-chip" onclick="openAccountPanel()" title="账号、头像与切换">
+        <span class="user-avatar" id="user-avatar">游</span>
+        <span class="user-name">游客</span>
+      </button>
+      <a href="index.html" class="btn-ghost" style="padding:6px 14px;font-size:13px;">← 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<div class="chapter-content">
+  <!-- Hero -->
+  <div class="chapter-hero">
+    <p class="chapter-eyebrow">PYTHON ATLAS / CHAPTER 41</p>
+    <span class="hero-icon">🎛️</span>
+    <h2>第 41 章 · LangFlow：可视化搭出你的第一个 AI 应用（结课专题）</h2>
+    <p class="hero-desc">学完本章，你应该能够：
+
+- 说出 LangFlow 是什么、适合什么场景；
+- 独立安装并启动 LangFlow；
+- 拖拽搭建一个接入 DeepSeek 的对话 Flow；
+- 体验&#34;给 AI 喂文档&#34;的 RAG 流程（了解级）；
+- </p>
+    <div class="hero-buttons">
+      <button class="btn-mindmap-hero" onclick="ChapterIntro3D.replay()">↗ 重播章节 CG</button>
+      
+      
+      
+      <button class="btn-mindmap-hero "
+        onclick="openMindmap()">
+        🧠 思维大纲 
+      </button>
+      <button class="btn-mindmap-hero btn-my-mindmap" onclick="openMyMindmap()" title="制作你自己的思维导图">
+        ✏️ 我的思维导图
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Knowledge Points Panel -->
+  <div id="knowledge-panel" class="knowledge-panel active">
+    
+    
+    
+    
+    
+    <div id="kp-1" class="kp-item  unlocked"
+         data-kp-index="0" data-kp-key="41_0">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">01.</span>
+          
+          30.0 学习目标与前置知识
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>学完本章，你应该能够：</strong></p>
+<ol><li>说出 LangFlow 是什么、适合什么场景；</li><li>独立安装并启动 LangFlow；</li><li>拖拽搭建一个接入 DeepSeek 的对话 Flow；</li><li>体验"给 AI 喂文档"的 RAG 流程（了解级）；</li><li>用 <code class="md-inline">requests</code> 调用自己搭的 Flow（10 行代码）。</li></ol>
+<p><strong>前置知识</strong>：第 11 章（requests）、第 13 天（messages 结构、API Key、工具调用循环）。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 0, "30.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_0"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 0, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 0)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 0)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_0" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 0, '30.0 学习目标与前置知识')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 0, '30.0 学习目标与前置知识')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-2" class="kp-item  unlocked"
+         data-kp-index="1" data-kp-key="41_1">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">02.</span>
+          
+          30.1 概念认知：LangFlow 是什么
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">30.1.1 一句话定义</h3>
+<p><strong>LangFlow 是 LangChain 生态的开源可视化编排工具</strong>：把"写代码搭 LLM 应用"变成"拖组件、连线条"。Python 编写、BSD 开源、本地可部署，GitHub 数万 star。</p>
+<h3 class="md-h">30.1.2 它和第 28 章手写代码的关系（关键认知）</h3>
+<p>第 28 章你手写过这个循环：</p>
+<div class="md-figure"><pre class="md-diagram">用户输入 → messages.append → 调 API → 读 response → 再 append</pre></div>
+<p>LangFlow 把这些代码变成一个个<strong>组件（Component）</strong>：</p>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>你手写过的</th><th>LangFlow 里的组件</th></tr></thead><tbody><tr><td><code class="md-inline">input()</code> 接收问题</td><td>Chat Input</td></tr><tr><td>组装 system prompt</td><td>Prompt</td></tr><tr><td><code class="md-inline">client.chat.completions.create(...)</code></td><td>Language Model</td></tr><tr><td><code class="md-inline">print(response)</code></td><td>Chat Output</td></tr><tr><td>第 9 章 JSON 读写</td><td>File Loader / Data Storage</td></tr><tr><td>第 28 章工具调用循环</td><td>Agent 组件</td></tr></tbody></table></div>
+<p><strong>所以组件不神秘——每个组件你都手写过它的核心</strong>。可视化只是把"代码流"画成了"数据流"。</p>
+<h3 class="md-h">30.1.3 什么时候用 LangFlow，什么时候写代码</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>场景</th><th>选择</th></tr></thead><tbody><tr><td>快速验证一个想法（今天想明天演示）</td><td>✅ LangFlow</td></tr><tr><td>教学、给非程序同学演示 AI 流程</td><td>✅ LangFlow</td></tr><tr><td>要精确控制每个参数、接入复杂业务逻辑</td><td>❌ 写代码</td></tr><tr><td>要集成进产品（小程序/App 后端）</td><td>⚠️ LangFlow 搭原型 → 导出 API → 代码集成</td></tr></tbody></table></div>
+<p><strong>本课程立场</strong>：两条路都要会。<strong>可视化做原型，代码做集成</strong>——这正是今天你要打通的闭环。</p>
+<p><strong>微任务卡（M1 · 讲解卡 · L3）</strong>：把本节表格发给 AI，提问："对比 LangFlow 拖拽开发和手写 LangChain 代码的优劣，我该从哪个入门？"一句话记录结论。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 2 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：30.1 LangFlow 是什么、与手写代码的关系 + 30.2 安装启动（pip install langflow）</p>
+<p><strong>练习 10 分钟</strong>：任务 30-2：启动 LangFlow 并打开画布截图</p>
+<p><strong>休息 10 分钟</strong>：首次启动慢/端口占用/Python 版本，先打预防针</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day14.md</code> 第 2 单元</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 1, "30.1 \u6982\u5ff5\u8ba4\u77e5\uff1aLangFlow \u662f\u4ec0\u4e48", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_1"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 1, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 1)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 1)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_1" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 1, '30.1 概念认知：LangFlow 是什么')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 1, '30.1 概念认知：LangFlow 是什么')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-3" class="kp-item  unlocked"
+         data-kp-index="2" data-kp-key="41_2">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">03.</span>
+          
+          30.2 安装与启动
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">30.2.1 语法掌握：三步启动</h3>
+<div class="md-codeblock" data-lang="bash"><div class="md-codebar"><span class="md-codelang">bash</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-bash"># 1. 建议在 Day08 学过的虚拟环境里安装（Python 3.10–3.12）
+pip install langflow
+
+# 2. 启动（首次启动较慢，耐心等）
+langflow run
+
+# 3. 浏览器打开提示的地址（默认类似 http://localhost:7860）</code></pre></div>
+<p>看到画布界面 = 启动成功。</p>
+<h3 class="md-h">30.2.2 语法掌握：认识画布</h3>
+<div class="md-figure"><pre class="md-diagram">┌─────────┐    ┌─────────┐    ┌─────────────┐    ┌─────────────┐
+│ Chat    │ →  │ Prompt  │ →  │ Language    │ →  │ Chat        │
+│ Input   │    │ 模板    │    │ Model       │    │ Output      │
+└─────────┘    └─────────┘    └─────────────┘    └─────────────┘
+   提问          剧本模板        调大模型            输出回答</pre></div>
+<ul><li><strong>Flow</strong> = 一张画布上的完整应用；</li><li><strong>组件</strong> = 节点，右边栏可调参数；</li><li><strong>连线</strong> = 数据从左流向右（提问 → 模板 → 模型 → 回答）。</li></ul>
+<blockquote class="md-quote"><p><strong>⏱ 第 3 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：30.3 实操一：搭最简对话 Flow 并接入国产大模型（OpenAI 兼容配置）</p>
+<p><strong>练习 10 分钟</strong>：任务 30-3：跑通一轮问答；口述「这个组件对应 Day13 哪行代码」</p>
+<p><strong>休息 10 分钟</strong>：点睛环节：指着画布讲对应代码</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day14.md</code> 第 3 单元</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 2, "30.2 \u5b89\u88c5\u4e0e\u542f\u52a8", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c30.2 \u5b89\u88c5\u4e0e\u542f\u52a8\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c30.2 \u5b89\u88c5\u4e0e\u542f\u52a8\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="2">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(41, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c30.2 \u5b89\u88c5\u4e0e\u542f\u52a8\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              编写代码验证「30.2 安装与启动」
+            </div>
+            <div class="ex-code-hint">
+              💡 用代码把「30.2 安装与启动」的核心用法演示一遍，并打印出结果。
+            </div>
+            
+            <div class="ex-actions" style="margin-top:12px;">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(41, 2, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c30.2 \u5b89\u88c5\u4e0e\u542f\u52a8\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c30.2 \u5b89\u88c5\u4e0e\u542f\u52a8\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_2"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 2, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 2)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 2)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_2" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 2, '30.2 安装与启动')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 2, '30.2 安装与启动')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-4" class="kp-item  unlocked"
+         data-kp-index="3" data-kp-key="41_3">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">04.</span>
+          
+          30.3 实操一：搭一个最简对话 Flow
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>目标</strong>：接入 DeepSeek，跑通第一轮问答。</p>
+<p><strong>步骤</strong>：</p>
+<ol><li>New Flow → 从空白画布开始；</li><li>拖入 Chat Input、Prompt、Language Model、Chat Output 四个组件；</li><li>依次连线（Input → Prompt → Model → Output）；</li><li>在 Language Model 组件里配置模型参数（OpenAI 兼容）：</li></ol>
+<div class="md-figure"><pre class="md-diagram">Base URL:  https://api.deepseek.com   （以实际服务商文档为准）
+API Key:   你的 Key（粘贴进组件的 key 字段）
+Model:     deepseek-chat              （以服务商模型列表为准）</pre></div>
+<ol><li>Prompt 模板里写一句 system 类设定，例如："你是一个 Python 编程助教，只回答 14 天 Python 课学过的内容。"</li><li>点 Playground 对话测试。</li></ol>
+<p><strong>原理探秘：你拖的这条线 = 你写的代码</strong></p>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python"># Day13 手写版（回顾）——LangFlow 的四个组件正好对应这四步
+messages = [{&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是一个Python编程助教&quot;}]  # Prompt 组件
+messages.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: user_input})            # Chat Input
+resp = client.chat.completions.create(model=&quot;deepseek-chat&quot;,
+                                      messages=messages)             # Language Model
+print(resp.choices[0].message.content)                              # Chat Output</code></pre></div>
+<p class="md-callout md-good"><strong>✅ 检验标准</strong>：能指着画布上每个组件，说出它对应上面代码的哪一行。</p>
+<p><strong>微任务卡（M2 · 审查卡 · L3）</strong>：让 AI 生成一个"带历史记忆的 Flow 搭建步骤"，对照你搭的 Flow 找差异：你的 Flow 有没有处理历史消息的组件？没有的话对话是几轮记忆？</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 4 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：30.4 实操二：RAG 初体验（Loader → Splitter → 向量库 → Retriever）</p>
+<p><strong>练习 10 分钟</strong>：任务 30-4：接入课程讲义，问一个讲义里的细节问题</p>
+<p><strong>休息 10 分钟</strong>：只体验流程，不深挖 embedding 原理</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day14.md</code> 第 4 单元</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 3, "30.3 \u5b9e\u64cd\u4e00\uff1a\u642d\u4e00\u4e2a\u6700\u7b80\u5bf9\u8bdd Flow", [{"code_prompt": "\u7167\u7740\u300c\u539f\u7406\u63a2\u79d8\uff1a\u4f60\u62d6\u7684\u8fd9\u6761\u7ebf = \u4f60\u5199\u7684\u4ee3\u7801\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "code_starter": "messages = [{\"role\": \"system\", \"content\": \"\u4f60\u662f\u4e00\u4e2aPython\u7f16\u7a0b\u52a9\u6559\"}]  # Prompt \u7ec4\u4ef6\nmessages.append({\"role\": \"user\", \"content\": user_input})            # Chat Input\nresp = client.chat.completions.create(model=\"deepseek-chat\",\n                                      messages = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9", "expect": "", "explanation": "\u5bf9\u7167\u9898\u9762\u7ed9\u51fa\u7684\u9884\u671f\u8f93\u51fa\u68c0\u67e5\u81ea\u5df1\u7684\u7ed3\u679c\u3002\u7ed3\u679c\u4e00\u81f4\u5373\u8868\u793a\u8fd9\u4e00\u8282\u7684\u6838\u5fc3\u7528\u6cd5\u4f60\u5df2\u7ecf\u4f1a\u7528\u3002", "question": "\u8865\u5168\u4ee3\u7801\uff1a\u539f\u7406\u63a2\u79d8\uff1a\u4f60\u62d6\u7684\u8fd9\u6761\u7ebf = \u4f60\u5199\u7684\u4ee3\u7801", "source": "\u4ee3\u7801\u6848\u4f8b ", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="3">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(41, '0', "\u8865\u5168\u4ee3\u7801\uff1a\u539f\u7406\u63a2\u79d8\uff1a\u4f60\u62d6\u7684\u8fd9\u6761\u7ebf = \u4f60\u5199\u7684\u4ee3\u7801")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              📝 补全代码：原理探秘：你拖的这条线 = 你写的代码
+            </div>
+            <div class="ex-code-hint">
+              💡 照着「原理探秘：你拖的这条线 = 你写的代码」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
+            </div>
+            
+            <div class="ex-actions" style="margin-top:12px;">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(41, 3, 0, "\u8865\u5168\u4ee3\u7801\uff1a\u539f\u7406\u63a2\u79d8\uff1a\u4f60\u62d6\u7684\u8fd9\u6761\u7ebf = \u4f60\u5199\u7684\u4ee3\u7801\n\n\u7167\u7740\u300c\u539f\u7406\u63a2\u79d8\uff1a\u4f60\u62d6\u7684\u8fd9\u6761\u7ebf = \u4f60\u5199\u7684\u4ee3\u7801\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "messages = [{\"role\": \"system\", \"content\": \"\u4f60\u662f\u4e00\u4e2aPython\u7f16\u7a0b\u52a9\u6559\"}]  # Prompt \u7ec4\u4ef6\nmessages.append({\"role\": \"user\", \"content\": user_input})            # Chat Input\nresp = client.chat.completions.create(model=\"deepseek-chat\",\n                                      messages = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_3"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 3, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 3)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 3)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_3" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 3, '30.3 实操一：搭一个最简对话 Flow')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 3, '30.3 实操一：搭一个最简对话 Flow')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-5" class="kp-item  unlocked"
+         data-kp-index="4" data-kp-key="41_4">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">05.</span>
+          
+          30.4 实操二：给助手加知识（RAG 流程初体验）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>概念认知：RAG = 检索增强生成</strong>。一句话：把文档变成可检索的知识，回答前先"查资料"，因此更少胡说。</p>
+<p><strong>拖拽流程（体验为主，不深挖原理）</strong>：</p>
+<div class="md-figure"><pre class="md-diagram">File Loader → Text Splitter → 向量库(Embedding) ─┐
+                                                  ├→ Retriever → Prompt → Model → Output
+Chat Input ──────────────────────────────────────┘</pre></div>
+<ol><li>拖入 File Loader，上传一份课程讲义（如第 1 章 md）；</li><li>依次接 Text Splitter（切分）、向量库组件（内嵌 Embedding）；</li><li>把 Retriever 的输出连进 Prompt 组件（作为"参考资料"）；</li><li>提问一个<strong>讲义里的细节问题</strong>，对比加知识前后回答的差别。</li></ol>
+<p><strong>了解级</strong>：文档先被切成小段 → 每段算出向量（一串数字代表语义）→ 提问时找出语义最接近的几段 → 塞进 Prompt 让模型"开卷考试"。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 5 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：30.5 实操三：导出 Flow API + 用 requests 调用（10 行代码打通可视化与代码）</p>
+<p><strong>练习 10 分钟</strong>：任务 30-5：调通自己的 Flow 并打印回答</p>
+<p><strong>休息 10 分钟</strong>：强调：可视化做原型，代码做集成</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day14.md</code> 第 5 单元</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 4, "30.4 \u5b9e\u64cd\u4e8c\uff1a\u7ed9\u52a9\u624b\u52a0\u77e5\u8bc6\uff08RAG \u6d41\u7a0b\u521d\u4f53\u9a8c\uff09", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_4"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 4, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 4)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 4)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_4" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 4, '30.4 实操二：给助手加知识（RAG 流程初体验）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 4, '30.4 实操二：给助手加知识（RAG 流程初体验）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-6" class="kp-item  unlocked"
+         data-kp-index="5" data-kp-key="41_5">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">06.</span>
+          
+          30.5 实操三：LangFlow 的 API——和 Python 代码打通
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>每个 Flow 自带 API 端点</strong>：画布右上 Share / API（以版本界面为准），复制 curl 示例，里面有两个关键信息：<code class="md-inline">flow_id</code> 和调用地址。</p>
+<h3 class="md-h">30.5.1 语法掌握：用 requests 调自己的 Flow</h3>
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import requests
+
+url = &quot;http://localhost:7860/api/v1/run/&lt;你的flow_id&gt;&quot;
+payload = {&quot;input_value&quot;: &quot;用一句话解释什么是装饰器&quot;,
+           &quot;output_type&quot;: &quot;chat&quot;, &quot;input_type&quot;: &quot;chat&quot;}
+
+r = requests.post(url, json=payload, timeout=60)
+r.raise_for_status()
+print(r.json()[&quot;outputs&quot;][0][&quot;outputs&quot;][0][&quot;results&quot;][&quot;message&quot;][&quot;text&quot;])</code></pre></div>
+<p><strong>讲解</strong>：</p>
+<ul><li>你在 Day11 学的 requests 四件套（装库/请求/解析/兜底）<strong>原样复用</strong>；</li><li>可视化负责"搭"，Python 负责"集成"——LangFlow 搭好的应用可以像任何 API 一样被你的程序调用；</li><li>进阶课预告：再拿 Day12 的 FastAPI 包一层，它就是一个能给前端用的 AI 服务。</li></ul>
+<blockquote class="md-quote"><p><strong>⏱ 第 6 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：30.6 选型收尾 + 14 天知识树总复盘 + 结课答辩</p>
+<p><strong>练习 10 分钟</strong>：任务 30-6：1 分钟答辩——演示 Flow + 说一个改动点</p>
+<p><strong>休息 10 分钟</strong>：收尾悬念：进阶课见</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day14.md</code> 第 6 单元</p></blockquote>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 5, "30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a", [{"code_prompt": "\u7528\u4ee3\u7801\u628a\u300c30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "explanation": "\u4ee3\u7801\u6210\u529f\u8fd0\u884c\u5373\u8868\u793a\u4f60\u5df2\u638c\u63e1\u672c\u77e5\u8bc6\u70b9\uff01", "question": "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a\u300d", "type": "code"}])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+          <div class="kp-exercise" data-ex-idx="0" data-kp-index="5">
+            <div class="kp-ex-header">
+              <span>练习 1</span>
+              <div class="kp-ex-tools">
+                <button class="btn-fav-star" onclick="toggleFav(41, '0', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a\u300d")" title="收藏">☆</button>
+              </div>
+            </div>
+            
+            <!-- Code Exercise -->
+            
+            <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
+              编写代码验证「30.5 实操三：LangFlow 的 API——和 Python 代码打通」
+            </div>
+            <div class="ex-code-hint">
+              💡 用代码把「30.5 实操三：LangFlow 的 API——和 Python 代码打通」的核心用法演示一遍，并打印出结果。
+            </div>
+            
+            <div class="ex-actions" style="margin-top:12px;">
+              
+              <button class="btn-code-ex" onclick='openCodeEx(41, 5, 0, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
+                💻 打开编辑器作答
+              </button>
+            </div>
+            <div class="ex-answer code-result" style="display:none;">
+              <div class="answer-label">✅ 代码运行成功！</div>
+              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+            </div>
+            
+          </div>
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_5"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 5, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 5)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 5)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_5" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 5, '30.5 实操三：LangFlow 的 API——和 Python 代码打通')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 5, '30.5 实操三：LangFlow 的 API——和 Python 代码打通')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-7" class="kp-item  unlocked"
+         data-kp-index="6" data-kp-key="41_6">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">07.</span>
+          
+          30.6 选型收尾与课程总复盘
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">30.6.1 一张表 + 三句话</h3>
+<div class="md-table-wrap"><table class="md-table"><thead><tr><th>工具</th><th>一句话定位</th></tr></thead><tbody><tr><td>LangFlow</td><td>开源可视化编排，原型与教学利器，可导出 API</td></tr><tr><td>Dify</td><td>低代码平台，偏向应用部署与运营</td></tr><tr><td>LangChain</td><td>代码框架，生产级控制力，进阶课主角</td></tr></tbody></table></div>
+<p><strong>三句话结论</strong>：验证想法 → LangFlow；交付产品 → 手写代码；两者不冲突，原型转生产是常规操作。</p>
+<h3 class="md-h">30.6.2 14 天知识树（结课复盘）</h3>
+<div class="md-figure"><pre class="md-diagram">Python 基础（Day01-07）：环境 → 变量 → 流程 → 字符串 → 容器 → 函数
+Python 进阶（Day08-12）：模块/文件/异常 → OOP → 装饰器/生成器 → requests/asyncio → FastAPI
+Python→AI（Day13-14）：LLM 与 messages → 多轮对话/流式/Function Calling → 框架全景 → LangFlow 实战</pre></div>
+<p><strong>最后一句话</strong>：AI 是工具，语法决定你走多远——你现在两条腿都会跑了。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 6, "30.6 \u9009\u578b\u6536\u5c3e\u4e0e\u8bfe\u7a0b\u603b\u590d\u76d8", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_6"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 6, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 6)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 6)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_6" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 6, '30.6 选型收尾与课程总复盘')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 6, '30.6 选型收尾与课程总复盘')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-8" class="kp-item  unlocked"
+         data-kp-index="7" data-kp-key="41_7">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">08.</span>
+          
+          30.7 本章 Debug 四件套
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <h3 class="md-h">问题 1：安装失败 / 启动报 Python 版本错误</h3>
+<p>检查 Python 版本（LangFlow 要求 3.10–3.12），确认 pip 装在了虚拟环境里（呼应 Day08）。</p>
+<h3 class="md-h">问题 2：Language Model 组件报 401 / 连接失败</h3>
+<p>API Key 粘错或 Base URL 写错；对照服务商文档逐项检查——和第 28 章的 401 排查完全同款。</p>
+<h3 class="md-h">问题 3：组件之间连线报错（端口颜色对不上）</h3>
+<p>连线口有类型（文本/数据/消息），类型不匹配连不上；检查两个组件的输出输入类型是否一致。</p>
+<h3 class="md-h">问题 4：requests 调 Flow 返回 404</h3>
+<p><code class="md-inline">flow_id</code> 复制错了，或 LangFlow 服务没在跑；先浏览器打开画布确认服务活着，再核对 URL。</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 7, "30.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_7"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 7, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 7)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 7)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_7" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 7, '30.7 本章 Debug 四件套')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 7, '30.7 本章 Debug 四件套')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-9" class="kp-item  unlocked"
+         data-kp-index="8" data-kp-key="41_8">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">09.</span>
+          
+          30.8 Vibe Coding 任务卡（L3 主卡）
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <p><strong>任务</strong>：让 Trae 为你的"课程答疑助手" Flow 生成一个 FastAPI 包装版：<code class="md-inline">POST /api/ask</code> 接收问题 → 转发 LangFlow → 返回回答。要求：有异常处理、Key 不硬编码。完成后审查："错误处理覆盖了吗？超时设置了吗？"</p>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 8, "30.8 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_8"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 8, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 8)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 8)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_8" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 8, '30.8 Vibe Coding 任务卡（L3 主卡）')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 8, '30.8 Vibe Coding 任务卡（L3 主卡）')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    <div id="kp-10" class="kp-item  unlocked"
+         data-kp-index="9" data-kp-key="41_9">
+      <div class="kp-header" onclick="toggleKP(this)">
+        <span class="kp-title">
+          
+          <span style="color:var(--cyan);font-weight:700;">010.</span>
+          
+          本章速查
+        </span>
+        <span class="kp-indicator">
+          ▼
+          
+        </span>
+      </div>
+      <div class="kp-body" >
+        <div class="kp-body-inner" >
+          <div class="kp-body-content">
+            <div class="md-figure"><pre class="md-diagram">安装启动    pip install langflow → langflow run → 浏览器打开画布
+四个组件    Chat Input → Prompt → Language Model → Chat Output
+接国产模型  Base URL + API Key + 模型名（OpenAI 兼容方式）
+加知识 RAG  File Loader → Splitter → 向量库 → Retriever → Prompt
+代码打通    每个 Flow 自带 API → requests.post 调用
+选型口诀    验证想法用可视化，交付产品写代码，原型转生产两条腿走路</pre></div>
+          </div>
+
+          
+
+          
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(41, 9, "\u672c\u7ae0\u901f\u67e5", [])'>
+            ✦ 墨痕挑战
+          </button>
+
+          <!-- Exercises embedded below KP -->
+          <div class="kp-exercises-section">
+            <div class="kp-ex-title">📝 本章练习 <span style="font-size:13px;color:var(--text-muted);font-weight:400;">（答对即可解锁下一知识点）</span></div>
+          
+          
+        </div>
+
+        <!-- Notes Widget -->
+        <div class="kp-notes-section">
+          <button class="btn-notes-toggle" onclick="toggleNotes(this)">
+            📝 我的笔记
+          </button>
+          <div class="kp-notes-editor" style="display:none;">
+            <textarea class="kp-notes-textarea" placeholder="在这里记录你的笔记、心得、链接...&#10;可以粘贴网址、代码片段等任何你想记录的内容。" data-kp-key="41_9"></textarea>
+            <div class="kp-notes-actions">
+              <span class="notes-saved-hint" style="display:none;color:var(--green);font-size:12px;">✓ 已保存</span>
+              <button class="btn-save-note" onclick="saveNote(41, 9, this)">保存笔记</button>
+              <button class="btn-notes-action" onclick="createNoteTxt(41, 9)" title="在桌面新建文本文件，用记事本编辑">📄 新建 TXT</button>
+              <button class="btn-notes-action" onclick="addLocalFile(41, 9)" title="选择本地文件关联到笔记，用系统默认软件打开">📂 打开文件</button>
+            </div>
+            <!-- File list -->
+            <div class="note-files-list" data-kp-key="41_9" style="display:none;">
+              <div class="note-files-header">📎 关联文件</div>
+              <div class="note-files-empty">暂无关联文件</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kp-actions">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(41, 9, '本章速查')">
+            🎬 5 分钟图文讲解
+          </button>
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(41, 9, '本章速查')">
+            🎨 角色对白
+          </button>
+          
+        </div>
+
+        </div><!-- /kp-body-inner -->
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Code Exercise Modal -->
+<div id="code-ex-modal" class="code-ex-overlay">
+  <div class="code-ex-container">
+    <div class="code-ex-header">
+      <span class="code-ex-title">💻 编程练习</span>
+      <div class="code-ex-header-actions">
+        <button class="btn-code-save" onclick="saveCodeAsPy()" title="保存为 .py 文件">💾 保存</button>
+        <button class="code-ex-close" onclick="closeCodeEx()">✕</button>
+      </div>
+    </div>
+    <div class="code-ex-prompt" id="code-ex-prompt"></div>
+    <div class="code-ex-editor-wrap">
+      <textarea id="code-ex-editor" class="code-ex-editor" spellcheck="false"></textarea>
+    </div>
+    <!-- 测试输入：程序里用到 input() 时，这里的内容按行喂给它。
+         以前没有这个框，input() 一运行就撞 EOFError，学生只看到"执行失败"。 -->
+    <div class="code-ex-stdin" id="code-ex-stdin-wrap" hidden>
+      <div class="code-ex-stdin-head">
+        <span>⌨ 测试输入</span>
+        <span class="code-ex-stdin-tip">每行一个值，按顺序喂给 input()</span>
+      </div>
+      <textarea id="code-ex-stdin" class="code-ex-stdin-box" spellcheck="false"
+                placeholder="例如：&#10;83.5&#10;100"></textarea>
+    </div>
+    <div class="code-ex-toolbar">
+      <button class="btn-code-run" onclick="runCodeEx()">▶ 运行代码</button>
+      <button class="btn-code-jj" onclick="askJJAboutCode()" title="请教 AI 助教">请教 AI 助教</button>
+      <span class="code-ex-lint-errors" id="code-ex-lint-errors"></span>
+      <span class="code-ex-status" id="code-ex-status"></span>
+    </div>
+    <div class="code-ex-output" id="code-ex-output"></div>
+    <div class="code-ex-jj-area" id="code-ex-jj-area" style="display:none;">
+      <div class="code-ex-jj-header">AI 助教</div>
+      <div class="code-ex-jj-content" id="code-ex-jj-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ink-challenge-modal" class="ink-challenge-overlay" aria-hidden="true">
+  <div class="ink-challenge-card">
+    <button class="ink-challenge-close" onclick="InkChallenge.close()">✕</button>
+    <div class="ink-challenge-kicker">卷中试笔 · Python 章法</div>
+    <h2 id="ink-challenge-title">墨痕挑战</h2>
+    <div class="ink-challenge-progress"><span id="ink-challenge-score">连中 0</span><span id="ink-challenge-timer">00:30</span></div>
+    <div id="ink-challenge-body"></div>
+  </div>
+</div>
+
+<!-- Favorites Modal -->
+<div id="fav-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>⭐ 我的收藏</span>
+      <button class="modal-close" onclick="closeModal('fav-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="fav-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong Answer Book Modal -->
+<div id="wrong-modal" class="modal-overlay">
+  <div class="modal-container modal-sm">
+    <div class="modal-header">
+      <span>📕 错题本</span>
+      <button class="modal-close" onclick="closeModal('wrong-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="wrong-list">
+      <div style="text-align:center;padding:40px;color:var(--text-muted);">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Comic Viewer Overlay -->
+<div id="comic-overlay" class="comic-overlay">
+  <div class="comic-container">
+    <button class="comic-close" onclick="closeComic()">✕</button>
+    <div class="comic-header">
+      <div class="comic-logo">🎨 趣味漫画讲解</div>
+      <div class="comic-meta">
+        <span class="comic-chapter-label"></span>
+        <span class="comic-badge" id="comic-badge">共 0 格</span>
+      </div>
+    </div>
+    <h2 class="comic-title" id="comic-title"></h2>
+    <div class="comic-panels" id="comic-panels">
+      <div class="comic-loading">
+        <div class="loading-spinner"></div>
+        <p>正在生成漫画讲解...</p>
+        <p class="loading-sub">蛇蛇老师和同学正在创作中 🎨</p>
+      </div>
+    </div>
+    <div class="comic-nav" id="comic-nav" style="display:none">
+      <button class="comic-nav-btn" id="comic-prev" disabled onclick="navigateComic(-1)">◀ 上一格</button>
+      <span class="comic-counter" id="comic-counter">1 / 1</span>
+      <button class="comic-nav-btn" id="comic-next" onclick="navigateComic(1)">下一格 ▶</button>
+    </div>
+    <div class="comic-autoplay-wrap" id="comic-autoplay-wrap" style="display:none">
+      <input type="checkbox" id="comic-autoplay" onchange="if(this.checked){speakPanel(comicState.currentPanel)}">
+      <label for="comic-autoplay">🔊 自动语音播放（自动翻页）</label>
+    </div>
+    <div class="comic-bottom" id="comic-bottom" style="display:none">
+      <button class="btn-comic-restart" onclick="restartComic()">🔄 从头再看</button>
+      <button class="btn-comic-close-bottom" onclick="closeComic()">✓ 学会了！</button>
+    </div>
+    <div class="comic-settings-hint" id="comic-settings-hint" style="display:none">
+      <p>💡 配置 AI API 可获得更生动的漫画内容</p>
+      <button class="btn-settings-link" onclick="showComicSettings()">⚙️ 配置 API</button>
+    </div>
+  </div>
+</div>
+
+<div id="comic-settings-modal" class="comic-settings-overlay" style="display:none">
+  <div class="comic-settings-card">
+    <h3>⚙️ 配置 AI 漫画引擎</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">配置 OpenAI 兼容 API 以获得 AI 生成的生动漫画内容</p>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Key</label>
+      <input type="password" id="comic-api-key" placeholder="sk-..." style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:12px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">API Base URL</label>
+      <input type="text" id="comic-api-base" placeholder="https://api.openai.com/v1" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div class="input-group" style="margin-bottom:16px;">
+      <label style="color:var(--text-secondary);font-size:12px;display:block;margin-bottom:4px;">Model</label>
+      <input type="text" id="comic-model" placeholder="gpt-4o" style="width:100%;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;color:var(--text-primary);">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-block" onclick="saveComicConfig()">保存配置</button>
+      <button class="btn btn-ghost" onclick="closeComicSettings()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mindmap Overlay -->
+<div id="mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">🧠 LangFlow：可视化搭出你的第一个 AI 应用（结课专题） — 思维大纲</span>
+      <div class="mindmap-tools">
+        <button onclick="mindmapZoomIn()" title="放大">🔍+</button>
+        <button onclick="mindmapZoomOut()" title="缩小">🔍-</button>
+        <button onclick="mindmapReset()" title="重置视图">🔄</button>
+        <button onclick="mindmapExpandAll()" title="全部展开">📂</button>
+        <button onclick="mindmapCollapseAll()" title="全部折叠">📁</button>
+        <button class="mindmap-close-btn" onclick="closeMindmap()">✕</button>
+      </div>
+    </div>
+    <svg id="mindmap-svg" class="mindmap-svg"></svg>
+  </div>
+</div>
+
+<!-- My Mindmap Overlay -->
+<div id="my-mindmap-overlay" class="mindmap-overlay">
+  <div class="mindmap-container" style="max-width:900px;">
+    <div class="mindmap-toolbar">
+      <span class="mindmap-title">✏️ LangFlow：可视化搭出你的第一个 AI 应用（结课专题） — 我的思维导图</span>
+      <div class="mindmap-tools">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">拖拽编辑 · 双击修改</span>
+        <button onclick="myMindmapFit()" title="适应屏幕">👁️ 居中</button>
+        <button onclick="myMindmapUpload()" title="导入JSON">📂 导入</button>
+        <button onclick="myMindmapSave()" title="保存">💾 保存</button>
+        <button onclick="myMindmapDelete()" title="删除" style="color:var(--red);">🗑️</button>
+        <button class="mindmap-close-btn" onclick="closeMyMindmap()">✕</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;height:calc(100% - 50px);">
+      <div id="mind-elixir-container" class="mind-elixir-container"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="my-mindmap-file-input" accept=".json,.md" style="display:none" onchange="myMindmapLoadFile(event)">
+
+<!-- Score Animation Overlay -->
+<div id="score-overlay" class="score-overlay">
+  <canvas id="fireworks-canvas"></canvas>
+  <div class="score-card" id="score-card">
+    <div class="score-label" id="score-label">AI 评分</div>
+    <div class="score-number" id="score-number">0</div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-strengths" id="score-strengths"></div>
+    <div class="score-weaknesses" id="score-weaknesses"></div>
+    <div class="score-quote" id="score-quote"></div>
+    <button class="score-close-btn" onclick="closeScoreOverlay()">继续学习</button>
+  </div>
+</div>
+
+
+<script id="mindmap-data" type="text/markdown"># LangFlow：可视化搭出你的第一个 AI 应用（结课专题）
+## 30.1 概念认知：LangFlow 是什么
+### 一句话定义
+### 它和第 28 章手写代码的关系（关键认知）
+### 什么时候用 LangFlow，什么时候写代码
+## 30.2 安装与启动
+### 语法掌握：三步启动
+### 语法掌握：认识画布
+## 30.3 实操一：搭一个最简对话 Flow
+## 30.4 实操二：给助手加知识（RAG 流程初体验）
+## 30.5 实操三：LangFlow 的 API——和 Python 代码打通
+### 语法掌握：用 requests 调自己的 Flow
+## 30.6 选型收尾与课程总复盘
+### 一张表 + 三句话
+### 14 天知识树（结课复盘）
+## 30.7 本章 Debug 四件套
+### 问题 1：安装失败 / 启动报 Python 版本错误
+### 问题 2：Language Model 组件报 401 / 连接失败
+### 问题 3：组件之间连线报错（端口颜色对不上）
+### 问题 4：requests 调 Flow 返回 404
+## 30.8 Vibe Coding 任务卡（L3 主卡）</script>
+
+
+<script>
+  const CHAPTER_ID = 41;
+  const USER_MODE = 'all_unlocked';
+  const COMPLETED_KPS = [];
+  const CHAPTER_COMPLETED = false;
+  const CHAPTER_KP_TITLES = ["30.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "30.1 \u6982\u5ff5\u8ba4\u77e5\uff1aLangFlow \u662f\u4ec0\u4e48", "30.2 \u5b89\u88c5\u4e0e\u542f\u52a8", "30.3 \u5b9e\u64cd\u4e00\uff1a\u642d\u4e00\u4e2a\u6700\u7b80\u5bf9\u8bdd Flow", "30.4 \u5b9e\u64cd\u4e8c\uff1a\u7ed9\u52a9\u624b\u52a0\u77e5\u8bc6\uff08RAG \u6d41\u7a0b\u521d\u4f53\u9a8c\uff09", "30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a", "30.6 \u9009\u578b\u6536\u5c3e\u4e0e\u8bfe\u7a0b\u603b\u590d\u76d8", "30.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "30.8 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_WRONG = [];
+  const CHAPTER_TITLE = "LangFlow\uff1a\u53ef\u89c6\u5316\u642d\u51fa\u4f60\u7684\u7b2c\u4e00\u4e2a AI \u5e94\u7528\uff08\u7ed3\u8bfe\u4e13\u9898\uff09";
+</script>
+<script src="static/vendor/d3/d3.min.js"></script>
+<script src="static/vendor/markmap/markmap-view.js"></script>
+<script src="static/vendor/markmap/markmap-lib.js"></script>
+<link rel="stylesheet" href="static/css/mind-elixir.css">
+<script src="static/js/mind-elixir.js"></script>
+
+<!-- JJ老师 Chat -->
+<button class="btn-jj-float" id="btn-jj-float" onclick="toggleJJChat()" title="打开 AI 助教">AI</button>
+<div class="jj-chat-overlay" id="jj-chat-overlay">
+  <div class="jj-chat-header">
+    <span class="jj-title">AI 助教 · Python 讲解</span>
+    <span class="jj-quota" id="jj-quota" style="font-size:11px;color:var(--text-muted);margin-left:auto;margin-right:8px;"></span>
+    <button class="jj-close" onclick="toggleJJChat()">✕</button>
+  </div>
+  <div class="jj-chat-messages" id="jj-messages">
+    <div class="msg jj">👋 你好！我是 JJ老师，你的 Python 编程助教。有任何问题都可以问我！</div>
+  </div>
+  <div class="msg-typing" id="jj-typing"><span class="dots"><span>●</span><span>●</span><span>●</span></span> JJ老师正在思考...</div>
+  <div class="jj-chat-input">
+    <input type="text" id="jj-input" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendJJMessage()">
+    <button onclick="sendJJMessage()" id="jj-send-btn">➤</button>
+  </div>
+</div>
+
+<script src="static/vendor/codemirror/lib/codemirror.min.js"></script>
+<script src="static/vendor/codemirror/mode/python/python.min.js"></script>
+<script src="static/vendor/codemirror/addon/selection/active-line.min.js"></script>
+<script src="static/vendor/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="static/vendor/codemirror/addon/comment/comment.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/lint.min.js"></script>
+<script src="static/vendor/codemirror/addon/lint/json-lint.min.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/portrait.js"></script>
+<script src="static/js/cultivation.js"></script>
+<script src="static/js/music_player.js"></script>
+<script src="static/js/star_map.js"></script>
+<script src="static/vendor/three.min.js"></script>
+<script src="static/js/chapter_intro_3d.js"></script>
+<script src="static/js/chapter_challenge.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    ChapterIntro3D.open(41, "LangFlow\uff1a\u53ef\u89c6\u5316\u642d\u51fa\u4f60\u7684\u7b2c\u4e00\u4e2a AI \u5e94\u7528\uff08\u7ed3\u8bfe\u4e13\u9898\uff09", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u8bf4\u51fa LangFlow \u662f\u4ec0\u4e48\u3001\u9002\u5408\u4ec0\u4e48\u573a\u666f\uff1b\n- \u72ec\u7acb\u5b89\u88c5\u5e76\u542f\u52a8 LangFlow\uff1b\n- \u62d6\u62fd\u642d\u5efa\u4e00\u4e2a\u63a5\u5165 DeepSeek \u7684\u5bf9\u8bdd Flow\uff1b\n- \u4f53\u9a8c\"\u7ed9 AI \u5582\u6587\u6863\"\u7684 RAG \u6d41\u7a0b\uff08\u4e86\u89e3\u7ea7\uff09\uff1b\n- ", ["30.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "30.1 \u6982\u5ff5\u8ba4\u77e5\uff1aLangFlow \u662f\u4ec0\u4e48", "30.2 \u5b89\u88c5\u4e0e\u542f\u52a8", "30.3 \u5b9e\u64cd\u4e00\uff1a\u642d\u4e00\u4e2a\u6700\u7b80\u5bf9\u8bdd Flow", "30.4 \u5b9e\u64cd\u4e8c\uff1a\u7ed9\u52a9\u624b\u52a0\u77e5\u8bc6\uff08RAG \u6d41\u7a0b\u521d\u4f53\u9a8c\uff09", "30.5 \u5b9e\u64cd\u4e09\uff1aLangFlow \u7684 API\u2014\u2014\u548c Python \u4ee3\u7801\u6253\u901a", "30.6 \u9009\u578b\u6536\u5c3e\u4e0e\u8bfe\u7a0b\u603b\u590d\u76d8", "30.7 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "30.8 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "\u672c\u7ae0\u901f\u67e5"], null);
+  });
+</script>
+
+
+<!-- Interactive Component Modals for Chapter 8 -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){ if (window.Cultivation) Cultivation.mount(); });
+</script>
+<script src="static/js/lesson.js"></script>
+<script src="static/js/atmosphere.js"></script>
+</body>
+</html>

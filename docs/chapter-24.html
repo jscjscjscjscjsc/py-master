@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -120,12 +120,17 @@
 <ol><li>理解"Web 框架"解决了什么（对比第 23.4 的手写路由）；</li><li>安装并运行 FastAPI + uvicorn，访问自动文档 <code class="md-inline">/docs</code>；</li><li>写路由：路径参数、查询参数、请求体（Pydantic 校验）；</li><li>理解 422 与 400 的区别，正确使用状态码与 HTTPException；</li><li>用 FastAPI + SQLite 完成一个学生 CRUD 接口；</li><li>配置 CORS 让前端能调用；</li><li>按 L3 规则使用 AI：生成接口代码 + pytest 验收。</li></ol>
 <p><strong>前置知识</strong>：第 23 章（HTTP、REST、SQLite）——本章是它的"框架化"。</p>
 <blockquote class="md-quote"><p><strong>2.5 学时节奏建议</strong>：安装+最小应用+自动文档 0.5h → 三种参数（本章最基础）0.5h → <strong>CRUD+SQLite（本章核心）1h</strong> → CORS 与收尾 0.5h。上机时间占一半——<strong>每个小节都要"启动 uvicorn 亲眼验证"，只看不跑等于没学</strong>。</p></blockquote>
+<blockquote class="md-quote"><p><strong>⏱ 第 1 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：24.1 Web 框架是什么 + 24.2 第一个 FastAPI 应用与 /docs 自动文档</p>
+<p><strong>练习 10 分钟</strong>：任务 24-1：跑通最小应用并打开 /docs 截图</p>
+<p><strong>休息 10 分钟</strong>：uvicorn 找不到模块 → 回到 Day08 的虚拟环境检查</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day12.md</code> 第 1 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 0, "24.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de {\"message\": \"ok\"}\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de `{\"message\": \"ok\"}`\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de \u003ccode class=\"md-inline\"\u003e{\"message\": \"ok\"}\u003c/code\u003e\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de {\"message\": \"ok\"}\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08main.py\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\u0026quot;/\u0026quot;)\ndef root():\n    return {\u0026quot;message\u0026quot;: \u0026quot;ok\u0026quot;}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u542f\u52a8\uff1a\u003ccode class=\"md-inline\"\u003euvicorn main:app --reload\u003c/code\u003e\uff0c\u6d4f\u89c8\u5668\u8bbf\u95ee \u003ccode class=\"md-inline\"\u003ehttp://127.0.0.1:8000/\u003c/code\u003e \u770b\u5230 \u003ccode class=\"md-inline\"\u003e{\"message\":\"ok\"}\u003c/code\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 0, "24.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de {\"message\": \"ok\"}\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de `{\"message\": \"ok\"}`\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de \u003ccode class=\"md-inline\"\u003e{\"message\": \"ok\"}\u003c/code\u003e\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u5b89\u88c5 fastapi + uvicorn\uff0c\u5199\u6700\u5c0f\u5e94\u7528\uff08GET / \u8fd4\u56de {\"message\": \"ok\"}\uff09\uff0c\u542f\u52a8\u540e\u7528\u6d4f\u89c8\u5668\u8bbf\u95ee\u9a8c\u8bc1\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -165,15 +170,7 @@
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>（main.py）：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get(&quot;/&quot;)
-def root():
-    return {&quot;message&quot;: &quot;ok&quot;}</code></pre></div>
-<p>启动：<code class="md-inline">uvicorn main:app --reload</code>，浏览器访问 <code class="md-inline">http://127.0.0.1:8000/</code> 看到 <code class="md-inline">{"message":"ok"}</code>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -248,7 +245,7 @@ def root():
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 1, "24.1 Web \u6846\u67b6\u662f\u4ec0\u4e48", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u6253\u5f00 /docs\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u6587\u6863\u662f FastAPI \u6839\u636e\u4ee3\u7801\u81ea\u52a8\u751f\u6210\u7684\uff08OpenAPI\uff09\uff0c\u4e0d\u662f\u624b\u5199\u7684\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u6253\u5f00 `/docs`\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u6253\u5f00 \u003ccode class=\"md-inline\"\u003e/docs\u003c/code\u003e\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u6253\u5f00 /docs\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u89c2\u5bdf\u8bb0\u5f55\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e\u6253\u5f00 http://127.0.0.1:8000/docs \u53ef\u89c1\uff1a\n- \u63a5\u53e3\u5217\u8868\uff1aGET / \u548c GET /api/students\uff08\u5982\u679c\u6709\uff09\uff1b\n- \u6bcf\u4e2a\u63a5\u53e3\u7684\uff1a\u8bf7\u6c42\u65b9\u6cd5\u3001\u8def\u5f84\u3001\u53c2\u6570\u7c7b\u578b\u3001\u54cd\u5e94\u683c\u5f0f\uff1b\n- \u0026quot;Try it out\u0026quot; \u6309\u94ae\u53ef\u76f4\u63a5\u53d1\u8bf7\u6c42\u6d4b\u8bd5\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 1, "24.1 Web \u6846\u67b6\u662f\u4ec0\u4e48", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u6253\u5f00 /docs\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u6253\u5f00 `/docs`\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u6253\u5f00 \u003ccode class=\"md-inline\"\u003e/docs\u003c/code\u003e\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u6253\u5f00 /docs\uff0c\u622a\u56fe\u6216\u6587\u5b57\u8bb0\u5f55\u9875\u9762\u5c55\u793a\u4e86\u54ea\u4e9b\u63a5\u53e3\u4fe1\u606f\uff08\u8def\u5f84\u3001\u65b9\u6cd5\u3001\u53c2\u6570\u7c7b\u578b\uff09\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -288,14 +285,7 @@ def root():
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>（观察记录）：</p>
-<div class="md-figure"><pre class="md-diagram">打开 http://127.0.0.1:8000/docs 可见：
-- 接口列表：GET / 和 GET /api/students（如果有）；
-- 每个接口的：请求方法、路径、参数类型、响应格式；
-- &quot;Try it out&quot; 按钮可直接发请求测试。</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>文档是 FastAPI 根据代码自动生成的（OpenAPI），不是手写的。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -394,12 +384,17 @@ INFO:     Application startup complete.</pre></div>
 <p>FastAPI 在启动时扫描你的路由和类型标注，自动生成 <code class="md-inline">openapi.json</code>（一份标准接口描述），<code class="md-inline">/docs</code> 只是把这份 JSON 渲染成网页。<strong>类型提示在这里变成"接口契约"</strong>——你写 <code class="md-inline">student_id: int</code>，文档里就自动标注"参数类型：integer"。这就是"类型提示驱动"的含义。</p></blockquote>
 <p><strong>微任务卡（M1 · 讲解卡 · L3）</strong>：把 FastAPI 最小应用发给 AI："请解释 @app.get 装饰器做了什么、为什么返回字典就会变成 JSON？"一句话记录理解。</p>
 <p><strong>现在，动手</strong>：启动 <code class="md-inline">uvicorn main:app --reload</code>，浏览器分别访问 <code class="md-inline">/</code>、<code class="md-inline">/api/students</code>、<code class="md-inline">/docs</code>——亲眼看到 JSON 和自动文档，再继续往下。<strong>"最小应用跑通了"是这一节的完成标志</strong>。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 2 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：24.3 路由与参数：路径参数、查询参数、请求体 + Pydantic 校验 + 422 vs 400</p>
+<p><strong>练习 10 分钟</strong>：任务 24-2：写 POST 接口并故意传错类型观察 422</p>
+<p><strong>休息 10 分钟</strong>：用两个失败请求区分 422（格式）与 400（业务）</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day12.md</code> 第 2 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 2, "24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 GET /api/echo/{text} \u8fd4\u56de {\"text\": \u4f20\u5165\u503c}\uff0c\u8bbf\u95ee /api/echo/hello \u9a8c\u8bc1\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 `GET /api/echo/{text}` \u8fd4\u56de `{\"text\": \u4f20\u5165\u503c}`\uff0c\u8bbf\u95ee `/api/echo/hello` \u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 \u003ccode class=\"md-inline\"\u003eGET /api/echo/{text}\u003c/code\u003e \u8fd4\u56de \u003ccode class=\"md-inline\"\u003e{\"text\": \u4f20\u5165\u503c}\u003c/code\u003e\uff0c\u8bbf\u95ee \u003ccode class=\"md-inline\"\u003e/api/echo/hello\u003c/code\u003e \u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 GET /api/echo/{text} \u8fd4\u56de {\"text\": \u4f20\u5165\u503c}\uff0c\u8bbf\u95ee /api/echo/hello \u9a8c\u8bc1\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003e@app.get(\u0026quot;/api/echo/{text}\u0026quot;)\ndef echo(text: str):\n    return {\u0026quot;text\u0026quot;: text}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u8bbf\u95ee \u003ccode class=\"md-inline\"\u003e/api/echo/hello\u003c/code\u003e \u2192 \u003ccode class=\"md-inline\"\u003e{\"text\": \"hello\"}\u003c/code\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 2, "24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 GET /api/echo/{text} \u8fd4\u56de {\"text\": \u4f20\u5165\u503c}\uff0c\u8bbf\u95ee /api/echo/hello \u9a8c\u8bc1\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 `GET /api/echo/{text}` \u8fd4\u56de `{\"text\": \u4f20\u5165\u503c}`\uff0c\u8bbf\u95ee `/api/echo/hello` \u9a8c\u8bc1\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 \u003ccode class=\"md-inline\"\u003eGET /api/echo/{text}\u003c/code\u003e \u8fd4\u56de \u003ccode class=\"md-inline\"\u003e{\"text\": \u4f20\u5165\u503c}\u003c/code\u003e\uff0c\u8bbf\u95ee \u003ccode class=\"md-inline\"\u003e/api/echo/hello\u003c/code\u003e \u9a8c\u8bc1\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u5199\u4e00\u4e2a\u8def\u5f84\u53c2\u6570\u63a5\u53e3 GET /api/echo/{text} \u8fd4\u56de {\"text\": \u4f20\u5165\u503c}\uff0c\u8bbf\u95ee /api/echo/hello \u9a8c\u8bc1\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -439,11 +434,7 @@ INFO:     Application startup complete.</pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">@app.get(&quot;/api/echo/{text}&quot;)
-def echo(text: str):
-    return {&quot;text&quot;: text}</code></pre></div>
-<p>访问 <code class="md-inline">/api/echo/hello</code> → <code class="md-inline">{"text": "hello"}</code>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -453,25 +444,29 @@ def echo(text: str):
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u8865\u5168\u4ee3\u7801\uff1amain.py")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：main.py
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「24.2 第一个 FastAPI 应用」的核心用法演示一遍，并打印出结果。
+              💡 照着「main.py」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(24, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(24, 2, 1, "\u8865\u5168\u4ee3\u7801\uff1amain.py\n\n\u7167\u7740\u300cmain.py\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "from fastapi import FastAPI\n\napp = FastAPI(title=\"\u5b66\u751f\u7ba1\u7406 API\")\n\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"\u5b66\u751f\u7ba1\u7406 API\"}\n\n@app.get(\"/api/students\")\ndef list_students():\n    return [\n        ____\n        ____\n    ____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -601,12 +596,17 @@ def create_student(student: Student):
 <p><strong>判别</strong>：<strong>"格式对不对"是 422（框架管），"业务对不对"是 400（你管）</strong>。两个都要会用——这是 FastAPI 面试/评审常考细节。</p>
 <p><strong>三种参数小结</strong>：路径参数 <code class="md-inline">{}</code> 定位资源、查询参数 <code class="md-inline">?</code> 筛选、请求体 <code class="md-inline">json</code> 传数据；<strong>422 是格式错（框架管），400 是业务错（你抛）</strong>。把这张表记牢，接口设计就通了。</p>
 <p>接下来是本章最长的代码（完整 CRUD）——<strong>不要急着抄</strong>：先看接口清单（GET/POST/GET/DELETE），再看每个函数怎么落 SQL，最后整体跑一遍。分三步看，长代码就不吓人。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 3 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：24.4 待办事项 REST API 全流程（JSON 持久化，复用 Day08/09 知识，全程无数据库）</p>
+<p><strong>练习 10 分钟</strong>：任务 24-3：在 /docs 完成 增→查→改→删，记录 5 个状态码</p>
+<p><strong>休息 10 分钟</strong>：重启 uvicorn 验证数据还在</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day12.md</code> 第 3 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 3, "24.3 \u8def\u7531\u4e0e\u53c2\u6570", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 times: int = 1\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 `times: int = 1`\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 \u003ccode class=\"md-inline\"\u003etimes: int = 1\u003c/code\u003e\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 times: int = 1\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003e@app.get(\u0026quot;/api/echo/{text}\u0026quot;)\ndef echo(text: str, times: int = 1):\n    return {\u0026quot;text\u0026quot;: text * times}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u8bbf\u95ee \u003ccode class=\"md-inline\"\u003e/api/echo/ab?times=3\u003c/code\u003e \u2192 \u003ccode class=\"md-inline\"\u003e{\"text\": \"ababab\"}\u003c/code\u003e\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 3, "24.3 \u8def\u7531\u4e0e\u53c2\u6570", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 times: int = 1\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 `times: int = 1`\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 \u003ccode class=\"md-inline\"\u003etimes: int = 1\u003c/code\u003e\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u7ed9\u7b2c 3 \u9898\u52a0\u67e5\u8be2\u53c2\u6570 times: int = 1\uff0c\u8fd4\u56de text \u91cd\u590d times \u6b21\u7684 JSON\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -646,11 +646,7 @@ def create_student(student: Student):
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">@app.get(&quot;/api/echo/{text}&quot;)
-def echo(text: str, times: int = 1):
-    return {&quot;text&quot;: text * times}</code></pre></div>
-<p>访问 <code class="md-inline">/api/echo/ab?times=3</code> → <code class="md-inline">{"text": "ababab"}</code>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -660,25 +656,29 @@ def echo(text: str, times: int = 1):
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c24.3 \u8def\u7531\u4e0e\u53c2\u6570\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u6309 id \u67e5\u8be2")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：按 id 查询
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「24.3 路由与参数」的核心用法演示一遍，并打印出结果。
+              💡 照着「按 id 查询」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(24, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c24.3 \u8def\u7531\u4e0e\u53c2\u6570\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(24, 3, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u6309 id \u67e5\u8be2\n\n\u7167\u7740\u300c\u6309 id \u67e5\u8be2\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "from fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nstudents = [\n    {\"id\": 1, \"name\": \"\u5f20\u4e09\", \"score\": 88},\n    {\"id\": 2, \"name\": \"\u674e\u56db\", \"score\": 95},\n]\n\n@app.get(\"/api/students/{student_id}\")\ndef get_student(student_id: int):\n    for s in students:\n        if s[\"id\"] == student_id:\n            return s\n    ____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -732,7 +732,7 @@ def echo(text: str, times: int = 1):
           
           <span style="color:var(--cyan);font-weight:700;">05.</span>
           
-          24.4 综合案例：FastAPI + SQLite 学生 CRUD
+          24.4 综合案例：待办事项 REST API（JSON 文件持久化）
         </span>
         <span class="kp-indicator">
           ▼
@@ -742,74 +742,85 @@ def echo(text: str, times: int = 1):
       <div class="kp-body" >
         <div class="kp-body-inner" >
           <div class="kp-body-content">
-            <p>把第 23 章的 SQLite 接进 FastAPI，做一个完整的学生管理接口（✅ 正确）</p>
+            <p>做一个完整的待办事项（Todo）管理接口。数据先存内存列表，再用第 9 章学的 JSON 读写做持久化——<strong>不引入数据库</strong>，你已经有足够的知识做出"能记住数据"的后端（✅ 正确）</p>
 <p><strong>代码案例 24.7</strong>：main.py（完整应用）</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import sqlite3
+<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import json
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-app = FastAPI(title=&quot;学生管理 API&quot;)
-DB = &quot;school.db&quot;
+app = FastAPI(title=&quot;待办事项 API&quot;)
+DB_FILE = Path(&quot;todos.json&quot;)   # 数据文件：就是一个 JSON
 
-class StudentIn(BaseModel):
-    name: str
-    score: int
+class TodoIn(BaseModel):
+    title: str
+    done: bool = False
 
-def init_db():
-    with sqlite3.connect(DB) as conn:
-        conn.execute(&quot;&quot;&quot;
-            CREATE TABLE IF NOT EXISTS students (
-                id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                score INTEGER
-            )
-        &quot;&quot;&quot;)
+def load_todos() -&gt; list:
+    &quot;&quot;&quot;启动时从 JSON 文件读数据；文件不存在就返回空列表&quot;&quot;&quot;
+    if DB_FILE.exists():
+        return json.loads(DB_FILE.read_text(encoding=&quot;utf-8&quot;))
+    return []
 
-init_db()
+def save_todos(todos: list):
+    &quot;&quot;&quot;每次数据变化后写回 JSON 文件（呼应第 9 章 with / JSON）&quot;&quot;&quot;
+    DB_FILE.write_text(
+        json.dumps(todos, ensure_ascii=False, indent=2), encoding=&quot;utf-8&quot;
+    )
 
-@app.get(&quot;/api/students&quot;)
-def list_students():
-    with sqlite3.connect(DB) as conn:
-        rows = conn.execute(&quot;SELECT id, name, score FROM students&quot;).fetchall()
-    return [{&quot;id&quot;: r[0], &quot;name&quot;: r[1], &quot;score&quot;: r[2]} for r in rows]
+todos = load_todos()   # 全局列表：本课程的&quot;数据库&quot;就是一个列表
 
-@app.get(&quot;/api/students/{student_id}&quot;)
-def get_student(student_id: int):
-    with sqlite3.connect(DB) as conn:
-        row = conn.execute(
-            &quot;SELECT id, name, score FROM students WHERE id = ?&quot;, (student_id,)
-        ).fetchone()
-    if row is None:
-        raise HTTPException(status_code=404, detail=&quot;学生不存在&quot;)
-    return {&quot;id&quot;: row[0], &quot;name&quot;: row[1], &quot;score&quot;: row[2]}
+@app.get(&quot;/api/todos&quot;)
+def list_todos():
+    return [
+        {&quot;id&quot;: i, &quot;title&quot;: t[&quot;title&quot;], &quot;done&quot;: t[&quot;done&quot;]}
+        for i, t in enumerate(todos)
+    ]
 
-@app.post(&quot;/api/students&quot;, status_code=201)
-def create_student(student: StudentIn):
-    if student.score &lt; 0 or student.score &gt; 100:
-        raise HTTPException(status_code=400, detail=&quot;成绩必须在 0-100&quot;)
-    with sqlite3.connect(DB) as conn:
-        cur = conn.execute(
-            &quot;INSERT INTO students (name, score) VALUES (?, ?)&quot;,
-            (student.name, student.score),
-        )
-        new_id = cur.lastrowid
-    return {&quot;id&quot;: new_id, &quot;name&quot;: student.name, &quot;score&quot;: student.score}
+@app.get(&quot;/api/todos/{todo_id}&quot;)
+def get_todo(todo_id: int):
+    if todo_id &lt; 0 or todo_id &gt;= len(todos):
+        raise HTTPException(status_code=404, detail=&quot;待办不存在&quot;)
+    return {&quot;id&quot;: todo_id, **todos[todo_id]}
 
-@app.delete(&quot;/api/students/{student_id}&quot;, status_code=204)
-def delete_student(student_id: int):
-    with sqlite3.connect(DB) as conn:
-        conn.execute(&quot;DELETE FROM students WHERE id = ?&quot;, (student_id,))
+@app.post(&quot;/api/todos&quot;, status_code=201)
+def create_todo(todo: TodoIn):
+    if not todo.title.strip():
+        raise HTTPException(status_code=400, detail=&quot;标题不能为空&quot;)
+    todos.append({&quot;title&quot;: todo.title, &quot;done&quot;: todo.done})
+    save_todos(todos)
+    return {&quot;id&quot;: len(todos) - 1, &quot;title&quot;: todo.title, &quot;done&quot;: todo.done}
+
+@app.patch(&quot;/api/todos/{todo_id}/toggle&quot;)
+def toggle_todo(todo_id: int):
+    if todo_id &lt; 0 or todo_id &gt;= len(todos):
+        raise HTTPException(status_code=404, detail=&quot;待办不存在&quot;)
+    todos[todo_id][&quot;done&quot;] = not todos[todo_id][&quot;done&quot;]
+    save_todos(todos)
+    return {&quot;id&quot;: todo_id, **todos[todo_id]}
+
+@app.delete(&quot;/api/todos/{todo_id}&quot;, status_code=204)
+def delete_todo(todo_id: int):
+    if todo_id &lt; 0 or todo_id &gt;= len(todos):
+        raise HTTPException(status_code=404, detail=&quot;待办不存在&quot;)
+    todos.pop(todo_id)
+    save_todos(todos)
     return None</code></pre></div>
 <p><strong>讲解</strong>：</p>
-<ul><li><strong>四层齐全</strong>：路由（@app）+ 校验（Pydantic + 业务 400）+ 数据（SQLite + <code class="md-inline">?</code> 占位符）+ 状态码（201/404/400/204）；</li><li><code class="md-inline">lastrowid</code> 拿到自增的新 id；</li><li><code class="md-inline">DELETE</code> 返回 204（无内容，成功删除）；</li><li><strong>这就是最终项目后端的"标准形状"</strong>——第 30 章项目只是在这个形状上加更多资源。</li></ul>
-<p><strong>微任务卡（M2 · 审查卡 · L3）</strong>：把你写的 CRUD 接口发给 AI："请审查：状态码使用是否正确、有没有 SQL 注入风险、Pydantic 校验是否充分。只给建议，不要重写。"记录采纳/否决理由。</p>
-<p><strong>验证清单</strong>：在 /docs 里按顺序做一次"新建 → 查询 → 再查单个 → 删除"，观察 <strong>201 / 200 / 200 / 204</strong> 四个状态码；再查已删除的 id，看到 <strong>404</strong>。这五个状态码全部出现 = 本章核心目标达成。</p>
+<ul><li><strong>四层齐全</strong>：路由（@app）+ 校验（Pydantic + 业务 400）+ 数据（内存列表 + JSON 文件）+ 状态码（201/404/400/204）；</li><li><code class="md-inline">load_todos / save_todos</code> 就是第 9 章 JSON 读写直接复用——<strong>旧知识立刻派上用场</strong>；</li><li><code class="md-inline">enumerate</code> 天然生成 id，列表的 <code class="md-inline">append / pop</code> 就是增删；</li><li><code class="md-inline">PATCH /toggle</code> 演示"只改一个字段"的常见接口设计；</li><li><strong>与数据库的关系（一句话说清）</strong>：数据库做的事 = 替你管理这个列表 + 查得更快 + 多人同时用不出错。现阶段 JSON 完全够用，进阶课再换。</li><li><strong>这就是 AI 应用后端的"标准形状"</strong>——Day13 的对话历史、Day14 调 LangFlow，服务端都是这个形状。</li></ul>
+<p><strong>微任务卡（M2 · 审查卡 · L3）</strong>：把你写的 CRUD 接口发给 AI："请审查：状态码使用是否正确、JSON 读写是否有中文乱码风险、Pydantic 校验是否充分。只给建议，不要重写。"记录采纳/否决理由。</p>
+<p><strong>验证清单</strong>：在 /docs 里按顺序做一次"新建 → 查询 → 再查单个 → 切换完成状态 → 删除"，观察 <strong>201 / 200 / 200 / 200 / 204</strong> 五个状态码；再查已删除的 id，看到 <strong>404</strong>；最后打开 todos.json 亲眼看数据被记下来了——<strong>重启 uvicorn 后数据还在</strong> = 本章核心目标达成。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 4 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：24.5 CORS 概念 + 24.6 Debug 四件套</p>
+<p><strong>练习 10 分钟</strong>：任务 24-4：给接口加 CORS 配置并说明为什么需要</p>
+<p><strong>休息 10 分钟</strong>：点题：把 /api/todos 换成 /api/chat 就是 AI 后端</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day12.md</code> 第 4 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 4, "24.4 \u7efc\u5408\u6848\u4f8b\uff1aFastAPI + SQLite \u5b66\u751f CRUD", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5b9e\u73b0 POST /api/students\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e422 \u662f\"\u683c\u5f0f\u4e0d\u5bf9\"\uff08\u6846\u67b6\u7ba1\uff09\uff0c400 \u662f\"\u4e1a\u52a1\u4e0d\u5bf9\"\uff08\u4f60\u7ba1\uff09\u2014\u2014\u4e24\u4e2a\u90fd\u8981\u4f1a\u533a\u5206\u3002\u003c/p\u003e", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5b9e\u73b0 `POST /api/students`\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003ePOST /api/students\u003c/code\u003e\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5b9e\u73b0 POST /api/students\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\nclass Student(BaseModel):\n    name: str\n    score: int\n\n@app.post(\u0026quot;/api/students\u0026quot;, status_code=201)\ndef create_student(student: Student):\n    if student.score \u0026lt; 0 or student.score \u0026gt; 100:\n        raise HTTPException(status_code=400, detail=\u0026quot;\u6210\u7ee9\u5fc5\u987b\u5728 0-100\u0026quot;)\n    return {\u0026quot;id\u0026quot;: 1, \u0026quot;name\u0026quot;: student.name, \u0026quot;score\u0026quot;: student.score}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u4e09\u79cd\u6d4b\u8bd5\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cul\u003e\u003cli\u003e\u5408\u6cd5 \u003ccode class=\"md-inline\"\u003e{\"name\":\"\u5f20\u4e09\",\"score\":88}\u003c/code\u003e \u2192 201 + \u5b66\u751f JSON\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e{\"name\":\"\u5f20\u4e09\",\"score\":\"abc\"}\u003c/code\u003e \u2192 \u003cstrong\u003e422\u003c/strong\u003e\uff08Pydantic \u683c\u5f0f\u6821\u9a8c\u5931\u8d25\uff09\uff1b\u003c/li\u003e\u003cli\u003e\u003ccode class=\"md-inline\"\u003e{\"name\":\"\u5f20\u4e09\",\"score\":150}\u003c/code\u003e \u2192 \u003cstrong\u003e400\u003c/strong\u003e\uff08\u4e1a\u52a1\u89c4\u5219\uff0cHTTPException \u629b\u51fa\uff09\u3002\u003c/li\u003e\u003c/ul\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 4, "24.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e\u4e8b\u9879 REST API\uff08JSON \u6587\u4ef6\u6301\u4e45\u5316\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5b9e\u73b0 POST /api/students\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5b9e\u73b0 `POST /api/students`\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0 \u003ccode class=\"md-inline\"\u003ePOST /api/students\u003c/code\u003e\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5b9e\u73b0 POST /api/students\uff08Pydantic \u6821\u9a8c name/score\uff09\uff0c\u5206\u522b\u6d4b\u8bd5\uff1a\u5408\u6cd5\u8bf7\u6c42\uff08201\uff09\u3001score \u4f20\u5b57\u7b26\u4e32\uff08422\uff09\u3001score=150\uff08400\uff0c\u4e1a\u52a1\u89c4\u5219\uff09\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -849,26 +860,7 @@ def delete_student(student_id: int):
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-
-app = FastAPI()
-
-class Student(BaseModel):
-    name: str
-    score: int
-
-@app.post(&quot;/api/students&quot;, status_code=201)
-def create_student(student: Student):
-    if student.score &lt; 0 or student.score &gt; 100:
-        raise HTTPException(status_code=400, detail=&quot;成绩必须在 0-100&quot;)
-    return {&quot;id&quot;: 1, &quot;name&quot;: student.name, &quot;score&quot;: student.score}</code></pre></div>
-<p><strong>三种测试结果</strong>：</p>
-<ul><li>合法 <code class="md-inline">{"name":"张三","score":88}</code> → 201 + 学生 JSON；</li><li><code class="md-inline">{"name":"张三","score":"abc"}</code> → <strong>422</strong>（Pydantic 格式校验失败）；</li><li><code class="md-inline">{"name":"张三","score":150}</code> → <strong>400</strong>（业务规则，HTTPException 抛出）。</li></ul></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>422 是"格式不对"（框架管），400 是"业务不对"（你管）——两个都要会区分。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -878,25 +870,29 @@ def create_student(student: Student):
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c24.4 \u7efc\u5408\u6848\u4f8b\uff1aFastAPI + SQLite \u5b66\u751f CRUD\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u8865\u5168\u4ee3\u7801\uff1amain.py")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：main.py
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「24.4 综合案例：FastAPI + SQLite 学生 CRUD」的核心用法演示一遍，并打印出结果。
+              💡 照着「main.py」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(24, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c24.4 \u7efc\u5408\u6848\u4f8b\uff1aFastAPI + SQLite \u5b66\u751f CRUD\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(24, 4, 1, "\u8865\u5168\u4ee3\u7801\uff1amain.py\n\n\u7167\u7740\u300cmain.py\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "import json\nfrom pathlib import Path\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\n\napp = FastAPI(title=\"\u5f85\u529e\u4e8b\u9879 API\")\nDB_FILE = Path(\"todos.json\")   # \u6570\u636e\u6587\u4ef6\uff1a\u5c31\u662f\u4e00\u4e2a JSON\n\nclass TodoIn(BaseModel):\n    title: str\n    done: bool = False\n\ndef load_todos() -\u003e list:\n    \"\"\"\u542f\u52a8\u65f6\u4ece JSON \u6587\u4ef6\u8bfb\u6570\u636e\uff1b\u6587\u4ef6\u4e0d\u5b58\u5728\u5c31\u8fd4\u56de\u7a7a\u5217\u8868\"\"\"\n    if DB_FILE.exists():\n        return json.loads(DB_FILE.read_text(encoding=\"utf-8\"))\n    return []\n\ndef save_todos(todos: list):\n    \"\"\"\u6bcf\u6b21\u6570\u636e\u53d8\u5316\u540e\u5199\u56de JSON \u6587\u4ef6\uff08\u547c\u5e94\u7b2c 9 \u7ae0 with / JSON\uff09\"\"\"\n    DB_FILE.write_text(\n        json.dumps(todos, ensure_ascii=False, indent=2), encoding=\"utf-8\"\n    )\n\ntodos = load_todos()   # \u5168\u5c40\u5217\u8868\uff1a\u672c\u8bfe\u7a0b\u7684\"\u6570\u636e\u5e93\"\u5c31\u662f\u4e00\u4e2a\u5217\u8868\n\n@app.get(\"/api/todos\")\ndef list_todos():\n    return [\n        {\"id\": i, \"title\": t[\"title\"], \"done\": t[\"done\"]}\n        for i, t in enumerate(todos)\n    ]\n\n@app.get(\"/api/todos/{todo_id}\")\ndef get_todo(todo_id: int):\n    if todo_id \u003c 0 or todo_id \u003e= len(todos):\n        raise HTTPException(status_code=404, detail=\"\u5f85\u529e\u4e0d\u5b58\u5728\")\n    return {\"id\": todo_id, **todos[todo_id]}\n\n@app.post(\"/api/todos\", status_code=201)\ndef create_todo(todo: TodoIn):\n    if not todo.title.strip():\n        ____\n    ____\n    ____\n    return {\"id\": len(todos) - 1, \"title\": todo.title, \"done\": todo.done}\n\n@app.patch(\"/api/todos/{todo_id}/toggle\")\ndef toggle_todo(todo_id: int):\n    if todo_id \u003c 0 or todo_id \u003e= len(todos):\n        ____\n    ____\n    ____\n    return {\"id\": todo_id, **todos[todo_id]}\n\n@app.delete(\"/api/todos/{todo_id}\", status_code=204)\ndef delete_todo(todo_id: int):\n    if todo_id \u003c 0 or todo_id \u003e= len(todos):\n        ____\n    ____\n    ____\n    return None")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -925,10 +921,10 @@ def create_student(student: Student):
         </div>
 
         <div class="kp-actions">
-          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(24, 4, '24.4 综合案例：FastAPI + SQLite 学生 CRUD')">
+          <button class="btn-comic btn-narration" onclick="event.stopPropagation(); NarrationPlayer.open(24, 4, '24.4 综合案例：待办事项 REST API（JSON 文件持久化）')">
             🎬 5 分钟图文讲解
           </button>
-          <button class="btn-comic" onclick="event.stopPropagation(); openComic(24, 4, '24.4 综合案例：FastAPI + SQLite 学生 CRUD')">
+          <button class="btn-comic" onclick="event.stopPropagation(); openComic(24, 4, '24.4 综合案例：待办事项 REST API（JSON 文件持久化）')">
             🎨 角色对白
           </button>
           
@@ -979,7 +975,7 @@ app.add_middleware(
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 5, "24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e201/200/204/404 \u56db\u4e2a\u72b6\u6001\u7801\u8d70\u4e00\u904d\uff0c\u5c31\u7406\u89e3\u4e86\"\u72b6\u6001\u7801\u662f\u63a5\u53e3\u7684\u8bed\u8a00\"\u3002\u003c/p\u003e", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u64cd\u4f5c\u8bb0\u5f55\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e1. POST /api/students {\u0026quot;name\u0026quot;:\u0026quot;\u5f20\u4e09\u0026quot;,\u0026quot;score\u0026quot;:88} \u2192 201 {\u0026quot;id\u0026quot;:1,...}\n2. GET  /api/students \u2192 200 \u5b66\u751f\u5217\u8868\n3. GET  /api/students/1 \u2192 200 \u5355\u4e2a\u5b66\u751f\n4. DELETE /api/students/1 \u2192 204 \u65e0\u5185\u5bb9\uff08\u5220\u9664\u6210\u529f\uff09\n5. GET  /api/students/1 \u2192 404 {\u0026quot;detail\u0026quot;:\u0026quot;\u5b66\u751f\u4e0d\u5b58\u5728\u0026quot;}\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 5, "24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u628a\u7b2c 24.4 \u7684 CRUD \u5e94\u7528\u8dd1\u8d77\u6765\uff0c\u7528 /docs \u9875\u9762\u5b8c\u6210\u4e00\u6b21\"\u65b0\u5efa \u2192 \u67e5\u8be2 \u2192 \u5220\u9664\"\u5168\u6d41\u7a0b\uff0c\u8bb0\u5f55\u6bcf\u4e2a\u63a5\u53e3\u7684\u72b6\u6001\u7801\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u4f60\u9a8c\u6536 AI \u63a5\u53e3\u7684 pytest \u6d4b\u8bd5\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u6211\u6f0f\u4e86\u54ea\u4e9b\u573a\u666f\uff08\u7f3a\u5b57\u6bb5\u3001\u975e\u6cd5\u503c\u3001\u8d44\u6e90\u4e0d\u5b58\u5728\uff09\u3002\"\u7528\u4f8b\u7531\u4f60\u8865\u5199\u5e76\u8dd1\u901a\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1020,15 +1016,7 @@ app.add_middleware(
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>（操作记录）：</p>
-<div class="md-figure"><pre class="md-diagram">1. POST /api/students {&quot;name&quot;:&quot;张三&quot;,&quot;score&quot;:88} → 201 {&quot;id&quot;:1,...}
-2. GET  /api/students → 200 学生列表
-3. GET  /api/students/1 → 200 单个学生
-4. DELETE /api/students/1 → 204 无内容（删除成功）
-5. GET  /api/students/1 → 404 {&quot;detail&quot;:&quot;学生不存在&quot;}</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>201/200/204/404 四个状态码走一遍，就理解了"状态码是接口的语言"。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1038,25 +1026,29 @@ app.add_middleware(
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(24, '1', "\u8865\u5168\u4ee3\u7801\uff1aCORS \u4e2d\u95f4\u4ef6")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：CORS 中间件
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「24.5 CORS：让前端能调你的接口（了解）」的核心用法演示一遍，并打印出结果。
+              💡 照着「CORS 中间件」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(24, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(24, 5, 1, "\u8865\u5168\u4ee3\u7801\uff1aCORS \u4e2d\u95f4\u4ef6\n\n\u7167\u7740\u300cCORS \u4e2d\u95f4\u4ef6\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "from fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n    allow_methods = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n    allow_headers = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1139,12 +1131,17 @@ app.add_middleware(
 <p><strong>问题描述</strong>：浏览器控制台报 CORS 错误，Network 面板显示请求失败。</p>
 <p><strong>提示</strong>：后端加过 CORS 中间件吗？</p>
 <p><strong>讲解</strong>：加 24.5.2 的 CORSMiddleware（开发期 allow_origins=["*"]）。<strong>CORS 是浏览器安全机制，不是网络故障</strong>——后端配置对了就解决。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 5 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：24.7–24.9 任务卡 + 练习题 + 知识树 + 验证清单收尾</p>
+<p><strong>练习 10 分钟</strong>：任务 24-5：练习题 + 用 Trae 审查自己的接口（状态码/校验/异常）</p>
+<p><strong>休息 10 分钟</strong>：预告：下节课接口的另一头接上真大模型</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day12.md</code> 第 5 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 6, "24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 PUT /api/students/{id} \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u003ccode class=\"md-inline\"\u003eUPDATE ... WHERE id = ?\u003c/code\u003e \u66f4\u65b0\u6307\u5b9a\u884c\uff1b\u003ccode class=\"md-inline\"\u003ecur.rowcount == 0\u003c/code\u003e \u8868\u793a\u6ca1\u6709\u884c\u88ab\u66f4\u65b0\uff08id \u4e0d\u5b58\u5728\uff09\u2192 404\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 `PUT /api/students/{id}` \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 \u003ccode class=\"md-inline\"\u003ePUT /api/students/{id}\u003c/code\u003e \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 PUT /api/students/{id} \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003e@app.put(\u0026quot;/api/students/{student_id}\u0026quot;)\ndef update_student(student_id: int, student: StudentIn):\n    if student.score \u0026lt; 0 or student.score \u0026gt; 100:\n        raise HTTPException(status_code=400, detail=\u0026quot;\u6210\u7ee9\u5fc5\u987b\u5728 0-100\u0026quot;)\n    with sqlite3.connect(DB) as conn:\n        cur = conn.execute(\n            \u0026quot;UPDATE students SET name = ?, score = ? WHERE id = ?\u0026quot;,\n            (student.name, student.score, student_id),\n        )\n        if cur.rowcount == 0:\n            raise HTTPException(status_code=404, detail=\u0026quot;\u5b66\u751f\u4e0d\u5b58\u5728\u0026quot;)\n    return {\u0026quot;id\u0026quot;: student_id, \u0026quot;name\u0026quot;: student.name, \u0026quot;score\u0026quot;: student.score}\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 6, "24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 PUT /api/students/{id} \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 `PUT /api/students/{id}` \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 \u003ccode class=\"md-inline\"\u003ePUT /api/students/{id}\u003c/code\u003e \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5728 CRUD \u57fa\u7840\u4e0a\u589e\u52a0 PUT /api/students/{id} \u66f4\u65b0\u63a5\u53e3\uff08\u66f4\u65b0\u59d3\u540d\u548c\u6210\u7ee9\uff0c\u6210\u7ee9\u540c\u6837\u6821\u9a8c 0-100\uff09\uff0c\u7528 /docs \u6216 curl \u6d4b\u8bd5\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1184,22 +1181,7 @@ app.add_middleware(
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">@app.put(&quot;/api/students/{student_id}&quot;)
-def update_student(student_id: int, student: StudentIn):
-    if student.score &lt; 0 or student.score &gt; 100:
-        raise HTTPException(status_code=400, detail=&quot;成绩必须在 0-100&quot;)
-    with sqlite3.connect(DB) as conn:
-        cur = conn.execute(
-            &quot;UPDATE students SET name = ?, score = ? WHERE id = ?&quot;,
-            (student.name, student.score, student_id),
-        )
-        if cur.rowcount == 0:
-            raise HTTPException(status_code=404, detail=&quot;学生不存在&quot;)
-    return {&quot;id&quot;: student_id, &quot;name&quot;: student.name, &quot;score&quot;: student.score}</code></pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p><code class="md-inline">UPDATE ... WHERE id = ?</code> 更新指定行；<code class="md-inline">cur.rowcount == 0</code> 表示没有行被更新（id 不存在）→ 404。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1214,14 +1196,17 @@ def update_student(student_id: int, student: StudentIn):
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「24.6 本章 Debug 四件套」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「24.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「24.6 本章 Debug 四件套」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(24, 6, 1, "\u7528\u4ee3\u7801\u628a\u300c24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(24, 6, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -1307,7 +1292,7 @@ def update_student(student_id: int, student: StudentIn):
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 7, "24.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003eTestClient \u4e0d\u9700\u8981\u542f\u52a8\u670d\u52a1\u5668\u5c31\u80fd\u6d4b\u63a5\u53e3\u2014\u2014\u003cstrong\u003eL3 \u7684\"AI \u751f\u6210 + \u6d4b\u8bd5\u9a8c\u6536\"\u5b8c\u6574\u843d\u5730\u003c/strong\u003e\u3002Review \u8bb0\u5f55\uff1aAI \u751f\u6210\u7684\u63a5\u53e3\u6211\u8865\u4e86 400 \u7a7a\u5185\u5bb9\u6821\u9a8c\u3001\u6d4b\u8bd5\u8986\u76d6\u4e86 4 \u79cd\u60c5\u51b5\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6d4b\u8bd5\u6587\u4ef6\uff0c\u7528 FastAPI TestClient\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003efrom fastapi.testclient import TestClient\nfrom main import app\n\nclient = TestClient(app)\n\ndef test_list_tasks():\n    resp = client.get(\u0026quot;/api/tasks\u0026quot;)\n    assert resp.status_code == 200\n    assert isinstance(resp.json(), list)\n\ndef test_create_task():\n    resp = client.post(\u0026quot;/api/tasks\u0026quot;, json={\u0026quot;content\u0026quot;: \u0026quot;\u5199\u4f5c\u4e1a\u0026quot;})\n    assert resp.status_code == 201\n\ndef test_create_empty():\n    resp = client.post(\u0026quot;/api/tasks\u0026quot;, json={\u0026quot;content\u0026quot;: \u0026quot;\u0026quot;})\n    assert resp.status_code == 400\n\ndef test_create_missing_field():\n    resp = client.post(\u0026quot;/api/tasks\u0026quot;, json={})\n    assert resp.status_code == 422\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\n\u003cp\u003e\u003cstrong\u003e\u8fd0\u884c\u7ed3\u679c\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e4 passed in 0.10s\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(24, 7, "24.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u6309 24.7 L3 \u6d41\u7a0b\uff1a\u8ba9 AI \u751f\u6210\"\u5f85\u529e\u6e05\u5355\"\u63a5\u53e3\uff0c\u4f60\u7528 pytest + TestClient \u5199\u6d4b\u8bd5\u9a8c\u6536\uff08\u5217\u8868/\u65b0\u5efa/\u7a7a\u5185\u5bb9 400\uff09\uff0c\u8bb0\u5f55 Review \u4e0e\u4fee\u6539\u7406\u7531\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1347,33 +1332,7 @@ def update_student(student_id: int, student: StudentIn):
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>（测试文件，用 FastAPI TestClient）：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">from fastapi.testclient import TestClient
-from main import app
-
-client = TestClient(app)
-
-def test_list_tasks():
-    resp = client.get(&quot;/api/tasks&quot;)
-    assert resp.status_code == 200
-    assert isinstance(resp.json(), list)
-
-def test_create_task():
-    resp = client.post(&quot;/api/tasks&quot;, json={&quot;content&quot;: &quot;写作业&quot;})
-    assert resp.status_code == 201
-
-def test_create_empty():
-    resp = client.post(&quot;/api/tasks&quot;, json={&quot;content&quot;: &quot;&quot;})
-    assert resp.status_code == 400
-
-def test_create_missing_field():
-    resp = client.post(&quot;/api/tasks&quot;, json={})
-    assert resp.status_code == 422</code></pre></div>
-<p><strong>运行结果</strong>：</p>
-<div class="md-figure"><pre class="md-diagram">4 passed in 0.10s</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>TestClient 不需要启动服务器就能测接口——<strong>L3 的"AI 生成 + 测试验收"完整落地</strong>。Review 记录：AI 生成的接口我补了 400 空内容校验、测试覆盖了 4 种情况。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1788,7 +1747,7 @@ def test_create_missing_field():
 ### 语法掌握：查询参数
 ### 语法掌握：请求体与 Pydantic 校验
 ### 交叉验证：422 vs 400——两个&#34;参数错&#34;的区别
-## 24.4 综合案例：FastAPI + SQLite 学生 CRUD
+## 24.4 综合案例：待办事项 REST API（JSON 文件持久化）
 ## 24.5 CORS：让前端能调你的接口（了解）
 ### 概念认知：跨域是什么
 ### 语法掌握：开启 CORS
@@ -1806,7 +1765,7 @@ def test_create_missing_field():
   const USER_MODE = 'all_unlocked';
   const COMPLETED_KPS = [];
   const CHAPTER_COMPLETED = false;
-  const CHAPTER_KP_TITLES = ["24.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "24.1 Web \u6846\u67b6\u662f\u4ec0\u4e48", "24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528", "24.3 \u8def\u7531\u4e0e\u53c2\u6570", "24.4 \u7efc\u5408\u6848\u4f8b\uff1aFastAPI + SQLite \u5b66\u751f CRUD", "24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09", "24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "24.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "24.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
+  const CHAPTER_KP_TITLES = ["24.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "24.1 Web \u6846\u67b6\u662f\u4ec0\u4e48", "24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528", "24.3 \u8def\u7531\u4e0e\u53c2\u6570", "24.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e\u4e8b\u9879 REST API\uff08JSON \u6587\u4ef6\u6301\u4e45\u5316\uff09", "24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09", "24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "24.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "24.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"];
   const CHAPTER_WRONG = [];
   const CHAPTER_TITLE = "FastAPI\uff1a\u4ece\u5165\u95e8\u5230\u4f1a\u7528";
 </script>
@@ -1851,7 +1810,7 @@ def test_create_missing_field():
 <script src="static/js/chapter_challenge.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    ChapterIntro3D.open(24, "FastAPI\uff1a\u4ece\u5165\u95e8\u5230\u4f1a\u7528", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7406\u89e3\"Web \u6846\u67b6\"\u89e3\u51b3\u4e86\u4ec0\u4e48\uff08\u5bf9\u6bd4\u7b2c 23.4 \u7684\u624b\u5199\u8def\u7531\uff09\uff1b\n- \u5b89\u88c5\u5e76\u8fd0\u884c FastAPI + uvicorn\uff0c\u8bbf\u95ee\u81ea\u52a8\u6587\u6863 /docs\uff1b\n- \u5199\u8def\u7531\uff1a\u8def\u5f84\u53c2\u6570\u3001\u67e5\u8be2\u53c2\u6570\u3001\u8bf7\u6c42\u4f53\uff08Pydantic \u6821\u9a8c\uff09", ["24.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "24.1 Web \u6846\u67b6\u662f\u4ec0\u4e48", "24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528", "24.3 \u8def\u7531\u4e0e\u53c2\u6570", "24.4 \u7efc\u5408\u6848\u4f8b\uff1aFastAPI + SQLite \u5b66\u751f CRUD", "24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09", "24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "24.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "24.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
+    ChapterIntro3D.open(24, "FastAPI\uff1a\u4ece\u5165\u95e8\u5230\u4f1a\u7528", "\u5b66\u5b8c\u672c\u7ae0\uff0c\u4f60\u5e94\u8be5\u80fd\u591f\uff1a\n\n- \u7406\u89e3\"Web \u6846\u67b6\"\u89e3\u51b3\u4e86\u4ec0\u4e48\uff08\u5bf9\u6bd4\u7b2c 23.4 \u7684\u624b\u5199\u8def\u7531\uff09\uff1b\n- \u5b89\u88c5\u5e76\u8fd0\u884c FastAPI + uvicorn\uff0c\u8bbf\u95ee\u81ea\u52a8\u6587\u6863 /docs\uff1b\n- \u5199\u8def\u7531\uff1a\u8def\u5f84\u53c2\u6570\u3001\u67e5\u8be2\u53c2\u6570\u3001\u8bf7\u6c42\u4f53\uff08Pydantic \u6821\u9a8c\uff09", ["24.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", "24.1 Web \u6846\u67b6\u662f\u4ec0\u4e48", "24.2 \u7b2c\u4e00\u4e2a FastAPI \u5e94\u7528", "24.3 \u8def\u7531\u4e0e\u53c2\u6570", "24.4 \u7efc\u5408\u6848\u4f8b\uff1a\u5f85\u529e\u4e8b\u9879 REST API\uff08JSON \u6587\u4ef6\u6301\u4e45\u5316\uff09", "24.5 CORS\uff1a\u8ba9\u524d\u7aef\u80fd\u8c03\u4f60\u7684\u63a5\u53e3\uff08\u4e86\u89e3\uff09", "24.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", "24.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", "24.8 \u672c\u7ae0\u5c0f\u7ed3\u4e0e\u77e5\u8bc6\u6811", "\u672c\u7ae0\u901f\u67e5"], null);
   });
 </script>
 

@@ -19,7 +19,7 @@
 <!-- 讲解播放器放 head：底部有若干 CDN 脚本，课堂网络不稳时会把页面解析卡住，
      而图文讲解是本平台的核心学习入口，不能跟着 CDN 一起挂 -->
 <script src="static/js/narration_player.js"></script>
-<script>window.PYMASTER_TOTAL_CHAPTERS = 39;</script>
+<script>window.PYMASTER_TOTAL_CHAPTERS = 44;</script>
   <link rel="stylesheet" href="static/css/atmosphere.css">
 <!-- 教案排版必须排在所有主题层之后：style.css 里教案规则跨了四层互相覆盖，
      这一份负责收口（正文层级 / 代码块 / 表格 / 引用，含浅色主题配色） -->
@@ -121,12 +121,17 @@
             <p><strong>学完本章，你应该能够：</strong></p>
 <ol><li>注册 DeepSeek 开放平台并理解成本控制；</li><li>用环境变量管理 API Key，绝不入库；</li><li>用 requests 和 OpenAI SDK 两种方式调用 DeepSeek；</li><li>用 system prompt 设定角色，维护多轮对话；</li><li>了解流式输出；</li><li>实现工具调用（Function Calling），组装一个"能查待办/算数"的最小智能体；</li><li>继续遵守 L3 纪律。</li></ol>
 <p><strong>前置知识</strong>：第 27 章（概念）、第 13 章（requests）、第 23 章（HTTP）。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 3 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：28.1 注册与成本控制 + API Key 安全红线（禁止硬编码，用环境变量）</p>
+<p><strong>练习 10 分钟</strong>：任务 28-3：配置环境变量读取 Key，验证程序能拿到</p>
+<p><strong>休息 10 分钟</strong>：Key 泄露是本课红线，必须反复强调</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day13.md</code> 第 3 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 0, "28.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf DEEPSEEK_API_KEY\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u54cd\u5e94\u8def\u5f84 \u003ccode class=\"md-inline\"\u003echoices[0].message.content\u003c/code\u003e \u4e0e \u003ccode class=\"md-inline\"\u003eusage.total_tokens\u003c/code\u003e\u2014\u2014\u8c03 API \u7684\u56fa\u5b9a\u52a8\u4f5c\u3002\u003c/p\u003e", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf `DEEPSEEK_API_KEY`\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf \u003ccode class=\"md-inline\"\u003eDEEPSEEK_API_KEY\u003c/code\u003e\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf DEEPSEEK_API_KEY\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport os\nimport requests\n\napi_key = os.environ.get(\u0026quot;DEEPSEEK_API_KEY\u0026quot;)\n\nresp = requests.post(\n    \u0026quot;https://api.deepseek.com/chat/completions\u0026quot;,\n    headers={\u0026quot;Authorization\u0026quot;: f\u0026quot;Bearer {api_key}\u0026quot;},\n    json={\n        \u0026quot;model\u0026quot;: \u0026quot;deepseek-v4-flash\u0026quot;,\n        \u0026quot;messages\u0026quot;: [{\u0026quot;role\u0026quot;: \u0026quot;user\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\u0026quot;}],\n        \u0026quot;max_tokens\u0026quot;: 300,\n    },\n    timeout=30,\n)\n\ndata = resp.json()\nprint(data[\u0026quot;choices\u0026quot;][0][\u0026quot;message\u0026quot;][\u0026quot;content\u0026quot;])\nprint(f\u0026quot;\u6d88\u8017 token\uff1a{data[\u0026#x27;usage\u0026#x27;][\u0026#x27;total_tokens\u0026#x27;]}\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 0, "28.0 \u5b66\u4e60\u76ee\u6807\u4e0e\u524d\u7f6e\u77e5\u8bc6", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 1 \u9898\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf DEEPSEEK_API_KEY\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 1, "question": "**\u7b2c 1 \u9898**\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf `DEEPSEEK_API_KEY`\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 1 \u9898\u003c/strong\u003e\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf \u003ccode class=\"md-inline\"\u003eDEEPSEEK_API_KEY\u003c/code\u003e\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002\u003c/p\u003e", "question_plain": "\u7b2c 1 \u9898\uff1a\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf DEEPSEEK_API_KEY\uff0c\u7528 requests \u65b9\u5f0f\u53d1\u8d77\u4e00\u6b21\u5bf9\u8bdd\uff08\"\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\"\uff09\uff0c\u8f93\u51fa\u56de\u7b54\u548c\u6d88\u8017\u7684 token \u6570\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -166,29 +171,7 @@
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import os
-import requests
-
-api_key = os.environ.get(&quot;DEEPSEEK_API_KEY&quot;)
-
-resp = requests.post(
-    &quot;https://api.deepseek.com/chat/completions&quot;,
-    headers={&quot;Authorization&quot;: f&quot;Bearer {api_key}&quot;},
-    json={
-        &quot;model&quot;: &quot;deepseek-v4-flash&quot;,
-        &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;用一句话介绍 Python&quot;}],
-        &quot;max_tokens&quot;: 300,
-    },
-    timeout=30,
-)
-
-data = resp.json()
-print(data[&quot;choices&quot;][0][&quot;message&quot;][&quot;content&quot;])
-print(f&quot;消耗 token：{data[&#x27;usage&#x27;][&#x27;total_tokens&#x27;]}&quot;)</code></pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>响应路径 <code class="md-inline">choices[0].message.content</code> 与 <code class="md-inline">usage.total_tokens</code>——调 API 的固定动作。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -269,12 +252,17 @@ if not api_key:
 <p><strong>PowerShell 设置环境变量</strong>（临时）：</p>
 <div class="md-codeblock" data-lang="powershell"><div class="md-codebar"><span class="md-codelang">powershell</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-powershell">$env:DEEPSEEK_API_KEY = &quot;sk-你的密钥&quot;</code></pre></div>
 <p><strong>讲解</strong>：密钥只存在于环境变量中，代码和 Git 里永远看不到明文。<strong>第 28 章练习的第 0 步：把 .env 加进 .gitignore</strong>。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 4 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：28.2 第一次对话：requests 版 + OpenAI SDK 版</p>
+<p><strong>练习 10 分钟</strong>：任务 28-4（手写）：最简调用——一条 message 拿回回答</p>
+<p><strong>休息 10 分钟</strong>：401/模型名的 Debug 演示当堂做</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day13.md</code> 第 4 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 1, "28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "\u003cp\u003eSDK \u4ee3\u7801\u66f4\u77ed\u3001\u7c7b\u578b\u66f4\u6e05\u6670\uff1brequests \u7248\u672c\u4e0d\u4f9d\u8d56\u7b2c\u4e09\u65b9 SDK\u3002\u4e24\u8005\u90fd\u80fd\u7528\uff0c\u003cstrong\u003eSDK \u63a8\u8350\u003c/strong\u003e\uff08\u540e\u7eed\u5de5\u5177\u8c03\u7528/\u6d41\u5f0f\u66f4\u65b9\u4fbf\uff09\u3002\u003c/p\u003e", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get(\u0026quot;DEEPSEEK_API_KEY\u0026quot;),\n    base_url=\u0026quot;https://api.deepseek.com\u0026quot;,\n)\n\nresp = client.chat.completions.create(\n    model=\u0026quot;deepseek-v4-flash\u0026quot;,\n    messages=[{\u0026quot;role\u0026quot;: \u0026quot;user\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u7528\u4e00\u53e5\u8bdd\u4ecb\u7ecd Python\u0026quot;}],\n)\nprint(resp.choices[0].message.content)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 1, "28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 2 \u9898\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "text", "explanation": "", "no": 2, "question": "**\u7b2c 2 \u9898**\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 2 \u9898\u003c/strong\u003e\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002\u003c/p\u003e", "question_plain": "\u7b2c 2 \u9898\uff1a\u5b89\u88c5 openai SDK\uff0c\u7528 SDK \u65b9\u5f0f\u91cd\u590d\u7b2c 1 \u9898\uff0c\u5bf9\u6bd4\u4e24\u79cd\u5199\u6cd5\u7684\u4ee3\u7801\u91cf\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -314,23 +302,7 @@ if not api_key:
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get(&quot;DEEPSEEK_API_KEY&quot;),
-    base_url=&quot;https://api.deepseek.com&quot;,
-)
-
-resp = client.chat.completions.create(
-    model=&quot;deepseek-v4-flash&quot;,
-    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;用一句话介绍 Python&quot;}],
-)
-print(resp.choices[0].message.content)</code></pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>SDK 代码更短、类型更清晰；requests 版本不依赖第三方 SDK。两者都能用，<strong>SDK 推荐</strong>（后续工具调用/流式更方便）。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -340,25 +312,29 @@ print(resp.choices[0].message.content)</code></pre></div></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u7528\u73af\u5883\u53d8\u91cf\u7ba1\u7406 Key")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：用环境变量管理 Key
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「28.1 注册与成本控制」的核心用法演示一遍，并打印出结果。
+              💡 照着「用环境变量管理 Key」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(28, 1, 1, "\u7528\u4ee3\u7801\u628a\u300c28.1 \u6ce8\u518c\u4e0e\u6210\u672c\u63a7\u5236\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(28, 1, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u7528\u73af\u5883\u53d8\u91cf\u7ba1\u7406 Key\n\n\u7167\u7740\u300c\u7528\u73af\u5883\u53d8\u91cf\u7ba1\u7406 Key\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "import os\n\napi_key = os.environ.get(\"DEEPSEEK_API_KEY\")\nif not api_key:\n    ____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -478,12 +454,17 @@ print(f&quot;本次消耗 token：{resp.usage.total_tokens}&quot;)</code></pre><
 <p><strong>调模型的第一直觉：写代码/查事实用低温（0-0.3），聊天/创意用中温（0.7 左右）</strong>。</p>
 <p><strong>原理探秘：deepseek-v4-flash 是推理型模型</strong></p>
 <p>它响应中可能带 <code class="md-inline">reasoning_content</code>（模型的思考过程），且 <code class="md-inline">reasoning_tokens</code> 会计入 <code class="md-inline">max_tokens</code>。所以调它时 <code class="md-inline">max_tokens</code> 必须<strong>按"推理 + 回答"一起预算</strong>（本章示例 300-400），调太小会出现"空回复"。第七篇项目（第 32 章）已按此设置了各任务的预算。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 5 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：28.3 system prompt 人设设定 + 多轮对话维护 messages 历史（复用 chat_store.py）</p>
+<p><strong>练习 10 分钟</strong>：任务 28-5：改造机器人——换人设、调 temperature、加历史存储</p>
+<p><strong>休息 10 分钟</strong>：检查历史真的被存进 JSON 了</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day13.md</code> 第 5 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 2, "28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08os.environ.get + \u5224\u65ad\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u660e\u786e\u7684\u9519\u8bef\u63d0\u793a\u8ba9\"\u73af\u5883\u6ca1\u914d\u597d\"\u4e00\u773c\u53ef\u67e5\u2014\u2014\u003cstrong\u003e\u5de5\u7a0b\u4ee3\u7801\u7684\u63d0\u793a\u8981\u80fd\u6307\u5bfc\u4eba\u4e0b\u4e00\u6b65\u505a\u4ec0\u4e48\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08`os.environ.get` + \u5224\u65ad\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08\u003ccode class=\"md-inline\"\u003eos.environ.get\u003c/code\u003e + \u5224\u65ad\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08os.environ.get + \u5224\u65ad\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003eimport os\n\napi_key = os.environ.get(\u0026quot;DEEPSEEK_API_KEY\u0026quot;)\nif not api_key:\n    raise RuntimeError(\u0026quot;\u8bf7\u5148\u8bbe\u7f6e\u73af\u5883\u53d8\u91cf DEEPSEEK_API_KEY\uff1a$env:DEEPSEEK_API_KEY=\u0026#x27;sk-...\u0026#x27;\u0026quot;)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 2, "28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 3 \u9898\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08os.environ.get + \u5224\u65ad\uff09\u3002\n\n", "difficulty": "\u57fa\u7840\u9898\uff08\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 3, "question": "**\u7b2c 3 \u9898**\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08`os.environ.get` + \u5224\u65ad\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 3 \u9898\u003c/strong\u003e\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08\u003ccode class=\"md-inline\"\u003eos.environ.get\u003c/code\u003e + \u5224\u65ad\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 3 \u9898\uff1a\u628a Key \u7684\u8bfb\u53d6\u6539\u6210\"\u73af\u5883\u53d8\u91cf\u7f3a\u5931\u65f6\u7ed9\u51fa\u660e\u786e\u63d0\u793a\"\uff08os.environ.get + \u5224\u65ad\uff09\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -523,15 +504,7 @@ print(f&quot;本次消耗 token：{resp.usage.total_tokens}&quot;)</code></pre><
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">import os
-
-api_key = os.environ.get(&quot;DEEPSEEK_API_KEY&quot;)
-if not api_key:
-    raise RuntimeError(&quot;请先设置环境变量 DEEPSEEK_API_KEY：$env:DEEPSEEK_API_KEY=&#x27;sk-...&#x27;&quot;)</code></pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>明确的错误提示让"环境没配好"一眼可查——<strong>工程代码的提示要能指导人下一步做什么</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -546,14 +519,17 @@ if not api_key:
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              编写代码验证「28.2 第一次对话」
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「28.2 第一次对话」的核心用法演示一遍，并打印出结果。
+              💡 用代码把「28.2 第一次对话」的核心用法演示一遍，并打印出结果。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(28, 2, 1, "\u7528\u4ee3\u7801\u628a\u300c28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(28, 2, 1, "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd\u300d\n\n\u7528\u4ee3\u7801\u628a\u300c28.2 \u7b2c\u4e00\u6b21\u5bf9\u8bdd\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002", "")'>
                 💻 打开编辑器作答
               </button>
             </div>
@@ -656,12 +632,17 @@ while True:
 
     messages.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: reply})</code></pre></div>
 <p><strong>讲解</strong>：<strong>记忆的实现</strong>：每轮把用户输入和模型回答都 append 进 <code class="md-inline">messages</code>，下次请求全部传回——模型就"记得"了。<strong>注意</strong>：历史无限增长会撑爆上下文窗口，真实项目要做"截断/摘要"（本课程了解）。</p>
+<blockquote class="md-quote"><p><strong>⏱ 第 6 单元｜50 分钟 = 30 讲 + 10 练 + 10 休</strong></p>
+<p><strong>讲授 30 分钟</strong>：28.4 流式输出（呼应生成器）+ 28.5 Function Calling 最小智能体（选学）+ 知识树</p>
+<p><strong>练习 10 分钟</strong>：任务 28-6：跑通流式打印；有余力的同学跑工具调用示例</p>
+<p><strong>休息 10 分钟</strong>：预告：明天不写代码也能搭 AI 应用</p>
+<p>📖 分钟级流程见同一文件夹的 <code class="md-inline">教案_Day13.md</code> 第 6 单元</p></blockquote>
           </div>
 
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 3, "28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003esystem prompt \u4e00\u53e5\u8bdd\u5c31\u6539\u53d8\u4e86\u56de\u7b54\u98ce\u683c\u2014\u2014\u003cstrong\u003e\u89d2\u8272 + \u89c4\u5219\u662f\u4f4e\u6210\u672c\u5b9a\u5236\u6a21\u578b\u7684\u624b\u6bb5\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003emessages = [\n    {\u0026quot;role\u0026quot;: \u0026quot;system\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u4f60\u662f Python \u9762\u8bd5\u5b98\uff0c\u63d0\u95ee\u8981\u5faa\u5e8f\u6e10\u8fdb\uff0c\u56de\u7b54\u4e0d\u8d85\u8fc7 80 \u5b57\u0026quot;},\n    {\u0026quot;role\u0026quot;: \u0026quot;user\u0026quot;, \u0026quot;content\u0026quot;: \u0026quot;\u8bf7\u5f00\u59cb\u9762\u8bd5\u6211\u0026quot;},\n]\n\nresp = client.chat.completions.create(model=\u0026quot;deepseek-v4-flash\u0026quot;, messages=messages)\nprint(resp.choices[0].message.content)\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 3, "28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 4, "question": "**\u7b2c 4 \u9898**\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 4 \u9898\u003c/strong\u003e\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002\u003c/p\u003e", "question_plain": "\u7b2c 4 \u9898\uff1a\u5199\u4e00\u4e2a\u5e26 system prompt \u7684\u89d2\u8272\u5bf9\u8bdd\uff1a\u7cfb\u7edf\u8bbe\u5b9a\"\u4f60\u662f Python \u9762\u8bd5\u5b98\"\uff0c\u95ee\u4e09\u4e2a\u95ee\u9898\uff0c\u89c2\u5bdf\u56de\u7b54\u98ce\u683c\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -701,17 +682,7 @@ while True:
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">messages = [
-    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是 Python 面试官，提问要循序渐进，回答不超过 80 字&quot;},
-    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;请开始面试我&quot;},
-]
-
-resp = client.chat.completions.create(model=&quot;deepseek-v4-flash&quot;, messages=messages)
-print(resp.choices[0].message.content)</code></pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>system prompt 一句话就改变了回答风格——<strong>角色 + 规则是低成本定制模型的手段</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -721,25 +692,29 @@ print(resp.choices[0].message.content)</code></pre></div></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u89d2\u8272\u626e\u6f14")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：角色扮演
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「28.3 系统提示词与多轮对话」的核心用法演示一遍，并打印出结果。
+              💡 照着「角色扮演」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(28, 3, 1, "\u7528\u4ee3\u7801\u628a\u300c28.3 \u7cfb\u7edf\u63d0\u793a\u8bcd\u4e0e\u591a\u8f6e\u5bf9\u8bdd\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(28, 3, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u89d2\u8272\u626e\u6f14\n\n\u7167\u7740\u300c\u89d2\u8272\u626e\u6f14\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "resp = client.chat.completions.create(\n    model=\"deepseek-v4-flash\",\n    messages=[\n        {\"role\": \"system\", \"content\": \"\u4f60\u662f\u7535\u5546\u5ba2\u670d\uff0c\u8bed\u6c14\u4eb2\u5207\uff0c\u56de\u7b54\u4e0d\u8d85\u8fc7 50 \u5b57\"},\n        ____\n    ____\n____\nprint(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -821,7 +796,7 @@ for chunk in response:
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 4, "28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u53c2\u7167\u6848\u4f8b 28.5 \u7684\u5faa\u73af\uff1a\u6bcf\u8f6e\u628a \u003ccode class=\"md-inline\"\u003euser\u003c/code\u003e \u8f93\u5165\u548c \u003ccode class=\"md-inline\"\u003eassistant\u003c/code\u003e \u56de\u590d append \u8fdb messages\u3002\u9a8c\u8bc1\u65b9\u6cd5\uff1a\u7b2c\u4e00\u8f6e\u8bf4\"\u6211\u559c\u6b22 Python\"\uff0c\u7b2c\u4e8c\u8f6e\u95ee\"\u6211\u7b2c\u4e00\u8f6e\u8bf4\u4e86\u4ec0\u4e48\"\u2014\u2014\u6a21\u578b\u80fd\u7b54\u51fa\"\u4f60\u559c\u6b22 Python\"\uff0c\u8bf4\u660e\u5386\u53f2\u751f\u6548\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 4, "28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 5 \u9898\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 5, "question": "**\u7b2c 5 \u9898**\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 5 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002\u003c/p\u003e", "question_plain": "\u7b2c 5 \u9898\uff1a\u5b9e\u73b0\u591a\u8f6e\u5bf9\u8bdd\u5faa\u73af\uff08\u6848\u4f8b 28.5\uff09\uff0c\u8fde\u7eed\u95ee 3 \u8f6e\uff0c\u9a8c\u8bc1\u6a21\u578b\"\u8bb0\u5f97\"\u524d\u9762\u7684\u8bdd\u9898\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -861,7 +836,7 @@ for chunk in response:
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：参照案例 28.5 的循环：每轮把 <code class="md-inline">user</code> 输入和 <code class="md-inline">assistant</code> 回复 append 进 messages。验证方法：第一轮说"我喜欢 Python"，第二轮问"我第一轮说了什么"——模型能答出"你喜欢 Python"，说明历史生效。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -871,25 +846,29 @@ for chunk in response:
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u6d41\u5f0f\u63a5\u6536")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：流式接收
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「28.4 流式输出（了解）」的核心用法演示一遍，并打印出结果。
+              💡 照着「流式接收」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(28, 4, 1, "\u7528\u4ee3\u7801\u628a\u300c28.4 \u6d41\u5f0f\u8f93\u51fa\uff08\u4e86\u89e3\uff09\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(28, 4, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u6d41\u5f0f\u63a5\u6536\n\n\u7167\u7740\u300c\u6d41\u5f0f\u63a5\u6536\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "response = client.chat.completions.create(\n    model=\"deepseek-v4-flash\",\n    messages=[{\"role\": \"user\", \"content\": \"\u4ecb\u7ecd\u4e00\u4e0b\u4f60\u81ea\u5df1\"}],\n    stream=True,\n)\n\nfor chunk in response:\n    delta = ____   # \u8fd9\u91cc\u8981\u4f60\u6765\u5199\n    if delta:\n        print(____)   # \u8865\u4e0a\u8981\u6253\u5370\u7684\u5185\u5bb9")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1102,7 +1081,7 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 5, "28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1aquery_todo \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1a`query_todo` \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1a\u003ccode class=\"md-inline\"\u003equery_todo\u003c/code\u003e \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1aquery_todo \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff1a\u5de5\u5177\u58f0\u660e + \u6267\u884c\u53c2\u7167\u6848\u4f8b 28.7/28.8\u3002\u9a8c\u8bc1\uff1a\u95ee\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u4f5c\u4e1a\"\uff0c\u6a21\u578b\u5e94\u8c03\u7528 \u003ccode class=\"md-inline\"\u003equery_todo(\"\u4f5c\u4e1a\")\u003c/code\u003e\uff0c\u5de5\u5177\u8fd4\u56de\u8fc7\u6ee4\u540e\u7684\u7ed3\u679c\uff0c\u6a21\u578b\u56de\u7b54\"\u6709 1 \u6761\uff1a\u5199\u4f5c\u4e1a\"\u3002\u003c/p\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 5, "28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"", [{"body": "\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 6 \u9898\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1aquery_todo \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002 \u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u2026\n\n", "difficulty": "\u8fdb\u9636\u9898\uff08\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 6, "question": "**\u7b2c 6 \u9898**\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1a`query_todo` \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002\n\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 6 \u9898\u003c/strong\u003e\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1a\u003ccode class=\"md-inline\"\u003equery_todo\u003c/code\u003e \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002\u003c/p\u003e\n\u003cp\u003e\u0026lt;blockquote class=\"md-quote\"\u0026gt;\u0026lt;p\u0026gt;\u0026lt;strong\u0026gt;Vibe \u53d8\u5f0f\uff08L3\uff09\u0026lt;/strong\u0026gt;\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u0026lt;/p\u0026gt;\u0026lt;/blockquote\u0026gt;\u003c/p\u003e", "question_plain": "\u7b2c 6 \u9898\uff1a\u5b9e\u73b0\u5de5\u5177\u8c03\u7528\uff1aquery_todo \u4e00\u4e2a\u5de5\u5177\u5373\u53ef\uff0c\u8ba9\u6a21\u578b\u56de\u7b54\"\u6211\u7684\u5f85\u529e\u91cc\u6709\u6ca1\u6709\u0027\u4f5c\u4e1a\u0027\"\uff08\u6d4b\u8bd5\u5de5\u5177\u7b5b\u9009\u903b\u8f91\uff09\u3002\n\u003cblockquote class=\"md-quote\"\u003e\u003cp\u003e\u003cstrong\u003eVibe \u53d8\u5f0f\uff08L3\uff09\u003c/strong\u003e\uff1a\u5b8c\u6210\u7b2c 8 \u9898\u540e\uff0c\u628a\u5e26\u8c03\u7528\u8ba1\u6570\u7684\u667a\u80fd\u4f53\u53d1\u7ed9 AI\uff1a\"\u8bf7\u5ba1\u67e5\u8c03\u7528\u8ba1\u6570\u4e0e\u7ec8\u6b62\u903b\u8f91\u3001\u65e5\u5fd7\u8bb0\u5f55\u662f\u5426\u5b8c\u6574\u3002\"\u8bb0\u5f55\u4f60\u91c7\u7eb3/\u5426\u51b3\u7684\u7406\u7531\u3002\u003c/p\u003e\u003c/blockquote\u003e", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1143,7 +1122,7 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>：工具声明 + 执行参照案例 28.7/28.8。验证：问"我的待办里有没有作业"，模型应调用 <code class="md-inline">query_todo("作业")</code>，工具返回过滤后的结果，模型回答"有 1 条：写作业"。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1153,25 +1132,29 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
             <div class="kp-ex-header">
               <span>练习 2</span>
               <div class="kp-ex-tools">
-                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u7f16\u5199\u4ee3\u7801\u9a8c\u8bc1\u300c28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"\u300d")" title="收藏">☆</button>
+                <button class="btn-fav-star" onclick="toggleFav(28, '1', "\u8865\u5168\u4ee3\u7801\uff1a\u5de5\u5177\u58f0\u660e")" title="收藏">☆</button>
               </div>
             </div>
             
             <!-- Code Exercise -->
+            
             <div class="ex-question" style="font-size:14px;margin-bottom:8px;">
-              请编写代码验证你对本知识点的理解
+              📝 补全代码：工具声明
             </div>
             <div class="ex-code-hint">
-              💡 提示：用代码把「28.5 工具调用：让智能体&#34;有手有脚&#34;」的核心用法演示一遍，并打印出结果。
+              💡 照着「工具声明」的做法，把下面的代码补完整，让它能跑出正确结果。
+补完后运行，确认结果符合这个知识点的用法。
             </div>
+            
             <div class="ex-actions" style="margin-top:12px;">
-              <button class="btn-code-ex" onclick='openCodeEx(28, 5, 1, "\u7528\u4ee3\u7801\u628a\u300c28.5 \u5de5\u5177\u8c03\u7528\uff1a\u8ba9\u667a\u80fd\u4f53\"\u6709\u624b\u6709\u811a\"\u300d\u7684\u6838\u5fc3\u7528\u6cd5\u6f14\u793a\u4e00\u904d\uff0c\u5e76\u6253\u5370\u51fa\u7ed3\u679c\u3002")'>
+              
+              <button class="btn-code-ex" onclick='openCodeEx(28, 5, 1, "\u8865\u5168\u4ee3\u7801\uff1a\u5de5\u5177\u58f0\u660e\n\n\u7167\u7740\u300c\u5de5\u5177\u58f0\u660e\u300d\u7684\u505a\u6cd5\uff0c\u628a\u4e0b\u9762\u7684\u4ee3\u7801\u8865\u5b8c\u6574\uff0c\u8ba9\u5b83\u80fd\u8dd1\u51fa\u6b63\u786e\u7ed3\u679c\u3002\n\u8865\u5b8c\u540e\u8fd0\u884c\uff0c\u786e\u8ba4\u7ed3\u679c\u7b26\u5408\u8fd9\u4e2a\u77e5\u8bc6\u70b9\u7684\u7528\u6cd5\u3002", "tools = [\n    {\n        \"type\": \"function\",\n        \"function\": {\n            \"name\": \"query_todo\",\n            \"description\": \"\u67e5\u8be2\u5f85\u529e\u5217\u8868\uff0c\u53ef\u6309\u5173\u952e\u8bcd\u7b5b\u9009\",\n            \"parameters\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"keyword\": {\"type\": \"string\", \"description\": \"\u7b5b\u9009\u5173\u952e\u8bcd\"},\n                },\n            },\n        },\n    },\n    {\n        \"type\": \"function\",\n        ____\n            ____\n            ____\n            ____\n                ____\n                ____\n                    ____\n                ____\n            ____\n        ____\n    ____\n____")'>
                 💻 打开编辑器作答
               </button>
             </div>
             <div class="ex-answer code-result" style="display:none;">
               <div class="answer-label">✅ 代码运行成功！</div>
-              <div class="answer-text">代码成功运行即表示你已掌握本知识点！</div>
+              <div class="answer-text">对照题面给出的预期输出检查自己的结果。结果一致即表示这一节的核心用法你已经会用。</div>
             </div>
             
           </div>
@@ -1256,7 +1239,7 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 6, "28.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u56db\u4e2a\u573a\u666f\u8986\u76d6\"\u6b63\u5e38\u5de5\u5177\u3001\u6b63\u5e38\u8ba1\u7b97\u3001\u5b89\u5168\u62e6\u622a\u3001\u5faa\u73af\u515c\u5e95\"\u2014\u2014\u003cstrong\u003e\u6d4b\u8bd5\u667a\u80fd\u4f53\u8981\u6d4b\u5b83\u7684\"\u9632\u5446\"\u80fd\u529b\u003c/strong\u003e\u3002\u003c/p\u003e", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6d4b\u8bd5\u573a\u666f\u4e0e\u9884\u671f\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-figure\"\u003e\u003cpre class=\"md-diagram\"\u003e1. \u67e5\u5f85\u529e\uff1a\u0026quot;\u6211\u7684\u5f85\u529e\u91cc\u6709\u4ec0\u4e48\uff1f\u0026quot; \u2192 \u8c03\u7528 query_todo \u2192 \u5217\u51fa\u4e24\u6761\uff1b\n2. \u7b97\u6570\uff1a\u0026quot;12 * 13 \u7b49\u4e8e\u591a\u5c11\uff1f\u0026quot; \u2192 \u8c03\u7528 calculator \u2192 \u56de\u7b54 156\uff1b\n3. \u975e\u6cd5\u8868\u8fbe\u5f0f\uff1a\u8ba9\u6a21\u578b\u8c03\u7528 calculator(\u0026quot;12 + 13; rm -rf\u0026quot;) \u2192 \u767d\u540d\u5355\u62e6\u622a \u2192 \u0026quot;\u8868\u8fbe\u5f0f\u5305\u542b\u975e\u6cd5\u5b57\u7b26\u0026quot;\uff1b\n4. \u8fde\u7eed\u63d0\u95ee\uff1a\u9a8c\u8bc1\u4e0d\u8d85\u8fc7 max_turns\uff0c\u4e14\u6bcf\u6b21\u90fd\u80fd\u5f97\u5230\u6700\u7ec8\u56de\u7b54\u3002\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 6, "28.6 \u672c\u7ae0 Debug \u56db\u4ef6\u5957", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 7 \u9898\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 7, "question": "**\u7b2c 7 \u9898**\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 7 \u9898\u003c/strong\u003e\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002\u003c/p\u003e", "question_plain": "\u7b2c 7 \u9898\uff1a\u5b8c\u6574\u5b9e\u73b0 28.5.3 \u7684\u6700\u5c0f\u667a\u80fd\u4f53\uff08\u4e24\u4e2a\u5de5\u5177\uff09\uff0c\u6d4b\u8bd5 4 \u4e2a\u573a\u666f\uff1a\u67e5\u5f85\u529e\u3001\u7b97\u6570\u3001\u975e\u6cd5\u8868\u8fbe\u5f0f\uff08\u88ab\u62d2\u7edd\uff09\u3001\u8fde\u7eed\u63d0\u95ee\uff08\u4e0d\u8d85\u8fc7 max_turns\uff09\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1296,14 +1279,7 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>（测试场景与预期）：</p>
-<div class="md-figure"><pre class="md-diagram">1. 查待办：&quot;我的待办里有什么？&quot; → 调用 query_todo → 列出两条；
-2. 算数：&quot;12 * 13 等于多少？&quot; → 调用 calculator → 回答 156；
-3. 非法表达式：让模型调用 calculator(&quot;12 + 13; rm -rf&quot;) → 白名单拦截 → &quot;表达式包含非法字符&quot;；
-4. 连续提问：验证不超过 max_turns，且每次都能得到最终回答。</pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>四个场景覆盖"正常工具、正常计算、安全拦截、循环兜底"——<strong>测试智能体要测它的"防呆"能力</strong>。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             
@@ -1383,7 +1359,7 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
           
 
           
-          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 7, "28.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "\u003cp\u003e\u8c03\u7528\u8ba1\u6570 + \u9608\u503c\u8b66\u544a = \u6210\u672c\u63a7\u5236\u7684\u4ee3\u7801\u843d\u5730\uff1b\u65e5\u5fd7\u91cc\u8bb0\u5f55\u5de5\u5177\u540d\u4e0e\u53c2\u6570\u65b9\u4fbf\u6392\u67e5\u3002\u003c/p\u003e", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002", "reference": "\u003cp\u003e\u003cstrong\u003e\u53c2\u8003\u7b54\u6848\u003c/strong\u003e\uff08\u6838\u5fc3\u6539\u52a8\uff09\uff1a\u003c/p\u003e\n\u003cdiv class=\"md-codeblock\" data-lang=\"python\"\u003e\u003cdiv class=\"md-codebar\"\u003e\u003cspan class=\"md-codelang\"\u003epython\u003c/span\u003e\u003cbutton type=\"button\" class=\"md-copy\" onclick=\"copyBlock(this)\"\u003e\u590d\u5236\u003c/button\u003e\u003c/div\u003e\u003cpre\u003e\u003ccode class=\"language-python\"\u003etool_calls_count = 0\n\nfor _ in range(max_turns):\n    resp = client.chat.completions.create(...)\n    msg = resp.choices[0].message\n    if msg.tool_calls:\n        tool_calls_count += len(msg.tool_calls)\n        print(f\u0026quot;[\u65e5\u5fd7] \u7b2c {tool_calls_count} \u6b21\u5de5\u5177\u8c03\u7528\u0026quot;)\n        if tool_calls_count \u0026gt; 3:\n            print(\u0026quot;[\u8b66\u544a] \u5de5\u5177\u8c03\u7528\u6b21\u6570\u8fc7\u591a\uff0c\u5df2\u505c\u6b62\u0026quot;)\n            return \u0026quot;\u64cd\u4f5c\u8fc7\u4e8e\u590d\u6742\uff0c\u8bf7\u7b80\u5316\u95ee\u9898\u0026quot;\n        ...\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e", "type": "open"}])'>
+          <button class="ink-challenge-trigger" onclick='InkChallenge.open(28, 7, "28.7 Vibe Coding \u4efb\u52a1\u5361\uff08L3 \u4e3b\u5361\uff09", [{"body": "", "code_starter": "# \u9898\u76ee\uff1a\u7b2c 8 \u9898\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002\n\n", "difficulty": "\u6311\u6218\u9898\uff08\u2605\u2605\u2605\uff09", "ex_idx": 0, "expects": "code", "explanation": "", "no": 8, "question": "**\u7b2c 8 \u9898**\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002", "question_html": "\u003cp\u003e\u003cstrong\u003e\u7b2c 8 \u9898\u003c/strong\u003e\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002\u003c/p\u003e", "question_plain": "\u7b2c 8 \u9898\uff1a\u7ed9\u5de5\u5177\u8c03\u7528\u5faa\u73af\u52a0\u4e00\u4e2a\"\u5de5\u5177\u8c03\u7528\u6b21\u6570\u7edf\u8ba1\"\uff0c\u8d85\u8fc7 3 \u6b21\u6253\u5370\u8b66\u544a\u5e76\u505c\u6b62\u2014\u2014\u7528\u65e5\u5fd7\u8bb0\u5f55\u6bcf\u6b21\u8c03\u7528\u7684\u5de5\u5177\u540d\u548c\u53c2\u6570\u3002", "reference": "", "type": "open"}])'>
             ✦ 墨痕挑战
           </button>
 
@@ -1423,22 +1399,7 @@ print(run_agent(&quot;帮我算 12 * 13 等于多少&quot;))</code></pre></div>
 
             <div class="ex-answer" style="display:none;">
               <div class="answer-label">📝 参考答案</div>
-              <div class="answer-text md-content"><p><strong>参考答案</strong>（核心改动）：</p>
-<div class="md-codeblock" data-lang="python"><div class="md-codebar"><span class="md-codelang">python</span><button type="button" class="md-copy" onclick="copyBlock(this)">复制</button></div><pre><code class="language-python">tool_calls_count = 0
-
-for _ in range(max_turns):
-    resp = client.chat.completions.create(...)
-    msg = resp.choices[0].message
-    if msg.tool_calls:
-        tool_calls_count += len(msg.tool_calls)
-        print(f&quot;[日志] 第 {tool_calls_count} 次工具调用&quot;)
-        if tool_calls_count &gt; 3:
-            print(&quot;[警告] 工具调用次数过多，已停止&quot;)
-            return &quot;操作过于复杂，请简化问题&quot;
-        ...</code></pre></div></div>
-              
-              <div class="answer-label" style="margin-top:14px;">🔍 解析</div>
-              <div class="answer-text md-content"><p>调用计数 + 阈值警告 = 成本控制的代码落地；日志里记录工具名与参数方便排查。</p></div>
+              <div class="answer-text md-content">（教材未提供参考答案）</div>
               
             </div>
             

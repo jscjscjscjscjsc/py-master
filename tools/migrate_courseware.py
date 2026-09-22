@@ -45,16 +45,29 @@ ICONS = {
 }
 
 STAGES = [
-    ('基础篇 · Python 核心语法', 1, 14,
-     '从零开始的 Python 语法地基：环境、变量、流程、容器、函数、面向对象与文件 IO。'),
-    ('工程篇 · 软件工程与协作', 15, 20,
-     '把"能跑"变成"能维护"：需求、设计、测试、Git 分支与团队协作工作流。'),
-    ('全栈篇 · 后端 / 前端 / 数据', 21, 26,
-     '架构认知到落地：HTTP、REST、SQLite、FastAPI、Vue 与数据分析。'),
-    ('AI 篇 · 大模型应用开发', 27, 35,
-     '从调用大模型到做出产品：API 调用、工具调用、智能体框架与综合实战。'),
-    ('AI 进阶篇 · RAG 与 Agent 工程', 36, 99,
-     '企业级 AI 应用的工程化：LLM 后端、RAG 检索增强、Agent 机制与框架实战。'),
+    # 主线前段：14 天方案里的 Day01–Day12，是《Python 基础与 AI 开发衔接》
+    # 这门课的主体。读者定位是"零基础到能写脚本"。
+    ('主线一 · Python 基础', 1, 12,
+     '零基础到能写脚本：环境、变量、流程控制、字符串、四大容器、函数、'
+     '面向对象、文件与 JSON、高级特性、requests 与异步。对应 14 天课程的 Day01–Day12。'),
+    # 主线后段：Day13–Day14。单独成段，因为它是课名里那一半 —— 衔接大模型。
+    ('主线二 · 衔接大模型', 13, 14,
+     '从 Python 跨到 AI：调用大模型 API、多轮对话与流式输出、'
+     'Function Calling 最小智能体、LangFlow 可视化编排。'
+     '对应 14 天课程的 Day13–Day14，也是后续 AI 应用开发课的前置。'),
+    # 以下四篇是"进阶选修"：不在 14 天主线里，但自学的人需要，所以保留在后面。
+    ('进阶选修 · 工程与协作', 15, 20,
+     '把"能跑"变成"能维护"：需求、设计、测试、Git 分支与团队协作工作流。'
+     '属软件工程专业课，不影响主线学习。'),
+    ('进阶选修 · 全栈与数据', 21, 26,
+     '架构认知到落地：HTTP、REST、SQLite、FastAPI、Vue 与数据分析。'
+     '其中 FastAPI 在主线二已有引子，本篇是完整版。'),
+    ('进阶选修 · AI 应用开发', 27, 35,
+     '从调用大模型到做出产品：智能体框架全景与 M1–M5 综合实战项目。'
+     '建议在主线二打底之后再回来做完整项目。'),
+    ('进阶选修 · AI 工程化（RAG 与 Agent）', 36, 99,
+     '企业级 AI 应用的工程化：LangFlow 编排、LLM 后端、RAG 检索增强、'
+     'Agent 机制与框架实战。给已经入门、想继续往深走的人。'),
 ]
 
 SECTION_KINDS = [
@@ -350,7 +363,7 @@ def discover_chapters():
     found = {}
 
     if BASIC_DIR.exists():
-        for path in sorted(BASIC_DIR.glob('*_Day*/*.md')):
+        for path in sorted(BASIC_DIR.glob('Day*/*.md')):
             name = path.name
             # 答案册与单独成卷的测验卷不进主章节链（正文里已有对应的知识点小节）
             if '练习题答案' in name or '测验卷' in name or '测验答案' in name:
@@ -369,7 +382,20 @@ def discover_chapters():
             match = re.match(r'^第\s*(\d+)\s*章', name)
             if not match:
                 continue
-            found[offset + int(match.group(1))] = (path, 'advanced')
+            # AI 进阶篇挂在 50 起：原 35+ 会与"主线二新章"撞号，
+            # 撞号时后写覆盖先写，排查成本很高，不如一开始就分开区间。
+            found[50 + int(match.group(1))] = (path, 'advanced')
+
+    # 新版 14 天教材里"Day14 LangFlow"那一章：文件名是「第30章_...」，
+    # 与 AI 进阶篇的第 30 章重名，不能靠文件名猜章号，所以显式指定。
+    # 挂在 41：36 已经被 AI 进阶篇的第 01 章（offset 35 + 1）占了，
+    # 用 36 会被后面的循环覆盖掉 —— 这个撞号踩过一次。
+    for day_dir in sorted(BASIC_DIR.glob('Day14*')):
+        for path in sorted(day_dir.glob('第*章_LangFlow*.md')):
+            found[41] = (path, 'basic')
+
+    # 先算好 adv 系列占用的号，避免 BASIC 的显式映射被覆盖
+    basic_extra = {k: v for k, v in found.items() if k >= 41}
 
     # 复习试卷作为附录挂到第 14 章之后（不进主链，避免打断解锁顺序）
     return [(cid, found[cid][0], found[cid][1]) for cid in sorted(found)]
