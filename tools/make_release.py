@@ -37,7 +37,9 @@ PY_URL = f'https://www.python.org/ftp/python/{PY_VERSION}/python-{PY_VERSION}-em
 MIRROR = 'https://pypi.tuna.tsinghua.edu.cn/simple'
 
 # 平台自身启动就要用的（缺了直接报错）
-CORE_PACKAGES = ['flask', 'edge_tts']
+# waitress 是服务器模式的多线程服务器：本地版用不到，但带上它，
+# 同一个包直接放到服务器上也能用，不必再单独补依赖。
+CORE_PACKAGES = ['flask', 'edge_tts', 'waitress']
 # 教材里的章节练习要用（第 13/17/24/26/28 章），缺了学生做题会 ImportError
 TEACHING_PACKAGES = ['requests', 'pytest', 'fastapi', 'uvicorn', 'httpx', 'pandas', 'matplotlib', 'openai']
 
@@ -58,6 +60,9 @@ EXCLUDE_FILES = {
 KEEP_SUFFIX = {'.py', '.json', '.txt', '.md', '.js', '.mjs', '.css', '.html', '.png',
                '.jpg', '.jpeg', '.svg', '.mp3', '.ico', '.woff', '.woff2', '.ttf',
                '.bat', '.sh', '.toml', '.cfg', '.env', '.example'}
+
+# 学生最需要的两份文档，直接放压缩包根目录（不是藏在 docs/ 里）
+DOC_FILES = ('大模型添加说明书和教程.md', '本地与云服务器部署教程.md')
 
 README = """PyMaster 教学平台 · 使用说明
 =====================================
@@ -179,7 +184,14 @@ def should_keep(path: Path) -> bool:
     return True
 
 
-def stage(stage_dir: Path, lite=False):
+# 开发脚本：只在制作阶段用，运行时零引用（已逐个核对 app.py/*_engine.py）。
+# 分发包里收进「开发脚本/」子目录 —— 学生解压后根目录越干净，越不容易点错东西。
+DEV_SCRIPTS = ('build_comics.py', 'build_narrations.py', 'build_static_docs.py',
+               'fix_json.py', 'setup_api.py', 'test_tts_api.py')
+DEV_DOCS = ('上线部署方案.md', '评审在线试用指引.md')
+
+
+def stage(stage_dir: Path, lite=False, doc_files=()):
     if stage_dir.exists():
         shutil.rmtree(stage_dir)
     stage_dir.mkdir(parents=True)
@@ -191,16 +203,42 @@ def stage(stage_dir: Path, lite=False):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, target)
         count += 1
+    # 根目录清爽化：开发脚本与内部文档移到子目录，不跟启动脚本抢眼球
+    for name in DEV_SCRIPTS:
+        src = stage_dir / name
+        if src.exists():
+            dest = stage_dir / '开发脚本'
+            dest.mkdir(exist_ok=True)
+            shutil.move(str(src), str(dest / name))
+    for name in DEV_DOCS:
+        src = stage_dir / name
+        if src.exists():
+            dest = stage_dir / '内部资料'
+            dest.mkdir(exist_ok=True)
+            shutil.move(str(src), str(dest / name))
     # 只留一个入口
     for extra in ('启动PyMaster.bat', '启动新版PyMaster.bat'):
         leftover = stage_dir / extra
         if leftover.exists():
             leftover.unlink()
+    # 启动脚本也只允许一个：多一个就多一批人来问"我该点哪个"
+    bats = sorted(stage_dir.glob('*.bat'))
+    for bat in bats:
+        if bat.name != '0-启动PyMaster.bat':
+            bat.unlink()
+            say(f'  · 移除多余启动脚本：{bat.name}')
     (stage_dir / 'runtime').mkdir(exist_ok=True)
     if RUNTIME_ZIP.exists():
         shutil.copy2(RUNTIME_ZIP, stage_dir / 'runtime' / 'python-embed.zip')
     shutil.copytree(WHEELS, stage_dir / 'vendor' / 'wheels', dirs_exist_ok=True)
     (stage_dir / '使用说明.txt').write_text(README, encoding='utf-8')
+    # 学生最需要的两份文档，放根目录最显眼的位置
+    for doc in doc_files:
+        src = ROOT / doc
+        if src.exists():
+            shutil.copy2(src, stage_dir / doc)
+        else:
+            say(f'  ! 缺少文档 {doc}（正式发包前请先补齐）')
     (stage_dir / 'data').mkdir(exist_ok=True)
     return count
 
@@ -238,10 +276,40 @@ def main():
 
     say('[3/5] 收集文件')
     stage_dir = OUT_DIR / 'PyMaster'
-    count = stage(stage_dir, lite=args.lite)
+    count = stage(stage_dir, lite=args.lite, doc_files=DOC_FILES)
     say(f'  · {count} 个文件')
 
-    say('[4/5] 打包')
+    say('[4/5] 校验完整性')
+    problems = []
+    if not (stage_dir / 'app.py').exists():
+        problems.append('缺少 app.py')
+    if not (stage_dir / '0-启动PyMaster.bat').exists():
+        problems.append('缺少启动脚本 0-启动PyMaster.bat')
+    if not args.no_python and not (stage_dir / 'runtime' / 'python-embed.zip').exists():
+        problems.append('缺少随包 Python')
+    for doc in DOC_FILES:
+        if not (stage_dir / doc).exists():
+            problems.append(f'缺少文档 {doc}')
+    # 密钥与用户数据绝不能进包 —— 这两条一次都别放过
+    if (stage_dir / '.env').exists():
+        problems.append('包内出现了 .env（会泄露密钥）')
+    if (stage_dir / 'data' / 'users.json').exists():
+        problems.append('包内出现了 data/users.json（会泄露用户数据）')
+    bats = list(stage_dir.glob('*.bat'))
+    if len(bats) != 1:
+        problems.append(f'启动脚本不是唯一一个，找到 {len(bats)} 个')
+    # 根目录不该再出现开发脚本：它们已经收进「开发脚本/」，
+    # 万一哪天有人往根目录又丢一个，这里会拦下来
+    stray = [n for n in DEV_SCRIPTS if (stage_dir / n).exists()]
+    if stray:
+        problems.append('开发脚本还在根目录：' + '、'.join(stray))
+    if problems:
+        for item in problems:
+            say('  ✗ ' + item)
+        raise SystemExit(1)
+    say('  · 校验通过（唯一入口 / 无密钥 / 文档齐全 / 根目录清爽）')
+
+    say('[5/5] 打包')
     name = 'PyMaster_教学平台'
     if args.tag:
         name += '_' + args.tag

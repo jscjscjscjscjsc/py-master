@@ -28,11 +28,19 @@ class ArkError(Exception):
 
 
 class ArkClient:
-    def __init__(self):
-        self.url = endpoint(os.getenv('PYMASTER_AI_BASE_URL', BASE))
-        self.key = os.getenv('ARK_API_KEY') or os.getenv('PYMASTER_AI_API_KEY', '')
-        self.models = list(dict.fromkeys([os.getenv('PYMASTER_AI_MODEL', DEFAULT_MODEL)] +
-            [m.strip() for m in os.getenv('PYMASTER_AI_FALLBACK_MODELS', '').split(',') if m.strip()]))
+    def __init__(self, base_url=None, api_key=None, model=None, fallback=None):
+        # 参数显式传进来时优先用（公网版是"每个用户绑自己的 Key"，
+        # 不能都去读同一份进程环境）；不传就还是老行为——读环境变量。
+        env_model = os.getenv('PYMASTER_AI_FALLBACK_MODELS', '') if fallback is None else fallback
+        self.url = endpoint(base_url if base_url is not None
+                            else os.getenv('PYMASTER_AI_BASE_URL', BASE))
+        self.key = (api_key if api_key is not None
+                    else (os.getenv('ARK_API_KEY') or os.getenv('PYMASTER_AI_API_KEY', '')))
+        primary = model if model is not None else os.getenv('PYMASTER_AI_MODEL', DEFAULT_MODEL)
+        self.models = list(dict.fromkeys([primary] +
+            [m.strip() for m in (env_model or '').split(',') if m.strip()]))
+        # 兜底：模型名传空了也不能让 models[0] 崩（下面 active_model 要用）
+        self.models = [m for m in self.models if m] or [DEFAULT_MODEL]
         self.exhausted = set()
         self.lock = threading.Lock()
         self.active_model = self.models[0]
@@ -89,7 +97,10 @@ class ArkClient:
 
     def events(self, messages, max_tokens=800):
         if not self.key:
-            raise ArkError('请在本机 .env 中设置 ARK_API_KEY。')
+            raise ArkError(
+                '还没配置大模型，AI 功能暂时用不了。'
+                '打开「模型配置」页填上接口地址和 API Key 即可，'
+                '课程、练习和判题不受影响。')
         deadline = time.monotonic() + 55
         with self.lock:
             models = [m for m in self.models if m not in self.exhausted]

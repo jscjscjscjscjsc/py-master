@@ -30,6 +30,7 @@
       <a href="/progress" class="btn-playground-nav" style="margin-right:4px;">学习仪表盘</a>
       <a href="/cultivation" class="btn-playground-nav" style="margin-right:4px;">修行阁</a>
       <a href="/coach" class="btn-playground-nav" style="margin-right:4px;">星辰教练</a>
+      <a href="/setup" class="btn-playground-nav" style="margin-right:4px;" title="填写或更换大模型 API Key">模型配置</a>
       <a href="{{ url_for('playground') }}" class="btn-playground-nav" style="margin-right:4px;">
         练习场
       </a>
@@ -204,5 +205,6 @@ fetch('/api/ai-quota').then(r=>r.json()).then(d=>{
 <script>ChapterIntro3D.mountAtlas(document.getElementById("atlas-world"));</script>
 <script>Cultivation.mount();</script>
 <script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ai_notice.js') }}"></script>
 </body>
 </html>

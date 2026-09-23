@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 from urllib.parse import quote
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from flask import Response, send_file
+from flask import Response, send_file, stream_with_context
 
 # Lightweight .env loading keeps local one-click launches configured without
 # adding a runtime dependency. Values already present in the process win.
@@ -36,7 +36,12 @@ def _load_local_env():
                 if not line or line.startswith('#') or '=' not in line:
                     continue
                 key, value = line.split('=', 1)
-                os.environ.setdefault(key.strip(), value.strip().strip('"\''))
+                key = key.strip()
+                # 进程环境里「有值」才优先；空字符串视为没设 —— 否则会出现
+                # 「配置页显示已配置、实际调用却没有密钥」这种自相矛盾的状态
+                # （Docker 里写 `ARK_API_KEY=` 这类空默认值就会触发）。
+                if key and not os.environ.get(key):
+                    os.environ[key] = value.strip().strip('"\'')
     except OSError as exc:
         print(f'[config] unable to read .env: {exc}')
 
@@ -56,6 +61,16 @@ else:
 #          是因为一挂上去就会把镜像里 data/ 的课程与题库一起盖掉，
 #          表现是首页直接报错、刷题页空白 —— 一个很贵的坑。
 DATA_DIR = os.environ.get('PYMASTER_DATA_DIR', '').strip() or os.path.join(WRITE_ROOT, 'data')
+
+# 服务器模式：同一份代码挂在公网给很多人用（区别于"每人自己电脑一份"）。
+# 打开后有几处行为必须不同，都是本地版想当然、公网版会出事的：
+#   · 判题/运行代码默认关掉（服务器上无沙箱跑陌生人的代码 = 把机器送人），
+#     要开就配 PYMASTER_SAFE_MODE=1 用沙箱闸门兜着；
+#   · "用系统默认程序打开笔记文件"这类桌面功能屏蔽掉（服务器上没有桌面，
+#     而且那个接口的路径参数来自前端）；
+#   · 模型配置改成每个用户绑自己的 Key（见 user_ai_config）。
+def server_mode():
+    return os.environ.get('PYMASTER_SERVER_MODE', '').strip().lower() in ('1', 'true', 'yes', 'on')
 
 # 可写目录里缺了"随包数据"就补一份进来。空卷挂载时靠这一步做到开箱即用；
 # 也顺带让"老师换了课程数据"这种场景可以直接替换可写目录里的那份。
@@ -88,11 +103,18 @@ import training_engine as training
 import demo_mode
 import sandbox_guard
 import ai_review
+import access_db
 import game_engine as game          # 修行阁：修为的成长系统（纯推导，不持有状态）
 import coach_engine as coach
 from pathlib import Path
 
 _seed_data_dir()
+
+# 访问统计库（SQLite）。放在 _seed_data_dir 之后：data 目录这时已经建好了。
+# 建表失败（磁盘只读等）不让平台起不来 —— 日志是附加功能，不该拖垮主功能。
+access_db.configure(DATA_DIR)
+if not access_db.init():
+    print('[access-db] 数据库未能初始化，访问统计不可用（平台其余功能正常）')
 
 # 讲解产物的读写位置跟随 PyInstaller 的 BUNDLE/WRITE 约定：
 # 生成的 json/音频要写到可写目录，静态插画随包分发。
@@ -150,9 +172,36 @@ if not os.path.exists(KP_EXERCISES_FILE):
     if os.path.exists(_alt):
         KP_EXERCISES_FILE = _alt
 
-# Admin credentials (change these in production)
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD_HASH = hashlib.sha256("admin888".encode('utf-8')).hexdigest()
+# Admin credentials。管理员账号用 is_admin 会话标记区分（见 admin_login），
+# 所以这里的名字**不占学生用户名**；但仍然不允许学生注册同名账号，
+# 免得后台列表里出现两个"admin"把人绕晕。
+# 服务器上必须改成自己的口令：在 .env 里设
+#   PYMASTER_ADMIN_USER=你的管理员名
+#   PYMASTER_ADMIN_PASSWORD=一个强口令
+def _admin_env(key, default=''):
+    # 这里不能用 read_env_file()：那个函数定义在几百行之后。
+    # .env 早在文件开头就被 _load_local_env() 灌进 os.environ 了，直接读即可。
+    return (os.environ.get(key) or default).strip()
+
+
+ADMIN_USERNAME = _admin_env('PYMASTER_ADMIN_USER', 'admin')
+_ADMIN_PLAIN = _admin_env('PYMASTER_ADMIN_PASSWORD', '')
+if _ADMIN_PLAIN:
+    # 站长自己设了口令：不落地明文哈希常量，直接比对（支持改 .env 后重启生效）
+    ADMIN_PASSWORD_HASH = hashlib.sha256(_ADMIN_PLAIN.encode('utf-8')).hexdigest()
+    ADMIN_PASSWORD_IS_DEFAULT = False
+else:
+    ADMIN_PASSWORD_HASH = hashlib.sha256('admin888'.encode('utf-8')).hexdigest()
+    ADMIN_PASSWORD_IS_DEFAULT = True
+
+
+def admin_credentials_ok(username, password):
+    if username != ADMIN_USERNAME or not password:
+        return False
+    if secrets.compare_digest(hash_password(password), ADMIN_PASSWORD_HASH):
+        return True
+    # 允许用环境变量里那个明文口令直接登录（站长改完 .env 不必再算哈希）
+    return bool(_ADMIN_PLAIN) and secrets.compare_digest(password, _ADMIN_PLAIN)
 
 # Initialize Comic Engine and Memory
 comic_engine = ComicEngine()
@@ -169,6 +218,123 @@ doubao_tts = DoubaoTTS(
 browser_tts = BrowserTTS()
 
 
+# ── 多用户并发写盘 ────────────────────────────────────────
+# 本地单机版一次只有一个人点，直接「读整个 json → 改一处 → 写回整个 json」
+# 就够了。一旦挂到公网让几十个人同时用，这个写法会互相覆盖：
+# A 和 B 同时读到同一份 users.json，各改各的，后写的人把先写的人的
+# 进度（甚至刚注册的账号）整个抹掉。
+#
+# 处理办法不是去改那几十处调用点（改漏一处就等于没改），而是在读写层兜住：
+#   · 写盘加锁 + 先写临时文件再原子替换 —— 保证任何时候磁盘上那份都是完整的，
+#     不会出现"写到一半被读到"的半截 json；
+#   · 读出来的用户表自带"读到时磁盘上是什么样"（_UsersSnapshot.baseline），
+#     写回时只把**相对那个版本有变化的条目**叠加到磁盘最新版上 ——
+#     别人改的其他用户不受影响。
+_USERS_LOCK = threading.RLock()
+_FILE_LOCK = threading.RLock()
+
+
+class _UsersSnapshot(dict):
+    """从 users.json 读出来的用户表，附带"读到时的版本"。
+
+    为什么要附带：写回时得知道"哪些条目是我这一个请求改过的"，
+    才能只覆盖那几条、不碰别人同时在改的其它账号。早先的做法是把
+    "本线程上次读到的版本"存在 threading.local 里 —— 那是错的：
+    同一个请求里再调一次 load_json（很常见，比如 complete_kp 会读两次）
+    就会把基线刷新掉，于是**别人刚注册、而我这个快照里没有的账号**
+    会被当成"本线程删掉的"而在合并时抹掉。实测 8 人并发注册偶发只留下 7 个，
+    就是这么丢的。把基线绑在快照对象上，谁读的就认谁，才不会串。
+    """
+
+    def __init__(self, data=None):
+        super().__init__(data or {})
+        self.baseline = {}
+
+
+def _read_users_raw():
+    """读磁盘上的 users.json 原样内容（不注入演示账号、不做任何修饰）。"""
+    if not os.path.exists(USERS_FILE):
+        return {}
+    try:
+        with open(USERS_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _atomic_write_json(filepath, data, retries=12):
+    """先写临时文件再 replace：读的人永远看不到写了一半的文件。
+
+    Windows 上有个必须绕开的坎：`os.replace`（MoveFileEx + REPLACE_EXISTING）
+    在**目标文件正被别的句柄打开**时会失败（PermissionError / WinError 5），
+    哪怕对方只是只读打开。多人同时用时，"我在写、他在读"是常态，
+    一次失败就让学生看到 500、账号没注册上 —— 实测 12 人并发注册
+    稳定复现 1~2 个 500。
+
+    两道处理：
+      · 临时文件名带线程 id 与序号，多个写者不会争同一个 tmp；
+      · replace 遇到拒绝访问就短暂退避重试（读者打开文件的时间很短，
+        几十毫秒内必然放开）。
+    """
+    tmp = f'{filepath}.{os.getpid()}.{threading.get_ident()}.{time.time_ns()}.tmp'
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        last_exc = None
+        for attempt in range(retries):
+            try:
+                os.replace(tmp, filepath)
+                return
+            except PermissionError as exc:
+                # 只是"文件正被读"，等一下再来；真的没权限（只读目录等）
+                # 会在重试用尽后原样抛出，让上层如实报错。
+                last_exc = exc
+                time.sleep(0.02 * (attempt + 1))
+        raise last_exc
+    except Exception:
+        try:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+        except OSError:
+            pass
+        raise
+
+
+def _merge_users_to_disk(incoming, baseline=None):
+    """把这份用户表里**改动过的条目**合并进磁盘最新版本，返回合并后的结果。
+
+    baseline=None 表示"调用方没有来源快照"（例如启动时写空表），
+    这时按整体替换处理。
+
+    注意这里**没有删除逻辑**：平台并不提供"删除某个账号"的功能，
+    而靠差集去猜"哪些是本线程删的"会在并发下误伤别人刚注册的账号
+    （账号表里少了一个、而我这份里没有，并不等于是我删的）。
+    真要加删除功能，应该走一个显式接口，而不是让每次写盘都去猜。
+    """
+    with _USERS_LOCK:
+        if baseline is None:
+            merged = dict(incoming)
+        else:
+            merged = dict(_read_users_raw())
+            for name, entry in incoming.items():
+                if name in baseline and baseline[name] == entry:
+                    continue                  # 这一条我没动过，保留磁盘上的版本
+                merged[name] = entry          # 新增或我改过 → 采用我这份
+        _atomic_write_json(USERS_FILE, merged)
+        return merged
+
+
+def _copy_entry_map(users):
+    """深拷贝用户表。json 往返是最省事又不会漏字段的办法（条目全是 json 类型）。"""
+    try:
+        return json.loads(json.dumps(users, ensure_ascii=False))
+    except (TypeError, ValueError):
+        return dict(users)
+
+
 def load_json(filepath):
     # 先算"是不是账号文件"：账号文件不存在时也要走注入分支，
     # 全新部署（users.json 还没生成）正是最常见的情况
@@ -176,12 +342,23 @@ def load_json(filepath):
     is_courses_file = os.path.abspath(filepath) == os.path.abspath(COURSES_FILE)
     if not os.path.exists(filepath):
         data = {} if is_users_file else []
+    elif is_users_file:
+        # 账号表的读也进锁：Windows 上"我在写、他在读"会让 os.replace 失败，
+        # 读操作和写操作互斥就能从源头避免那次失败（只靠重试是兜底）。
+        with _USERS_LOCK:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                data = json.load(f)
     else:
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
     # 评审演示账号的档案不在磁盘上。在这里注入，app.py 里那几十处
     # `load_json(USERS_FILE).get(username)` 就都不用改。
     if is_users_file:
+        # 换成一个自带"读到时版本"的快照，写回时据此做安全合并
+        # （见 _UsersSnapshot 和 _merge_users_to_disk 的说明）
+        snapshot = _UsersSnapshot(data)
+        snapshot.baseline = _copy_entry_map(data)
+        data = snapshot
         demo = demo_account()
         if demo:
             data.setdefault(demo[0], demo[1])
@@ -202,8 +379,73 @@ def save_json(filepath, data):
         if demo and isinstance(data, dict) and demo[0] in data:
             demo_mode.set_profile(data[demo[0]])
             data = {k: v for k, v in data.items() if k != demo[0]}
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        # 账号表走"按改动合并后落盘"：多个人同时在用的时候，
+        # 后写的不会把先写的进度/新注册账号整份盖掉。
+        # baseline 来自 load_json 给的那个快照；没有快照（比如启动时写空表）
+        # 就整体替换 —— 那种场景本来就是要覆盖。
+        _merge_users_to_disk(data, getattr(data, 'baseline', None))
+        return
+    with _FILE_LOCK:
+        _atomic_write_json(filepath, data)
+
+
+# ── 访问日志（谁在什么时候注册/登录，从哪个 IP）────────────
+# 单机版不需要这个：账号都在用户自己电脑上。挂到公网之后，
+# 站长需要知道"有哪些人注册了、什么时候来过、从哪里来"。
+# 落在 SQLite（access_db.py）：只追加、要按人/事件/日期筛选和分页，
+# 这种查询用 json 文件每查一次都得把全部记录读进内存再筛。
+# 账号表仍在 users.json —— 它被几十处代码读写，搬迁的收益远小于风险。
+
+def client_ip():
+    """访客真实 IP。
+
+    直连时就是 remote_addr；如果站长在前面套了 Nginx/Caddy，
+    真实 IP 在 X-Forwarded-For 的第一段。不设代理时这个头是客户端
+    自己就能伪造的 —— 所以只在 PYMASTER_TRUST_PROXY=1 时才采信，
+    免得后台把伪造的 IP 当成真的。
+    """
+    if os.environ.get('PYMASTER_TRUST_PROXY', '').strip() in ('1', 'true', 'yes', 'on'):
+        fwd = (request.headers.get('X-Forwarded-For') or '').split(',')[0].strip()
+        if fwd:
+            return fwd
+    return request.remote_addr or ''
+
+
+def record_access(username, event, extra=None, dedup=False, path=None):
+    """记一笔访问。绝不因为日志出问题而影响正事（注册/登录照常成功）。"""
+    try:
+        access_db.record(
+            username=username, event=event, ip=client_ip(),
+            ua=request.headers.get('User-Agent') or '',
+            path=path if path is not None else (request.path or ''),
+            detail=extra, dedup=dedup)
+    except Exception as exc:
+        print(f'[access-log] 写日志失败（不影响使用）：{exc}')
+
+
+# 哪种页面值得记一条「浏览」？只记主功能页，静态资源和轮询接口不记，
+# 否则一条页面打开会产生几十行噪音。
+VISIT_PATHS = {'/dashboard', '/stars', '/training', '/coach', '/cultivation',
+               '/progress', '/playground', '/canvas', '/setup', '/admin'}
+
+
+@app.after_request
+def _log_visit(response):
+    """记「来了哪个页面」。
+
+    放在 after_request 里而不是每个视图里加一行：视图有几十个，
+    加漏一处那条路径就永远没有访问记录，而且这种缺失很难发现。
+    """
+    try:
+        if request.method == 'GET' and response.status_code == 200:
+            path = request.path or '/'
+            if path in VISIT_PATHS:
+                username = session.get('username')
+                if username and username != 'guest':
+                    record_access(username, 'visit', path=path, dedup=True)
+    except Exception:
+        pass          # 记日志绝不能影响响应本身
+    return response
 
 
 def demo_account():
@@ -401,8 +643,17 @@ CODE_EXEC_OFF_MESSAGE = (
 
 
 def code_exec_enabled():
-    return os.environ.get('PYMASTER_ALLOW_CODE_EXEC', '1').strip().lower() \
-        not in ('0', 'false', 'no', 'off')
+    """在线运行/判题学生代码是否开启。
+
+    显式设了 PYMASTER_ALLOW_CODE_EXEC 就听它的；没设时按运行场景取默认值——
+    本地版开（自己的电脑跑自己的代码），服务器版关（公网机器上跑陌生人的代码）。
+    """
+    raw = os.environ.get('PYMASTER_ALLOW_CODE_EXEC', '').strip().lower()
+    if raw in ('1', 'true', 'yes', 'on'):
+        return True
+    if raw in ('0', 'false', 'no', 'off'):
+        return False
+    return not server_mode()
 
 
 @app.route('/')
@@ -434,7 +685,11 @@ def intro_page():
 @app.route('/intro/done')
 def intro_done():
     """片尾出口：按当前状态决定去哪儿，并记下"开场已看过"。"""
-    if not ai_config_status()['configured']:
+    # 公网版：学生绑了自己的 Key 就该直接进平台，不能因为"平台没配 Key"
+    # 把他又推回配置页 —— 那页是给他绑自己 Key 用的，绕一圈白跑。
+    me = session.get('username')
+    has_own = bool(user_ai_config(me)) if me else False
+    if not (has_own or ai_config_status()['configured']):
         target = url_for('setup_wizard')
     elif 'username' not in session:
         target = url_for('login_page')
@@ -464,12 +719,69 @@ SETUP_EXEMPT_PREFIXES = ('/setup', '/api/setup', '/static', '/login', '/api/logi
                          '/intro',
                          # 配置向导第一步要列出本机账号、第二步要设置头像，
                          # 这两个接口被重定向到 /setup 的话，向导自己就先坏了
-                         '/api/accounts', '/api/avatar', '/avatar')
+                         '/api/accounts', '/api/avatar', '/avatar',
+                         # 「绑自己的 Key」这几个接口本身就是配置模型的入口。
+                         # 不放行会死锁：新用户第一次来还没绑 Key → 被拦去 /setup
+                         # → /setup 里的保存又走这些接口 → 再被拦一次。
+                         # （本地版没暴露这个问题，是因为那时候 .env 里已经有平台 Key，
+                         #   门禁直接放行了；服务器版干净部署才会遇到。）
+                         '/api/my-ai',
+                         # 管理后台整条路径都豁免。站长的第一件事就是进后台配平台模型，
+                         # 而"模型没配置"正是他要去后台处理的状态 —— 把 /admin 也拦到
+                         # /setup 就成了死循环：进不去后台 → 配不了平台模型 → 还是被拦。
+                         '/admin')
+
+# 「暂时不配模型，先进去看看」——学生没申请到 Key 时不该被一张表单挡在门外。
+# 标记写在 data 目录里而不是 cookie：换个浏览器、清一次缓存不该把状态弄丢。
+SETUP_SKIP_FLAG = os.path.join(DATA_DIR, '.setup_skipped')
+
+
+def setup_is_skipped(username=None):
+    """这个人是不是已经选了「先跳过模型配置」。
+
+    本地版只有一个用户，"跳过"写成一个文件标记就够了。
+    服务器版必须按人记：一个标记全站共享的话，
+    A 点了跳过等于替所有人跳过（新同学再也见不到配置向导），
+    B 保存了一次配置又会 `set_setup_skipped(False)` 把所有人
+    重新弹回向导 —— 都是多用户下才出现的错。
+    所以服务器模式把标记记在各自的账号记录里。
+    """
+    if server_mode() and username:
+        entry = load_json(USERS_FILE).get(username) or {}
+        return bool(entry.get('ai_setup_skipped'))
+    return os.path.exists(SETUP_SKIP_FLAG)
+
+
+def set_setup_skipped(value, username=None):
+    if server_mode() and username:
+        try:
+            users = load_json(USERS_FILE)
+            if username in users:
+                if value:
+                    users[username]['ai_setup_skipped'] = True
+                else:
+                    users[username].pop('ai_setup_skipped', None)
+                save_json(USERS_FILE, users)
+        except Exception as exc:
+            print(f'[setup] 记录跳过状态失败（不影响使用）：{exc}')
+        return
+    try:
+        if value:
+            with open(SETUP_SKIP_FLAG, 'w', encoding='utf-8') as fh:
+                fh.write(datetime.now().isoformat())
+        elif os.path.exists(SETUP_SKIP_FLAG):
+            os.remove(SETUP_SKIP_FLAG)
+    except OSError:
+        pass
 
 
 @app.before_request
 def require_ai_config():
-    """AI 没配置好就把用户引到配置向导，避免进去之后处处报错。"""
+    """AI 没配置好就把用户引到配置向导，避免进去之后处处报错。
+
+    但向导里可以选「先跳过」：跳过之后整个平台照常可用，
+    只有 AI 相关的动作给出提示（课程、练习、判题、刷题都不需要模型）。
+    """
     path = request.path or '/'
     if path.startswith(SETUP_EXEMPT_PREFIXES):
         return None
@@ -481,7 +793,13 @@ def require_ai_config():
             and username not in load_json(USERS_FILE)):
         # 演示账号是内存里的，不在 users.json，别把它当成"已删除的账号"踢掉
         session.pop('username', None)
-    if ai_config_status()['configured']:
+        username = None
+    # 公网版：用户绑了自己的 Key 就放行；否则看平台有没有配 Key。
+    # 这里不能用 ai_config_status()（那只看平台级），否则每个学生都会被
+    # 拦到"平台配置页"——而平台 Key 只有站长能填。
+    if username and user_ai_config(username):
+        return None
+    if ai_config_status()['configured'] or setup_is_skipped(username):
         return None
     return redirect(url_for('setup_wizard'))
 
@@ -489,21 +807,64 @@ def require_ai_config():
 @app.route('/setup')
 def setup_wizard():
     status = ai_config_status()
+    # 课程规模从课程数据里现算，不写死在模板里 —— 写死过 "39 章 / 400 个知识点"，
+    # 课程重排之后页面就开始报错误的数字，而且没人会想起来去改。
+    courses = load_json(COURSES_FILE)
+    courses = courses if isinstance(courses, list) else (courses or {}).get('chapters', [])
+    stats = {
+        'chapters': len(courses),
+        'points': sum(len(c.get('knowledge_points') or []) for c in courses),
+        'exercises': sum(len(c.get('exercises') or []) for c in courses),
+    }
+    # 全新机器上预填 DeepSeek 的地址与模型名：学生只要粘一个 Key 就能存，
+    # 不用先搞懂"Base URL 要填到哪一层"。已经配过就显示已保存的值。
+    #
+    # 服务器模式下这页是"学生绑自己的 Key"：预填他自己已存的那份，
+    # 而不是平台那份（否则学生会以为平台 Key 是自己的）。
+    me = session.get('username')
+    personal = ai_status_for(me) if me else {}
+    if server_mode() and personal.get('source') == 'user':
+        status = personal
     return render_template('setup.html',
                            configured=status['configured'],
-                           base_url=status['base_url'],
-                           model=status['model'],
+                           skipped=setup_is_skipped(session.get('username')),
+                           base_url=status['base_url'] or 'https://api.deepseek.com/v1',
+                           model=status['model'] or 'deepseek-chat',
                            key_tail=status['key_tail'],
                            fallback=status['fallback'],
+                           stats=stats,
                            logged_in='username' in session,
                            username=session.get('username', ''),
                            open_registration=registration_is_open(),
-                           wechat_ready=wechat_login_ready())
+                           wechat_ready=wechat_login_ready(),
+                           server_mode=server_mode(),
+                           is_admin=session.get('is_admin') is True,
+                           source_label=personal.get('source_label', ''),
+                           has_own_key=bool(user_ai_config(me)) if me else False)
+
+
+@app.route('/api/setup/skip', methods=['POST'])
+def setup_skip():
+    """「先跳过，稍后配置」：放行整个平台，只关掉 AI 功能。"""
+    set_setup_skipped(True, session.get('username'))
+    return jsonify({'success': True, 'skipped': True,
+                    'message': '已跳过。课程、练习、判题都能用，AI 功能等你配好模型后自动开启。'})
+
+
+@app.route('/api/setup/reopen', methods=['POST'])
+def setup_reopen():
+    """从提示条点「去配置」时清掉"已跳过"，回到向导。"""
+    set_setup_skipped(False, session.get('username'))
+    return jsonify({'success': True, 'skipped': False})
 
 
 @app.route('/api/setup/test', methods=['POST'])
 def setup_test_connection():
-    """测试用户填的模型配置是否真的能用。"""
+    """测试用户填的模型配置是否真的能用。
+
+    服务器模式下，这页的配置属于**当前用户自己**，不是平台配置：
+    否则任何一个学生都能把全站的 Key 改掉（等于一次提权）。
+    """
     data = request.get_json(silent=True) or {}
     base_url = (data.get('base_url') or '').strip()
     model = (data.get('model') or '').strip()
@@ -513,6 +874,19 @@ def setup_test_connection():
         return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
     if not base_url.startswith(('http://', 'https://')):
         return jsonify({'success': False, 'message': '地址要以 http:// 或 https:// 开头'})
+
+    if server_mode() and session.get('is_admin') is not True:
+        username = session.get('username')
+        if not username or username == 'guest':
+            return jsonify({'success': False, 'message': '请先登录再配置模型'})
+        # 密钥那栏留空（或带着 **** 掩码）都表示"不改密钥"，
+        # 所以沿用这个用户自己已存的那把，不能回退到平台的
+        if not api_key or api_key.startswith('****'):
+            api_key = (user_ai_config(username) or {}).get('api_key', '')
+            if not api_key:
+                return jsonify({'success': False, 'message': '请填写 API Key'})
+        ok, message = test_ai_connection(base_url, model, api_key)
+        return jsonify({'success': ok, 'message': message})
 
     # 密钥那栏留空（或带着 **** 掩码）都表示"不改密钥"：界面上就是这么写的，
     # 所以这里必须沿用已保存的那把，不能反过来要求用户重输一遍
@@ -527,7 +901,11 @@ def setup_test_connection():
 
 @app.route('/api/setup/save', methods=['POST'])
 def setup_save_config():
-    """保存配置并立即生效，不需要重启。"""
+    """保存配置并立即生效，不需要重启。
+
+    服务器模式下存进**当前用户自己的账号记录**（他用他自己的额度）；
+    本地模式仍然是写平台 .env（那台机器只有他自己用）。
+    """
     data = request.get_json(silent=True) or {}
     base_url = (data.get('base_url') or '').strip()
     model = (data.get('model') or '').strip()
@@ -536,6 +914,28 @@ def setup_save_config():
 
     if not base_url or not model:
         return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
+    if not base_url.startswith(('http://', 'https://')):
+        return jsonify({'success': False, 'message': '地址要以 http:// 或 https:// 开头'})
+
+    if server_mode() and session.get('is_admin') is not True:
+        username = session.get('username')
+        if not username or username == 'guest':
+            return jsonify({'success': False, 'message': '请先登录再配置模型'})
+        if api_key.startswith('****'):
+            api_key = ''
+        ok, message = save_user_ai_config(username, base_url, model, api_key, fallback)
+        if not ok:
+            return jsonify({'success': False, 'message': message})
+        set_setup_skipped(False, username)   # 只清他自己那条，别影响别人
+        status = ai_status_for(username)
+        return jsonify({
+            'success': True,
+            'message': '已保存到你自己的账号，AI 功能立即生效',
+            'warnings': [],
+            'status': {'base_url': status['base_url'], 'model': status['model'],
+                       'key_tail': status['key_tail']},
+        })
+
     # 同上：密钥留空表示沿用已保存的，只有一次都没配过才要求填
     if not api_key or api_key.startswith('****'):
         api_key = read_env_file().get('ARK_API_KEY', '')
@@ -550,6 +950,90 @@ def setup_save_config():
         'status': {'base_url': status['base_url'], 'model': status['model'],
                    'key_tail': status['key_tail']},
     })
+
+
+# ── 用户自助绑定自己的大模型 API ──────────────────────────
+# 公网版的核心：每个注册用户填自己的 Key，用自己账号的额度，
+# 站长不需要（也不应该）把自己的 Key 发给所有人。
+
+@app.route('/api/my-ai', methods=['GET'])
+def my_ai_status():
+    """当前用户绑定的模型配置（脱敏，不含明文 Key）。"""
+    username = session.get('username')
+    if not username or username == 'guest':
+        return jsonify({'success': False, 'message': '请先登录再配置模型', 'logged_in': False})
+    status = ai_status_for(username)
+    # 前端要按这个决定是否显示「解绑」按钮
+    status['has_own_key'] = bool(user_ai_config(username))
+    status['server_mode'] = server_mode()
+    return jsonify({'success': True, 'logged_in': True, 'status': status})
+
+
+@app.route('/api/my-ai/test', methods=['POST'])
+def my_ai_test():
+    """拿用户刚填的配置真发一次最小请求 —— 存之前先确认能用。"""
+    username = session.get('username')
+    if not username or username == 'guest':
+        return jsonify({'success': False, 'message': '请先登录再配置模型'})
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get('base_url') or '').strip()
+    model = (data.get('model') or '').strip()
+    api_key = (data.get('api_key') or '').strip()
+
+    if not base_url or not model:
+        return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
+    if not base_url.startswith(('http://', 'https://')):
+        return jsonify({'success': False, 'message': '接口地址要以 http:// 或 https:// 开头'})
+    # 留空或回显的掩码 → 沿用已保存的 Key（用户只想改模型名时不用重填）
+    if not api_key or api_key.startswith('****'):
+        api_key = (user_ai_config(username) or {}).get('api_key', '')
+        if not api_key:
+            return jsonify({'success': False, 'message': '请填写 API Key'})
+
+    ok, message = test_ai_connection(base_url, model, api_key)
+    return jsonify({'success': ok, 'message': message})
+
+
+@app.route('/api/my-ai/save', methods=['POST'])
+def my_ai_save():
+    """保存当前用户绑定的模型配置。存到他自己那条账号记录里，不写平台 .env。"""
+    username = session.get('username')
+    if not username or username == 'guest':
+        return jsonify({'success': False, 'message': '请先登录再配置模型'})
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get('base_url') or '').strip()
+    model = (data.get('model') or '').strip()
+    api_key = (data.get('api_key') or '').strip()
+    fallback = (data.get('fallback') or '').strip()
+
+    if not base_url or not model:
+        return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
+    if not base_url.startswith(('http://', 'https://')):
+        return jsonify({'success': False, 'message': '接口地址要以 http:// 或 https:// 开头'})
+    if api_key.startswith('****'):
+        api_key = ''
+
+    ok, message = save_user_ai_config(username, base_url, model, api_key, fallback)
+    if not ok:
+        return jsonify({'success': False, 'message': message})
+    set_setup_skipped(False, username)       # 只清他自己那条，别影响别人
+    status = ai_status_for(username)
+    return jsonify({
+        'success': True,
+        'message': '已绑定到你自己的账号，AI 功能立即生效',
+        'status': {'base_url': status['base_url'], 'model': status['model'],
+                   'key_tail': status['key_tail'], 'source_label': status['source_label']},
+    })
+
+
+@app.route('/api/my-ai/clear', methods=['POST'])
+def my_ai_clear():
+    """解绑：删掉自己那份 Key，回退到平台配置。"""
+    username = session.get('username')
+    if not username or username == 'guest':
+        return jsonify({'success': False, 'message': '请先登录'})
+    clear_user_ai_config(username)
+    return jsonify({'success': True, 'message': '已解绑，将使用平台默认模型（如果站长配置了的话）'})
 
 
 def wechat_login_ready():
@@ -682,6 +1166,10 @@ def register():
 
     if not username or not password:
         return jsonify({'success': False, 'message': '账号和密码不能为空'})
+    if username.lower() == ADMIN_USERNAME.lower():
+        # 保留名：管理员在后台是以 is_admin 标记登录的，不依赖这个用户名，
+        # 但学生占用同名账号会让后台列表和日志里出现两个同名的人。
+        return jsonify({'success': False, 'message': '这个用户名被保留，请换一个'})
     if len(username) < 2:
         return jsonify({'success': False, 'message': '用户名至少 2 个字符'})
     if len(password) < 6:
@@ -703,18 +1191,24 @@ def register():
         # 密码被清空的旧账号：允许用同一个用户名重新设密码，学习记录原样保留。
         # 单机版没有"找回密码"通道，这是留给忘记密码的人的唯一出口（见使用说明）。
         users[username].update({'password': digest, 'password_salt': salt,
-                                'last_login': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+                                'last_login': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                'last_ip': client_ip()})
         save_json(USERS_FILE, users)
         session.permanent = True
         session['username'] = username
+        record_access(username, 'password_reset')
         return jsonify({'success': True, 'message': '已为这个账号重设密码并登录', 'username': username})
 
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     users[username] = {
         'password': digest,
         'password_salt': salt,
         'email': email,
-        'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'last_login': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'created_at': now,
+        'last_login': now,
+        'created_ip': client_ip(),
+        'last_ip': client_ip(),
+        'login_count': 1,
         'avatar': '',
         'mode': 'explore',
         'progress': {},
@@ -727,6 +1221,7 @@ def register():
     save_json(USERS_FILE, users)
     session.permanent = True           # 自己电脑上不用每次登录
     session['username'] = username
+    record_access(username, 'register')
     return jsonify({'success': True, 'message': '注册成功，已自动登录', 'username': username})
 
 
@@ -750,11 +1245,14 @@ def login():
         return jsonify({'success': False, 'message': '账号不存在，请先注册'})
 
     if not users[username].get('password'):
+        record_access(username, 'login_fail', {'reason': '未设密码'})
         return jsonify({'success': False, 'message': '这个账号还没有密码，请到注册页用同一个用户名设置一个新密码'})
     if not verify_password(users[username], password):
+        record_access(username, 'login_fail', {'reason': '密码错误'})
         return jsonify({'success': False, 'message': '密码错误'})
 
     if not _account_allowed(username):
+        record_access(username, 'login_fail', {'reason': '不在白名单'})
         return jsonify({'success': False, 'message': '登录失败：账号未在白名单中或已过期，请联系管理员'})
 
     # 老账号第一次成功登录后顺手升级成加盐哈希
@@ -763,15 +1261,21 @@ def login():
         users[username]['password'] = digest
         users[username]['password_salt'] = salt
     users[username]['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    users[username]['last_ip'] = client_ip()
+    users[username]['login_count'] = int(users[username].get('login_count') or 0) + 1
     save_json(USERS_FILE, users)
 
     session.permanent = True           # 下次打开自动还是这个账号
     session['username'] = username
+    record_access(username, 'login')
     return jsonify({'success': True, 'message': '登录成功', 'username': username})
 
 
 @app.route('/logout')
 def logout():
+    username = session.get('username')
+    if username and username != 'guest':
+        record_access(username, 'logout')
     session.pop('username', None)
     return redirect(url_for('dashboard'))
 
@@ -1405,11 +1909,161 @@ def _normalize_ai_endpoint(raw_url):
 
 AI_BASE_URL = _normalize_ai_endpoint(os.environ.get('PYMASTER_AI_BASE_URL'))
 from ark_client import ArkClient, ArkError, BROWSER_UA
-ark = ArkClient()
-AI_API_KEY = ark.key
-AI_MODEL = ark.models[0]
+# 平台级配置（.env 或首次运行向导里填的那一份）。没绑定自己 Key 的用户共用它。
+_PLATFORM_ARK = ArkClient()
+AI_API_KEY = _PLATFORM_ARK.key
+AI_MODEL = _PLATFORM_ARK.models[0]
 AI_CACHE = {}
 AI_CACHE_TTL = 300
+
+
+# ── 每个用户绑自己的大模型 API ─────────────────────────────
+# 单机版只有一个人用，模型配置写在 .env 里就够了。挂到公网之后
+# 几十个人共用一个 Key 是不现实的（额度、费用、谁都能拿去刷），所以：
+#   · 登录用户在「模型配置」页填的 Key 存在他自己的 users.json 条目里（'ai' 字段），
+#     调用 AI 时优先用他这份；
+#   · 没绑的用户（含游客）回退到平台级 .env 那一份，站长不打算公开送额度
+#     就干脆不配平台 Key，谁要用谁自己绑；
+#   · 全程只把脱敏后的尾部回显给前端，明文 Key 不会进日志、不会回传浏览器。
+AI_PROFILE_KEY = 'ai'
+_USER_ARKS = {}
+_USER_ARKS_LOCK = threading.RLock()
+
+
+def user_ai_config(username):
+    """取某个用户绑定的模型配置。没绑定返回 {}。"""
+    if not username or username == 'guest':
+        return {}
+    entry = load_json(USERS_FILE).get(username) or {}
+    cfg = entry.get(AI_PROFILE_KEY)
+    if not isinstance(cfg, dict):
+        return {}
+    if not (cfg.get('base_url') and cfg.get('model') and cfg.get('api_key')):
+        return {}
+    return cfg
+
+
+def save_user_ai_config(username, base_url, model, api_key, fallback=''):
+    """把配置写回该用户的条目。api_key 传空表示"保持原样"。"""
+    users = load_json(USERS_FILE)
+    if username not in users:
+        return False, '账号不存在'
+    entry = users[username]
+    old = entry.get(AI_PROFILE_KEY) if isinstance(entry.get(AI_PROFILE_KEY), dict) else {}
+    if not api_key:
+        api_key = old.get('api_key', '')
+        if not api_key:
+            return False, '请填写 API Key'
+    entry[AI_PROFILE_KEY] = {
+        'base_url': base_url,
+        'model': model,
+        'api_key': api_key,
+        'fallback': fallback,
+        'updated_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'updated_ip': client_ip(),
+    }
+    save_json(USERS_FILE, users)
+    _invalidate_user_ark(username)
+    record_access(username, 'ai_bind', {'model': model, 'base_url': base_url})
+    return True, 'ok'
+
+
+def clear_user_ai_config(username):
+    users = load_json(USERS_FILE)
+    if username in users and AI_PROFILE_KEY in users[username]:
+        users[username].pop(AI_PROFILE_KEY, None)
+        save_json(USERS_FILE, users)
+        _invalidate_user_ark(username)
+
+
+def _invalidate_user_ark(username):
+    with _USER_ARKS_LOCK:
+        _USER_ARKS.pop(username, None)
+
+
+def _user_ark(username):
+    """给某个用户拿一个 ArkClient（带缓存）。
+
+    缓存是必须的：ArkClient 自己记着 session_id 和"哪个模型额度用尽了"，
+    每次调用重新构造会把这个故障转移状态丢掉。
+    """
+    cfg = user_ai_config(username)
+    if not cfg:
+        return _PLATFORM_ARK
+    fingerprint = (cfg.get('base_url'), cfg.get('model'), cfg.get('api_key'),
+                   cfg.get('fallback', ''))
+    with _USER_ARKS_LOCK:
+        cached = _USER_ARKS.get(username)
+        if cached and cached[0] == fingerprint:
+            return cached[1]
+        client = ArkClient(base_url=cfg['base_url'], api_key=cfg['api_key'],
+                           model=cfg['model'], fallback=cfg.get('fallback', ''))
+        _USER_ARKS[username] = (fingerprint, client)
+        return client
+
+
+def _in_request():
+    """当前是否在 Flask 请求上下文里（后台线程里 session 取不到东西）。"""
+    try:
+        return bool(request)
+    except RuntimeError:
+        return False
+
+
+def current_ark():
+    """当前请求该用哪个模型客户端：登录用户优先用他自己的，否则用平台级。
+
+    后台线程（讲解生成等）没有请求上下文，session 取不到东西，
+    自然回落到平台级配置——那是对的，那些任务本来就是站长发起的。
+    """
+    try:
+        username = session.get('username')
+    except RuntimeError:
+        return _PLATFORM_ARK      # 不在请求上下文里
+    return _user_ark(username)
+
+
+class _ArkProxy:
+    """让 `ark.xxx` 这种老写法自动指向"当前用户的客户端"。
+
+    原本 app.py 里几十处都是 `ark.events(...)` / `ark.complete(...)`，
+    逐个改成按请求解析既啰嗦又容易漏。这里用一个代理对象占住 `ark` 这个名字，
+    属性访问时才去解析真正的客户端——调用点一行都不用动。
+    """
+
+    def __getattr__(self, name):
+        return getattr(current_ark(), name)
+
+    def __setattr__(self, name, value):
+        # ArkClient 内部只对自己设属性；代理对象本身不该被写，直接拒绝更安全
+        raise AttributeError('ark 是只读代理，请直接改用户的模型配置')
+
+
+ark = _ArkProxy()
+
+
+def ai_status_for(username):
+    """某个用户的 AI 可用状态（脱敏）。前端提示条和配置页都用它。"""
+    own = user_ai_config(username)
+    if own:
+        key = own.get('api_key', '')
+        return {
+            'configured': True,
+            'source': 'user',
+            'source_label': '我的 API',
+            'base_url': own.get('base_url', ''),
+            'model': own.get('model', ''),
+            'fallback': own.get('fallback', ''),
+            'key_tail': ('****' + key[-4:]) if len(key) >= 4 else '',
+            'updated_at': own.get('updated_at', ''),
+            'skipped': False,
+        }
+    st = ai_config_status()
+    st['source'] = 'platform' if st['configured'] else 'none'
+    st['source_label'] = '平台共用' if st['configured'] else '未配置'
+    # 跳过状态是按人的（见 setup_is_skipped 的说明）
+    st['skipped'] = setup_is_skipped(username)
+    return st
 
 # ── 课程知识 RAG ─────────────────────────────────────────
 # 全套教材有 39 章 / 400 个知识点，整本塞进提示词又慢又贵。
@@ -1632,16 +2286,19 @@ def ai_config_status():
     key = os.environ.get('ARK_API_KEY') or env.get('ARK_API_KEY', '')
     return {
         'configured': bool(base_url and model and key),
+        # 这里刻意不传 username：本函数描述的是**平台级**配置状态，
+        # 平台级没有"某个人跳过了"这一说。要看某个用户的跳过状态，
+        # 用 ai_status_for(username)。
+        'skipped': False,
         'base_url': base_url,
         'model': model,
         'fallback': env.get('PYMASTER_AI_FALLBACK_MODELS', ''),
         'key_tail': ('****' + key[-4:]) if len(key) >= 4 else '',
     }
 
-
 def apply_ai_config(base_url, model, api_key, fallback=''):
-    """写入 .env 并让配置立即生效（不需要重启）。"""
-    global AI_BASE_URL, AI_API_KEY, AI_MODEL, ark
+    """写入 .env 并让配置立即生效（不需要重启）。这是**平台级**配置。"""
+    global AI_BASE_URL, AI_API_KEY, AI_MODEL, _PLATFORM_ARK
 
     lines = []
     if os.path.exists(ENV_FILE):
@@ -1671,10 +2328,16 @@ def apply_ai_config(base_url, model, api_key, fallback=''):
         os.environ['PYMASTER_AI_FALLBACK_MODELS'] = fallback
 
     AI_BASE_URL = _normalize_ai_endpoint(base_url)
-    ark = ArkClient()
-    AI_API_KEY = ark.key
-    AI_MODEL = ark.models[0]
+    _PLATFORM_ARK = ArkClient()
+    AI_API_KEY = _PLATFORM_ARK.key
+    AI_MODEL = _PLATFORM_ARK.models[0]
     AI_CACHE.clear()
+    # 换过平台 Key 之后，之前给用户缓存的客户端里那些"这个模型额度用尽了"
+    # 的标记也该作废（同一台机器上换了账号/加了额度的情况）
+    with _USER_ARKS_LOCK:
+        _USER_ARKS.clear()
+    # 配好了就把"已跳过"标记撤掉，否则提示条会一直挂着
+    set_setup_skipped(False)
     return ai_config_status()
 
 
@@ -1796,14 +2459,34 @@ JJ_SYSTEM_PROMPT += """
 @app.route('/api/ai-config')
 def ai_config():
     """Return a safe, non-secret configuration health snapshot for the UI."""
+    username = session.get('username')
+    mine = ai_status_for(username) if username else {}
+    active = current_ark()
     return jsonify({
         'success': True,
-        'configured': bool(AI_API_KEY),
-        'model': ark.active_model,
-        'fallback_models': ark.models[1:],
+        'configured': bool(mine.get('configured')),
+        'skipped': setup_is_skipped(session.get('username')),
+        'source': mine.get('source', 'none'),
+        'source_label': mine.get('source_label', '未配置'),
+        'model': active.active_model,
+        'fallback_models': active.models[1:],
         'streaming': True,
         'quota_note': '额度以所用服务商控制台为准',
-        'endpoint_ready': AI_BASE_URL.endswith('/chat/completions'),
+        'endpoint_ready': active.url.endswith('/chat/completions'),
+    })
+
+
+@app.route('/api/setup/status')
+def setup_status():
+    """给页面上的「模型未配置」提示条用：轻量、不发网络请求。"""
+    username = session.get('username')
+    status = ai_status_for(username) if username else ai_config_status()
+    return jsonify({
+        'success': True,
+        'configured': status['configured'],
+        'source': status.get('source', 'none'),
+        'source_label': status.get('source_label', '未配置'),
+        'model': status['model'] if status['configured'] else '',
     })
 
 
@@ -1829,7 +2512,11 @@ def _compose_ai_messages(question, context, chapter_id, page_state=''):
 
 
 def _ai_cache_key(messages):
-    return hashlib.sha256(json.dumps([ark.active_model, messages], ensure_ascii=False).encode()).hexdigest()
+    # 缓存键带上用户：公网版各人用各人的 Key，A 问过的问题不该直接从缓存里
+    # 喂给 B —— 那等于 B 白蹭 A 的额度，而且谁的模型答的也说不清。
+    owner = session.get('username') or 'guest' if _in_request() else 'system'
+    return hashlib.sha256(json.dumps(
+        [owner, ark.active_model, messages], ensure_ascii=False).encode()).hexdigest()
 
 
 def _ai_cache_get(key):
@@ -1895,7 +2582,7 @@ def ask_jj_stream():
             yield encode({'type': 'done', 'model': ark.active_model})
         except ArkError as exc:
             yield encode({'type': 'error', 'message': str(exc)})
-    return Response(generate(), mimetype='text/event-stream', headers={
+    return Response(stream_with_context(generate()), mimetype='text/event-stream', headers={
         'Cache-Control': 'no-cache', 'X-Accel-Buffering': 'no'})
 
 
@@ -1928,11 +2615,16 @@ def ask_jj():
     cached = _ai_cache_get(cache_key)
     if cached:
         return jsonify({"success": True, "answer": cached, "error": "", "cached": True})
-    if not AI_API_KEY:
-        return jsonify({"success": False, "answer": "", "error": "尚未配置 Python 智能体密钥，请设置 PYMASTER_AI_API_KEY"})
+    # 注意判的是**当前用户实际会用的那个客户端**，不是平台级的 AI_API_KEY。
+    # 公网版里学生各绑各的 Key，平台 Key 常常是空的 —— 看 AI_API_KEY 会让
+    # 已经绑好自己模型的用户照样收到"还没配置大模型"。
+    active = current_ark()
+    if not active.key:
+        return jsonify({"success": False, "answer": "",
+                        "error": "还没配置大模型，AI 功能暂时用不了。打开 /setup 填上你自己的接口地址和 API Key 即可，课程、练习和判题不受影响。"})
 
     payload = json.dumps({
-        "model": AI_MODEL,
+        "model": active.models[0],
         "messages": messages,
         "max_tokens": 520,
         "temperature": 0.35,
@@ -1941,7 +2633,7 @@ def ask_jj():
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {AI_API_KEY}"
+        "Authorization": f"Bearer {active.key}"
     }
 
     try:
@@ -2006,8 +2698,11 @@ def _call_deepseek(system_prompt, user_message, max_tokens=520, retries=2):
     Retries transient failures (5xx / 429 / network) with exponential backoff.
     Returns (answer, error); answer is None when error is set.
     """
+    # 模型名与密钥都取"当前请求实际该用的客户端"：公网版每个用户绑自己的 Key，
+    # 读平台级的 AI_MODEL / AI_API_KEY 会把没配平台 Key 的学生全挡在门外。
+    active = current_ark()
     payload = json.dumps({
-        "model": AI_MODEL,
+        "model": active.models[0],
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
@@ -2019,7 +2714,7 @@ def _call_deepseek(system_prompt, user_message, max_tokens=520, retries=2):
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {AI_API_KEY}"
+        "Authorization": f"Bearer {active.key}"
     }
 
     result, error = _request_ai(payload, headers, retries=1)
@@ -2597,6 +3292,17 @@ def _migrate_notes(notes):
     return migrated
 
 
+def _desktop_only(feature='这个功能'):
+    """服务器模式下，桌面专属功能的统一回复。"""
+    return jsonify({
+        'success': False,
+        'error': 'desktop_only',
+        'desktop_only': True,
+        'message': f'{feature}只在本地桌面版可用。在线版请用「笔记」直接记录内容；'
+                   '需要写文件、关联本地文件的练习，请在本地完整版完成。',
+    })
+
+
 def _platform_open_file(filepath):
     """Open a file with the system default app. Cross-platform safe."""
     import subprocess, os
@@ -2978,6 +3684,11 @@ def note_files_list():
 @app.route('/api/note-files/create-txt', methods=['POST'])
 def note_files_create_txt():
     """Create a .txt file and add to note file list. Opens in editor if desktop available."""
+    # 服务器模式：这个功能是往"运行程序的那台机器"的桌面写文件，
+    # 在公网版上就成了往服务器桌面写——对学生毫无用处，还多一条
+    # 前端可控的写文件路径。笔记正文本身（/api/save-note）不受影响。
+    if server_mode():
+        return _desktop_only('导出 TXT 到桌面')
     try:
         import os, time
         data = request.get_json()
@@ -3026,6 +3737,11 @@ def note_files_create_txt():
 @app.route('/api/note-files/add', methods=['POST'])
 def note_files_add():
     """Add a local file to the note list. Desktop file dialog on Windows only."""
+    if server_mode():
+        # 这条路在 Windows 上会弹一个 tkinter 文件选择框 —— 在服务器上
+        # 那个框弹在服务器的屏幕上，而发起请求的学生什么也看不到，
+        # 请求会一直挂到有人去点掉它。必须挡在前面。
+        return _desktop_only('关联本地文件')
     try:
         import os, time
 
@@ -3095,6 +3811,11 @@ def note_files_add():
 @app.route('/api/note-files/open', methods=['POST'])
 def note_files_open():
     """Open a file with the system default application."""
+    if server_mode():
+        # 路径是前端传上来的，而这个接口的动作是"在服务器上打开它"。
+        # 公网版上这既没用（学生看不到服务器的屏幕），又等于给外人一个
+        # 用服务器默认程序去打开任意文件的开关。
+        return _desktop_only('打开本地文件')
     try:
         import os
         data = request.get_json()
@@ -3633,7 +4354,7 @@ def request_narration():
     text_ok, render_ok = _narration_capabilities()
     if not text_ok:
         return jsonify({'success': False,
-                        'message': '未配置 ARK_API_KEY，无法生成讲解，请在 .env 里补上密钥。'})
+                        'message': '还没配置大模型，无法生成讲解。打开 /setup 填上接口地址和 API Key 即可。'})
     if not render_ok:
         return jsonify({'success': False,
                         'message': '未找到 node，无法渲染配图；可关闭配图后重试。'})
@@ -3687,7 +4408,11 @@ def _sse(event):
 
 
 def _stream(generator):
-    return Response(generator, mimetype='text/event-stream',
+    # stream_with_context 是必须的：SSE 的生成器是在视图函数返回**之后**
+    # 才被逐个取值的，那时请求上下文已经弹掉了。不套这一层，生成器里读
+    # session / request 会直接抛 RuntimeError —— 而 current_ark() 捕获它之后
+    # 会退回平台配置，于是"绑了自己 Key 的学生在流式接口上收到没配置大模型"。
+    return Response(stream_with_context(generator), mimetype='text/event-stream',
                     headers={'Cache-Control': 'no-cache', 'X-Accel-Buffering': 'no'})
 
 
@@ -4184,7 +4909,9 @@ def _review_enabled():
     """是否启用 AI 复核。默认开；模型没配好时自动跳过，不影响做题。"""
     if os.environ.get('PYMASTER_AI_REVIEW', '1').strip().lower() in ('0', 'false', 'no', 'off'):
         return False
-    return bool(ai_config_status()['configured'])
+    # 看当前用户实际会用的那个客户端：公网版学生各自绑 Key，
+    # 只判平台级配置会让"绑了自己 Key 的学生"永远享受不到复核。
+    return bool(current_ark().key)
 
 
 @app.route('/api/training/judge', methods=['POST'])
@@ -4744,8 +5471,11 @@ def progress_overview():
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'username' not in session or session.get('username', 'guest') != ADMIN_USERNAME:
-            return redirect(url_for('login_page'))
+        if session.get('is_admin') is not True:
+            # 后台自己有登录页，别把站长丢到学生登录页上去
+            if request.path.startswith('/admin/api/'):
+                return jsonify({'success': False, 'message': '管理员登录已过期，请重新登录'}), 401
+            return redirect(url_for('admin_login'))
         return f(*args, **kwargs)
     return decorated
 
@@ -4753,14 +5483,34 @@ def admin_required(f):
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
-        data = request.get_json() or request.form
-        username = data.get('username', '').strip()
-        password = data.get('password', '').strip()
-        if username == ADMIN_USERNAME and hash_password(password) == ADMIN_PASSWORD_HASH:
-            session['username'] = ADMIN_USERNAME
-            return jsonify({'success': True}) if request.is_json else redirect(url_for('admin_dashboard'))
-        return jsonify({'success': False, 'message': '管理员账号或密码错误'}) if request.is_json else ('', 403)
-    return render_template('admin_login.html')
+        data = request.get_json(silent=True) or request.form
+        username = (data.get('username') or '').strip()
+        password = (data.get('password') or '').strip()
+        if admin_credentials_ok(username, password):
+            # is_admin 是独立于「学生账号」的标记：后台的 session['username']
+            # 不能就是学生那套用户名，否则谁注册一个叫 admin 的账号就进了后台。
+            session['is_admin'] = True
+            session['admin_name'] = username
+            record_access(username, 'admin', {'action': '登录后台'})
+            if request.is_json:
+                return jsonify({'success': True})
+            return redirect(url_for('admin_dashboard'))
+        record_access(username, 'admin', {'action': '后台登录失败'})
+        if request.is_json:
+            return jsonify({'success': False, 'message': '管理员账号或密码错误'})
+        return render_template('admin_login.html', error='管理员账号或密码错误',
+                               admin_username=username or ADMIN_USERNAME,
+                               default_password=ADMIN_PASSWORD_IS_DEFAULT), 403
+    return render_template('admin_login.html', error='',
+                           admin_username=ADMIN_USERNAME,
+                           default_password=ADMIN_PASSWORD_IS_DEFAULT)
+
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('is_admin', None)
+    session.pop('admin_name', None)
+    return redirect(url_for('admin_login'))
 
 
 @app.route('/admin')
@@ -4821,6 +5571,223 @@ def admin_whitelist_delete(username):
     return jsonify({'success': True, 'message': f'用户 {username} 已从白名单移除'})
 
 
+@app.route('/admin/api/overview')
+@admin_required
+def admin_overview():
+    """后台首页的卡片 + 最近 7 天趋势 + 运行环境信息。"""
+    users = load_json(USERS_FILE)
+    wl = _load_whitelist()
+    summaries = access_db.all_user_summaries()
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    registered = [u for u in users if not demo_mode.is_demo(u)]
+    today_registered = sum(1 for u in registered
+                           if (users[u].get('created_at') or '').startswith(today))
+    bound = sum(1 for u in registered if user_ai_config(u))
+    online = sum(1 for u in registered
+                 if (summaries.get(u, {}).get('last_seen') or '').startswith(today))
+
+    stats = access_db.overview(days=7)
+    return jsonify({
+        'success': True,
+        'overview': {
+            'total_registered': len(registered),
+            'today_registered': today_registered,
+            'bound_api': bound,
+            'unbound_api': len(registered) - bound,
+            'active_today': online,
+            'today_logins': stats.get('today_logins', 0),
+            'today_visitors': stats.get('today_visitors', 0),
+            'recent_login_fail': stats.get('recent_login_fail', 0),
+            'total_events': stats.get('total_events', 0),
+            'whitelist_mode': len(wl) > 0,
+            'whitelist_count': len(wl),
+            'days': stats.get('days', []),
+        },
+        'runtime': {
+            'server_mode': server_mode(),
+            'code_exec': code_exec_enabled(),
+            'safe_mode': sandbox_guard.is_enabled(),
+            'data_dir': DATA_DIR,
+            'db_file': access_db.db_path() or '',
+            'admin_is_default_password': ADMIN_PASSWORD_IS_DEFAULT,
+            'admin_username': ADMIN_USERNAME,
+        },
+    })
+
+
+@app.route('/admin/api/users')
+@admin_required
+def admin_users():
+    """注册用户总表：每个人的注册时间、最后活跃、IP、模型绑定、学习进度。"""
+    users = load_json(USERS_FILE)
+    summaries = access_db.all_user_summaries()
+    wl = _load_whitelist()
+
+    rows = []
+    for username, info in users.items():
+        if demo_mode.is_demo(username):
+            continue
+        progress = info.get('progress') or {}
+        kp_done = sum(len((c or {}).get('completed_items') or []) for c in progress.values()) \
+            if isinstance(progress, dict) else 0
+        ai = user_ai_config(username) or {}
+        summary = summaries.get(username) or {}
+        rows.append({
+            'username': username,
+            'email': info.get('email', ''),
+            'created_at': info.get('created_at', ''),
+            'last_login': info.get('last_login', ''),
+            'created_ip': info.get('created_ip', ''),
+            'last_ip': info.get('last_ip', '') or summary.get('last_ip', ''),
+            # 登录次数一律取访问日志的统计。users.json 里那个 login_count 是
+            # 从安装那天开始累加的，日志只保留最近 90 天，两个数放在同一个
+            # 后台里必然对不上（表格一个数、详情另一个数），所以以日志为准。
+            'login_count': summary.get('login_count', 0),
+            'login_count_all_time': int(info.get('login_count') or 0),
+            'has_avatar': bool(info.get('avatar') or info.get('avatar_emoji')),
+            'kp_done': kp_done,
+            'ai_bound': bool(ai),
+            'ai_model': ai.get('model', ''),
+            'ai_base_url': ai.get('base_url', ''),
+            'ai_key_tail': ('****' + ai['api_key'][-4:]) if len(ai.get('api_key', '')) >= 4 else '',
+            'ai_updated_at': ai.get('updated_at', ''),
+            'last_seen': summary.get('last_seen', '') or info.get('last_login', ''),
+            'last_path': summary.get('last_path', ''),
+            'visit_count': summary.get('visit_count', 0),
+            'log_login_count': summary.get('login_count', 0),
+            'fail_count': summary.get('fail_count', 0),
+            'in_whitelist': username in wl,
+            'active': _account_allowed(username),
+        })
+    rows.sort(key=lambda r: r.get('last_seen') or '', reverse=True)
+    return jsonify({'success': True, 'users': rows, 'total': len(rows)})
+
+
+@app.route('/admin/api/logs')
+@admin_required
+def admin_logs():
+    """访问日志（筛选 + 分页）。"""
+    args = request.args
+    try:
+        limit = int(args.get('limit') or 100)
+        offset = int(args.get('offset') or 0)
+    except ValueError:
+        limit, offset = 100, 0
+    event = (args.get('event') or '').strip()
+    events = None
+    if event == 'notable':
+        events = list(access_db.NOTABLE_EVENTS)
+    elif event:
+        events = [event]
+    rows, total = access_db.query(
+        limit=limit, offset=offset,
+        username=(args.get('username') or '').strip() or None,
+        event=events,
+        ip=(args.get('ip') or '').strip() or None,
+        since=(args.get('since') or '').strip() or None,
+        until=(args.get('until') or '').strip() or None,
+    )
+    return jsonify({'success': True, 'logs': rows, 'total': total,
+                    'limit': limit, 'offset': offset,
+                    'events': [{'key': k, 'label': v} for k, v in access_db.EVENT_LABELS.items()]})
+
+
+@app.route('/admin/api/logs/export')
+@admin_required
+def admin_logs_export():
+    event = (request.args.get('event') or '').strip()
+    events = list(access_db.NOTABLE_EVENTS) if event == 'notable' else ([event] if event else None)
+    text = access_db.export_csv(
+        username=(request.args.get('username') or '').strip() or None,
+        event=events,
+        ip=(request.args.get('ip') or '').strip() or None,
+        since=(request.args.get('since') or '').strip() or None,
+        until=(request.args.get('until') or '').strip() or None,
+    )
+    stamp = datetime.now().strftime('%Y%m%d_%H%M')
+    return Response(text, mimetype='text/csv; charset=utf-8', headers={
+        'Content-Disposition': f'attachment; filename=pymaster_logs_{stamp}.csv'})
+
+
+@app.route('/admin/api/user/<path:username>')
+@admin_required
+def admin_user_detail(username):
+    """单个用户的完整情况：账号 + 模型绑定 + 活跃统计 + 最近日志。"""
+    users = load_json(USERS_FILE)
+    if username not in users:
+        return jsonify({'success': False, 'message': '账号不存在'}), 404
+    info = users[username]
+    ai = user_ai_config(username) or {}
+    logs, _ = access_db.query(limit=60, username=username)
+    ip_rows = access_db.user_ips(username)
+    progress = info.get('progress') or {}
+    chapters = []
+    if isinstance(progress, dict):
+        for cid, entry in progress.items():
+            done = len((entry or {}).get('completed_items') or [])
+            if done:
+                chapters.append({'chapter_id': cid, 'done': done})
+    chapters.sort(key=lambda c: int(c['chapter_id']) if str(c['chapter_id']).isdigit() else 0)
+    return jsonify({
+        'success': True,
+        'user': {
+            'username': username,
+            'email': info.get('email', ''),
+            'created_at': info.get('created_at', ''),
+            'last_login': info.get('last_login', ''),
+            'created_ip': info.get('created_ip', ''),
+            'last_ip': info.get('last_ip', ''),
+            'login_count': int(info.get('login_count') or 0),
+            'mode': info.get('mode', ''),
+            'note_count': len(info.get('notes') or {}),
+            'favorites': len(info.get('favorites') or []),
+            'wrong_answers': len(info.get('wrong_answers') or []),
+        },
+        'ai': {
+            'bound': bool(ai),
+            'base_url': ai.get('base_url', ''),
+            'model': ai.get('model', ''),
+            'key_tail': ('****' + ai['api_key'][-4:]) if len(ai.get('api_key', '')) >= 4 else '',
+            'fallback': ai.get('fallback', ''),
+            'updated_at': ai.get('updated_at', ''),
+            'updated_ip': ai.get('updated_ip', ''),
+        },
+        'rollup': access_db.user_rollup(username),
+        'ips': ip_rows,
+        'chapters': chapters,
+        'logs': logs,
+    })
+
+
+@app.route('/admin/api/user/<path:username>/clear-ai', methods=['POST'])
+@admin_required
+def admin_clear_user_ai(username):
+    """替用户解绑模型（他的 Key 可能已失效，或他自己搞不定）。"""
+    users = load_json(USERS_FILE)
+    if username not in users:
+        return jsonify({'success': False, 'message': '账号不存在'}), 404
+    clear_user_ai_config(username)
+    record_access(username, 'ai_clear', {'action': '由管理员解绑'})
+    return jsonify({'success': True, 'message': f'{username} 的模型绑定已清除'})
+
+
+@app.route('/admin/api/user/<path:username>/reset-progress', methods=['POST'])
+@admin_required
+def admin_reset_progress(username):
+    """清空某个用户的学习进度（保留账号和密码）。"""
+    users = load_json(USERS_FILE)
+    if username not in users:
+        return jsonify({'success': False, 'message': '账号不存在'}), 404
+    users[username].update({
+        'progress': {}, 'completed_kps': [], 'completed_exercises': [],
+        'favorites': [], 'wrong_answers': [],
+    })
+    save_json(USERS_FILE, users)
+    record_access(username, 'admin', {'action': '管理员清空学习进度'})
+    return jsonify({'success': True, 'message': f'{username} 的学习进度已清空'})
+
+
 @app.route('/admin/api/stats')
 @admin_required
 def admin_stats():
@@ -4846,6 +5813,163 @@ def admin_stats():
             'daily_breakdown': {k: v for k, v in sorted(usage.items(), reverse=True)[:30]},
         }
     })
+
+
+# 后台可以热切换的开关。写进 .env，重启后依然生效。
+ADMIN_TOGGLES = {
+    'safe_mode': 'PYMASTER_SAFE_MODE',
+    'code_exec': 'PYMASTER_ALLOW_CODE_EXEC',
+}
+
+
+def _write_env_values(pairs):
+    """把若干 key=value 合并进 .env（保留其它行）。返回写入后的内容。"""
+    lines = []
+    keys = set(pairs)
+    if os.path.exists(ENV_FILE):
+        with open(ENV_FILE, 'r', encoding='utf-8') as f:
+            for raw in f:
+                line = raw.rstrip('\n')
+                key = line.split('=', 1)[0].strip() if '=' in line else ''
+                if key in keys:
+                    continue
+                if line.strip():
+                    lines.append(line)
+    for key, value in pairs.items():
+        lines.append(f'{key}={value}')
+    with open(ENV_FILE, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lines) + '\n')
+    for key, value in pairs.items():
+        os.environ[key] = str(value)
+    return lines
+
+
+@app.route('/admin/api/platform-ai', methods=['GET', 'POST'])
+@admin_required
+def admin_platform_ai():
+    """平台级模型配置：没绑自己 Key 的用户会用它。
+
+    服务器模式下 /setup 那页是给学生"绑自己的 Key"用的（存进各自账号），
+    站长要配的这份是**全局兜底**，只有在这里能改 —— 否则站长就得手动
+    去编辑服务器上的 .env，那是这个后台本来要替他省掉的事。
+    """
+    if request.method == 'GET':
+        st = ai_config_status()
+        users = load_json(USERS_FILE)
+        unbound = sum(1 for u in users
+                      if not demo_mode.is_demo(u) and not user_ai_config(u))
+        return jsonify({
+            'success': True,
+            'config': {
+                'configured': st['configured'],
+                'base_url': st['base_url'],
+                'model': st['model'],
+                'fallback': st['fallback'],
+                'key_tail': st['key_tail'],
+            },
+            'usage': {'bound_users': len([u for u in users if user_ai_config(u)]),
+                      'unbound_users': unbound},
+        })
+
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get('base_url') or '').strip()
+    model = (data.get('model') or '').strip()
+    api_key = (data.get('api_key') or '').strip()
+    fallback = (data.get('fallback') or '').strip()
+
+    if not base_url or not model:
+        return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
+    if not base_url.startswith(('http://', 'https://')):
+        return jsonify({'success': False, 'message': '地址要以 http:// 或 https:// 开头'})
+    if not api_key or api_key.startswith('****'):
+        api_key = read_env_file().get('ARK_API_KEY', '')
+        if not api_key:
+            return jsonify({'success': False, 'message': '请填写 API Key'})
+
+    status = apply_ai_config(base_url, model, api_key, fallback)
+    record_access(session.get('admin_name') or ADMIN_USERNAME, 'admin',
+                  {'action': '更新平台模型', 'model': model})
+    return jsonify({
+        'success': True,
+        'message': '平台模型配置已保存并立即生效',
+        'config': {'base_url': status['base_url'], 'model': status['model'],
+                   'key_tail': status['key_tail']},
+    })
+
+
+@app.route('/admin/api/platform-ai/test', methods=['POST'])
+@admin_required
+def admin_platform_ai_test():
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get('base_url') or '').strip()
+    model = (data.get('model') or '').strip()
+    api_key = (data.get('api_key') or '').strip()
+    if not base_url or not model:
+        return jsonify({'success': False, 'message': '接口地址和模型名称都要填'})
+    if not api_key or api_key.startswith('****'):
+        api_key = read_env_file().get('ARK_API_KEY', '')
+        if not api_key:
+            return jsonify({'success': False, 'message': '请填写 API Key'})
+    ok, message = test_ai_connection(base_url, model, api_key)
+    return jsonify({'success': ok, 'message': message})
+
+
+@app.route('/admin/api/settings', methods=['GET', 'POST'])
+@admin_required
+def admin_settings():
+    # global 必须放在函数体最前面：Python 不允许"先用后声明"，
+    # 写在下面那句赋值之前会直接 SyntaxError，整个平台起不来。
+    global ADMIN_USERNAME, ADMIN_PASSWORD_HASH, ADMIN_PASSWORD_IS_DEFAULT, _ADMIN_PLAIN
+
+    if request.method == 'GET':
+        return jsonify({
+            'success': True,
+            'settings': {
+                'safe_mode': sandbox_guard.is_enabled(),
+                'code_exec': code_exec_enabled(),
+                'server_mode': server_mode(),
+                'admin_username': ADMIN_USERNAME,
+                'admin_is_default_password': ADMIN_PASSWORD_IS_DEFAULT,
+                'registration_open': registration_is_open(),
+                'data_dir': DATA_DIR,
+            },
+        })
+
+    data = request.get_json(silent=True) or {}
+    changed = {}
+
+    if 'safe_mode' in data:
+        value = '1' if data['safe_mode'] else '0'
+        changed['PYMASTER_SAFE_MODE'] = value
+        os.environ['PYMASTER_SAFE_MODE'] = value
+    if 'code_exec' in data:
+        changed['PYMASTER_ALLOW_CODE_EXEC'] = '1' if data['code_exec'] else '0'
+
+    if changed:
+        _write_env_values(changed)
+
+    # 改管理员口令：只允许在这里改，且必须是已登录的管理员
+    new_user = (data.get('admin_username') or '').strip()
+    new_pass = (data.get('admin_password') or '').strip()
+    if new_pass:
+        if len(new_pass) < 8:
+            return jsonify({'success': False, 'message': '管理员口令至少 8 位'})
+        pairs = {'PYMASTER_ADMIN_PASSWORD': new_pass}
+        if new_user:
+            pairs['PYMASTER_ADMIN_USER'] = new_user
+        _write_env_values(pairs)
+        _ADMIN_PLAIN = new_pass
+        ADMIN_PASSWORD_HASH = hashlib.sha256(new_pass.encode('utf-8')).hexdigest()
+        ADMIN_PASSWORD_IS_DEFAULT = False
+        if new_user:
+            ADMIN_USERNAME = new_user
+            session['admin_name'] = new_user
+        record_access(session.get('admin_name') or 'admin', 'admin', {'action': '修改管理员口令'})
+        return jsonify({'success': True, 'message': '管理员口令已更新（下次登录用新口令）'})
+
+    record_access(session.get('admin_name') or 'admin', 'admin',
+                  {'action': '修改设置', 'detail': list(changed)})
+    return jsonify({'success': True, 'message': '设置已保存并立即生效'})
 
 
 if __name__ == '__main__':
@@ -4907,10 +6031,47 @@ if __name__ == '__main__':
         except Exception as exc:
             print(f'[PyMaster] 端口清理失败：{exc}')
 
-    print(f'[PyMaster] Started at http://127.0.0.1:{port_to_use}')
+    mode_text = '服务器模式（多人公网）' if server_mode() else '本地模式'
+    print(f'[PyMaster] {mode_text} · 监听 0.0.0.0:{port_to_use}')
+    if server_mode():
+        print(f'[PyMaster] 在线运行代码：{"开启（沙箱 " + ("开" if sandbox_guard.is_enabled() else "关") + "）" if code_exec_enabled() else "关闭（公网默认）"}')
+        if ADMIN_PASSWORD_IS_DEFAULT:
+            print('[PyMaster] ⚠ 管理员口令仍是默认的 admin888 —— 请立刻到 /admin 登录后改掉，')
+            print('[PyMaster]   或在 .env 里设 PYMASTER_ADMIN_PASSWORD=你自己的口令 再重启。')
+        if not code_exec_enabled():
+            print('[PyMaster] 说明：在线判题/运行代码已关闭。学生要动手写代码请用本地完整版；')
+            print('[PyMaster]   确实需要在线跑，就设 PYMASTER_ALLOW_CODE_EXEC=1 并同时开 PYMASTER_SAFE_MODE=1。')
+
     # 一键启动脚本靠这个开关让服务自己开浏览器：比在 bat 里盲等几秒再 open 可靠，
     # 至少能确定端口已经在监听
     if os.environ.get('PYMASTER_OPEN_BROWSER') == '1':
         import webbrowser
         threading.Timer(1.2, lambda: webbrowser.open(f'http://127.0.0.1:{port_to_use}')).start()
-    app.run(debug=False, host='0.0.0.0', port=port_to_use)
+
+    if server_mode():
+        # 服务器模式用 waitress：Flask 自带的服务器是单线程的，
+        # 一个人点开一个慢页面（等 AI 回答最长几十秒）就会把所有人卡在门外。
+        # waitress 是纯 Python 的多线程 WSGI 服务器，随包一起分发，不需要额外安装。
+        try:
+            from waitress import serve
+        except ImportError:
+            print('[PyMaster] 没找到 waitress（服务器模式的并发服务器），'
+                  '暂时退回单线程模式。请重新运行一键部署脚本补齐依赖。')
+            app.run(debug=False, host='0.0.0.0', port=port_to_use, threaded=True)
+        else:
+            serve_kwargs = {
+                'host': '0.0.0.0',
+                'port': port_to_use,
+                'threads': int(os.environ.get('PYMASTER_THREADS', '16')),
+                # 慢客户端（手机弱网）发送请求体的超时放宽一点，避免上传头像被误断
+                'channel_timeout': 180,
+            }
+            # 直连（本站的默认部署方式）时 waitress 会丢掉 X-Forwarded-For，
+            # 这正是我们要的：否则谁都能自己塞一个头，把后台的 IP 记录写成任意值。
+            # 只有站长明确说"我前面挂了 Nginx/Caddy"时才采信那个头的来源。
+            if os.environ.get('PYMASTER_TRUST_PROXY', '').strip() in ('1', 'true', 'yes', 'on'):
+                serve_kwargs['trusted_proxy'] = '*'
+                serve_kwargs['trusted_proxy_headers'] = {'x-forwarded-for', 'x-forwarded-proto'}
+            serve(app, **serve_kwargs)
+    else:
+        app.run(debug=False, host='0.0.0.0', port=port_to_use, threaded=True)

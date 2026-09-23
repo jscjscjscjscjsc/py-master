@@ -17,7 +17,10 @@ body{
   color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
   display:flex;align-items:center;justify-content:center;padding:32px 18px;line-height:1.7;
 }
-.shell{width:100%;max-width:940px;display:grid;grid-template-columns:250px 1fr;gap:34px}
+/* 氛围层是 position:fixed + z-index:0 的 canvas，会盖住所有**未被定位**的内容。
+   配置页是要用户填表的地方，被盖住就等于打不开 —— 所以外壳必须自己定位。 */
+.shell{width:100%;max-width:940px;display:grid;grid-template-columns:250px 1fr;gap:34px;
+  position:relative;z-index:1}
 @media(max-width:820px){.shell{grid-template-columns:1fr;gap:22px}}
 
 /* 左侧：品牌与步骤 */
@@ -122,6 +125,24 @@ details li{margin:5px 0}
 .kv div{display:flex;justify-content:space-between;gap:14px;padding:5px 0}
 .kv span:first-child{color:var(--tx3)}
 .kv span:last-child{color:var(--tx);font-weight:600;word-break:break-all;text-align:right}
+.quick{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.22);border-radius:12px;
+  padding:14px 16px;margin:18px 0 22px}
+.quick-head{font-size:13px;font-weight:600;color:var(--tx);display:flex;align-items:center;gap:8px}
+.quick-head .tag{background:var(--cyan);color:#04121a;font-size:11px;padding:2px 8px;border-radius:999px;font-weight:700}
+.quick-list{margin:11px 0 0 18px;font-size:12.5px;color:var(--tx2);line-height:1.9}
+.quick-list a{color:var(--cyan);text-decoration:none}
+.quick-list a:hover{text-decoration:underline}
+.quick-list code{background:#0d1219;padding:1px 5px;border-radius:4px;font-size:12px}
+.quick-note{margin-top:10px;font-size:11.5px;color:var(--tx3)}
+button.mini{padding:3px 10px;border-radius:999px;border:1px solid var(--cyan);background:transparent;
+  color:var(--cyan);font-size:12px;cursor:pointer;font-family:inherit;vertical-align:baseline}
+button.mini:hover{background:rgba(0,212,255,.12)}
+.skip-box{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);text-align:center}
+.btn-skip{background:transparent;border:1px solid var(--line);color:var(--tx2);font-family:inherit;
+  font-size:13.5px;padding:11px 20px;border-radius:10px;cursor:pointer;width:100%;transition:.16s}
+.btn-skip:hover{border-color:var(--cyan);color:var(--tx);background:rgba(0,212,255,.05)}
+.skip-hint{margin-top:11px;font-size:12px;color:var(--tx3);line-height:1.85;text-align:left}
+.skip-hint b{color:var(--tx2)}
 </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
@@ -144,7 +165,7 @@ details li{margin:5px 0}
       </div>
       <div class="step" id="side-3">
         <span class="no">3</span>
-        <div><div class="t">开始学习</div><div class="d">39 章 / 400 个知识点</div></div>
+        <div><div class="t">开始学习</div><div class="d">{{ stats.chapters }} 章 / {{ stats.points }} 个知识点</div></div>
       </div>
     </div>
   </div>
@@ -205,18 +226,44 @@ details li{margin:5px 0}
 
     <!-- ── 第二步：接入大模型 ── -->
     <div class="pane" id="pane-2">
-      <h1>接入你的大模型</h1>
-      <p class="lead">PyMaster 不捆绑模型额度，用你自己的 API。填完点「测试连接」确认可用。</p>
+      <h1>{% if server_mode %}绑定你自己的大模型{% else %}接入你的大模型{% endif %}</h1>
+      {% if server_mode %}
+      <p class="lead">这是一台公共服务器，别人也在用，所以模型额度不共用——
+        请填你自己的 API Key，调用走你自己的账号。
+        <b>没有 Key 也可以先跳过</b>，课程和练习都能照常看。</p>
+      {% if source_label %}
+      <p class="lead" style="font-size:13px;opacity:.85">
+        当前使用：<b>{{ source_label }}</b>{% if has_own_key %}（就是你绑的这一把）{% else %}（站长配置的平台模型）{% endif %}
+      </p>
+      {% endif %}
+      {% else %}
+      <p class="lead">PyMaster 不捆绑模型额度，用你自己的 API。填完点「测试连接」确认可用。
+        <b>没有 Key 也可以先跳过</b>——课程、练习、判题都照常能用。</p>
+      {% endif %}
+
+      <div class="quick">
+        <div class="quick-head">
+          <span class="tag">最快上手</span>
+          用 DeepSeek 官方的，照着做三步：
+        </div>
+        <ol class="quick-list">
+          <li>打开 <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer">platform.deepseek.com/api_keys</a>
+              注册并点「创建 API key」，复制那串 <code>sk-</code> 开头的字符。</li>
+          <li>点下面的 <button type="button" class="mini" data-url="https://api.deepseek.com/v1" data-model="deepseek-chat">① 一键填好 DeepSeek 地址</button></li>
+          <li>把 Key 粘到「API Key」那一栏，点「测试连接」，通过就保存。</li>
+        </ol>
+        <div class="quick-note">详细图文教程见压缩包里的《大模型添加说明书和教程.md》。</div>
+      </div>
 
       <div class="field">
         <label>接口地址（Base URL）</label>
-        <input type="text" id="cfg-url" placeholder="https://ark.cn-beijing.volces.com/api/v3"
+        <input type="text" id="cfg-url" placeholder="https://api.deepseek.com/v1"
                value="{{ base_url or '' }}">
         <div class="hint">
           任何 OpenAI 兼容接口都可以。填到 <code>/v1</code> 或 <code>/v3</code> 为止即可，不用带后面的路径。
           <div class="preset">
+            <button data-url="https://api.deepseek.com/v1" data-model="deepseek-chat">DeepSeek（推荐）</button>
             <button data-url="https://ark.cn-beijing.volces.com/api/v3" data-model="doubao-seed-2-0-code-preview-260215">火山方舟</button>
-            <button data-url="https://api.deepseek.com/v1" data-model="deepseek-chat">DeepSeek</button>
             <button data-url="https://api.siliconflow.cn/v1" data-model="Qwen/Qwen2.5-7B-Instruct">硅基流动</button>
             <button data-url="https://dashscope.aliyuncs.com/compatible-mode/v1" data-model="qwen-plus">通义千问</button>
             <button data-url="http://localhost:11434/v1" data-model="qwen2.5:7b">本地 Ollama</button>
@@ -233,7 +280,7 @@ details li{margin:5px 0}
       <div class="field">
         <label>API Key</label>
         <input type="password" id="cfg-key" placeholder="{{ '已保存 ' + key_tail + '，留空表示不改' if key_tail else '粘贴你的 API Key' }}">
-        <div class="hint">只保存在本机 <code>.env</code> 文件里，不会上传到任何地方。</div>
+        <div class="hint">{% if server_mode %}只保存在你自己账号的记录里，别人（包括其他同学）看不到，也不会回传到浏览器。{% else %}只保存在本机 <code>.env</code> 文件里，不会上传到任何地方。{% endif %}</div>
       </div>
 
       <div class="field">
@@ -247,6 +294,16 @@ details li{margin:5px 0}
         <button class="btn btn-main" id="btn-save" style="flex:1">保存并进入平台</button>
       </div>
       <div class="msg" id="msg-2"></div>
+
+      <div class="skip-box">
+        <button class="btn btn-skip" id="btn-skip">暂时不配置，先进去看看 →</button>
+        <div class="skip-hint">
+          课程正文、练习场、刷题判题、修行阁、学习档案都<b>不需要大模型</b>，现在就能用。
+          只有 AI 答疑、AI 批改、图文讲解会提示「还没配置」——
+          之后随时可以在<b>右上角「模型配置」</b>里补上，补完立刻生效，不用重启。
+        </div>
+      </div>
+
       <div class="hint" style="text-align:center;margin-top:12px">
         当前服务地址：<code id="cur-host">—</code>
         <span style="opacity:.75">（配置只保存在这个地址对应的程序里；如果打不开或保存失败，先看它是不是你要用的那个）</span>
@@ -265,7 +322,7 @@ details li{margin:5px 0}
           <div><span>模型名称</span><span id="done-model">—</span></div>
         </div>
         <p class="hint" style="text-align:left">
-          课程内容：39 章 / 400 个知识点 / 212 道练习，覆盖 Python 基础到 AI 应用开发。
+          课程内容：{{ stats.chapters }} 章 / {{ stats.points }} 个知识点 / {{ stats.exercises }} 道练习，覆盖 Python 基础到 AI 应用开发。
           每个知识点配一节 5 分钟图文讲解。
         </p>
         <button class="btn btn-main" id="btn-go" style="margin-top:22px">进入学习平台</button>
@@ -436,12 +493,14 @@ details li{margin:5px 0}
     });
   });
 
-  // 服务商预设
-  document.querySelectorAll('.preset button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      $('cfg-url').value = b.dataset.url;
-      if (!$('cfg-model').value) { $('cfg-model').value = b.dataset.model; }
-    });
+  // 服务商预设（顶部「一键填好」小按钮与下方预设按钮共用一个处理函数）
+  function applyPreset(b) {
+    $('cfg-url').value = b.dataset.url;
+    $('cfg-model').value = b.dataset.model;
+    $('cfg-key').focus();
+  }
+  document.querySelectorAll('.preset button, button.mini').forEach(function (b) {
+    b.addEventListener('click', function () { applyPreset(b); });
   });
 
   function collect() {
@@ -494,6 +553,21 @@ details li{margin:5px 0}
   });
 
   $('btn-go').addEventListener('click', function () { location.href = '/dashboard'; });
+
+  // 「暂时不配置，先进去看看」：放行整个平台，只关掉 AI 功能。
+  // 后端把标记写在 data 目录，所以换浏览器、清缓存都不会丢。
+  $('btn-skip').addEventListener('click', function () {
+    this.disabled = true; this.textContent = '正在进入…';
+    var self = this;
+    post('/api/setup/skip', {}).then(function (res) {
+      self.disabled = false; self.textContent = '暂时不配置，先进去看看 →';
+      if (res && res.success) { location.href = '/dashboard'; }
+      else { alert((res && res.message) || '操作失败，请重试'); }
+    }).catch(function () {
+      self.disabled = false; self.textContent = '暂时不配置，先进去看看 →';
+      alert('连不上本地服务（' + location.host + '）：请确认启动窗口还开着，再试一次。');
+    });
+  });
 })();
 </script>
 <script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>

@@ -79,3 +79,9 @@ PyMaster_产品介绍片_*.mp4
 PyMaster_产品介绍片_*.srt
 视频制作说明.md
 .video-build/
+
+# 访问日志库（服务器版运行时会生成，含用户 IP，属私人数据）
+data/access.db
+data/access.db-wal
+data/access.db-shm
+data/access_log.jsonl

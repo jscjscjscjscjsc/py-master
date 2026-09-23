@@ -6,231 +6,839 @@
 <title>PyMaster — 管理后台</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <style>
+:root { --admin-danger: #ff5f56; --admin-ok: #3fb950; --admin-warn: #d29922; }
 .admin-page { min-height: 100vh; }
-.admin-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px 24px; position: relative; z-index: 1; }
-.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.admin-header h1 { font-size: 24px; margin: 0; }
-.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px 20px; }
-.stat-card .label { font-size: 13px; color: var(--text-muted); }
-.stat-card .value { font-size: 28px; font-weight: 700; color: var(--cyan); margin-top: 4px; }
-.section { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; }
-.section h2 { font-size: 18px; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px; }
-.add-form { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: end; }
-.add-form .field { display: flex; flex-direction: column; gap: 4px; }
-.add-form .field label { font-size: 12px; color: var(--text-muted); }
-.add-form input, .add-form select {
-  padding: 8px 12px; border-radius: var(--radius-sm);
+.admin-wrapper { max-width: 1440px; margin: 0 auto; padding: 20px 24px 60px; position: relative; z-index: 1; }
+
+/* 顶部：站点标题 + 管理员身份 + 退出 */
+.admin-top { display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  margin-bottom: 20px; flex-wrap: wrap; }
+.admin-top h1 { font-size: 22px; margin: 0; display: flex; align-items: center; gap: 10px; }
+.admin-top .who { font-size: 13px; color: var(--text-muted); }
+.admin-top .who b { color: var(--cyan); }
+
+/* 标签页 */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 22px;
+  overflow-x: auto; }
+.tab { padding: 10px 18px; border: none; background: transparent; color: var(--text-muted);
+  font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: all .15s; font-family: inherit; }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+.tab .cnt { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 9px;
+  background: var(--cyan-dim); color: var(--cyan); font-size: 11px; }
+.pane { display: none; }
+.pane.active { display: block; }
+
+/* 卡片 */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px;
+  margin-bottom: 22px; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: 15px 18px; }
+.stat-card .label { font-size: 12px; color: var(--text-muted); }
+.stat-card .value { font-size: 26px; font-weight: 700; color: var(--cyan); margin-top: 5px; line-height: 1.2; }
+.stat-card .sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.stat-card.warn .value { color: var(--admin-warn); }
+.stat-card.danger .value { color: var(--admin-danger); }
+
+.section { background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; }
+.section h2 { font-size: 16px; margin: 0 0 4px 0; }
+.section .desc { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+
+/* 表单 */
+.filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 16px; }
+.filters .field { display: flex; flex-direction: column; gap: 4px; }
+.filters label { font-size: 11px; color: var(--text-muted); }
+input, select { padding: 8px 11px; border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle); background: var(--bg-secondary);
-  color: var(--text-primary); font-size: 14px;
-}
-.add-form input:focus { outline: none; border-color: var(--cyan); }
-.btn { padding: 8px 18px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.15s; }
-.btn-primary { background: var(--cyan); color: #000; }
+  color: var(--text-primary); font-size: 13px; font-family: inherit; }
+input:focus, select:focus { outline: none; border-color: var(--cyan); }
+.btn { padding: 8px 16px; border-radius: var(--radius-sm); border: none; cursor: pointer;
+  font-weight: 600; font-size: 13px; transition: all .15s; font-family: inherit; }
+.btn-primary { background: var(--cyan); color: #04121a; }
 .btn-primary:hover { box-shadow: var(--shadow-glow-cyan); }
-.btn-danger { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
-.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-danger { background: var(--red-dim); color: var(--admin-danger); border: 1px solid var(--admin-danger); }
+.btn-danger:hover { background: var(--admin-danger); color: #fff; }
 .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-subtle); }
 .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
-th { color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-td { color: var(--text-secondary); }
-td .username { color: var(--cyan); font-weight: 600; }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-.badge-green { background: var(--green-dim); color: var(--green); }
-.badge-red { background: var(--red-dim); color: var(--red); }
-.badge-yellow { background: var(--orange-dim); color: var(--orange); }
-td .actions { display: flex; gap: 6px; }
-td .actions button { padding: 4px 10px; font-size: 12px; }
-.empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
-.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: var(--radius-md); z-index: 1000; font-size: 14px; font-weight: 600; animation: fadeInOut 2.5s ease; }
-.toast.success { background: var(--green); color: #000; }
-.toast.error { background: var(--red); color: #fff; }
-@keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; } }
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; align-items: center; justify-content: center; }
-.modal-overlay.active { display: flex; }
-.modal-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; min-width: 400px; max-width: 600px; max-height: 80vh; overflow-y: auto; }
-.modal-box h3 { margin: 0 0 16px 0; }
-.usage-chart { font-size: 12px; color: var(--text-muted); max-height: 200px; overflow-y: auto; }
-.usage-chart .day { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border-subtle); }
-.usage-chart .day:last-child { border-bottom: none; }
-@media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } .add-form { flex-direction: column; } .add-form .field { width: 100%; } .modal-box { min-width: auto; margin: 0 16px; } }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+
+/* 表格 */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+/* min-width 是必须的：不加的话窄屏（手机）会把列一路压扁，
+   IP 被截成 "127.0.0."、用户名折成两行。给了下限之后表格
+   保持可读宽度，由外层 .table-wrap 横向滚动。 */
+.drawer table { min-width: 0; }
+.drawer .table-wrap table { min-width: 420px; }
+th, td { padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle; }
+th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .5px; white-space: nowrap; }
+tbody tr:hover { background: var(--bg-card-hover); }
+td.mono { font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+td.nowrap { white-space: nowrap; }
+/* 用户名列禁止折行：中文可以逐字断行，列一窄就会把「截图学生3313」
+   折成三行，行高忽高忽低看着很乱。宽度由表的 min-width 保证，
+   不够就横向滚动，不要靠折行去将就。 */
+.username { color: var(--cyan); font-weight: 600; white-space: nowrap; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px;
+  font-weight: 600; white-space: nowrap; }
+.badge-green { background: var(--green-dim); color: var(--admin-ok); }
+.badge-red { background: var(--red-dim); color: var(--admin-danger); }
+.badge-yellow { background: var(--orange-dim); color: var(--admin-warn); }
+.badge-gray { background: rgba(139,148,158,.15); color: var(--text-muted); }
+
+/* 迷你柱状图：每天一组，登录/注册两根柱 */
+.chart { display: flex; align-items: flex-end; gap: 10px; height: 96px; padding: 8px 0 0; }
+.chart .daycol { flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
+  height: 100%; position: relative; }
+.chart .bars { display: flex; align-items: flex-end; justify-content: center; gap: 3px;
+  height: calc(100% - 22px); }
+.chart .bar { width: 46%; max-width: 22px; border-radius: 3px 3px 0 0; min-height: 3px;
+  transition: opacity .15s; }
+.chart .bar.login { background: linear-gradient(180deg, var(--cyan), rgba(0,212,255,.25)); }
+.chart .bar.register { background: linear-gradient(180deg, #7c5cff, rgba(124,92,255,.25)); }
+.chart .bar:hover { opacity: .7; }
+.chart .daycol .lbl { text-align: center; font-size: 10px; color: var(--text-muted);
+  margin-top: 5px; white-space: nowrap; }
+.chart-legend { display: flex; gap: 16px; font-size: 11px; color: var(--text-muted);
+  margin-top: 6px; }
+.chart-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px;
+  margin-right: 5px; }
+
+.empty-state { text-align: center; padding: 36px; color: var(--text-muted); font-size: 13px; }
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  padding: 12px 24px; border-radius: var(--radius-md); z-index: 3000; font-size: 14px;
+  font-weight: 600; animation: toastIn 2.6s ease forwards; }
+.toast.success { background: var(--admin-ok); color: #04120a; }
+.toast.error { background: var(--admin-danger); color: #fff; }
+@keyframes toastIn { 0% { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  12% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; } }
+
+/* 抽屉：用户详情 */
+.drawer-mask { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.62); z-index: 2000; }
+.drawer-mask.active { display: block; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(720px, 94vw);
+  background: var(--bg-secondary); border-left: 1px solid var(--border-subtle); z-index: 2001;
+  transform: translateX(102%); transition: transform .22s ease; overflow-y: auto; padding: 24px; }
+.drawer.active { transform: translateX(0); }
+.drawer h3 { margin: 0 0 4px; font-size: 19px; }
+.drawer .close { position: absolute; top: 16px; right: 18px; background: transparent;
+  border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; line-height: 1; }
+.drawer .close:hover { color: var(--text-primary); }
+.kv { display: grid; grid-template-columns: 96px 1fr; gap: 7px 14px; font-size: 13px; margin: 14px 0; }
+.kv dt { color: var(--text-muted); }
+.kv dd { margin: 0; word-break: break-all; }
+.subhead { font-size: 13px; font-weight: 700; color: var(--cyan); margin: 20px 0 8px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border-subtle); }
+.notice { padding: 11px 14px; border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.7;
+  margin-bottom: 16px; }
+.notice.warn { background: rgba(210,153,34,.1); border: 1px solid rgba(210,153,34,.35); color: #e3b341; }
+.notice.danger { background: rgba(248,81,73,.1); border: 1px solid rgba(248,81,73,.35); color: #ff7b72; }
+.notice b { display: block; margin-bottom: 3px; }
+.pager { display: flex; gap: 8px; align-items: center; justify-content: center;
+  margin-top: 16px; font-size: 13px; color: var(--text-muted); }
+.switch { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 14px; font-size: 13.5px; }
+.switch input { width: 17px; height: 17px; accent-color: var(--cyan); flex: 0 0 auto; margin-top: 2px; }
+.switch label { cursor: pointer; }
+.switch .hint { font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 2px; line-height: 1.6; }
+@media (max-width: 860px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .admin-wrapper { padding: 14px 14px 50px; }
+  /* 顶栏在窄屏上要放三样东西（标题、管理员名、两个按钮），
+     而 .nav-inner 是固定 60px 高 —— 不放开就会挤成三行、
+     字被折断（"前台首页" 竖着排）。这里改成自适应换行。 */
+  .top-nav { padding: 0 12px; }
+  .nav-inner { height: auto; min-height: 56px; flex-wrap: wrap; gap: 8px; padding: 8px 0; }
+  .nav-brand { font-size: 16px; }
+  .nav-brand .brand-icon { font-size: 22px; }
+  .nav-user { font-size: 12.5px; }
+  .nav-user .user-name { display: none; }
+  .nav-user a { white-space: nowrap; }
+  .admin-top h1 { font-size: 18px; }
+  .admin-top .who { display: none; }
+  /* 手机上表格横滑是预期行为；给出视觉提示，别让人以为内容就缺了 */
+  .table-wrap { position: relative; }
+  .table-wrap::after { content: '← 左右滑动看完整表格'; display: block;
+    font-size: 10.5px; color: var(--text-muted); padding: 6px 2px 0; }
+}
 </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="admin-page">
 
-
-
-
 <nav class="top-nav">
   <div class="nav-inner">
     <div class="nav-brand"><span class="brand-icon">🔐</span><span>PyMaster 管理后台</span></div>
     <div class="nav-user">
-      <span class="user-name" style="margin-right:12px;">管理员</span>
-      <a href="{{ url_for('dashboard') }}" class="btn-ghost" style="padding:6px 12px;font-size:13px;text-decoration:none;">📊 用户首页</a>
-      <a href="{{ url_for('logout') }}" class="btn-logout">退出登录</a>
+      <span class="user-name" id="admin-name" style="margin-right:12px;">管理员</span>
+      <a href="/dashboard" class="btn-ghost" style="padding:6px 12px;font-size:13px;text-decoration:none;">📊 前台首页</a>
+      <a href="/admin/logout" class="btn-logout">退出</a>
     </div>
   </div>
 </nav>
 
 <div class="admin-wrapper">
 
-  <div class="admin-header">
-    <h1>🔐 用户白名单管理</h1>
-    <button class="btn btn-ghost" onclick="loadStats()" title="刷新数据">🔄 刷新</button>
+  <div class="admin-top">
+    <h1>📊 运营总览 <span class="who">站点运行状态与访问情况</span></h1>
+    <button class="btn btn-ghost" onclick="refreshAll()">🔄 刷新</button>
   </div>
 
-  <!-- Stats -->
-  <div class="admin-grid" id="stats-grid">
-    <div class="stat-card"><div class="label">白名单用户总数</div><div class="value" id="stat-total">-</div></div>
-    <div class="stat-card"><div class="label">已注册用户</div><div class="value" id="stat-registered">-</div></div>
-    <div class="stat-card"><div class="label">今日 AI 调用次数</div><div class="value" id="stat-today-calls">-</div></div>
-    <div class="stat-card"><div class="label">今日活跃用户</div><div class="value" id="stat-today-users">-</div></div>
+  <div id="runtime-notice"></div>
+
+  <div class="tabs">
+    <button class="tab active" data-pane="overview">总览</button>
+    <button class="tab" data-pane="users">注册用户 <span class="cnt" id="cnt-users">0</span></button>
+    <button class="tab" data-pane="logs">访问日志</button>
+    <button class="tab" data-pane="whitelist">白名单</button>
+    <button class="tab" data-pane="settings">系统设置</button>
   </div>
 
-  <!-- Add User Form -->
-  <div class="section">
-    <h2>➕ 添加 / 编辑白名单用户</h2>
-    <form class="add-form" id="add-form" onsubmit="return addUser(event)">
-      <div class="field">
-        <label>用户名 *</label>
-        <input type="text" id="wl-username" placeholder="输入用户名" required style="min-width:160px;">
-      </div>
-      <div class="field">
-        <label>过期日期</label>
-        <input type="date" id="wl-expiry">
-      </div>
-      <div class="field">
-        <label>每日 AI 问答上限</label>
-        <input type="number" id="wl-limit" value="30" min="0" style="width:100px;">
-        <small style="color:var(--text-muted);font-size:11px;">0 = 不限</small>
-      </div>
-      <div class="field">
-        <label>备注</label>
-        <input type="text" id="wl-note" placeholder="备注信息" style="min-width:140px;">
-      </div>
-      <button type="submit" class="btn btn-primary">添加 / 更新</button>
-    </form>
-  </div>
+  <!-- ══ 总览 ══ -->
+  <div class="pane active" id="pane-overview">
+    <div class="cards" id="overview-cards"></div>
 
-  <!-- User List -->
-  <div class="section">
-    <h2>📋 白名单列表</h2>
-    <div id="user-table-wrap">
-      <div class="empty-state">加载中...</div>
+    <div class="section">
+      <h2>最近 7 天活跃度</h2>
+      <div class="desc">每根柱子是一天：亮蓝＝登录人数，紫色＝注册人数。鼠标停上去看具体数字。</div>
+      <div class="chart" id="activity-chart"></div>
+      <div class="chart-legend">
+        <span><i style="background:var(--cyan)"></i>登录人数</span>
+        <span><i style="background:#7c5cff"></i>注册人数</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>最近的关键动作</h2>
+      <div class="desc">注册、登录、绑定模型这些事件（不含普通浏览）。</div>
+      <div class="table-wrap" id="recent-events"><div class="empty-state">加载中...</div></div>
     </div>
   </div>
 
-  <!-- Daily Usage Modal -->
-  <div class="modal-overlay" id="usage-modal">
-    <div class="modal-box">
-      <h3>📊 AI 调用统计</h3>
-      <div id="usage-content" class="usage-chart">加载中...</div>
-      <br>
-      <button class="btn btn-ghost" onclick="document.getElementById('usage-modal').classList.remove('active')">关闭</button>
+  <!-- ══ 注册用户 ══ -->
+  <div class="pane" id="pane-users">
+    <div class="section">
+      <h2>注册用户总表</h2>
+      <div class="desc">点任意一行看这个人的完整情况：用过的 IP、登录明细、学习进度、模型绑定。
+        登录次数与最后活跃均统计自访问日志（保留最近 90 天）。</div>
+      <div class="filters">
+        <div class="field">
+          <label>搜索</label>
+          <input type="text" id="user-search" placeholder="用户名 / 邮箱 / IP" style="min-width:200px;">
+        </div>
+        <div class="field">
+          <label>模型绑定</label>
+          <select id="user-filter-ai">
+            <option value="">全部</option>
+            <option value="bound">已绑自己的 Key</option>
+            <option value="unbound">未绑定</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost" onclick="loadUsers()">筛选</button>
+        <button class="btn btn-ghost" onclick="exportUsers()">导出 CSV</button>
+      </div>
+      <div class="table-wrap" id="users-table"><div class="empty-state">加载中...</div></div>
+    </div>
+  </div>
+
+  <!-- ══ 访问日志 ══ -->
+  <div class="pane" id="pane-logs">
+    <div class="section">
+      <h2>访问日志</h2>
+      <div class="desc">谁在什么时候、从哪个 IP、用什么设备来过。默认只显示关键动作，想看平时的页面浏览就把事件筛成全部。</div>
+      <div class="filters">
+        <div class="field">
+          <label>账号</label>
+          <input type="text" id="log-user" placeholder="用户名" style="width:130px;">
+        </div>
+        <div class="field">
+          <label>IP</label>
+          <input type="text" id="log-ip" placeholder="如 114.24" style="width:120px;">
+        </div>
+        <div class="field">
+          <label>事件</label>
+          <select id="log-event">
+            <option value="notable">关键动作</option>
+            <option value="">全部（含浏览）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>起</label>
+          <input type="date" id="log-since">
+        </div>
+        <div class="field">
+          <label>止</label>
+          <input type="date" id="log-until">
+        </div>
+        <button class="btn btn-primary" onclick="loadLogs(0)">查询</button>
+        <button class="btn btn-ghost" onclick="resetLogFilters()">重置</button>
+        <button class="btn btn-ghost" onclick="exportLogs()">导出 CSV</button>
+      </div>
+      <div class="table-wrap" id="logs-table"><div class="empty-state">加载中...</div></div>
+      <div class="pager" id="logs-pager"></div>
+    </div>
+  </div>
+
+  <!-- ══ 白名单 ══ -->
+  <div class="pane" id="pane-whitelist">
+    <div class="section">
+      <h2>注册白名单</h2>
+      <div class="desc">留空＝不限制注册（推荐）。填了名单之后，只有名单里的账号能注册和登录。</div>
+      <form class="filters" id="add-form" onsubmit="return addUser(event)">
+        <div class="field"><label>用户名 *</label>
+          <input type="text" id="wl-username" placeholder="用户名" required style="min-width:150px;"></div>
+        <div class="field"><label>过期日期</label><input type="date" id="wl-expiry"></div>
+        <div class="field"><label>每日 AI 上限</label>
+          <input type="number" id="wl-limit" value="0" min="0" style="width:90px;"></div>
+        <div class="field"><label>备注</label>
+          <input type="text" id="wl-note" placeholder="如：3班 张三" style="min-width:130px;"></div>
+        <button type="submit" class="btn btn-primary">添加 / 更新</button>
+      </form>
+      <div class="table-wrap" id="wl-table"><div class="empty-state">加载中...</div></div>
+    </div>
+  </div>
+
+  <!-- ══ 系统设置 ══ -->
+  <div class="pane" id="pane-settings">
+    <div class="section">
+      <h2>平台模型（没有自己的 Key 的学生用它）</h2>
+      <div class="desc" id="platform-ai-desc">
+        学生各自绑了自己的 Key 时走各自的额度；没绑的人回落到这份平台配置。
+        不填也可以 —— 那样没绑 Key 的学生就用不了 AI 功能，但课程和练习照常。
+      </div>
+      <div class="filters">
+        <div class="field" style="min-width:260px;flex:1">
+          <label>接口地址（Base URL）</label>
+          <input type="text" id="pa-url" placeholder="https://api.deepseek.com/v1">
+        </div>
+        <div class="field" style="min-width:200px;flex:1">
+          <label>模型名称</label>
+          <input type="text" id="pa-model" placeholder="例如 deepseek-chat">
+        </div>
+      </div>
+      <div class="filters">
+        <div class="field" style="min-width:280px;flex:1">
+          <label>API Key</label>
+          <input type="password" id="pa-key" placeholder="留空表示不改动已保存的">
+        </div>
+        <div class="field" style="min-width:200px;flex:1">
+          <label>备用模型（可选）</label>
+          <input type="text" id="pa-fallback" placeholder="逗号分隔">
+        </div>
+      </div>
+      <div class="filters">
+        <button class="btn btn-ghost" onclick="testPlatformAI()">测试连接</button>
+        <button class="btn btn-primary" onclick="savePlatformAI()">保存平台模型</button>
+        <span id="pa-msg" style="font-size:12.5px;color:var(--text-muted);align-self:center"></span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>允许的操作</h2>
+      <div class="desc">改完立刻生效，并写进 .env，重启后依然保持。</div>
+      <div class="switch">
+        <input type="checkbox" id="set-safe-mode">
+        <label for="set-safe-mode">安全沙箱
+          <span class="hint">拦掉起进程、联网、写文件等操作，并给代码执行加资源上限。公网务必开着。</span>
+        </label>
+      </div>
+      <div class="switch">
+        <input type="checkbox" id="set-code-exec">
+        <label for="set-code-exec">在线运行 / 判题学生代码
+          <span class="hint">开启后任何人提交的代码都会在服务器上真实执行。只有在沙箱开着、且你接受这个风险时才打开。</span>
+        </label>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">保存</button>
+    </div>
+
+    <div class="section">
+      <h2>管理员口令</h2>
+      <div class="desc">默认口令 admin888 是公开的，上线后务必改掉。</div>
+      <div class="filters">
+        <div class="field"><label>管理员用户名</label>
+          <input type="text" id="set-admin-user" style="min-width:150px;"></div>
+        <div class="field"><label>新口令（不改留空）</label>
+          <input type="password" id="set-admin-pass" placeholder="至少 8 位" style="min-width:180px;"></div>
+        <button class="btn btn-primary" onclick="saveAdminPassword()">修改口令</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>运行信息</h2>
+      <dl class="kv" id="runtime-info"></dl>
     </div>
   </div>
 
 </div>
 
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- 用户详情抽屉 -->
+<div class="drawer-mask" id="drawer-mask" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="close" onclick="closeDrawer()">×</button>
+  <div id="drawer-body"></div>
+</div>
+
 <script>
-function showToast(msg, type) {
-  const t = document.createElement('div'); t.className = 'toast ' + type; t.textContent = msg;
-  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+'use strict';
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function toast(msg, kind) {
+  const t = document.createElement('div');
+  t.className = 'toast ' + (kind || 'success');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2700);
+}
+async function api(url, opts) {
+  const r = await fetch(url, opts);
+  const d = await r.json().catch(() => ({ success: false, message: '服务端返回异常' }));
+  if (d.success === false) throw new Error(d.message || '请求失败');
+  return d;
 }
 
+// ── 标签页 ──
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+    const name = tab.dataset.pane;
+    document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === 'pane-' + name));
+    // 每个标签页的数据按需加载。漏掉任何一个，那个页就会永远停在「加载中...」
+    // —— 用户看到的是空表格而不是报错，最容易被当成"没有数据"。
+    if (name === 'overview') loadOverview();
+    if (name === 'users') loadUsers();
+    if (name === 'logs') loadLogs(0);
+    if (name === 'whitelist') loadWhitelist();
+    if (name === 'settings') loadSettings();
+  };
+});
+
+// ── 总览 ──
+async function loadOverview() {
+  try {
+    const d = await api('/admin/api/overview');
+    const o = d.overview, rt = d.runtime;
+    document.getElementById('cnt-users').textContent = o.total_registered;
+    document.getElementById('admin-name').textContent = rt.admin_username || 'admin';
+
+    document.getElementById('overview-cards').innerHTML = `
+      <div class="stat-card"><div class="label">注册用户</div>
+        <div class="value">${o.total_registered}</div>
+        <div class="sub">今日新增 ${o.today_registered}</div></div>
+      <div class="stat-card"><div class="label">今日活跃</div>
+        <div class="value">${o.active_today}</div>
+        <div class="sub">今日登录 ${o.today_logins} 次</div></div>
+      <div class="stat-card"><div class="label">已绑自己的模型</div>
+        <div class="value">${o.bound_api}</div>
+        <div class="sub">未绑定 ${o.unbound_api} 人</div></div>
+      <div class="stat-card ${o.recent_login_fail > 10 ? 'warn' : ''}">
+        <div class="label">近 7 天登录失败</div>
+        <div class="value">${o.recent_login_fail}</div>
+        <div class="sub">${o.recent_login_fail > 10 ? '偏多，留意有人在试密码' : '正常范围'}</div></div>
+      <div class="stat-card"><div class="label">注册限制</div>
+        <div class="value" style="font-size:19px">${o.whitelist_mode ? '白名单' : '开放注册'}</div>
+        <div class="sub">${o.whitelist_mode ? o.whitelist_count + ' 个名额' : '谁都能注册'}</div></div>
+      <div class="stat-card"><div class="label">日志总量</div>
+        <div class="value">${o.total_events}</div>
+        <div class="sub">保留最近 90 天</div></div>`;
+
+    // 告警条：默认口令 / 沙箱没开却允许跑代码 —— 这两条必须显眼
+    let notices = '';
+    if (rt.admin_is_default_password) {
+      notices += `<div class="notice danger"><b>⚠ 管理员口令还是默认的 admin888</b>
+        这个口令在文档里公开写着，任何人都能用它进后台。请到「系统设置」里立刻改掉。</div>`;
+    }
+    if (rt.code_exec && !rt.safe_mode) {
+      notices += `<div class="notice danger"><b>⚠ 在线运行代码开着，但安全沙箱没开</b>
+        学生提交的代码会在服务器上无限制执行（能读写文件、发网络请求）。请开启安全沙箱，或关掉在线运行。</div>`;
+    }
+    if (!rt.server_mode) {
+      notices += `<div class="notice warn"><b>当前是本地模式</b>
+        多人同时访问会互相卡（单进程）。服务器上请设 PYMASTER_SERVER_MODE=1，或直接双击「一键上线.bat」。</div>`;
+    }
+    document.getElementById('runtime-notice').innerHTML = notices;
+
+    const days = o.days || [];
+    const max = Math.max(1, ...days.map(x => Math.max(x.logins, x.registers)));
+    // 0 值画一条 2px 的暗色基线而不是 3px 亮柱：否则"没人来的一天"
+    // 看上去和"来了几个人"差不多，容易看错。
+    const barStyle = (v) => v
+      ? `height:${Math.max(3, Math.round(v / max * 62))}px`
+      : 'height:2px;opacity:.28';
+    document.getElementById('activity-chart').innerHTML = days.map(x => `
+      <div class="daycol" title="${esc(x.day)}：登录 ${x.logins} 人，注册 ${x.registers} 人，活跃 ${x.visitors} 人">
+        <div class="bars">
+          <div class="bar login" style="${barStyle(x.logins)}"></div>
+          <div class="bar register" style="${barStyle(x.registers)}"></div>
+        </div>
+        <div class="lbl">${esc(x.day.slice(5))}</div>
+      </div>`).join('') || '<div class="empty-state">暂无数据</div>';
+
+    const rl = await api('/admin/api/logs?event=notable&limit=12');
+    document.getElementById('recent-events').innerHTML = rl.logs.length ? `
+      <table><thead><tr><th>时间</th><th>账号</th><th>事件</th><th>IP</th><th>设备</th></tr></thead>
+      <tbody>${rl.logs.map(l => `<tr>
+        <td class="nowrap mono">${esc(l.ts)}</td>
+        <td><span class="username" style="cursor:pointer" onclick="openUser('${esc(l.username)}')">${esc(l.username) || '—'}</span></td>
+        <td><span class="badge ${l.event === 'login_fail' ? 'badge-red' : 'badge-green'}">${esc(l.event_label)}</span></td>
+        <td class="mono">${esc(l.ip) || '—'}</td>
+        <td>${esc(l.device) || '—'}</td></tr>`).join('')}</tbody></table>`
+      : '<div class="empty-state">还没有记录</div>';
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+// ── 用户表 ──
+let USERS = [];
+async function loadUsers() {
+  try {
+    const d = await api('/admin/api/users');
+    USERS = d.users || [];
+    renderUsers();
+  } catch (e) { document.getElementById('users-table').innerHTML = '<div class="empty-state">加载失败：' + esc(e.message) + '</div>'; }
+}
+function renderUsers() {
+  const q = (document.getElementById('user-search').value || '').toLowerCase().trim();
+  const ai = document.getElementById('user-filter-ai').value;
+  let rows = USERS;
+  if (q) rows = rows.filter(u => (u.username + ' ' + u.email + ' ' + u.last_ip + ' ' + u.created_ip).toLowerCase().includes(q));
+  if (ai === 'bound') rows = rows.filter(u => u.ai_bound);
+  if (ai === 'unbound') rows = rows.filter(u => !u.ai_bound);
+
+  const wrap = document.getElementById('users-table');
+  if (!rows.length) { wrap.innerHTML = '<div class="empty-state">没有匹配的用户</div>'; return; }
+  wrap.innerHTML = `<table><thead><tr>
+    <th>用户名</th><th>注册时间</th><th>最后活跃</th><th>最近 IP</th>
+    <th>登录次数</th><th>模型绑定</th><th>学习进度</th><th>状态</th><th>操作</th>
+  </tr></thead><tbody>${rows.map(u => `<tr>
+    <td><span class="username" style="cursor:pointer" onclick="openUser('${esc(u.username)}')">${esc(u.username)}</span></td>
+    <td class="nowrap mono">${esc(u.created_at) || '—'}</td>
+    <td class="nowrap mono">${esc(u.last_seen) || '—'}</td>
+    <td class="mono">${esc(u.last_ip) || '—'}</td>
+    <td>${u.login_count || 0}${u.fail_count ? ` <span class="badge badge-red" title="登录失败次数">失败${u.fail_count}</span>` : ''}</td>
+    <td>${u.ai_bound
+      ? `<span class="badge badge-green">${esc(u.ai_model) || '已绑定'}</span>`
+      : '<span class="badge badge-gray">未绑定</span>'}</td>
+    <td>${u.kp_done ? u.kp_done + ' 个知识点' : '<span style="color:var(--text-muted)">未开始</span>'}</td>
+    <td>${u.in_whitelist
+      ? (u.active ? '<span class="badge badge-green">白名单</span>' : '<span class="badge badge-red">已过期</span>')
+      : '<span class="badge badge-gray">自由注册</span>'}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="openUser('${esc(u.username)}')">详情</button></td>
+  </tr>`).join('')}</tbody></table>
+  <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">共 ${rows.length} 人${rows.length !== USERS.length ? `（已筛选，总 ${USERS.length} 人）` : ''}</div>`;
+}
+function exportUsers() {
+  const head = ['用户名', '邮箱', '注册时间', '最后活跃', '最近IP', '登录次数', '失败次数', '绑定模型', '学习进度'];
+  const csv = [head.join(',')].concat(USERS.map(u => [u.username, u.email, u.created_at, u.last_seen,
+    u.last_ip, u.login_count, u.fail_count, u.ai_model, u.kp_done]
+    .map(v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`).join(','))).join('\r\n');
+  downloadCsv('\ufeff' + csv, 'pymaster_users_' + stamp() + '.csv');
+}
+function downloadCsv(text, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+  a.download = filename; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function stamp() {
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
+}
+
+// ── 用户详情抽屉 ──
+async function openUser(username) {
+  if (!username) return;
+  const mask = document.getElementById('drawer-mask'), drawer = document.getElementById('drawer');
+  document.getElementById('drawer-body').innerHTML = '<div class="empty-state">加载中...</div>';
+  mask.classList.add('active'); drawer.classList.add('active');
+  try {
+    const d = await api('/admin/api/user/' + encodeURIComponent(username));
+    const u = d.user, a = d.ai, r = d.rollup || {};
+    const ips = d.ips || [], logs = d.logs || [], chapters = d.chapters || [];
+    const firstLogin = (r.events && r.events.login && r.events.login.first) || '';
+    document.getElementById('drawer-body').innerHTML = `
+      <h3>${esc(u.username)}</h3>
+      <div style="font-size:12px;color:var(--text-muted)">注册于 ${esc(u.created_at) || '未知'}${u.email ? ' · ' + esc(u.email) : ''}</div>
+
+      <div class="subhead">学习情况</div>
+      <dl class="kv">
+        <dt>完成知识点</dt><dd>${chapters.reduce((s, c) => s + c.done, 0)} 个（涉及 ${chapters.length} 章）</dd>
+        <dt>收藏 / 错题</dt><dd>${u.favorites} / ${u.wrong_answers}</dd>
+        <dt>笔记</dt><dd>${u.note_count} 篇</dd>
+        <dt>学习模式</dt><dd>${esc(u.mode) || '—'}</dd>
+      </dl>
+      ${chapters.length ? `<div style="font-size:12px;color:var(--text-muted);line-height:1.9">
+        ${chapters.map(c => `第 ${esc(c.chapter_id)} 章：${c.done} 个`).join(' &nbsp;·&nbsp; ')}</div>` : ''}
+
+      <div class="subhead">模型绑定（他自己的 Key）</div>
+      ${a.bound ? `<dl class="kv">
+        <dt>接口地址</dt><dd class="mono">${esc(a.base_url)}</dd>
+        <dt>模型</dt><dd class="mono">${esc(a.model)}</dd>
+        <dt>Key</dt><dd class="mono">${esc(a.key_tail)}</dd>
+        ${a.fallback ? `<dt>备用模型</dt><dd class="mono">${esc(a.fallback)}</dd>` : ''}
+        <dt>绑定时间</dt><dd>${esc(a.updated_at)}</dd>
+        <dt>绑定来源 IP</dt><dd class="mono">${esc(a.updated_ip) || '—'}</dd>
+      </dl>
+      <button class="btn btn-danger btn-sm" onclick="clearAI('${esc(u.username)}')">清除他的模型绑定</button>`
+      : '<div style="font-size:13px;color:var(--text-muted)">未绑定，AI 功能会用平台级配置（如果配了的话）。</div>'}
+
+      <div class="subhead">访问统计</div>
+      <dl class="kv">
+        <dt>登录次数</dt><dd>${r.login_count || 0} 次（失败 ${r.fail_count || 0} 次）<span style="color:var(--text-muted);font-size:11.5px">· 近 90 天</span></dd>
+        <dt>页面访问</dt><dd>${r.visit_count || 0} 次</dd>
+        <dt>首次登录</dt><dd>${esc(firstLogin) || '—'}</dd>
+        <dt>最后活跃</dt><dd>${esc((r.last_seen && r.last_seen.ts) || u.last_login) || '—'}</dd>
+        <dt>注册时 IP</dt><dd class="mono">${esc(u.created_ip) || '—'}</dd>
+      </dl>
+      ${ips.length ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">用过的 IP：</div>
+      <div class="table-wrap"><table><thead><tr><th>IP</th><th>次数</th><th>最后出现</th></tr></thead>
+      <tbody>${ips.map(x => `<tr><td class="mono">${esc(x.ip)}</td><td>${x.count}</td><td class="mono">${esc(x.last)}</td></tr>`).join('')}</tbody></table></div>`
+      : ''}
+
+      <div class="subhead">最近 60 条记录</div>
+      <div class="table-wrap"><table><thead><tr><th>时间</th><th>事件</th><th>IP</th><th>页面</th></tr></thead>
+      <tbody>${logs.map(l => `<tr>
+        <td class="nowrap mono">${esc(l.ts)}</td>
+        <td><span class="badge ${l.event === 'login_fail' ? 'badge-red' : (l.event === 'visit' ? 'badge-gray' : 'badge-green')}">${esc(l.event_label)}</span></td>
+        <td class="mono">${esc(l.ip)}</td>
+        <td class="mono" style="font-size:11px">${esc(l.path)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty-state">没有记录</td></tr>'}
+      </tbody></table></div>
+
+      <div class="subhead">危险操作</div>
+      <button class="btn btn-danger btn-sm" onclick="resetProgress('${esc(u.username)}')">清空他的学习进度（保留账号）</button>
+    `;
+  } catch (e) {
+    document.getElementById('drawer-body').innerHTML = '<div class="empty-state">加载失败：' + esc(e.message) + '</div>';
+  }
+}
+function closeDrawer() {
+  document.getElementById('drawer-mask').classList.remove('active');
+  document.getElementById('drawer').classList.remove('active');
+}
+async function clearAI(username) {
+  if (!confirm('确认清除 ' + username + ' 绑定的模型 Key？清除后他会改用平台默认模型。')) return;
+  try {
+    const d = await api('/admin/api/user/' + encodeURIComponent(username) + '/clear-ai', { method: 'POST' });
+    toast(d.message); openUser(username); loadUsers();
+  } catch (e) { toast(e.message, 'error'); }
+}
+async function resetProgress(username) {
+  if (!confirm('确认清空 ' + username + ' 的全部学习进度？此操作不可撤销。')) return;
+  try {
+    const d = await api('/admin/api/user/' + encodeURIComponent(username) + '/reset-progress', { method: 'POST' });
+    toast(d.message); openUser(username); loadUsers();
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+// ── 日志 ──
+let LOG_OFFSET = 0;
+const LOG_LIMIT = 100;
+function logQuery() {
+  const p = new URLSearchParams();
+  const u = document.getElementById('log-user').value.trim();
+  const ip = document.getElementById('log-ip').value.trim();
+  const ev = document.getElementById('log-event').value;
+  const since = document.getElementById('log-since').value;
+  const until = document.getElementById('log-until').value;
+  if (u) p.set('username', u);
+  if (ip) p.set('ip', ip);
+  if (ev) p.set('event', ev);
+  if (since) p.set('since', since);
+  if (until) p.set('until', until);
+  return p;
+}
+async function loadLogs(offset) {
+  if (typeof offset === 'number') LOG_OFFSET = offset;
+  const p = logQuery();
+  p.set('limit', LOG_LIMIT); p.set('offset', LOG_OFFSET);
+  try {
+    const d = await api('/admin/api/logs?' + p.toString());
+    const wrap = document.getElementById('logs-table');
+    if (!d.logs.length) { wrap.innerHTML = '<div class="empty-state">没有符合条件的记录</div>'; }
+    else {
+      wrap.innerHTML = `<table><thead><tr>
+        <th>时间</th><th>账号</th><th>事件</th><th>IP</th><th>设备</th><th>页面/详情</th>
+      </tr></thead><tbody>${d.logs.map(l => `<tr>
+        <td class="nowrap mono">${esc(l.ts)}</td>
+        <td>${l.username ? `<span class="username" style="cursor:pointer" onclick="openUser('${esc(l.username)}')">${esc(l.username)}</span>` : '—'}</td>
+        <td><span class="badge ${l.event === 'login_fail' ? 'badge-red' : (l.event === 'visit' ? 'badge-gray' : 'badge-green')}">${esc(l.event_label)}</span></td>
+        <td class="mono">${esc(l.ip) || '—'}</td>
+        <td class="nowrap">${esc(l.device) || '—'}</td>
+        <td class="mono" style="font-size:11px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+            title="${esc(l.detail_text || l.path)}">${esc(l.detail_text || l.path) || '—'}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+    const from = d.total ? LOG_OFFSET + 1 : 0;
+    const to = Math.min(LOG_OFFSET + LOG_LIMIT, d.total);
+    document.getElementById('logs-pager').innerHTML = `
+      <button class="btn btn-ghost btn-sm" onclick="loadLogs(0)" ${LOG_OFFSET <= 0 ? 'disabled' : ''}>« 首页</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadLogs(${Math.max(0, LOG_OFFSET - LOG_LIMIT)})" ${LOG_OFFSET <= 0 ? 'disabled' : ''}>上一页</button>
+      <span>${from}–${to} / 共 ${d.total} 条</span>
+      <button class="btn btn-ghost btn-sm" onclick="loadLogs(${LOG_OFFSET + LOG_LIMIT})" ${to >= d.total ? 'disabled' : ''}>下一页</button>`;
+  } catch (e) { document.getElementById('logs-table').innerHTML = '<div class="empty-state">加载失败：' + esc(e.message) + '</div>'; }
+}
+function resetLogFilters() {
+  ['log-user', 'log-ip', 'log-since', 'log-until'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('log-event').value = 'notable';
+  loadLogs(0);
+}
+function exportLogs() { window.location = '/admin/api/logs/export?' + logQuery().toString(); }
+
+// ── 白名单 ──
 async function loadWhitelist() {
   try {
-    const r = await fetch('/admin/api/whitelist');
-    const d = await r.json();
-    if (!d.success) throw new Error(d.message);
-    const wrap = document.getElementById('user-table-wrap');
-    if (!d.users || d.users.length === 0) {
-      wrap.innerHTML = '<div class="empty-state">📭 暂无白名单用户，在上方添加</div>';
+    const d = await api('/admin/api/whitelist');
+    const wrap = document.getElementById('wl-table');
+    if (!d.users.length) {
+      wrap.innerHTML = '<div class="empty-state">白名单为空 = 任何人都能注册（推荐）</div>';
       return;
     }
-    let html = `<table><thead><tr>
-      <th>用户名</th><th>过期日期</th><th>每日限额</th><th>今日已用</th><th>状态</th><th>注册</th><th>备注</th><th>操作</th>
-    </tr></thead><tbody>`;
-    d.users.forEach(u => {
+    wrap.innerHTML = `<table><thead><tr>
+      <th>用户名</th><th>过期日期</th><th>每日上限</th><th>今日已用</th><th>状态</th><th>已注册</th><th>备注</th><th>操作</th>
+    </tr></thead><tbody>${d.users.map(u => {
       const expired = u.expiry_date && new Date(u.expiry_date) < new Date(new Date().toDateString());
-      const status = expired ? '<span class="badge badge-red">已过期</span>' : '<span class="badge badge-green">有效</span>';
-      const registered = u.is_registered ? '<span class="badge badge-green">已注册</span>' : '<span class="badge badge-yellow">未注册</span>';
-      const usedPct = u.daily_limit > 0 ? Math.round(u.today_used / u.daily_limit * 100) : 0;
-      const usedStr = u.daily_limit > 0 ? u.today_used + '/' + u.daily_limit + ' (' + usedPct + '%)' : (u.today_used > 0 ? u.today_used : '0');
-      html += `<tr>
-        <td><span class="username">${escapeHtml(u.username)}</span></td>
-        <td>${u.expiry_date || '永久'}</td>
+      return `<tr>
+        <td><span class="username">${esc(u.username)}</span></td>
+        <td>${esc(u.expiry_date) || '永久'}</td>
         <td>${u.daily_limit > 0 ? u.daily_limit + ' 次' : '不限'}</td>
-        <td style="color:${usedPct >= 80 ? 'var(--orange)' : usedPct >= 100 ? 'var(--red)' : 'var(--text-secondary)'}">${usedStr}</td>
-        <td>${status}</td>
-        <td>${registered}</td>
-        <td style="font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.note || '')}</td>
-        <td><div class="actions">
-          <button class="btn btn-danger" onclick="deleteUser('${escapeHtml(u.username)}')">删除</button>
-        </div></td>
-      </tr>`;
-    });
-    html += '</tbody></table>';
-    wrap.innerHTML = html;
-  } catch (e) { document.getElementById('user-table-wrap').innerHTML = '<div class="empty-state">加载失败: ' + e.message + '</div>'; }
+        <td>${u.today_used}</td>
+        <td>${expired ? '<span class="badge badge-red">已过期</span>' : '<span class="badge badge-green">有效</span>'}</td>
+        <td>${u.is_registered ? '<span class="badge badge-green">已注册</span>' : '<span class="badge badge-yellow">未注册</span>'}</td>
+        <td style="font-size:12px">${esc(u.note)}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="delWl('${esc(u.username)}')">移除</button></td></tr>`;
+    }).join('')}</tbody></table>`;
+  } catch (e) { document.getElementById('wl-table').innerHTML = '<div class="empty-state">加载失败：' + esc(e.message) + '</div>'; }
 }
-
-async function loadStats() {
-  try {
-    const r = await fetch('/admin/api/stats');
-    const d = await r.json();
-    if (!d.success) throw new Error(d.message);
-    document.getElementById('stat-total').textContent = d.stats.total_whitelist;
-    document.getElementById('stat-registered').textContent = d.stats.total_registered;
-    document.getElementById('stat-today-calls').textContent = d.stats.today_total_calls;
-    document.getElementById('stat-today-users').textContent = d.stats.today_users;
-  } catch (e) { showToast('统计加载失败', 'error'); }
-}
-
 async function addUser(e) {
   e.preventDefault();
-  const username = document.getElementById('wl-username').value.trim();
-  const expiry = document.getElementById('wl-expiry').value;
-  const limit = document.getElementById('wl-limit').value;
-  const note = document.getElementById('wl-note').value.trim();
-  if (!username) { showToast('请输入用户名', 'error'); return; }
+  const body = {
+    username: document.getElementById('wl-username').value.trim(),
+    expiry_date: document.getElementById('wl-expiry').value,
+    daily_limit: document.getElementById('wl-limit').value,
+    note: document.getElementById('wl-note').value.trim(),
+  };
+  if (!body.username) { toast('请输入用户名', 'error'); return false; }
   try {
-    const r = await fetch('/admin/api/whitelist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, expiry_date: expiry, daily_limit: limit, note })
+    const d = await api('/admin/api/whitelist', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
-    const d = await r.json();
-    if (d.success) {
-      showToast(d.message, 'success');
-      document.getElementById('wl-username').value = '';
-      document.getElementById('wl-expiry').value = '';
-      document.getElementById('wl-note').value = '';
-      loadWhitelist();
-      loadStats();
-    } else { showToast(d.message, 'error'); }
-  } catch (e) { showToast('网络错误', 'error'); }
+    toast(d.message);
+    document.getElementById('wl-username').value = '';
+    loadWhitelist(); loadOverview();
+  } catch (err) { toast(err.message, 'error'); }
   return false;
 }
-
-async function deleteUser(username) {
-  if (!confirm('确认从白名单移除 ' + username + '？')) return;
+async function delWl(username) {
+  if (!confirm('确认从白名单移除 ' + username + '？移除后该账号将无法登录。')) return;
   try {
-    const r = await fetch('/admin/api/whitelist/' + encodeURIComponent(username), { method: 'DELETE' });
-    const d = await r.json();
-    if (d.success) { showToast(d.message, 'success'); loadWhitelist(); loadStats(); }
-    else { showToast(d.message, 'error'); }
-  } catch (e) { showToast('网络错误', 'error'); }
+    const d = await api('/admin/api/whitelist/' + encodeURIComponent(username), { method: 'DELETE' });
+    toast(d.message); loadWhitelist(); loadOverview();
+  } catch (e) { toast(e.message, 'error'); }
 }
 
-// Init
-loadWhitelist();
-loadStats();
+// ── 设置 ──
+async function loadSettings() {
+  try {
+    const d = await api('/admin/api/settings');
+    const s = d.settings;
+    document.getElementById('set-safe-mode').checked = !!s.safe_mode;
+    document.getElementById('set-code-exec').checked = !!s.code_exec;
+    document.getElementById('set-admin-user').value = s.admin_username || '';
+    document.getElementById('runtime-info').innerHTML = `
+      <dt>运行模式</dt><dd>${s.server_mode ? '服务器模式（多线程）' : '本地模式'}</dd>
+      <dt>注册限制</dt><dd>${s.registration_open ? '开放注册' : '仅白名单'}</dd>
+      <dt>数据目录</dt><dd class="mono" style="font-size:12px">${esc(s.data_dir)}</dd>
+      <dt>管理员口令</dt><dd>${s.admin_is_default_password
+        ? '<span class="badge badge-red">仍是默认 admin888</span>'
+        : '<span class="badge badge-green">已自定义</span>'}</dd>`;
+  } catch (e) { toast(e.message, 'error'); }
+
+  try {
+    const p = await api('/admin/api/platform-ai');
+    const c = p.config, u = p.usage;
+    document.getElementById('pa-url').value = c.base_url || '';
+    document.getElementById('pa-model').value = c.model || '';
+    document.getElementById('pa-fallback').value = c.fallback || '';
+    document.getElementById('pa-key').placeholder = c.key_tail
+      ? ('已保存 ' + c.key_tail + '，留空表示不改')
+      : '粘贴平台级 API Key（可留空）';
+    document.getElementById('platform-ai-desc').innerHTML =
+      `学生各自绑了自己的 Key 时走各自的额度；没绑的人回落到这份平台配置。` +
+      `当前：已绑自己的 Key <b>${u.bound_users}</b> 人，未绑 <b>${u.unbound_users}</b> 人` +
+      (c.configured ? '，平台模型已配置。' : '，平台模型<b>未配置</b>。');
+  } catch (e) { /* 平台模型卡加载失败不影响其它设置 */ }
+}
+async function testPlatformAI() {
+  const msg = document.getElementById('pa-msg');
+  msg.textContent = '正在测试…';
+  try {
+    const d = await api('/admin/api/platform-ai/test', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        base_url: document.getElementById('pa-url').value.trim(),
+        model: document.getElementById('pa-model').value.trim(),
+        api_key: document.getElementById('pa-key').value.trim(),
+      }),
+    });
+    msg.textContent = '✓ ' + (d.message || '可用');
+    toast('测试通过');
+  } catch (e) { msg.textContent = '✗ ' + e.message; toast(e.message, 'error'); }
+}
+async function savePlatformAI() {
+  try {
+    const d = await api('/admin/api/platform-ai', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        base_url: document.getElementById('pa-url').value.trim(),
+        model: document.getElementById('pa-model').value.trim(),
+        api_key: document.getElementById('pa-key').value.trim(),
+        fallback: document.getElementById('pa-fallback').value.trim(),
+      }),
+    });
+    toast(d.message);
+    document.getElementById('pa-key').value = '';
+    loadSettings(); loadOverview();
+  } catch (e) { toast(e.message, 'error'); }
+}
+async function saveSettings() {
+  try {
+    const d = await api('/admin/api/settings', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        safe_mode: document.getElementById('set-safe-mode').checked,
+        code_exec: document.getElementById('set-code-exec').checked,
+      }),
+    });
+    toast(d.message); loadOverview();
+  } catch (e) { toast(e.message, 'error'); }
+}
+async function saveAdminPassword() {
+  const pass = document.getElementById('set-admin-pass').value;
+  const user = document.getElementById('set-admin-user').value.trim();
+  if (!pass) { toast('请填写新口令', 'error'); return; }
+  if (!confirm('确认修改管理员口令？下次登录要用新口令。')) return;
+  try {
+    const d = await api('/admin/api/settings', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ admin_password: pass, admin_username: user }),
+    });
+    toast(d.message); document.getElementById('set-admin-pass').value = ''; loadSettings();
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+// ── 初始化 ──
+function refreshAll() { loadOverview(); loadUsers(); loadWhitelist(); }
+loadOverview();
+loadUsers();
+document.getElementById('user-search').addEventListener('input', renderUsers);
+document.getElementById('user-filter-ai').addEventListener('change', renderUsers);
 </script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/atmosphere.js') }}"></script>
 </body>
 </html>

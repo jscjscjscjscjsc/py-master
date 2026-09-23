@@ -6,34 +6,45 @@
 <title>PyMaster — 管理后台</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <style>
-.admin-badge { color: var(--purple); font-size: 12px; margin-top: 4px; display: block; }
+.admin-badge { color: var(--purple); font-size: 12px; margin-top: 8px; display: block; }
+.admin-badge.warn { color: var(--orange); }
+.login-error { margin-top: 12px; padding: 9px 13px; border-radius: var(--radius-sm);
+  background: rgba(248,81,73,.12); border: 1px solid rgba(248,81,73,.35);
+  color: #ff7b72; font-size: 13px; display: none; }
+.login-error.show { display: block; }
 </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/atmosphere.css') }}">
 </head>
 <body class="auth-page">
 
-
-
-
 <div class="auth-container">
   <div class="auth-logo">
     <span class="logo-icon">🔐</span>
     <h1>管理后台</h1>
-    <p>PyMaster 用户管理系统</p>
+    <p>PyMaster 站点管理 · 访问统计 · 用户与模型绑定</p>
   </div>
 
   <div class="glass-card">
     <form id="admin-login-form" class="auth-form active">
       <div class="input-group">
         <span class="input-icon">👤</span>
-        <input type="text" id="admin-username" placeholder="管理员账号" value="admin" readonly style="opacity:0.7;">
+        <input type="text" id="admin-username" placeholder="管理员账号"
+               value="{{ admin_username }}" autocomplete="username" required>
       </div>
       <div class="input-group">
         <span class="input-icon">🔒</span>
-        <input type="password" id="admin-password" placeholder="管理员密码" autocomplete="current-password" required>
+        <input type="password" id="admin-password" placeholder="管理员密码"
+               autocomplete="current-password" required>
       </div>
       <button type="submit" class="btn btn-primary btn-block">登 录 后 台</button>
-      <span class="admin-badge">默认密码: admin888</span>
+      <div class="login-error {{ 'show' if error else '' }}" id="login-error">
+        {{ error or '' }}
+      </div>
+      {% if default_password %}
+      <span class="admin-badge warn">
+        当前还是初始口令 admin888 —— 登录后请立刻在「系统设置」里改掉
+      </span>
+      {% endif %}
     </form>
   </div>
 
@@ -43,23 +54,30 @@
 </div>
 
 <script>
-document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+document.getElementById('admin-login-form').addEventListener('submit', async function (e) {
   e.preventDefault();
-  const password = document.getElementById('admin-password').value.trim();
-  if (!password) { alert('请输入密码'); return; }
+  const username = document.getElementById('admin-username').value.trim();
+  const password = document.getElementById('admin-password').value;
+  const box = document.getElementById('login-error');
+  if (!username || !password) { box.textContent = '请输入账号和密码'; box.classList.add('show'); return; }
   try {
     const res = await fetch('/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'admin', password })
+      body: JSON.stringify({ username: username, password: password })
     });
     const data = await res.json();
     if (data.success) {
       window.location.href = '/admin';
     } else {
-      alert(data.message || '登录失败');
+      box.textContent = data.message || '登录失败';
+      box.classList.add('show');
+      document.getElementById('admin-password').value = '';
     }
-  } catch (e) { alert('网络错误'); }
+  } catch (err) {
+    box.textContent = '网络错误，请重试';
+    box.classList.add('show');
+  }
 });
 </script>
 
