@@ -23,6 +23,7 @@
 import ast
 import os
 import re
+import threading
 
 # ── 第 1 层：静态检查 ────────────────────────────────────
 
@@ -144,31 +145,199 @@ def check_source(code):
 
 
 # ── 第 2 层：子进程资源限制 ──────────────────────────────
+#
+# 这一层原来只有 Linux 的 resource 模块，在 Windows 服务器上等于没有 ——
+# 而线上那台正是 Windows。表现是：学生写一句 `x = bytearray(3 * 10**9)`
+# 就能瞬间把 2GB 内存的机器吃满，把所有人的连接一起拖死（不是"他一个人崩"）。
+# 所以补上 Windows 的原生手段，两条链路共用下面这一份代码。
 
-# 打进子进程的一段启动代码：限 CPU 时间与地址空间，防止拖垮服务器。
-# 用 resource 模块（Linux 有效；Windows 上该模块不存在，会被 try 跳过）。
-RESOURCE_PREAMBLE = '''
-try:
-    import resource as _r
-    _r.setrlimit(_r.RLIMIT_CPU, (15, 15))            # CPU 时间 15 秒
-    _mb = 512 * 1024 * 1024
-    _r.setrlimit(_r.RLIMIT_AS, (_mb, _mb))           # 地址空间 512MB
-    _r.setrlimit(_r.RLIMIT_NPROC, (64, 64))          # 限制能起的线程/进程数
-except Exception:
-    pass
+# 每个代码子进程的内存上限（MB）。默认 512；线上 2GB 的机器建议调小，
+# 用 PYMASTER_CODE_MEM_MB 控制 —— 留足给主进程和并发的那几份。
+def mem_limit_mb():
+    try:
+        return max(64, int(os.environ.get('PYMASTER_CODE_MEM_MB', '512')))
+    except ValueError:
+        return 512
+
+
+def cpu_limit_sec():
+    try:
+        return max(2, int(os.environ.get('PYMASTER_CODE_CPU_SEC', '15')))
+    except ValueError:
+        return 15
+
+
+def _limit_code_body():
+    """返回"给当前进程套上限"的 Python 源码（自包含，可直接嵌进子进程）。"""
+    mb = mem_limit_mb()
+    cpu = cpu_limit_sec()
+    return f'''
+def _pymaster_apply_limits():
+    """给当前进程套上资源上限：CPU {cpu} 秒、内存 {mb}MB。
+
+    Linux：resource 模块（内核级）。
+    Windows：Job Object（同样内核级）。设的是"进程内存上限"，超了就抛
+      MemoryError 而不是杀掉整个进程 —— 学生能看到一条正常报错，
+      同机的其他人不受影响。
+    """
+    try:
+        import resource as _r
+        _r.setrlimit(_r.RLIMIT_CPU, ({cpu}, {cpu}))
+        _cap = {mb} * 1024 * 1024
+        _r.setrlimit(_r.RLIMIT_AS, (_cap, _cap))
+        _r.setrlimit(_r.RLIMIT_NPROC, (64, 64))
+        return
+    except Exception:
+        pass
+    try:
+        import ctypes as _ct
+        from ctypes import wintypes as _wt
+
+        class _IoCounters(_ct.Structure):
+            _fields_ = [('a', _ct.c_ulonglong), ('b', _ct.c_ulonglong),
+                        ('c', _ct.c_ulonglong), ('d', _ct.c_ulonglong),
+                        ('e', _ct.c_ulonglong), ('f', _ct.c_ulonglong)]
+
+        class _BasicLimit(_ct.Structure):
+            _fields_ = [('PerProcessUserTimeLimit', _ct.c_int64),
+                        ('PerJobUserTimeLimit', _ct.c_int64),
+                        ('LimitFlags', _wt.DWORD),
+                        ('MinimumWorkingSetSize', _ct.c_size_t),
+                        ('MaximumWorkingSetSize', _ct.c_size_t),
+                        ('ActiveProcessLimit', _wt.DWORD),
+                        ('Affinity', _ct.c_size_t),
+                        ('PriorityClass', _wt.DWORD),
+                        ('SchedulingClass', _wt.DWORD)]
+
+        class _ExtLimit(_ct.Structure):
+            _fields_ = [('BasicLimitInformation', _BasicLimit),
+                        ('IoInfo', _IoCounters),
+                        ('ProcessMemoryLimit', _ct.c_size_t),
+                        ('JobMemoryLimit', _ct.c_size_t),
+                        ('PeakProcessMemoryUsed', _ct.c_size_t),
+                        ('PeakJobMemoryUsed', _ct.c_size_t)]
+
+        _k = _ct.WinDLL('kernel32', use_last_error=True)
+        # 这几个声明缺一不可：不写 restype，64 位下句柄会被按 32 位整数截断，
+        # 所有调用都会连着失败（而且报的是"参数错误"，完全指不到真正原因）。
+        _k.CreateJobObjectW.restype = _wt.HANDLE
+        _k.CreateJobObjectW.argtypes = [_ct.c_void_p, _wt.LPCWSTR]
+        _k.SetInformationJobObject.restype = _wt.BOOL
+        _k.SetInformationJobObject.argtypes = [_wt.HANDLE, _ct.c_int, _ct.c_void_p, _wt.DWORD]
+        _k.AssignProcessToJobObject.restype = _wt.BOOL
+        _k.AssignProcessToJobObject.argtypes = [_wt.HANDLE, _wt.HANDLE]
+        _k.GetCurrentProcess.restype = _wt.HANDLE
+
+        _job = _k.CreateJobObjectW(None, None)
+        if not _job:
+            return
+        _info = _ExtLimit()
+        # 0x100 = PROCESS_MEMORY（单个进程上限，配 ProcessMemoryLimit）
+        # 0x200 = JOB_MEMORY    （整个 job 上限，配 JobMemoryLimit）
+        # 0x2   = PROCESS_TIME  （单个进程的 CPU 时间，配 PerProcessUserTimeLimit）
+        # 三个都设。**必须成对**：标志与字段不匹配时 SetInformationJobObject
+        # 直接返回 ERROR_INVALID_PARAMETER(87)，限制静默失效 —— 这个坑踩过，
+        # 表象是"设了限制但吃内存的代码照样跑"。
+        _info.BasicLimitInformation.LimitFlags = 0x100 | 0x200 | 0x2
+        _info.ProcessMemoryLimit = {mb} * 1024 * 1024
+        _info.JobMemoryLimit = {mb} * 1024 * 1024
+        # PerProcessUserTimeLimit 单位是 100 纳秒；这是 Windows 上对应
+        # Linux RLIMIT_CPU 的东西，超了系统直接结束该进程，死循环不会一直吃 CPU。
+        _info.BasicLimitInformation.PerProcessUserTimeLimit = {cpu} * 10_000_000
+        if not _k.SetInformationJobObject(_job, 9, _ct.byref(_info), _ct.sizeof(_info)):
+            return
+        _k.AssignProcessToJobObject(_job, _k.GetCurrentProcess())
+    except Exception:
+        # 套不上也不让代码跑不起来：这层是"降低影响"，不是"保证安全"
+        pass
+
+
+_pymaster_apply_limits()
 '''
 
 
+# BLAS / OpenMP 线程数上限。**这是让 pandas 能跑起来的关键**，不是可选优化：
+# numpy 背后的 OpenBLAS 默认按 CPU 核数开线程，每个线程都预留一大块缓冲，
+# 于是"import pandas"本身就会申请几百 MB —— 实测在 512MB 上限下直接
+# MemoryError + 一串 "OpenBLAS error: Memory allocation still failed"；
+# 把线程数压到 1 之后，同一段 pandas + matplotlib 画图的代码在 256MB 里
+# 就能跑通（实测峰值仅约 116MB）。2 核的机器上这也顺带减少了线程争抢。
+# 必须通过环境变量在**子进程启动前**设好：OpenBLAS 是在 import 时读的，
+# 进 Python 之后再改来不及。所以要合进子进程的 env，而不是写在引导脚本里。
+BLAS_ENV = {
+    'OPENBLAS_NUM_THREADS': '1',
+    'OMP_NUM_THREADS': '1',
+    'MKL_NUM_THREADS': '1',
+    'NUMEXPR_NUM_THREADS': '1',
+}
+
+
+# 子进程引导：先限额，再执行目标脚本，并把 sys.argv 修正成"直接运行该脚本"的样子。
+#
+# 为什么不把限额代码直接拼到学生文件前面？那会让报错行号整体偏移 ——
+# 学生看到"第 12 行出错"，可他自己写的文件里根本没有 12 行。
+#
+# sys.argv 必须手工校正：`python -c "..." 脚本 参数...` 里 sys.argv 是
+# ['-c', 脚本, 参数...]，而判题 harness 读的是 sys.argv[1]=payload、
+# argv[2]=out、argv[3]=figures —— 不校正就会整体错位一位，题目全部判不出来。
+GUARD_BOOTSTRAP = ('import sys\n' + _limit_code_body()
+                   + '''
+_script = sys.argv[1]
+sys.argv = [ _script ] + sys.argv[2:]
+import runpy
+runpy.run_path(_script, run_name="__main__")
+''')
+
+
 def limit_resources():
-    """在子进程里调用：给当前进程加资源上限。"""
+    """在子进程里调用：给当前进程加资源上限。（保留给外部/测试直接调用）"""
     if not is_enabled():
         return
+    ns = {'sys': __import__('sys')}
+    exec(_limit_code_body(), ns)          # noqa: S102 —— 内容由本模块生成，非外部输入
+
+
+def guarded_command(script_path, extra_args=()):
+    """把"目标脚本"包装成"带资源上限的执行命令"。
+
+    两条执行链路都该用它：不加的话 Windows 上内存完全不设防，
+    学生一句 bytearray(3*10**9) 就能把整台机器吃满。
+    """
+    import sys as _sys
+    if not is_enabled():
+        return [_sys.executable, '-X', 'utf8', str(script_path), *[str(a) for a in extra_args]]
+    return [_sys.executable, '-X', 'utf8', '-c', GUARD_BOOTSTRAP,
+            str(script_path), *[str(a) for a in extra_args]]
+
+
+# ── 第 3 层：限制"同时跑几个" ──────────────────────────────
+# 光有单进程上限还不够：2 核机器上十几个请求同时各跑一份 pandas，
+# 每个人都变慢、最后一起超时。这里做成"排队"：跑满了就让后来的人
+# 稍等几秒，等不到就给一句人话，而不是大家一起卡死。
+def _slot_count():
     try:
-        import resource
-        resource.setrlimit(resource.RLIMIT_CPU, (15, 15))
-        cap = 512 * 1024 * 1024
-        resource.setrlimit(resource.RLIMIT_AS, (cap, cap))
-        resource.setrlimit(resource.RLIMIT_NPROC, (64, 64))
+        return max(1, int(os.environ.get('PYMASTER_MAX_CONCURRENT_RUNS', '4') or 4))
+    except ValueError:
+        return 4
+
+
+_EXEC_SLOTS = threading.BoundedSemaphore(_slot_count())
+
+
+def acquire_exec_slot(timeout=20):
+    try:
+        return _EXEC_SLOTS.acquire(timeout=timeout)
     except Exception:
-        # 非 Linux 或权限不足时静默跳过：宁可少一层防护，也不要让判题崩掉
+        return True
+
+
+def release_exec_slot():
+    try:
+        _EXEC_SLOTS.release()
+    except Exception:
         pass
+
+
+BUSY_MESSAGE = ('现在同时在跑的程序有点多，服务器在排队。'
+                '请等几秒再点一次「运行」；如果一直这样，说明同一时间用的人比较多。')
+

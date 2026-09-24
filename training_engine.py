@@ -434,17 +434,10 @@ def bank_chapters(courses=None):
 HARNESS = r'''
 import json, sys, io, os, traceback, contextlib
 
-# 公网部署时给这个子进程套上资源上限：CPU 15 秒、地址空间 512MB、
-# 线程/进程数 64。防的是死循环或疯狂吃内存把服务器拖垮（Linux 生效）。
-if os.environ.get('PYMASTER_SAFE_MODE', '').strip().lower() in ('1', 'true', 'yes', 'on'):
-    try:
-        import resource as _r
-        _r.setrlimit(_r.RLIMIT_CPU, (15, 15))
-        _c = 512 * 1024 * 1024
-        _r.setrlimit(_r.RLIMIT_AS, (_c, _c))
-        _r.setrlimit(_r.RLIMIT_NPROC, (64, 64))
-    except Exception:
-        pass
+# 资源上限由 sandbox_guard.guarded_command() 在启动这个子进程时就套好了
+# （Linux 用 resource，Windows 用 Job Object），所以这里不再重复设置 ——
+# 早先那段代码写在 HARNESS 里，只对 Linux 生效，线上那台 Windows 上等于没设，
+# 一句 bytearray(3*10**9) 就能把 2GB 的机器吃满。
 
 payload = json.load(open(sys.argv[1], 'r', encoding='utf-8'))
 cells = payload.get('cells') or []
@@ -556,18 +549,42 @@ def _run_python(cells, stdin_text='', timeout=20, checks=None):
 
         env = {**os.environ, 'PYTHONIOENCODING': 'utf-8', 'PYTHONUTF8': '1',
                'MPLBACKEND': 'Agg'}
+        # BLAS 线程数必须在这里压住：OpenBLAS 在 import 时按核数开线程并预留缓冲，
+        # 不压的话"import pandas"本身就撑爆内存上限（见 sandbox_guard.BLAS_ENV）。
+        if sandbox_guard is not None:
+            env.update(sandbox_guard.BLAS_ENV)
         start = time.time()
+        # 资源上限（CPU/内存）在这一层加：guarded_command 会用带引导的
+        # 命令行启动，Linux 走 resource、Windows 走 Job Object。
+        if sandbox_guard is not None and sandbox_guard.is_enabled():
+            cmd = sandbox_guard.guarded_command(
+                harness_path, [payload_path, out_path, figures_dir])
+        else:
+            cmd = [sys.executable if not getattr(sys, 'frozen', False) else 'python',
+                   '-X', 'utf8', harness_path, payload_path, out_path, figures_dir]
+        # 同时跑的执行数也要收着点：2 核机器上十几个并发各跑一份 pandas，
+        # 结果是谁都跑不完。排队等不到就给一句人话。
+        if sandbox_guard is not None and sandbox_guard.is_enabled():
+            if not sandbox_guard.acquire_exec_slot(timeout=20):
+                return {'ok': False, 'timeout': False, 'elapsed': 0, 'results': [],
+                        'figures': [], 'error': sandbox_guard.BUSY_MESSAGE}
+            slot_held = True
+        else:
+            slot_held = False
         try:
-            proc = subprocess.run(
-                [sys.executable if not getattr(sys, 'frozen', False) else 'python',
-                 '-X', 'utf8', harness_path, payload_path, out_path, figures_dir],
-                input=(stdin_text or '').encode('utf-8'),
-                capture_output=True, timeout=timeout, cwd=workdir, env=env,
-            )
-        except subprocess.TimeoutExpired:
-            return {'ok': False, 'timeout': True, 'elapsed': round(time.time() - start, 2),
-                    'results': [], 'figures': [],
-                    'error': f'⏱ 运行超时（{timeout} 秒）。死循环、等待输入或计算量过大都会这样。'}
+            try:
+                proc = subprocess.run(
+                    cmd,
+                    input=(stdin_text or '').encode('utf-8'),
+                    capture_output=True, timeout=timeout, cwd=workdir, env=env,
+                )
+            except subprocess.TimeoutExpired:
+                return {'ok': False, 'timeout': True, 'elapsed': round(time.time() - start, 2),
+                        'results': [], 'figures': [],
+                        'error': f'⏱ 运行超时（{timeout} 秒）。死循环、等待输入或计算量过大都会这样。'}
+        finally:
+            if slot_held:
+                sandbox_guard.release_exec_slot()
 
         elapsed = round(time.time() - start, 2)
         if not os.path.exists(out_path):

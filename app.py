@@ -1741,23 +1741,36 @@ def run_code():
 
         # Run with timeout and capture output
         start = time.time()
-        proc = subprocess.run(
-            # 必须用 sys.executable：随包 Python 不在 PATH 上，写死 'python' 会
-            # 找不到解释器，或者悄悄跑到系统里另一个 Python 上（装没装库全看运气）
-            [sys.executable, '-X', 'utf8', tmp_path],
-            # 显式给 stdin：不传的话子进程会继承服务端的输入流，
-            # 在服务器上那是空的，input() 直接 EOFError
-            input=stdin_text.encode('utf-8'),
-            capture_output=True,
-            # 超时放宽到 20 秒：导入 pandas/matplotlib 在忙的机器上会明显变慢
-            timeout=20,
-            cwd=os.path.dirname(tmp_path),
-            env={**os.environ,
-                 'PYTHONIOENCODING': 'utf-8', 'PYTHONUTF8': '1',
-                 # 必须指定无界面后端：默认后端会去初始化 GUI，
-                 # 在服务端子进程里会直接阻塞到超时（第 26 章绘图题全军覆没就是这么来的）
-                 'MPLBACKEND': 'Agg'}
-        )
+        # 内存在这一层设上限（见 sandbox_guard）：服务器版上是必须的，
+        # 否则学生一句 bytearray(3*10**9) 就能把这台 2GB 的机器吃满。
+        cmd = sandbox_guard.guarded_command(tmp_path)
+        if sandbox_guard.is_enabled() and not sandbox_guard.acquire_exec_slot(timeout=20):
+            return jsonify({'success': False, 'output': '', 'error': sandbox_guard.BUSY_MESSAGE,
+                            'needs_input': needs_input, 'exit_code': -1, 'elapsed': '0s'})
+        try:
+            proc = subprocess.run(
+                # 必须用 sys.executable：随包 Python 不在 PATH 上，写死 'python' 会
+                # 找不到解释器，或者悄悄跑到系统里另一个 Python 上（装没装库全看运气）
+                cmd,
+                # 显式给 stdin：不传的话子进程会继承服务端的输入流，
+                # 在服务器上那是空的，input() 直接 EOFError
+                input=stdin_text.encode('utf-8'),
+                capture_output=True,
+                # 超时放宽到 20 秒：导入 pandas/matplotlib 在忙的机器上会明显变慢
+                timeout=20,
+                cwd=os.path.dirname(tmp_path),
+                env={**os.environ,
+                     'PYTHONIOENCODING': 'utf-8', 'PYTHONUTF8': '1',
+                     # 必须指定无界面后端：默认后端会去初始化 GUI，
+                     # 在服务端子进程里会直接阻塞到超时（第 26 章绘图题全军覆没就是这么来的）
+                     'MPLBACKEND': 'Agg',
+                     # BLAS 线程数压到 1：不压的话 import pandas 本身就会撑爆
+                     # 内存上限（OpenBLAS 按核数开线程并预留缓冲，见 sandbox_guard.BLAS_ENV）
+                     **sandbox_guard.BLAS_ENV}
+            )
+        finally:
+            if sandbox_guard.is_enabled():
+                sandbox_guard.release_exec_slot()
         elapsed = round(time.time() - start, 2)
 
         stdout = proc.stdout.decode('utf-8', errors='replace') if proc.stdout else ''
