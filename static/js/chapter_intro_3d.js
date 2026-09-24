@@ -59,14 +59,24 @@ const ChapterIntro3D = (() => {
     let renderer;
     try {if(typeof THREE==='undefined')throw Error('WebGL unavailable'); renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});}
     catch(e){host.innerHTML='<div class="cinema-fallback">'+['{ }','[ ]','⟶'][id%3]+'</div>';(host.closest('.chapter-cinema')?.querySelector('.scene-mode') || document.createElement('span')).textContent='静态概念视图 · WebGL 不可用';return {stage(){},change(){},dispose(){}};}
-    renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));host.append(renderer.domElement);
+    // 采样下限 1.6：这一章的模型里有不少"极细"的几何体（轨道环的管半径 0.013、
+    // 描边是 1px 的线）。在 1 倍采样下它们的像素覆盖率低于光栅化能可靠判定的阈值，
+    // 于是线条会断成一段段虚线；而画面一直在缓慢自转，那些断点就沿着曲线爬动 ——
+    // 看上去就是"画面不停抖动"。屏幕缩放 100%（devicePixelRatio=1）时必然出现，
+    // 高 DPI 屏因为本来就是 1.7 倍采样所以看不出，这正是"本地正常、线上抖"的由来。
+    // 给采样设一个与屏幕无关的下限，才能让所有机器上看到的是同一种画面。
+    const ratio=Math.min(Math.max(window.devicePixelRatio||1,1.6),2);
+    renderer.setPixelRatio(ratio);host.append(renderer.domElement);
     const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(40,1,.1,100);camera.position.set(0,0,9);
     const group=new THREE.Group();scene.add(group);const accent=story.color, nodes=[], resources=[]; let frame=0, disposed=false, angle=.3, pitch=.18, zoom=9, pulse=0, variant=0;
     const mat=new THREE.MeshStandardMaterial({color:accent,metalness:.65,roughness:.22,emissive:accent,emissiveIntensity:.18});resources.push(mat);
     scene.add(new THREE.AmbientLight(0xb2caff,.9));const light=new THREE.PointLight(accent,3,30);light.position.set(2,3,5);scene.add(light);const white=new THREE.DirectionalLight(0xffffff,1.6);white.position.set(-3,4,5);scene.add(white);
     function mesh(geometry,x=0,y=0,z=0,material=mat){resources.push(geometry);const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);group.add(m);return m;}
     function wire(geometry,x=0,y=0,z=0){resources.push(geometry);const edges=new THREE.EdgesGeometry(geometry), material=new THREE.LineBasicMaterial({color:accent,transparent:true,opacity:.65});resources.push(edges,material);const line=new THREE.LineSegments(edges,material);line.position.set(x,y,z);group.add(line);return line;}
-    function ring(radius,rotation=0){const m=mesh(new THREE.TorusGeometry(radius,.013,8,100));m.rotation.x=1.15;m.rotation.y=rotation;return m;}
+    // 轨道环：管半径 .013→.017、径向分段 8→12。原来那根管子只有约 2 像素宽、
+    // 断面还是个八边形，旋转时棱角会闪；加粗一点点、分段多一点就稳定了，
+    // 观感仍是"一圈细线"。
+    function ring(radius,rotation=0){const m=mesh(new THREE.TorusGeometry(radius,.017,12,96));m.rotation.x=1.15;m.rotation.y=rotation;return m;}
     function connect(a,b){const geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a),new THREE.Vector3(...b)]);const material=new THREE.LineBasicMaterial({color:accent,transparent:true,opacity:.5});resources.push(geo,material);group.add(new THREE.Line(geo,material));}
     if(story.kind==='signal'){mesh(new THREE.IcosahedronGeometry(.58,1));[1.05,1.55,2.1].forEach((r,i)=>ring(r,i*.5));}
     if(story.kind==='memory'){for(let i=0;i<4;i++){const a=i*Math.PI/2;nodes.push(mesh(new THREE.SphereGeometry(.26,24,16),Math.cos(a)*1.6,Math.sin(a)*1.6));connect([0,0,0],[Math.cos(a)*1.6,Math.sin(a)*1.6,0]);}wire(new THREE.BoxGeometry(.8,.8,.8));}

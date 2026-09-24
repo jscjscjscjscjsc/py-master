@@ -456,17 +456,19 @@ def main():
         response = client.get(path)
         check(f'{name}返回 200', response.status_code == 200, str(response.status_code))
 
-    # 开场 CG 的进出场规则：第一次打开先看片，看过就直接进站。
-    # 这两条坏了的表现是"每次启动都被拦一次片头"，体感很差。
+    # 开场 CG 的进出场规则：**每次**打开站点都先看片（片头自带「跳过片头」）。
+    # 改成"每次"是刻意的：公网版的入口是发给学生的，他第一次打开必须看到；
+    # 而按 Cookie 记住"看过"会让换浏览器/清缓存的人完全见不到这支片子。
+    # 坏掉的表现是"打开站点直接进了平台、根本没放片"。
     fresh = A.app.test_client()
     check('首次打开先播开场 CG',
           fresh.get('/').headers.get('Location', '').endswith('/intro'),
           fresh.get('/').headers.get('Location', ''))
-    seen = A.app.test_client()
-    seen.set_cookie('pymaster_intro', '1')
-    check('看过之后直接进站',
-          seen.get('/').headers.get('Location', '').endswith('/dashboard'),
-          seen.get('/').headers.get('Location', ''))
+    again = A.app.test_client()
+    again.set_cookie('pymaster_intro', '1')   # 就算带着"看过"的标记也要放
+    check('已看过的人也照样先播开场 CG',
+          again.get('/').headers.get('Location', '').endswith('/intro'),
+          again.get('/').headers.get('Location', ''))
     done = A.app.test_client().get('/intro/done')
     check('片尾出口会记下"已看过"',
           'pymaster_intro=' in (done.headers.get('Set-Cookie') or ''),
